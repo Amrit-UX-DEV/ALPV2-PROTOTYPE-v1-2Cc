@@ -1,0 +1,85 @@
+/* MODAL STYLES */
+.modal {
+  position: fixed;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  top: 50%;
+  left: 50%;
+  margin-top: -150px;
+  margin-left: -250px;
+  /* z-index must be higher than .modal-background */
+  z-index: 2000;
+  overflow: auto;
+  width: 500px;
+  max-height: 450px; }
+
+.modal-body {
+  padding: 20px;
+  background: #fff;
+  /* margin exposes part of the modal background */
+  margin: 40px; }
+
+.modal-background {
+  /* modal background fixed across whole screen */
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  /* semi-transparent black  */
+  background-color: #000;
+  opacity: 0.75;
+  /* z-index must be below .modal and above everything else  */
+  z-index: 1900; }
+
+body.modal-open {
+  /* body overflow is hidden to hide main scrollbar when modal window is open */
+  overflow: hidden; }
+
+.notifications-container {
+  background-color: #fff;
+  padding: 1rem 1rem 0;
+  position: relative;
+  z-index: 10;
+  margin-bottom: 1rem; }
+
+.notifications-container button {
+  margin-bottom: 1rem; }
+
+.notifications {
+  overflow: hidden; }
+
+.notifications li {
+  padding-bottom: 1rem;
+  border-color: inherit; }
+
+.notifications p {
+  font-size: 1rem;
+  font-weight: bold; }
+
+/* Message Notifications/ Error */
+.notifications-container.error {
+  border-top: 4px solid #960003; }
+
+.notifications-container.error p {
+  color: #960003; }
+
+/* Message Notifications/ Warning */
+.notifications-container.warning {
+  border-top: 4px solid #fcab32;
+  background-color: #fff; }
+
+.notifications-container.warning p {
+  color: #fcab32; }
+
+/* Message Notifications/ Information */
+.notifications-container.information {
+  border-top: 4px solid #186ecc;
+  background-color: #fff; }
+
+.notifications-container.information p {
+  color: #186ecc; }
+
+.notification-actions {
+  margin-left: 0.5rem; }

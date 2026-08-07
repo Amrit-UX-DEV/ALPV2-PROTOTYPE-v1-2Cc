@@ -1,0 +1,27 @@
+
+/* ------------------------------------------------------ */
+/* ------------------------------------------------------ */
+/* UI COMPONENT COLLECTION  ----------------------------- */
+/* ------------------------------------------------------ */
+/* ------------------------------------------------------ */
+
+/* LAYOUT COMPONENTS */
+/* ------------------------------------------------------ */
+@import url('00-component-styles/layout-components/00-component-app-body.css');
+@import url('00-component-styles/layout-components/00-component-app-footer.css');
+@import url('00-component-styles/layout-components/00-component-app-header.css');
+@import url('00-component-styles/layout-components/00-component-app-landmarks-and-breadcrumbs.css');
+@import url('00-component-styles/layout-components/00-component-app-sidebar--menu-tree.css');
+@import url('00-component-styles/layout-components/00-component-app-sidebar--widget-dock.css');
+
+
+/* CONTROL COMPONENTS */
+/* ------------------------------------------------------ */
+@import url('00-component-styles/control-components/00-component-buttons.css');
+@import url('00-component-styles/control-components/00-component-card-carousel.css');
+@import url('00-component-styles/control-components/00-component-data-diagram.css');
+@import url('00-component-styles/control-components/00-component-data-tiles--featureflags.css');
+@import url('00-component-styles/control-components/00-component-data-tiles--workplans.css');
+@import url('00-component-styles/control-components/00-component-data-tiles.css');
+@import url('00-component-styles/control-components/00-component-tooltips.css');
+

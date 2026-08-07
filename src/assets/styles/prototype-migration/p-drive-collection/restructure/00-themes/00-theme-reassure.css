@@ -1,0 +1,125 @@
+/* -----------------------                      --- */
+/* THEME: REASSURE                                  */
+/* -----------------------                      --- */
+:root {
+    /* CORE COLOURS */
+    /*-----------------------------------------------------------------*/
+    /*REASSURE BLUE*/
+    --theme-primary: hsla(229, 36%, 37%,1);
+    /*REASSURE LIGHT BLUE*/
+    --theme-primary--light: hsla(210, 38%, 95%,1);
+    /*REASSURE DARK BLUE*/
+    --theme-primary--dark: hsla(224, 42%, 30%,1);
+
+    /* OVERLAY */
+    --theme-overlay: hsla(229, 47%, 13%, 0.8);
+
+    /* TEXT GENERIC */
+    /*-----------------------------------------------------------------*/
+    --theme-text--heading: hsla(229, 36%, 37%,1);/*REASSURE BLUE*/
+    --theme-text--default: hsla(0, 0%, 13%,1);
+    --theme-text--light: hsla(0, 0%, 100%,1);
+    --theme-text--disabled: hsla(210, 3%, 75%,1);
+
+    /* MONOTONE COLOURS */
+    /*-----------------------------------------------------------------*/
+    --theme-monotone-1: hsla(0, 0%, 100%,1);
+    --theme-monotone-2: hsla(0, 0%, 0%,1);
+    /*REASSURE GREY*/
+    --theme-monotone-3: hsla(270, 2%, 25%,1);
+    /*REASSURE COPY*/
+    --theme-monotone-4: hsla(220, 1%, 51%,1);
+    /*REASSURE MID-GREY*/
+    --theme-monotone-5: hsla(200, 3%, 83%,1);
+    /*REASSURE LIGHT-GREY*/
+    --theme-monotone-6: hsla(210, 4%, 91%,1);
+
+    /* TRANSPARENT SHADES */
+    /*-----------------------------------------------------------------*/
+    --theme-light-shade-1: hsla(0, 0%, 100%, 0.1);
+    --theme-light-shade-2: hsla(0, 0%, 100%, 0.2);
+    --theme-light-shade-3: hsla(0, 0%, 100%, 0.3);
+    --theme-light-shade-4: hsla(0, 0%, 100%, 0.4);
+    --theme-light-shade-5: hsla(0, 0%, 100%, 0.5);
+    --theme-light-shade-6: hsla(0, 0%, 100%, 0.6);
+    --theme-light-shade-7: hsla(0, 0%, 100%, 0.7);
+    --theme-light-shade-8: hsla(0, 0%, 100%, 0.8);
+    --theme-light-shade-9: hsla(0, 0%, 100%, 0.9);
+    --theme-dark-shade-1: hsla(0, 0%, 0%, 0.1);
+    --theme-dark-shade-2: hsla(0, 0%, 0%, 0.2);
+    --theme-dark-shade-3: hsla(0, 0%, 0%, 0.3);
+    --theme-dark-shade-4: hsla(0, 0%, 0%, 0.4);
+    --theme-dark-shade-5: hsla(0, 0%, 0%, 0.5);
+    --theme-dark-shade-6: hsla(0, 0%, 0%, 0.6);
+    --theme-dark-shade-7: hsla(0, 0%, 0%, 0.7);
+    --theme-dark-shade-8: hsla(0, 0%, 0%, 0.8);
+    --theme-dark-shade-9: hsla(0, 0%, 0%, 0.9);
+    --theme-primary-shade-1:rgba(60, 73, 128, 0.1);
+    --theme-primary-shade-2:rgba(60, 73, 128,0.2);
+    --theme-primary-shade-3:rgba(60, 73, 128,0.3);
+    --theme-primary-shade-4:rgba(60, 73, 128,0.4);
+    --theme-primary-shade-5:rgba(60, 73, 128,0.5);
+    --theme-primary-shade-6:rgba(60, 73, 128,0.6);
+    --theme-primary-shade-7:rgba(60, 73, 128,0.7);
+    --theme-primary-shade-8:rgba(60, 73, 128,0.8);
+    --theme-primary-shade-9:rgba(60, 73, 128,0.9);
+
+
+    /* BUTTONS */
+    /*-----------------------------------------------------------------*/
+    --theme-btn-important: hsla(124, 40%, 47%, 1); /*REASURE GREEN*/
+    --theme-btn-cancel: hsla(2, 64%, 58%, 1);
+    --theme-btn-cancel--strong: hsla(359, 100%, 29%, 1);/*REASSURE RED*/
+    --theme-btn-primary: hsla(207, 68%, 62%, 1);
+    --theme-btn-primary--light: hsla(212, 63%, 82%,1);
+    --theme-btn-secondary:hsla(229, 36%, 37%,1);
+    --theme-btn-secondary--light: hsla(229, 36%, 80%,1);/*REASSURE LIGHT BLUE*/
+    --theme-btn-disabled: hsla(0, 0%, 95%,1);
+
+
+    /* ACTION TEXT/LINK */
+    /*-----------------------------------------------------------------*/
+    --theme-action-link: hsla(202, 89%, 44%,1);
+
+    /* STATES */
+    /*-----------------------------------------------------------------*/
+    --theme-state--current: hsla(229, 36%, 37%, 1);
+    --theme-state--success: hsla(120, 90%, 31% , 1);
+    --theme-state--success--light: hsla(120, 42%, 95% ,1);
+    --theme-state--warning: hsla(35, 84%, 62% ,1);
+    --theme-state--warning--light: hsl(60, 76%, 93% ,1);
+    --theme-state--error: hsla(0, 86%, 62% ,1);
+    --theme-state--active: hsla(120, 90%, 31% ,1);
+    --theme-state--gone-away: hsla(0, 86%, 62% ,1);
+    --theme-state--historical: hsla(0, 86%, 62% ,1);
+    --theme-state--inactive: hsla(0, 0%, 80% ,1);
+    --theme-state--information: hsla(211, 79%, 45% ,1);
+    --theme-state--secruity: hsla(234, 9%, 58% ,1);
+    --theme-state--secruity--light: hsla(0, 5%, 92% ,1);
+
+    /* UI / HEADER */
+    /*-----------------------------------------------------------------*/
+    --theme-header--background:var(--theme-primary);
+
+    /* UI / MENU TREE */
+    /*-----------------------------------------------------------------*/
+    --theme-menu-tree--background: hsla(240, 8%, 90%,1);
+    --theme-menu-tree-rail--background: hsla(240, 4%, 82%,1);
+
+    /* UI / MAIN CONTENT */
+    /*-----------------------------------------------------------------*/
+    --theme-main--background: hsla(0, 0%, 98%,1);
+
+    /* UI/ CONTEXT BAR */
+    /*-----------------------------------------------------------------*/
+    --theme-footer--background: hsla(0, 0%, 100%,1);
+
+    /* UI / DOCK */
+    /*-----------------------------------------------------------------*/
+    --theme-widget-dock--background: hsla(240, 8%, 90%,1);
+    --theme-widget-dock-rail--background: hsla(240, 4%, 82%,1);
+
+    /* UI / TOOLTIPS */
+    /*-----------------------------------------------------------------*/
+    --theme-tooltip--truncate:var(--theme-primary);/*REASSURE BLUE*/
+}

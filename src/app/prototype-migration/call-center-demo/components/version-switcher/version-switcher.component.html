@@ -1,0 +1,10 @@
+<div class="version-switcher">
+  <strong style="margin-right: 10px;">Prototype:</strong>
+  
+  <button class="version-switcher__btn" *ngFor="let v of [1,2,3,4,5]"
+          [class.active]="currentVersion() === v"
+          (click)="selectVersion(v)"
+          style="margin: 0 5px; padding: 8px 16px; cursor: pointer;">
+    Version {{ v }}
+  </button>
+</div>

@@ -1,0 +1,67 @@
+
+/* -----------------------                      --- */
+/* LAYOUT STRUCTURES                                */
+/* -----------------------                      --- */
+
+/* Outer Containers */
+
+[class^="app-"]{
+   box-sizing:border-box;
+}
+
+#app-container{
+
+}
+
+.app-layout--default{
+    height:100vh;
+    overflow:hidden;
+    font-size:1.3rem;
+}
+
+.app-header{
+    height:4.5rem;
+}
+
+.app-sidebar--menu-tree{
+    width:20rem;
+    height:calc(100vh - 10.5rem);
+    display:block;
+    float:left;
+}
+
+.app-sidebar--menu-tree-options {
+    height: calc(100vh - 10.5rem);
+    width: 4.5rem;
+    display: block;
+    float: left;
+}
+
+.app-body{
+    height:calc(100vh - 10.5rem);
+    margin-left:25rem;
+    margin-right:25rem;
+    width:auto;
+}
+
+.app-sidebar--widget-dock{
+    min-width:43rem;
+    width:30%;
+    height:calc(100vh - 10.5rem);
+    float:right;
+}
+
+.app-sidebar--widget-dock-options {
+    height: calc(100vh - 10.5rem);
+    width: 4.5rem;
+    display: block;
+    float: right;
+}
+
+.app-context-bar{
+    clear:both;
+    float:left;
+    height:6rem;
+    width:100%;
+    padding:2rem;
+}

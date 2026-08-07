@@ -1,0 +1,185 @@
+
+/* Alpha Explorer Toolbar  */
+/* --------------------------------------------------- */
+
+
+/* Explorer Header */
+
+.header-block {}
+
+.header-block .app-toolbar--heading {
+    padding:10px;
+    color: #afafaf;
+    display:block;
+}
+
+.alpha-explorer-toolbar {
+    display:flex;
+    position: relative;
+}
+
+.ui-action-rail {
+    width: 50px;
+    background: rgb(2,3,8);
+    background: linear-gradient(-45deg, rgb(21, 23, 34) 0%, rgb(72, 79, 112) 71%, rgb(4, 24, 44) 100%);
+    
+    border-right: 2px solid rgba(169, 174, 196, 0.5);
+    z-index: 2;
+}
+
+/* Alpha Explorer Toolbar/ Light  */
+.alpha-explorer-toolbar.light .ui-action-rail{
+    background:#f8f9fa;
+}
+
+.alpha-explorer-toolbar.light .ui-menu-action-block button.ui-menu-action{
+    background:#f8f9fa;
+    border: 2px solid rgba(131, 189, 241, 0.5);
+}
+
+.alpha-explorer-toolbar.light .ui-menu-action-block button.ui-menu-action .details{
+    color:#1985c4;
+}
+
+/* Alpha Explorer Toolbar/ Menu Action Block  */
+
+.alpha-explorer-toolbar .ui-menu-action-block {
+
+    display:block;
+}
+
+.alpha-explorer-toolbar .ui-menu-action-block button.ui-menu-action{
+    background: rgb(2,3,8);
+    border: 2px solid rgba(251, 251, 251, 0.5);
+    width: 40px;
+    height: 40px;
+    margin-bottom: 15px;
+    margin: 10px auto;
+    position: relative;
+    z-index: 1;
+    display:block;  
+    transition: all 0.15s ease-in-out;
+    transform: scale(1);
+    cursor:pointer;
+}
+
+.alpha-explorer-toolbar .ui-menu-action-block button.ui-menu-action .details {
+    color:#fff;
+}
+
+.alpha-explorer-toolbar .ui-menu-action-block button.ui-menu-action .ui-icon--svg {
+    fill: #fff !important;
+    position: absolute;
+    width: 40px;
+    height: 40px;
+    top: -5px;
+    left: -5.5px;
+    transform: scale(0.8);
+}
+
+/* Hover State */
+
+.alpha-explorer-toolbar .ui-menu-action-block button.ui-menu-action:hover{
+    border-color: rgb(133, 178, 226);
+    transform: scale(0.93);
+}
+
+/* Alpha Explorer Toolbar/ Menu Action Block / Tooltip  */
+
+.alpha-explorer-toolbar .ui-menu-action-block button.ui-menu-action:hover .tooltip{
+    display:inline;
+}
+
+.alpha-explorer-toolbar .ui-menu-action-block button.ui-menu-action .tooltip{
+    position: absolute;
+    left: calc(100% + 25px );
+    background-color: #1a1a1a;
+    white-space: nowrap;
+    color: #fff;
+    padding: 5px 10px;
+    z-index: 999;
+    font-size:14px;
+    opacity: 1;
+    display: none;
+    transition: opacity 0.15s ease-in-out;
+    transition-delay: 0.3s;
+    top: 3px;
+    /* display:inline; */
+}
+
+.alpha-explorer-toolbar .ui-menu-action-block button.ui-menu-action .tooltip:after{
+    content:"\f0d9";
+    font-family:"FontAwesome";
+    position:absolute;
+    right:calc(100% - 2px);
+    color:#232323;
+    font-size:30px;
+    line-height:0;
+    top:15px;
+}
+
+/* Focus State */
+
+.alpha-explorer-toolbar .ui-menu-action-block button.ui-menu-action:focus{
+    transform: scale(0.93);
+}
+
+
+/* Alpha Explorer Toolbar/ Menu Action Block / Tier 0  */
+
+.alpha-explorer-toolbar button.ui-menu-action.tier-0 {
+    border-radius: 100px;
+    font-size:18px;
+}
+
+/* Icon Rules / Group Summary */
+
+.alpha-explorer-toolbar .ui-menu-action-block.group-summary .details i{
+    position:relative;
+    top:2px;
+}
+
+.alpha-explorer-toolbar .ui-menu-action-block.master-scheme-summary .details i{
+    position:relative;
+    top: -4px;
+    left: 1px;
+}
+
+.alpha-explorer-toolbar .ui-menu-action-block.master-scheme-summary .details .icon-shelf{
+    font-size: 9px;
+    position: absolute;
+    width: 37px;
+    bottom: 0px;
+    left: -1px;
+}
+.alpha-explorer-toolbar .ui-menu-action-block.master-scheme-summary .details .icon-shelf i{
+    
+/* margin-right: 1px; */
+    
+color: rgba(255, 255, 255, 0.8);
+}
+
+/* Alpha Explorer Toolbar / Extended Menu */
+
+.alpha-explorer-toolbar .ui-action-menu-extended {
+
+background-color: rgba(34, 34, 34, 0.9);
+width: 230px;
+position: absolute;
+top: 0;
+height: 100%;
+left: 100%;
+display: none;
+flex: 1;
+z-index: 1;
+border-right: 4px solid #fff;
+box-shadow: 7px 4px 6px 0px rgba(34, 34, 34, 0.5);
+}
+
+.alpha-explorer-toolbar.pinned01 .ui-action-menu-extended {
+    /* position: static; */
+}
+
+.alpha-explorer-toolbar.extended .ui-action-menu-extended {
+    display:initial;
+}

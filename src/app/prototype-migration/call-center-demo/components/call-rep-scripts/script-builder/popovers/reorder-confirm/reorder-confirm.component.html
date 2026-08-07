@@ -1,0 +1,29 @@
+<div class="alp-script-builder__popover-overlay" (click)="cancel()">
+  <div class="alp-script-builder__popover alp-script-builder__popover--small"
+       (click)="$event.stopPropagation()">
+    <div class="alp-script-builder__popover-header">
+      <h4>Change content order?</h4>
+      <button (click)="cancel()" class="alp-script-builder__close-btn">
+        <i class="fas fa-times"></i>
+      </button>
+    </div>
+
+    <div class="alp-script-builder__popover-body">
+      <p>You are about to change the order of content in this step.</p>
+      <p>Do you want to continue?</p>
+
+      <label class="alp-checkbox-label">
+        <input type="checkbox" #dontShow>
+        Don’t show this message again
+      </label>
+    </div>
+
+    <div class="alp-script-builder__popover-footer">
+      <button class="alp-btn alp-btn--outline" (click)="cancel()">Cancel</button>
+      <button class="alp-btn alp-btn--primary"
+              (click)="confirm(dontShow.checked)">
+        Yes, continue
+      </button>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,18 @@
+
+.version-switcher{
+  padding: 10px; 
+  background: #f8f9fa; 
+  border-bottom: 2px solid #ddd;
+}
+
+.version-switcher__btn {
+  background: #e9ecef;
+  border: 1px solid #ced4da;
+  border-radius: 4px;
+}
+
+.version-switcher__btn.active {
+  background: #222;
+  color: white;
+  border-color: #222;
+}

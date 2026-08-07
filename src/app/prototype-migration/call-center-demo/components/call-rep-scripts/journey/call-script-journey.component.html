@@ -1,0 +1,147 @@
+<section class="alp-script-journey" aria-label="Call Rep Script Journey">
+
+  @if (isLoading()) {
+    <div class="alp-script-journey__loading">Loading Surrender Script...</div>
+  }
+  
+  @if (loadError()) {
+    <div class="alp-script-journey__error">
+      <p>{{ loadError() }}</p>
+      <button (click)="loadScript()">Retry</button>
+    </div>
+  }
+  
+  @if (script() && !isLoading() && !loadError() && !showSummary()) {
+    <div class="alp-script-journey__container">
+  
+      <div class="alp-script-journey__header">
+        <h2 class="alp-script-journey__title"><i class="fas fa-scroll"></i> {{ script()!.title }}</h2>
+      </div>
+  
+      <div class="alp-script-journey__content">
+  
+        @for (item of sortedContent(); track item.id) {
+          @if (!item.condition || isConditionMet(item.condition)) {
+  
+            <!-- Prompt -->
+            @if (item.type === 'prompt') {
+              <div class="notification-block status-prompt">
+                <div class="notification-message">
+                  <span class="alp-script-journey__read-prompt-label">
+                    Read Prompt
+                  </span>
+                  <p class="alp-script-journey__read-prompt-text" [innerHTML]="formatPrompt(item.content)"></p>
+                </div>
+              </div>
+            }
+  
+            <!-- Question -->
+            @if (item.type === 'question') {
+              <div class="alp-script-journey__question">
+                <h3 class="alp-script-journey__question-text">{{ item.content }}</h3>
+              </div>
+              <div class="alp-script-journey__options">
+                @for (option of item.options || []; track option.text) {
+                  <label class="alp-script-journey__option-label">
+                    <input type="radio" 
+                           [name]="'question-' + item.id" 
+                           [checked]="isOptionSelected(option.text, item.id)" 
+                           (change)="selectOption(option, item.id)">
+                    <span>{{ option.text }}</span>
+                  </label>
+                }
+              </div>
+            }
+  
+          <!-- Required Check -->
+          @if (item.type === 'required-check') {
+            <div class="alp-script-journey__checks">
+              <h4 class="alp-script-journey__section-title">Required Checks</h4>
+              <div class="alp-script-journey__check-list">
+                @for (check of item.requiredChecks || []; track $index) {
+                  @let checkText = check.question ? `${check.question}: ${check.answer}` : (typeof check === 'string' ? check : check.text || '');
+                  @let isAuto = isAutoCheck(check);
+                  @let isManual = isManualCheck(check);
+
+                  <div class="alp-script-journey__check-item" 
+                       [class.alp-script-journey__check-item--auto]="isAuto"
+                       [class.alp-script-journey__check-item--manual]="isManual">
+
+                    @if (isAuto) {
+                      <!-- <i class="fas fa-check-circle" style="color: #10b981; margin-right: 8px;"></i> -->
+                    } @else if (isManual && check.selectionMode && check.question) {
+                      <!-- Manual selectable question - NO duplication -->
+                      <div class="alp-script-journey__manual-question">
+                        <strong>{{ check.question }}</strong>
+                        <div class="alp-script-journey__options">
+                          @for (option of check.options || []; track option.text) {
+                            <label class="alp-script-journey__option-label">
+                              <input type="radio" 
+                                     [name]="'manual-' + check.question" 
+                                     [checked]="isOptionSelected(option.text, check.question!)" 
+                                     (change)="selectOption(option, check.question!)">
+                              <span>{{ option.text }}</span>
+                            </label>
+                          }
+                        </div>
+                      </div>
+                    } @else {
+                      <input type="checkbox" 
+                             [checked]="completedChecks().has(checkText)" 
+                             (change)="toggleCheck(checkText, $event.target.checked)">
+                    }
+
+                    @if (!isManual || !check.selectionMode) {
+                      <span>{{ check.question || '' }} <strong>{{ check.answer || '' }}</strong></span>
+                    }
+
+                    @if (isAuto) {
+                      <span class="alp-script-journey__check-badge">Auto</span>
+                    } @else if (isManual) {
+                      <span class="alp-script-journey__check-badge manual">Manual</span>
+                    }
+                  </div>
+                }
+              </div>
+            </div>
+          }
+  
+            <!-- Action -->
+            @if (item.type === 'action' && item.actionType === 'end-call') {
+              <button class="alp-script-journey__btn alp-script-journey__btn--danger" (click)="finishJourney()">
+                {{ item.content || 'End Call' }}
+              </button>
+            }
+  
+          }
+        }
+  
+      </div>
+  
+      <!-- Navigation -->
+      <footer class="alp-script-journey__footer">
+        <button type="button" class="alp-script-journey__btn alp-script-journey__btn--secondary"
+                [disabled]="currentStepIndex() === 0"
+                (click)="goToStep(currentStepIndex() - 1)">
+          Previous
+        </button>
+  
+        @if (!hasEndCallAction()) {
+          <button type="button" class="alp-script-journey__btn alp-script-journey__btn--primary" 
+                  (click)="goToStep(getNextStepIndex())">
+            Next
+          </button>
+        }
+      </footer>
+  
+    </div>
+  }
+  
+  @if (showSummary()) {
+    <div class="alp-script-journey__summary">
+      <h2>Journey Complete</h2>
+      <button (click)="restartJourney()">Restart Journey</button>
+    </div>
+  }
+  
+  </section>

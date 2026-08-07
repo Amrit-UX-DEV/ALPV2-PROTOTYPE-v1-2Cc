@@ -1,0 +1,138 @@
+
+/* ------------------------------------------------------ */
+/* ------------------------------------------------------ */
+/* COMPONENT: HEADER  */
+/* ------------------------------------------------------ */
+/* ------------------------------------------------------ */
+
+
+.app-header {
+    background-color:var(--theme-header--background);
+    border-bottom:0.4rem solid #fff;
+    display: flex;
+    align-items: center;
+}
+
+.app-branding--block {
+    width: 7.2rem;
+    height: 6.1rem;
+    border-right: 0.2rem solid rgba(255,255,255,0.2);
+    text-align: center;
+}
+
+    .app-branding--block img {
+        width: 63%;
+        margin: 1.7rem 1.2rem 0 1.2rem;
+    }
+
+.app-page--header {
+    flex:1;
+}
+
+.app-page--heading {
+    padding: 0 1.5rem 0 1.5rem;
+    display: flex;
+}
+
+    .app-page--heading h1 {
+        font-size: 1.4rem;
+        line-height: 1.5;
+        margin-bottom: 0;
+        color: #fff;
+        padding:0.5rem 0 0.5rem 0;
+    }
+
+.context-info {
+    color: #414141;
+    color: #ffffff;
+    border-radius: 0.4rem;
+    display: inline-block;
+}
+
+.data-bubble--status {
+    background-color: rgb(231, 240, 249);
+    padding: 0.2rem 0.5rem;
+    border-radius: 0.4rem;
+    margin-right: 0.2rem;
+    display: inline !important;
+    white-space: nowrap;
+}
+
+.data-group{
+    white-space: nowrap;
+}
+
+.context-info span {
+    display: inline;
+}
+
+.app-details {
+    height: 6.1rem;
+    display: flex;
+    padding-right:1rem;
+}
+
+.app-system-date {
+    display:flex;
+    flex-direction:column;
+    color: #fff;
+    font-weight: bold;
+    padding: 0 1rem 0 1rem;
+    font-size:1.4rem;
+    height: 100%;
+    align-items: flex-start;
+    justify-content: center;
+}
+
+.app-system-date--label{
+    font-size: 1.1rem;
+    padding-bottom:3px;
+    color:rgba(255,255,255,0.6);
+}
+
+.app-notifications {
+    display:flex;
+    align-content:center;
+    height: 6.1rem;
+    padding-right:1rem;
+    padding-left:1rem;
+    border-right:0.2rem solid rgba(255,255,255,0.2);
+}
+
+.app-notifications--bell {
+
+}
+
+.app-notifications--results {
+    width:90%;
+    margin:0 auto;
+    max-width:60rem;
+}
+
+.app-user--info {
+    overflow: hidden;
+}
+
+    .app-user--info > i {
+        font-size: 1.3rem;
+        margin-left:3rem;
+        margin-right: 3rem;
+        top:2.5rem;
+        right:1.6rem;
+    }
+
+span.app-user--greeting {
+    color: rgba(255,255,255,0.8);
+    margin-right: 0.5rem;
+    font-style: italic;
+    font-size: 1.1rem;
+}
+
+.app-user--info:after {
+    position: absolute;
+    font-family: "FontAwesome";
+    content: "\F107";
+    font-weight: bold;
+    top:2.6rem;
+    right:1.6rem;
+}

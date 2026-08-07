@@ -1,0 +1,22 @@
+{
+  "version": "1.0",
+  "lastUpdated": "2026-06-24",
+  "scripts": [
+    {
+      "scriptId": "breach-cancellation-001",
+      "title": "Breach of Contract & Cancellation",
+      "description": "Handles breach concerns and cancellation requests",
+      "category": "Cancellation",
+      "filename": "breach-cancellation-001.json",
+      "lastUpdated": "2026-06-23"
+    },
+    {
+      "scriptId": "surrender-001",
+      "title": "Surrender Request",
+      "description": "Call script for handling policy surrender requests",
+      "category": "Surrenders",
+      "filename": "surrender-001.json",
+      "lastUpdated": "2026-06-24"
+    }
+  ]
+}

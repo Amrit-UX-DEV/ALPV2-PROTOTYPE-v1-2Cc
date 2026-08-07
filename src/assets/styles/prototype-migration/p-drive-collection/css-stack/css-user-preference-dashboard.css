@@ -1,0 +1,321 @@
+
+/* Alpha User Preference Dashboard/Menu */
+/* --------------------------------------------------- */
+
+.ui-anchor {
+    position: relative;
+    z-index: 3;
+}
+
+.app-header{
+    overflow:visible;
+}
+
+/* Button Amendments */
+button.app-user--info{
+    cursor:pointer;
+    border: 2px solid #85b2e2;
+    background-color: #fff;
+    color:#4f8fd4;
+}
+
+button.app-user--info:hover{
+    background-color:rgb(223, 231, 239);
+}
+
+button.app-user--info.ui-preferences-open {
+    background-color: #85b2e2;
+    border-radius: 30px 30px 0 0;
+    height: 48px;
+    border: 2px solid rgba(255, 255, 255, 0.5);
+    color: #fff;
+}
+
+
+button.app-user--info.ui-preferences-open:after,
+button.app-user--info.ui-preferences-open:before {
+    position: absolute;
+    font-family: "FontAwesome";
+    content: "\f077";
+    font-weight: normal;
+    top: 5px;
+    right: 7px;
+    font-size:30px;
+}
+
+button.app-user--info.ui-preferences-open:before{
+    content: "\f111";
+    color:#85b2e2;
+    font-size:38px;
+}
+
+.ui-preference-dashboard {
+    position:absolute;
+    top: 52px;
+    right: 0px;
+    background-color: rgba(234, 234, 233, 0.96);
+    border: 4px solid #85b2e2;
+    
+    z-index:1;
+    padding-top: 5px;
+    box-shadow: -5px 5px 6px 3px rgba(34, 34, 34, 0.3);
+    border-radius: 6px 0 6px 6px;
+    overflow: hidden;
+    max-height:0;
+    min-width:0;
+    max-width:0;
+    opacity:0;
+    transition: all 0.0s ease-in-out;
+}
+
+.ui-preference-dashboard.show-preferences {
+    transition: all 0.15s ease-in-out;
+    min-width: 600px;
+    max-height:9000px;
+    max-width:800px;
+    opacity:1;
+}
+
+
+.ui-preference-dashboard .ui-section {display: flex;}
+
+.ui-preference-dashboard .ui-preference-block {
+    margin-right: 5px;
+    margin-left: 5px;
+    margin-bottom: 10px;
+    border: 2px solid rgba(255, 255, 255, 0.3);
+    border-radius: 6px;
+    display: flex;
+    flex-wrap: wrap;
+    flex: 1;
+    padding: 10px;
+    background-color: #e0e2e4;
+    }
+
+.ui-preference-dashboard .ui-preference-block.space-between{
+        justify-content: space-between;
+}
+
+.ui-preference-dashboard .ui-preference-block.fixed-blocks .tile--data-block{
+    min-width:30%;
+}
+
+
+/* Current User Block */
+.ui-preference-dashboard .user-details-block {
+    flex:1;
+}
+
+.ui-preference-dashboard .current-user {
+    display: flex;
+    align-items: center;
+}
+
+.ui-preference-dashboard .user-initials {
+    border: 4px solid rgb(193, 198, 210);
+    height: 60px;
+    width: 60px;
+    background-color: #556298;
+    border-color: #919bc5;
+    border-radius: 100%;
+    margin-right: 10px;
+    position: relative;
+    z-index: 1;
+    display: flex;
+    flex-direction: column;
+    color: rgba(255, 255, 255, 0.9);
+    box-shadow: 0px 3px 3px 1px rgba(34, 34, 34, 0.3);
+    text-align: center;
+    align-items:center;
+    justify-content: center;
+    font-size: 22px;
+    }
+
+
+.ui-preference-dashboard  .user-details {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+}
+
+.ui-preference-dashboard .tile--data.user-name {
+    display: flex;
+    justify-content: space-between;
+}
+
+.ui-preference-dashboard .default-actions {}
+
+.ui-preference-dashboard .user-info-actions {
+    display: flex;
+    flex: 1;
+    align-items: center;
+}
+
+/* Presentation Block */ 
+.ui-preference-dashboard .tile--data-presentation {
+    display: flex;
+}
+
+.ui-preference-dashboard .tile--data-presentation-icon {
+    display: flex;
+    margin-right: 5px;
+    align-items: center;
+    font-size: 18px;
+
+    border: 1px solid rgba(193, 198, 210, 0);
+    height: 30px;
+    width: 30px;
+    background-color: #cecece;
+    border-radius: 3px;
+    margin-right: 5px;
+    position: relative;
+    z-index: 1;
+    display: flex;
+    flex-direction: column;
+    color: rgba(0, 0, 0, 0.9);
+    box-shadow: 0px 1px 1px 1px rgba(34, 34, 34, 0.1);
+    text-align: center;
+    align-items: center;
+    justify-content: center;
+    font-size: 16px;
+}
+
+.ui-preference-dashboard .tile--data-presentation-details {
+    display: block;
+}
+
+/* Preference Header */
+
+.ui-preference-dashboard .ui-preference-block-header {
+    width:100%;
+    padding-bottom:5px;
+    border-bottom:2px dashed #b9b9b8;
+}
+
+/* Preference Tiles */
+
+.ui-preference-dashboard .ui-preference-block-tiles {
+    display: flex;
+    padding: 10px;
+    flex-wrap: wrap;
+    justify-content: space-evenly;
+    flex: 1;
+}
+
+.ui-preference-dashboard button.ui-pref-tile {
+    border: 4px solid rgba(255, 255, 255, 0.5);
+    height: 70px;
+    width: 90px;
+    background-color: #e6e6e6;
+    border-radius: 10px;
+    margin-top: 10px;
+    margin-bottom:10px;
+    margin-right: 10px;
+    position: relative;
+    z-index: 1;
+    display: flex;
+    flex-direction: column;
+    color: rgba(0, 0, 0, 0.9);
+    box-shadow: 0px 3px 3px 1px rgba(34, 34, 34, 0.3);
+    text-align: center;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.15s ease-in-out;
+    cursor:pointer;
+}
+
+.ui-preference-dashboard button.ui-pref-tile:hover{
+    transform:scale(0.95);
+}
+
+.ui-preference-dashboard .ui-pref-tile .tile-content {
+    display:flex;
+    flex-direction:column;
+    align-content: center;
+}
+
+.ui-preference-dashboard .ui-pref-tile .tile-icon {
+    margin-bottom:5px;
+    font-size:18px;
+}
+
+.ui-preference-dashboard button.ui-pref-tile.ui-selected:after{
+    content:"";
+    position:absolute;
+    border:4px solid #59a3f2;
+    top:-12px;
+    left:-12px;
+    width:calc(100% + 24px);
+    height:calc(100% + 24px);
+    border-radius:6px;
+}
+
+/* Application Theme */
+
+/* Theme Tile - Theme Standard */
+.ui-preference-dashboard button.ui-pref-tile.standard{
+    background-color: #3c4981;
+    color:#fff;
+}
+
+/* Theme Tile - Theme Light */
+.ui-preference-dashboard button.ui-pref-tile.light{
+    background-color: #efefef;
+    color:#222;
+}
+
+/* Theme Tile - Theme Dark */
+.ui-preference-dashboard button.ui-pref-tile.dark{
+    background-color: #3b3b3b;
+    color:rgba(255, 255, 255, 0.9);
+}
+
+/* Application Resize */
+
+.ui-preference-dashboard .ui-preference-block.ui-app-size-selector{
+    flex-direction: column;
+}
+
+.ui-preference-dashboard .ui-preference-block.ui-app-size-selector .ui-preference-block-tiles {
+    align-items: center;
+    flex: 1;   
+}
+
+.ui-preference-dashboard .ui-preference-block.ui-app-size-selector  button.ui-pref-tile{
+    color:#1359c4;
+}
+
+.ui-preference-dashboard .ui-preference-block.ui-app-size-selector  button.ui-pref-tile:hover{
+    background-color: rgb(223, 231, 239);
+}
+
+.ui-preference-dashboard .ui-preference-block.ui-app-size-selector .ui-preference-block-tiles .tile-icon{
+    height: 28px;
+    display:flex;
+    align-items: flex-end;
+    justify-content:center;
+    margin-bottom: 2px;
+    border-bottom: 2px solid #ccc;
+    padding-bottom: 2px;
+}
+
+.ui-preference-dashboard .ui-prefxerence-block.ui-app-size-selector  button.ui-pref-tile.ui-selected{
+    background-color:#59a3f2;
+    color:#fff;
+}
+
+/* Resize Tile - Small */
+.ui-preference-dashboard button.ui-pref-tile.size-small .tile-icon {
+    font-size:13px;
+}
+
+/* Resize Tile - Medium */
+.ui-preference-dashboard button.ui-pref-tile.size-medium .tile-icon {
+    font-size:18px;
+}
+
+/* Resize Tile - Large */
+.ui-preference-dashboard button.ui-pref-tile.size-large .tile-icon {
+    font-size:28px;
+}
+

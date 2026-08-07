@@ -1,0 +1,33 @@
+<div class="alp-script-builder__popover-overlay" (click)="cancel()">
+  <div class="alp-script-builder__popover alp-script-builder__popover--small"
+       (click)="$event.stopPropagation()">
+    <div class="alp-script-builder__popover-header">
+      <h4>{{ title }}</h4>
+      <button (click)="cancel()" class="alp-script-builder__close-btn">
+        <i class="fas fa-times"></i>
+      </button>
+    </div>
+
+    <div class="alp-script-builder__popover-body">
+      <p>{{ message }}</p>
+
+      @if (showDontShowAgain) {
+        <label class="alp-checkbox-label">
+          <input type="checkbox"
+                 [checked]="dontShowAgain()"
+                 (change)="onDontShowChange($event)">
+          Don’t show this message again
+        </label>
+      }
+    </div>
+
+    <div class="alp-script-builder__popover-footer">
+      <button class="alp-btn alp-btn--outline" (click)="cancel()">
+        {{ cancelLabel }}
+      </button>
+      <button class="alp-btn alp-btn--primary" (click)="confirm()">
+        {{ confirmLabel }}
+      </button>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,47 @@
+<div class="alp-script-builder__popover-overlay" (click)="close()">
+  <div class="alp-script-builder__popover alp-script-builder__popover--small"
+       (click)="$event.stopPropagation()">
+
+    <div class="alp-script-builder__popover-header">
+      <h4>Set next step</h4>
+      <button (click)="close()" class="alp-script-builder__close-btn">
+        <i class="fas fa-times"></i>
+      </button>
+    </div>
+
+    <div class="alp-script-builder__popover-body">
+      @if (stepIds.length === 0) {
+        <p class="alp-empty-hint">No other steps exist yet. Create more steps first.</p>
+      } @else {
+        <p class="alp-step-pick-hint">
+          <i class="fas fa-info-circle"></i>
+          Select a step, then press Save. Click the same tile again to deselect.
+        </p>
+        <div class="alp-step-pick-grid">
+          @for (sid of stepIds; track sid; let i = $index) {
+            <button type="button"
+                    class="alp-step-pick-tile"
+                    [class.alp-step-pick-tile--selected]="selectedId() === sid"
+                    (click)="selectTile(sid)">
+              <span class="alp-step-pick-tile__label">
+                <i class="fas fa-shoe-prints"></i>
+                Step {{ i + 1 }}
+              </span>
+              <span class="alp-step-pick-tile__id">{{ sid }}</span>
+            </button>
+          }
+        </div>
+      }
+    </div>
+
+    <div class="alp-script-builder__popover-footer">
+      <div class="alp-footer-left"></div>
+      <div class="alp-footer-right">
+        <button class="alp-btn alp-btn--outline" (click)="close()">Cancel</button>
+        <button class="alp-btn alp-btn--primary" (click)="save()">
+          <i class="fas fa-check"></i> Save
+        </button>
+      </div>
+    </div>
+  </div>
+</div>

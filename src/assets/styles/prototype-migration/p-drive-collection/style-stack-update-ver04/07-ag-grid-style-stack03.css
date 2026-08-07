@@ -1,0 +1,237 @@
+.ag-dimensions {
+    width: 100%;
+    height: 350px;
+}
+
+.ag-header-cell{
+    text-align: left;
+}
+
+.ag-alpha-numeric-column {
+     text-align: right;
+}
+
+.ag-fresh .ag-body {
+    background-color: rgba(244,244,244,0.4);
+}
+
+
+.ag-fresh .ag-header-cell {
+    border-right: 1px solid rgba(0,0,0,0);
+}
+
+.ag-fresh .ag-header {
+    color: #222;
+    background: rgba(0,0,0,0);
+    border-bottom: 1px solid #eceeef;
+}
+
+.ag-fresh .ag-header-cell {
+    border-right: 1px solid rgba(0,0,0,0);
+}
+
+/** No Data Message on the Grids should be displayed at the top of the grid rather than in the middle */
+.ag-overlay-wrapper.ag-overlay-no-rows-wrapper {
+    padding-top:50px;
+    vertical-align: top;
+}
+
+.ag-fresh .ag-row-selected,
+.ag-fresh .ag-row-selected:hover {
+    background-color: rgba(133, 178, 226, 1) !important;
+    color: rgba(255,255,255,1);
+}
+
+.ag-fresh .ag-root {
+    border: 1px solid rgba(255,255,255,1);
+    border-radius: 3px;
+}
+
+.ag-dimensions {
+    margin-bottom: 2.5rem;
+    box-shadow: 0 3px 8px 0px rgba(0,0,0,.1);
+    border-radius: 3px;
+    border: 1px solid rgba(0,0,0,0.1);
+}
+
+.ag-fresh .ag-cell-no-focus {
+    border-right: 1px dotted rgba(0,0,0,0) !important;
+}
+
+/* DATA GRID ENHANCEMENTS */
+
+.ag-bl-full-height {
+    overflow: inherit;
+}
+
+.ag-floating-bottom-container {
+
+font-weight:700;
+
+
+
+}
+
+.ag-floating-bottom-container i {
+
+font-weight:700;
+font-style:normal;
+position:relative;
+left:0.1rem;
+
+
+}
+
+.ag-floating-bottom-container [class*="action-type"]{
+
+    display: none;
+}
+
+
+.ag-fresh .ag-body{
+
+    background-color:#fff;
+}
+
+* {
+    box-sizing: border-box;
+    transition: width 0s ease-in-out,height 0s ease-in-out,left 0s ease-in-out,margin-left 0s ease-in-out;
+}
+
+.ag-fresh,
+.table.table-striped {
+    box-shadow: 0 3px 8px 0px rgba(0,0,0,.1);
+    border-radius: 0px 0px 3px 3px;
+    border: 1px solid rgba(0,0,0,0.1);
+    border: 1px solid rgba(var(--branding-bg-color-value),0.4);
+    border-top: 5px solid rgba(var(--branding-bg-color-value),1);
+}
+
+    .ag-fresh .ag-header,
+    .table.table-striped th {
+        color: #222;
+        
+        border-bottom: 2px solid rgba(var(--branding-bg-color-value),0.3);
+        line-height: 1.2;
+       
+        background: -moz-linear-gradient(0deg, #D8DAFE 0, #FFFFFF 100%);/* FF3.6+ */
+background: -webkit-gradient(linear, 0deg, color-stop(0, D8DAFE), color-stop(100%, FFFFFF));/* Chrome,Safari4+ */
+background: -webkit-linear-gradient(0deg, #D8DAFE 0, #FFFFFF 100%);/* Chrome10+,Safari5.1+ */
+background: -o-linear-gradient(0deg, #D8DAFE 0, #FFFFFF 100%);/* Opera 11.10+ */
+background: -ms-linear-gradient(0deg, #D8DAFE 0, #FFFFFF 100%);/* IE10+ */
+filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#1301FE', endColorstr='#F4F60C', GradientType='1'); /* for IE */
+background: linear-gradient(0deg, #D8DAFE 0, #FFFFFF 100%);/* W3C */
+
+
+
+    }
+
+
+    .ag-fresh .ag-header-cell{
+        border-right:1px solid rgba(255,255,255,1) !important;
+        line-height:1.2;
+        }
+
+        .ag-header-cell-resize{
+
+            border-right:1px solid rgba(var(--selected-element-color),1); 
+            width:4px;
+        }
+
+        .ag-header-cell-resize:hover{
+            background-color:rgba(var(--selected-element-color),0.2); 
+            box-shadow:0 0 2px 3px rgba(var(--selected-element-color),0.2); 
+        }
+
+        .ag-fresh .ag-header-cell-text,
+        .table.table-striped th{
+            font-size:0.9rem;
+            /** font-weight:600; - Task 12116:DEV - Data within grids to be in Bold */
+            /* display: inline-block; */
+            }
+
+    .ag-fresh .ag-root {
+        border: 1px solid rgba(255,255,255,1);
+        border-radius: 3px;
+    }
+
+    .ag-fresh .ag-cell,
+    .ag-fresh .ag-cell-text,
+    .table.table-striped td {
+        font-size: 0.9rem;
+        font-weight:600; /** Task 12116:DEV - Data within grids to be in Bold */
+    }
+
+    .ag-scrolls .ag-row .cell-text-wrap{
+        white-space:normal !important
+    }
+
+    .table-striped tbody tr:nth-of-type(odd),
+    .ag-fresh .ag-row-odd,
+    .ag-fresh .ag-row-even{
+        background:rgba(0,0,0,0);
+        border-bottom:1px solid #efefef;
+    }
+
+
+    .ag-fresh .alternateGridRow {
+        background-color: lightgray;
+    }
+
+    .ag-fresh .searchHightlightGridRow {
+        background-color: yellow;
+    }
+
+    .ag-fresh .searchHightlightGridRow.ag-row-selected {
+        color: yellow;
+    }
+
+        
+
+    .ag-fresh .ag-header-cell-menu-button {
+    opacity: 1 !important;
+    color: #000;
+}
+
+.ag-fresh .ag-header-icon {
+    stroke: none;
+    fill: #0074d9 !important;
+    padding: 4px 5px !important;
+    position: relative;
+    top: -4px;
+}
+
+
+.ag-fresh [class*="ag-sort"].ag-header-icon svg{
+
+  
+}
+
+.ag-fresh [class*="ag-sort"].ag-header-icon {
+   padding: 0  !important;
+   top:0;
+    
+}
+
+
+/* Left Pinned Column */
+
+.ag-pinned-left-cols-viewport {
+    border-right: 2px solid rgba(var(--branding-bg-color-value),1);
+    border-bottom: 15px solid rgba(0,0,0,0);
+}
+
+    .ag-pinned-left-cols-viewport .ag-row {
+        background-color: rgba(0,0,0,0);
+    }
+
+.ag-fresh i.fa.fa-check {
+    color:green;
+}
+.ag-fresh i.fa.fa-times {
+    color:red;
+}
+.ag-fresh .ag-row-selected i.fa,
+.ag-fresh .ag-row-selected:hover i.fa {
+    color:inherit;
+}

@@ -1,0 +1,228 @@
+/* Component: WCM Tile */
+
+alpha-wcm-tile {
+
+    
+}
+
+alpha-wcm-tile .tile-title{
+  padding-left:5px;
+}
+
+alpha-wcm-tile .card-row--container {
+    display: flex;
+    transition: none;
+    max-height: 6000px;
+    position: relative;
+}
+
+alpha-wcm-tile .card-row.card-row--wcm.document-item {
+  border: 1px solid #c3c336;
+}
+
+alpha-wcm-tile .content-section-header {
+    width: 100%;
+    display: block;
+    font-size: 1.1rem;
+    font-weight: bold;
+    padding: 5px 10px 5px 10px;
+    border-left: 0;
+    box-sizing: border-box;
+    padding-right:40px;
+    padding-left: 5px;
+}
+
+alpha-wcm-tile .card-row.card-row--wcm .content-block--data-values.icon-in-gutter::before {
+    font-family: 'Font Awesome 5 Free';
+    font-weight: 900;
+    color: #000;
+    font-size: 1.3rem;
+    position: absolute;
+    width: 30px;
+    top: 0;
+    left: 0;
+    text-align: center;
+    padding-top: 10px;
+    height: 100%;
+    margin:0;
+    display:none;
+}
+
+alpha-wcm-tile .card-row.card-row--wcm .content-section-header.step-open + .content-section-body.sub-step{
+  background-color:#f3f3f3;
+  padding-left: 5px;
+}
+
+/* Right Side Actions */
+
+alpha-wcm-tile .content-block--tile-right-actions {
+    position: absolute;
+    top: 0;
+    height: 100%;
+    width: 35px;
+    right: 0;
+}
+
+alpha-wcm-tile .content-block--tile-right-actions .content-open-arrow {
+    border: 0 solid #bfbfbf;
+    
+    border-left: 1px solid #3f86d3 !important;
+    background-color: #f7fafd !important;
+
+    color: #0275d8;
+    position: relative !important;
+    top: 0;
+    height: calc(100% - 50px) !important;
+    display: flex;
+    flex: 1;
+    align-items: center;
+    cursor: pointer;
+    width: 35px;
+    right: 0;
+    justify-content: center;
+}
+
+alpha-wcm-tile .content-block--tile-right-actions .content-expand-document{
+  cursor: pointer;
+  width: 35px;
+  height:50px;
+  border:0;
+  border-left: 1px solid #3f86d3;
+    background-color: #f7fafd !important;
+    
+  border-radius:0 6px 0 0;
+  /* overflow:hidden; */
+
+  border-bottom: 1px solid #3f86d3;
+  position:relative;
+
+}
+
+alpha-wcm-tile .content-block--tile-right-actions .content-expand-document:hover{
+  background-color:#fff;
+}
+
+alpha-wcm-tile .content-block--tile-right-actions  .ui-tooltip-icon-block.expand-corr-icon  {
+    border: 1.5px solid rgba(22, 115, 204, 0);
+    width: 100%;
+    height: 100%;
+    display: inline-block;
+    border-radius: 60px;
+    background-color: rgba(250, 252, 255, 0.9);
+
+}
+
+alpha-wcm-tile .content-block--tile-right-actions .content-open-arrow i{
+    padding:0;
+}
+
+/* Tile Type Tooltip*/
+
+alpha-wcm-tile .ui-tooltip-icon-block.ui-tile-type {
+    position:absolute;
+    left:5px;
+    top:5px;
+}
+
+alpha-wcm-tile .ui-tooltip-icon-block.ui-tile-type {
+  border: 2px solid rgba(0, 0, 0, 0.1) !important;
+  background-color: rgba(224, 225, 229, 0.6) !important;
+  border-radius: 100% !important;
+  width: 35px !important;
+  height:35px;
+}
+alpha-wcm-tile .ui-tooltip-icon-block.ui-tile-type .ui-content-icon {
+  font-weight: bold !important;
+  font-size: 14px;
+  color: #222;
+}
+
+alpha-wcm-tile .ui-content-tooltip{
+    font-size:11px;
+}
+
+/* Type Email */
+
+alpha-wcm-tile .card-row.card-row--wcm.email-item {
+  border: 1px solid #30c5b6;
+  border-left:6px solid #30c5b6;
+}
+
+alpha-wcm-tile .card-row.card-row--wcm.email-item .content-section-header {
+    background-color: #ffffff;
+    border-radius: 6px;
+}
+
+alpha-wcm-tile .ui-tooltip-icon-block.ui-tile-type.email-item{
+    background-color:#30c5b6 !important;
+}
+
+alpha-wcm-tile .ui-tooltip-icon-block.ui-tile-type.email-item .ui-content-icon{
+    color:#f2fbff; !important;
+    font-size:18px;
+}
+
+
+/* Document Email */
+
+alpha-wcm-tile .card-row.card-row--wcm.document-item {
+  border: 1px solid  #c3c336;
+  border-left:6px solid  #c3c336;
+}
+
+alpha-wcm-tile .card-row.card-row--wcm.document-item .content-section-header {
+    background-color: #ffffff;
+    border-radius: 6px;
+}
+
+alpha-wcm-tile .ui-tooltip-icon-block.ui-tile-type.document-item{
+    background-color: #c3c336 !important;
+}
+
+alpha-wcm-tile .ui-tooltip-icon-block.ui-tile-type.document-item .ui-content-icon{
+    color:#ffffff; !important;
+    font-size:18px;
+}
+
+
+/* Call Email */
+
+alpha-wcm-tile .card-row.card-row--wcm.call-item {
+  border: 1px solid  #826aac;
+  border-left:6px solid #826aac;
+}
+
+alpha-wcm-tile .card-row.card-row--wcm.call-item .content-section-header {
+    background-color: #ffffff;
+    border-radius: 6px;
+}
+
+alpha-wcm-tile .ui-tooltip-icon-block.ui-tile-type.call-item{
+    background-color: #826aac !important;
+}
+
+alpha-wcm-tile .ui-tooltip-icon-block.ui-tile-type.call-item .ui-content-icon{
+    color:#ffffff; !important;
+    font-size:18px;
+}
+
+/* Type Portal */
+
+alpha-wcm-tile .card-row.card-row--wcm.portal-item {
+  border: 1px solid  #3c4981;
+  border-left:6px solid #3c4981;
+}
+
+alpha-wcm-tile .card-row.card-row--wcm.portal-item .content-section-header {
+    background-color: #ffffff;
+    border-radius: 6px;
+}
+
+alpha-wcm-tile .ui-tooltip-icon-block.ui-tile-type.portal-item{
+    background-color: #3c4981 !important;
+}
+
+alpha-wcm-tile .ui-tooltip-icon-block.ui-tile-type.portal-item .ui-content-icon{
+    color:#ffffff; !important;
+    font-size:18px;
+}

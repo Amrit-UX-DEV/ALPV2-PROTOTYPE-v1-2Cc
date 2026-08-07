@@ -1,0 +1,121 @@
+/* -----------------------                      --- */
+/* COMPONENT: DATA TILES - FEATURE FLAGS                */
+/* -----------------------                      --- */
+
+.feature-flag-tile {
+    border-radius:0;
+    padding:0;
+    display:inline-block;
+    margin:10px 10px 0 0;
+    width: calc(33% - 12px);
+    background:none;
+    border:none;
+    min-height:150px;
+    min-width: 182px;
+    transition: all 0.15s ease-in-out;
+    transform:scaleY(1) scaleX(1);
+}
+
+.feature-flag-tile:hover {
+    transition: all 0.15s ease-in-out;
+    transform: scale(1.03);
+}
+
+.feature-flag-tile--content{   
+    background-color:rgb(255, 255, 255);
+    border-radius:6px 30px 30px 6px;
+    border-radius: 6px;
+    border:1.5px solid rgb(133, 178, 226);
+    box-shadow:0px 5px 10px -4px rgba(0, 0, 0, 0.3);
+    position:relative;
+    display:flex;
+    flex-direction:column;
+    overflow:hidden;
+    cursor:pointer;
+    
+    padding:10px 50px 10px 0;
+    line-height:1.2;
+    min-height:inherit;
+    min-width: inherit;
+    color:#222;
+    font-weight:normal;
+    white-space:normal;
+    text-align:left;
+}
+
+.feature-flag-tile--content .data-heading{
+    margin-bottom:10px;
+    display:block;
+    border-bottom:4px solid #e6e8f0;
+    padding-bottom:10px;
+    padding-left:10px;
+    width:100%;
+}
+
+.feature-flag-tile--content .data-value{
+    display:block;
+    margin-bottom:10px;
+    padding-left:10px;
+    width:100%;
+}
+
+
+.feature-flag-tile--content:before{
+    background-color:#eff2f7;
+    border-left:4px solid #e6e8f0;
+    font-family:"FontAwesome";
+    position:absolute;
+    content:"\f024";
+    text-align:center;
+    padding-top:20px;
+    font-size:20px;
+    right:0;
+    top:0;
+    width:50px;
+    height:100%;
+}
+
+.feature-flag-tile--content:after{
+    position:absolute;
+    content:"ON";
+    right:0;
+    top:45px;
+    text-align:center;
+    padding-bottom:20px;
+    width:50px;
+    font-weight:bold;
+}
+
+.state-on .feature-flag-tile--content .data-heading{
+    color:#5cb85c;
+}
+
+.state-on .feature-flag-tile--content:before{
+    border-color:#5cb85c;
+    color:#5cb85c;
+    background-color:#ebf7eb;
+}
+
+.state-on .feature-flag-tile--content:after{
+    color:#5cb85c;
+}
+
+.state-off .feature-flag-tile--content{
+    background-color:#f9f9f9;
+}
+
+.state-off .feature-flag-tile--content .data-heading{
+    color:#686565;
+}
+
+.state-off .feature-flag-tile--content:before{
+    color:#686565;
+    background-color:#efefef;
+    content:"\f11d";
+}
+
+.state-off .feature-flag-tile--content:after{
+    color:#686565;
+    content:"OFF";
+}
+

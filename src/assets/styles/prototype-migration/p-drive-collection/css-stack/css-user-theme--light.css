@@ -1,0 +1,319 @@
+
+/* Application Theme: Light */
+/* ----------------------------------------- */
+
+
+.ui-app-theme--light {}
+
+/* Header */
+
+.ui-app-theme--light .app-header {
+   
+    background-color:#ffffff;
+    background-color:rgb(228, 230, 236);
+    border-color: rgba(151, 164, 197, 0.4);
+}
+
+.ui-app-theme--light .app-system-date--label{
+    color:#646468;
+}
+
+.ui-app-theme--light .app-header .app-system-date {  
+    color:#272727;
+}
+
+.ui-app-theme--light .app-header button.app-notifications--bell {
+    border-color:#c2c2c6;
+    color:#adadaf;
+    background-color: #eff0f5;
+}
+
+/* Header / Branding Block */
+.ui-app-theme--light .app-header .app-branding--block {
+    background-color:transparent;
+    background-color:#efefef;
+    border-right: 2px solid #c3c5ce;
+}
+
+.ui-app-theme--light .app-header .app-branding--block > img{
+     mix-blend-mode: exclusion;
+}
+
+/* Breadcrumb Bar */
+
+.ui-app-theme--light .app-navigation--breadcrumbs li{
+    color:#4e8cea;
+}
+
+.ui-app-theme--light .app-navigation--breadcrumbs li:before{
+    color:#a0a4ab;
+}
+
+/* Context Bar */
+
+.ui-app-theme--light .app-header .app-page--heading h1{
+    color:#646468;
+}
+
+.ui-app-theme--light .app-header .context-info {
+    color:#222;
+}
+
+/* Main */
+
+.ui-app-theme--light alpha-group-summary {
+    background-color: #e3e7ed;
+    background: linear-gradient(-175deg, rgb(252, 252, 253) 0%, #ffffff 71%, rgb(204, 208, 222) 100%);
+    height: 100%;
+}
+
+/* Group Summary Headers */
+
+.ui-app-theme--light .ui-diagram-header{
+    border-color:#d6d9de;
+    color:#3e3e3e;
+}
+
+.ui-app-theme--light .ui-filter-description-row{
+    border-bottom-color:transparent;
+}
+
+.ui-app-theme--light .ui-diagram-col.ui-policies .ui-diagram-content{
+    border-color:#d6d9de;
+}
+
+.ui-app-theme--light .ui-policy-row:before{
+    color:#d6d9de;
+}
+
+/* Group Summary Filter */
+
+.ui-app-theme--light .ui-filter-actions-container.ui-group-summary-filter{
+    background-color:transparent;
+}
+
+/* Toolbar Explorer - Rail Menu */
+
+.ui-app-theme--light .ui-action-rail {
+    width: 60px;
+    background:#efefef;
+    border-right: 2px solid #c3c5ce;
+    z-index: 2;
+}
+
+
+/* Toolbar Explorer - Rail Menu - Buttons  */
+
+.ui-app-theme--light .alpha-explorer-toolbar .ui-menu-action-block button.ui-menu-action{
+    background-color:#969db5;
+    background-color:#d2d4da;  
+}
+
+.ui-app-theme--light .alpha-explorer-toolbar .ui-menu-action-block button.ui-menu-action .details{
+    color:#6b75b2;
+}
+
+/*  Widget App Dock  - Rail Menu */
+
+.ui-app-theme--light .ui-extensions--rail{
+    background:#eff2f8;
+    border-left-color: #ccd0da;
+}
+
+.ui-app-theme--light .ui-extensions--rail label.ui-er--label{
+    color:#222;
+}
+
+/* Widget App Dock */
+
+.ui-app-theme--light h2.sidebar-content-heading{
+    color:#555d86;
+}
+
+.ui-app-theme--light alpha-right-sidebar{
+    border-color:#cbcfe0;
+}
+
+.ui-app-theme--light alpha-right-sidebar ul.widget-selection, 
+.ui-app-theme--light  .alpha-right-sidebar ul.widget-selection{
+    background: linear-gradient(-25deg, rgb(255, 255, 255) 0%, #f0f2f7 71%, rgb(255, 255, 255) 100%);
+    border-color:#c9cddd;
+}
+
+.ui-app-theme--light .widget-selection-header-title{
+    text-shadow:none;
+    color:#222;
+}
+
+.ui-app-theme--light .ui-app--widget-content{
+    background-color: #f7f8f9;
+}
+
+/* UI Long Tiles */
+
+.ui-app-theme--light .ui-policy-details, 
+.ui-app-theme--light .ui-row-details{
+    background-color:#fff;
+    color:#fff;
+}
+
+.ui-app-theme--light button.ui-policy-open, 
+.ui-app-theme--light button.ui-row-open{
+    background-color:#fff;
+    border-left:0;
+}
+
+.ui-app-theme--light button.ui-policy-open i, 
+.ui-app-theme--light button.ui-row-open i{
+    color:#97c0ff;
+}
+
+.ui-app-theme--light .ui-policy-details .tile--data-block,
+.ui-app-theme--light .ui-row-details .tile--data-block  {
+    
+}
+
+.ui-app-theme--light .ui-policy-details .tile--data-heading,
+.ui-app-theme--light .ui-row-details .tile--data-heading {}
+
+.ui-app-theme--light .ui-policy-details .tile--data,
+.ui-app-theme--light .ui-row-details .tile--data {
+
+}
+
+/* UI Long Tiles - States: Hover */
+
+.ui-app-theme--light .ui-policy-tile--long button.ui-row-tile-action:hover, 
+.ui-app-theme--light .ui-row-details button.ui-row-tile-action:hover{
+    
+}
+
+.ui-app-theme--light .ui-policy-tile--long button.ui-policy-open:hover, 
+.ui-app-theme--light .ui-policy-tile--long button.ui-row-open:hover {
+    background-color:#5c6b80;
+}
+
+.ui-app-theme--light .ui-policy-tile--long button.ui-row-tile-action.alpha-selected, 
+.ui-app-theme--light .ui-policy-tile--long button.ui-row-tile-action.alpha-selected:hover, 
+.ui-app-theme--light .ui-row-details button.ui-row-tile-action.alpha-selected, 
+.ui-app-theme--light .ui-row-details button.ui-row-tile-action.alpha-selected:hover{
+    
+}
+
+
+/* UI Button Tiles */
+
+.ui-app-theme--light .multi-action-tile .action-container > [class^="action"]{
+ 
+    color:#222;
+}
+
+/* UI Buttons - State: Hover */
+.ui-app-theme--light .multi-action-tile .action-container > [class^="action"]:hover{
+  
+}
+
+/* UI Buttons - State: Selected */
+.ui-app-theme--light .multi-action-tile .action-container > button.alpha-selected:hover, 
+.ui-app-theme--light .multi-action-tile .action-container > button.alpha-selected, 
+.ui-app-theme--light .multi-action-tile .action-container > button.alpha-selected .tile--address-status{
+    background-color:#729ac4;
+}
+
+
+/* UI Multi-State Buttons */
+
+.ui-app-theme--light .ui-button--multi-state button.ui-button, 
+.ui-app-theme--light ul.alpha-linked-data-structure li .ui-button--multi-state button.ui-button{
+    
+/* color:#fff; */
+}
+
+.ui-app-theme--light .ui-filter-actions-container.ui-group-summary-filter .ui-filter-count,
+.ui-app-theme--light  .ui-filter-count{
+
+}
+
+.ui-app-theme--light .ui-filter-actions-container.ui-group-summary-filter .ui-filter-count i,
+.ui-app-theme--light .ui-filter-count i{
+    color:#a5bee3 !important;
+}
+
+/* UI Multi-State Buttons  - State: Hover */
+.ui-app-theme--light .ui-button--multi-state button.ui-button:hover, 
+.ui-app-theme--light ul.alpha-linked-data-structure li .ui-button--multi-state button.ui-button:hover{
+    
+}
+
+
+/* UI Widget Tiles */
+
+.ui-app-theme--light  alpha-right-sidebar ul li.widget-tile {
+    background-color:#ffffff;
+    color: #6c789e;
+}
+
+.ui-app-theme--light  .widget-tile .widget-title:hover{
+    
+}
+
+/* UI Widget Tiles State: Hover */
+
+.ui-app-theme--light .widget-tile .widget-title:hover:before, 
+.ui-app-theme--light .widget-tile .widget-title:hover:after{
+
+}
+
+.ui-app-theme--light .add-shortcut:hover{
+   
+}
+
+/* UI Preference Dashboard */
+
+.ui-app-theme--light  .ui-preference-dashboard {
+    background-color:#ffffff;
+  
+}
+
+.ui-app-theme--light .ui-preference-dashboard .ui-preference-block{
+    background-color:rgba(228, 228, 230, 0.4);
+    border-color:rgba(164, 194, 241, 0.2);
+}
+
+.ui-app-theme--light .ui-preference-dashboard .tile--data-presentation-icon{
+    
+    
+}
+
+/* UI Indicators - Counts */
+
+.ui-app-theme--light .indicator.party-count, .ui-data-indicator.party-count{
+    background-color:rgb(232, 232, 232);
+    border-color:rgba(255, 255, 255, 0.3);
+    color:#222;
+}
+
+.ui-app-theme--light .indicator.party-count .ui-text, 
+.ui-app-theme--light .ui-data-indicator.party-count .ui-text{
+    
+}
+
+.ui-app-theme--light .indicator.party-count .ui-data-value, 
+.ui-app-theme--light .ui-data-indicator.party-count .ui-data-value{
+    
+}
+
+
+/* UI Address Details */
+
+.ui-app-theme--light .tile-row-address .ui-tile-address-block .tile--address-details{
+     background-color:rgba(58, 61, 70, 0.2);
+    border-color:rgba(255, 255, 255, 0.3);
+    
+}
+
+/* UI Indicators - Count Orbs */
+
+.ui-app-theme--light .ui-count-bubble{
+    
+}

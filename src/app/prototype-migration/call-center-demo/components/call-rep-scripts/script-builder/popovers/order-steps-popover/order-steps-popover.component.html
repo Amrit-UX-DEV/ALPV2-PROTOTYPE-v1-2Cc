@@ -1,0 +1,115 @@
+<div class="alp-order-popover-overlay" (click)="onCancel()">
+<div class="alp-order-popover" (click)="$event.stopPropagation()" role="dialog" aria-label="Change step order">
+
+  <div class="alp-builder-modal__header">
+    <h3 class="alp-builder-modal__title">Change step order</h3>
+    <button type="button" class="alp-builder-modal__close" (click)="onCancel()" title="Close">
+      <i class="fas fa-times"></i>
+    </button>
+  </div>
+
+  <div class="alp-order-popover__body">
+    <p class="alp-order-popover__hint">
+      Moving <strong>Step {{ sourceStepNumber() }}</strong>.
+      Choose a new position, then confirm.
+    </p>
+
+    <div class="alp-order-popover__canvas">
+
+      @if (showBeforeFirst()) {
+        <div class="alp-order-connector">
+          @if (isSelectedBeforeFirst()) {
+            <button type="button"
+                    class="alp-order-placeholder"
+                    (click)="toggleBeforeFirst()">
+              <span class="alp-order-placeholder__label">
+                Move step {{ sourceStepNumber() }} here
+              </span>
+              @if (movedBecomesNumber(); as n) {
+                <span class="alp-order-tag">Becomes step {{ n }}</span>
+              }
+            </button>
+          } @else {
+            <div class="alp-order-connector__line"></div>
+            <button type="button"
+                    class="alp-order-place-btn"
+                    title="Move here"
+                    (click)="toggleBeforeFirst()">
+              <i class="fas fa-map-marker-alt"></i>
+            </button>
+            <div class="alp-order-connector__line"></div>
+          }
+        </div>
+      }
+
+      @for (step of steps; track step.id; let i = $index; let last = $last) {
+        <div class="alp-order-card"
+             [class.alp-order-card--source]="isSource(i)">
+          <div class="alp-order-card__header">
+            <div class="alp-order-card__step-line">
+              <span class="alp-order-card__step-label">Step {{ currentNumber(i) }}</span>
+              @if (willRenumber(i)) {
+                <span class="alp-order-card__renumber">
+                  <i class="fas fa-arrow-right" aria-hidden="true"></i>
+                  Becomes step {{ previewNumber(i) }}
+                </span>
+              }
+            </div>
+          </div>
+          <div class="alp-order-card__types">
+            @for (t of contentTypes(step); track $index) {
+              <span class="alp-order-card__type" [attr.data-type]="t.toLowerCase()">{{ t }}</span>
+            } @empty {
+              <span class="alp-order-card__empty">No content</span>
+            }
+          </div>
+        </div>
+
+        @if (showAfter(i)) {
+          <div class="alp-order-connector">
+            @if (isSelectedAfter(i)) {
+              <button type="button"
+                      class="alp-order-placeholder"
+                      (click)="toggleAfter(i)">
+                <span class="alp-order-placeholder__label">
+                  Move step {{ sourceStepNumber() }} here
+                </span>
+                @if (movedBecomesNumber(); as n) {
+                  <span class="alp-order-tag">Becomes step {{ n }}</span>
+                }
+              </button>
+            } @else {
+              <div class="alp-order-connector__line"></div>
+              <button type="button"
+                      class="alp-order-place-btn"
+                      title="Move here"
+                      (click)="toggleAfter(i)">
+                <i class="fas fa-map-marker-alt"></i>
+              </button>
+              @if (!last || true) {
+                <div class="alp-order-connector__line"></div>
+              }
+            }
+          </div>
+        } @else if (!last) {
+          <div class="alp-order-connector alp-order-connector--passive">
+            <div class="alp-order-connector__line"></div>
+          </div>
+        }
+      }
+    </div>
+  </div>
+
+  <div class="alp-order-popover__footer">
+    <button type="button" class="alp-btn alp-btn--outline" (click)="onCancel()">
+      Cancel
+    </button>
+    <button type="button"
+            class="alp-btn alp-btn--primary"
+            [disabled]="!canConfirm()"
+            (click)="onConfirmClick()">
+      Change order
+    </button>
+  </div>
+</div>
+</div>

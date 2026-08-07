@@ -1,0 +1,47 @@
+/* ------------------------------------------------------ */
+/* ------------------------------------------------------ */
+/* APP RESPONSIVE STYLES*/
+/* ------------------------------------------------------ */
+/* ------------------------------------------------------ */
+
+/* EXTRA SMALL DEVICES  (portrait phones, less than 576px)*/
+@media (max-width: 575.99px) { 
+     
+}
+
+    
+/* SMALL DEVICES  (landscape phones, 576px and up) */
+@media (min-width: 576px) { 
+    
+
+}
+
+
+/* MEDIUM DEVICES  (desktops, 768px and up) */
+@media (min-width: 768px) { 
+ 
+
+}
+
+
+/* LARGE DEVICES  (desktops, 992px and up) */
+@media (min-width: 992px) { 
+
+  .app-sidebar--menu-tree{
+   width:24.5rem;
+ }
+}
+
+
+/* EXTRA LARGE DEVICES  (desktops, more than 1200px) */
+@media (min-width: 1199.99px) { 
+
+  .app-sidebar--widget-dock{
+    width:35rem;
+  }
+
+  
+}
+
+
+

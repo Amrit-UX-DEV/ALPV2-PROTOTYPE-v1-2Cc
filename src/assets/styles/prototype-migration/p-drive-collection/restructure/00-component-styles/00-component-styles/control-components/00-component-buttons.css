@@ -1,0 +1,180 @@
+
+/* ------------------------------------------------------ */
+/* ------------------------------------------------------ */
+/* COMPONENT: BUTTONS  */
+/* ------------------------------------------------------ */
+/* ------------------------------------------------------ */
+
+/* CIRCLE BUTTONS */
+/* ------------------------------------------------------ */
+
+[class*="ui-btn--circle"]
+{
+    position: relative;
+    align-self: center;
+    font-size: 1.2rem;
+    padding: 0.5rem;
+    width: 3.5rem;
+    height: 3.5rem;
+    background-color:var(--theme-btn-primary);
+    color:rgba(255,255,255,0.9);
+    border: 0.2rem solid rgba(255,255,255,0.4);
+    display:inline-block;
+    text-align: center;
+    border-radius:3rem;
+    font-weight:bold;
+    cursor:pointer;
+}
+
+.ui-btn--circle{
+
+}
+
+.ui-btn--circle\[large\]
+{
+    font-size: 1.7rem;
+    padding: 0.5rem;
+    width: 4.8rem;
+    height: 4.8rem;
+}
+
+
+/* CAPSULE BUTTONS */
+/* ------------------------------------------------------ */
+
+[class*="ui-btn--capsule"]
+{
+    position: relative;
+    align-self: center;
+    font-size: 1.2rem;
+    padding: 0.5rem 1.2rem;
+    min-width: 3.5rem;
+    height: 3.5rem;
+    background-color:var(--theme-btn-primary);
+    color:rgba(255,255,255,0.9);
+    border: 0.2rem solid rgba(255,255,255,0.4);
+    display:inline-block;
+    text-align: center;
+    border-radius:3rem;
+    font-weight:bold;
+    cursor:pointer;
+}
+
+.ui-btn--capsule\[large\]
+{
+    font-size: 1.7rem;
+    padding: 0.5rem 1.2rem;
+    min-width: 4.8rem;
+    height: 4.8rem;
+}
+
+/* BUTTON NESTED ICONS (FONT AWESOME) */
+/* ------------------------------------------------------ */
+
+.ui-btn--capsule\[large\] i,
+.ui-btn--circle\[large\] i{
+    font-size:2rem;
+}
+
+/* BUTTON SECONDARY */
+/* ------------------------------------------------------ */
+
+.ui-btn-secondary
+{
+    color:rgba(255,255,255,0.9);
+    border: 0.2rem solid rgba(255,255,255,0.4);
+    background-color: var(--theme-btn-secondary);
+}
+
+/* BUTTON PRIMARY OUTLINES */
+/* ------------------------------------------------------ */
+
+.ui-btn-o
+{
+    color:var(--theme-btn-primary);
+    border: 0.2rem solid var(--theme-btn-primary);
+    background-color: rgba(255,255,255,0.2);
+}
+
+.ui-btn-o\[light\]
+{
+    color: var(--theme-btn-primary--light);
+    border: 0.2rem solid var(--theme-btn-primary--light);
+    background-color: rgba(255,255,255,0.2);
+}
+
+.ui-btn-o\[strong\]
+{
+    color:var(--theme-btn-primary);
+    border: 0.2rem solid var(--theme-btn-primary);
+    background-color: rgba(255,255,255,0.9);
+}
+
+/* BUTTON SECONDARY OUTLINES */
+/* ------------------------------------------------------ */
+
+.ui-btn-secondary.ui-btn-o
+{
+    color:var(--theme-btn-secondary);
+    border: 0.2rem solid var(--theme-btn-secondary);
+}
+
+.ui-btn-secondary.ui-btn-o\[light\]
+{
+    color: var(--theme-btn-secondary--light);
+    border: 0.2rem solid var(--theme-btn-secondary--light);
+}
+
+.ui-btn-secondary.ui-btn-o\[strong\]
+{
+    color:var(--theme-btn-secondary);
+    border: 0.2rem solid var(--theme-btn-secondary);
+}
+
+/* BUTTON SIZES */
+/* ------------------------------------------------------ */
+
+
+/* BUTTON GLOBAL STATES */
+/* ------------------------------------------------------ */
+
+[class*="ui-btn--"]{
+    transition: all 0.15s ease-in-out;
+    transform: scale(1);
+}
+
+[class*="ui-btn--"]:hover,
+[class*="ui-btn--"]:active,
+[class*="ui-btn--"]:focus{
+    transform: scale(0.9);
+}
+
+ .ui-btn:disabled,
+ .ui-btn:disabled:hover
+  {
+        background-color: #ccc;
+        transition: all 0.15s ease-in-out;  
+    }
+
+
+.ui-btn-disabled
+{
+    border:0.2rem solid var(--theme-text--disabled);
+    background-color:var(--theme-btn-disabled);
+    color:var(--theme-text--disabled);
+    pointer-events: none;
+}
+
+
+[class*="ui-btn--"]:focus{
+    outline:0.3rem dashed yellow;
+}
+
+
+/* BUTTON STATES */
+/* ------------------------------------------------------ */
+
+[class*="ui-btn--"].ui-state--warning{
+    background-color:var(--theme-state--warning);
+    color:rgba(255, 255, 255,1);
+}

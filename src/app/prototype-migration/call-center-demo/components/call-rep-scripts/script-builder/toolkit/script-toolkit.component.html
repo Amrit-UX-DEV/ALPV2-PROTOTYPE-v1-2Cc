@@ -1,0 +1,93 @@
+<div class="alp-script-builder__popover-overlay" (click)="cancel()">
+  <div class="alp-script-builder__popover alp-script-builder__popover--wide"
+       (click)="$event.stopPropagation()">
+
+    <div class="alp-script-builder__popover-header">
+      <h4>{{ headerTitle() }}</h4>
+      <button (click)="cancel()" class="alp-script-builder__close-btn">
+        <i class="fas fa-times"></i>
+      </button>
+    </div>
+
+    <div class="alp-script-builder__popover-body">
+
+      @for (item of currentContent(); track item.id; let idx = $index) {
+        <alpha-content-card
+          [item]="item"
+          [index]="idx"
+          [total]="currentContent().length"
+          [availableStepIds]="availableStepIds()"
+          (changed)="onContentChanged($event)"
+          (moveUp)="requestMove(idx, 'up')"
+          (moveDown)="requestMove(idx, 'down')"
+          (removed)="requestRemoveContent(item.id)"
+          (openCondition)="openCondition(item.id)"
+          (openStepPicker)="openStepPicker($event)"
+          [contentList]="currentContent()"
+          >
+          
+        </alpha-content-card>
+      }
+
+      <button class="alp-add-content-tile" (click)="openTypePicker()">
+        <i class="fas fa-plus"></i>
+        <span>Add content to step</span>
+      </button>
+    </div>
+
+    <div class="alp-script-builder__popover-footer">
+      <div class="alp-footer-left">
+        @if (stepId) {
+          <button class="alp-btn alp-btn--outline alp-btn--danger-outline"
+                  (click)="removeStep()">
+            <i class="fas fa-trash"></i> Remove Step
+          </button>
+        }
+      </div>
+      <div class="alp-footer-right">
+        <button class="alp-btn alp-btn--outline" (click)="cancel()">Cancel</button>
+        @if (stepId) {
+          <button class="alp-btn alp-btn--outline" (click)="requestClone()">
+            <i class="fas fa-copy"></i> Copy Step
+          </button>
+        }
+        <button class="alp-btn alp-btn--primary" (click)="save()">Save Step</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+@if (showTypePicker()) {
+  <alpha-type-picker
+    (selected)="onTypeSelected($event)"
+    (closed)="closeTypePicker()">
+  </alpha-type-picker>
+}
+
+@if (showConditionPopover()) {
+  <alpha-condition-popover
+    [contentList]="currentContent()"
+    [targetId]="conditionTargetId()"
+    (saved)="onConditionSaved($event)"
+    (closed)="closeCondition()">
+  </alpha-condition-popover>
+}
+
+@if (showStepPicker()) {
+  <alpha-step-picker
+    [stepIds]="availableStepIds()"
+    [currentStepId]="stepPickerCurrentValue()"
+    (saved)="onStepPickerSaved($event)"
+    (closed)="closeStepPicker()">
+  </alpha-step-picker>
+}
+
+@if (showConfirm()) {
+  <alpha-confirm-popover
+    [title]="confirmTitle()"
+    [message]="confirmMessage()"
+    [showDontShowAgain]="pendingConfirmAction() === 'move-content'"
+    (confirmed)="onConfirm($event)"
+    (cancelled)="closeConfirm()">
+  </alpha-confirm-popover>
+}

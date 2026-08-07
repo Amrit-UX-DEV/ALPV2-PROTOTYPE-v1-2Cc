@@ -1,0 +1,23 @@
+
+
+/* Key Quick Filter Positioning*/
+.ui-filter-actions-container.ui-group-summary-filter .ui-filter-shelf .ui-filter-description-row {
+    align-items: baseline;
+    flex-wrap:wrap;
+}
+
+
+/* Free Text Filter Positioning*/
+
+.ui-filter-actions-container.ui-group-summary-filter .ui-filter-shelf .ui-filter-description-row.ui-freetext-filter-container {
+    display:flex;
+    flex-direction:row;
+}
+
+.ui-filter-actions-container.ui-group-summary-filter .ui-filter-shelf .ui-filter-description-row.ui-freetext-filter-container *{
+    display:inline-flex;
+}
+
+.ui-filter-actions-container.ui-group-summary-filter .ui-filter-shelf  .ui-button--multi-state.ui-text-nowrap {
+  margin-bottom:10px;
+}

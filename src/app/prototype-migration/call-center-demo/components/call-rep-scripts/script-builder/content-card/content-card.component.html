@@ -1,0 +1,291 @@
+<div class="alp-content-card" [attr.data-type]="item.type">
+
+  <div class="alp-content-card__header">
+    <div class="alp-content-card__meta">
+      <div class="alp-content-card__heading">
+        Step content {{ index + 1 }} of {{ total }}
+      </div>
+      <div class="alp-content-card__tags">
+        <span class="alp-content-card__type" [attr.data-type]="item.type">
+          {{ item.type | uppercase }}
+        </span>
+        <span class="alp-content-card__id">{{ item.id }}</span>
+      </div>
+    </div>
+
+    <div class="alp-content-card__actions">
+      <button class="alp-btn alp-btn--outline alp-btn--icon"
+              (click)="moveUp.emit()"
+              [disabled]="index === 0"
+              title="Move up">
+        <i class="fas fa-chevron-up"></i>
+      </button>
+      <button class="alp-btn alp-btn--outline alp-btn--icon"
+              (click)="moveDown.emit()"
+              [disabled]="index === total - 1"
+              title="Move down">
+        <i class="fas fa-chevron-down"></i>
+      </button>
+      <button class="alp-btn alp-btn--outline alp-btn--icon alp-btn--danger-outline"
+              (click)="requestRemove()"
+              title="Remove">
+        <i class="fas fa-trash"></i>
+      </button>
+    </div>
+  </div>
+
+  <label class="alp-label">Content</label>
+  <textarea #contentTextarea
+            class="alp-input alp-textarea"
+            [ngModel]="item.content"
+            (ngModelChange)="updateContent($event)"
+            rows="3"
+            placeholder="Enter text..."></textarea>
+
+  @if (item.type === 'prompt') {
+    <div class="alp-augment-row">
+      <button type="button" class="alp-btn alp-btn--outline" (click)="openVariablePopover()">
+        <i class="fas fa-code"></i> Add variable
+      </button>
+      @if (!item.condition) {
+        <button type="button" class="alp-btn alp-btn--outline" (click)="openCondition.emit()">
+          <i class="fas fa-link"></i> Set Condition
+        </button>
+      }
+    </div>
+  }
+
+  @if (item.type === 'prompt' || item.type === 'required-check' || item.type === 'question' || item.type === 'log-task' || item.type === 'end-call') {
+    <div class="alp-content-section">
+      @if (item.condition) {
+        <div class="alp-dependency-tile">
+          <div class="alp-dependency-tile__main">
+            <span class="alp-dependency-tile__text">
+              <strong>Depends on</strong>
+              @if (dependencyMeta(); as dep) {
+                @if (dep.type) {
+                  <span class="alp-content-card__type" [attr.data-type]="dep.type">
+                    {{ dep.type | uppercase }}
+                  </span>
+                }
+                <span class="alp-content-card__id">{{ dep.id }}</span>
+              }
+              @if (item.condition.answers?.length) {
+                <span class="alp-dependency-answers">
+                  ({{ item.condition.answers!.join(', ') }})
+                </span>
+              }
+            </span>
+          </div>
+          <div class="alp-dependency-actions">
+            <button class="alp-btn alp-btn--outline" (click)="openCondition.emit()">
+              <i class="fas fa-pen"></i> Edit
+            </button>
+            <button class="alp-btn alp-btn--outline"
+                    (click)="clearCondition()"
+                    title="Clear condition">
+              <i class="fas fa-times"></i> Clear
+            </button>
+          </div>
+        </div>
+      } @else if (item.type !== 'prompt') {
+        <button class="alp-btn alp-btn--outline" (click)="openCondition.emit()">
+          <i class="fas fa-link"></i> Set Condition
+        </button>
+      }
+    </div>
+  }
+
+  @if (item.type === 'question') {
+    <div class="alp-content-section">
+      <label class="alp-label">Selection mode</label>
+      <select class="alp-input"
+              [ngModel]="item.selectionMode"
+              (ngModelChange)="setSelectionMode($event)">
+        <option value="single">Single</option>
+        <option value="multi">Multiple</option>
+      </select>
+
+      <label class="alp-label" style="margin-top:14px">Options</label>
+
+      @for (opt of item.options; track $index; let oi = $index) {
+        <div class="alp-option-row">
+          <input class="alp-input"
+                 [ngModel]="opt.text"
+                 (ngModelChange)="updateOptionText(oi, $event)"
+                 placeholder="Option text">
+
+          @if (opt.nextStep) {
+            <div class="alp-destination-tile">
+              <i class="fas fa-arrow-right"></i>
+              <span>{{ opt.nextStep }}</span>
+              <button class="alp-btn alp-btn--outline alp-btn--icon"
+                      (click)="requestStepPicker(oi)"
+                      title="Edit next step">
+                <i class="fas fa-pen"></i>
+              </button>
+            </div>
+          } @else {
+            <button class="alp-btn alp-btn--outline"
+                    (click)="requestStepPicker(oi)">
+              <i class="fas fa-share"></i> Set next step
+            </button>
+          }
+
+          <button class="alp-btn alp-btn--outline alp-btn--icon alp-btn--danger-outline"
+                  (click)="removeOption(oi)"
+                  title="Remove option">
+            <i class="fas fa-trash"></i>
+          </button>
+        </div>
+      }
+
+      <button class="alp-btn alp-btn--outline" (click)="addOption()">
+        <i class="fas fa-plus"></i> Add Option
+      </button>
+    </div>
+  }
+
+  @if (item.type === 'required-check') {
+    <div class="alp-content-section">
+      <label class="alp-label">Check items</label>
+
+      @for (check of item.requiredChecks; track $index; let ci = $index) {
+        <div class="alp-check-block">
+          <div class="alp-check-row">
+            <input class="alp-input"
+                   [ngModel]="check.question"
+                   (ngModelChange)="updateCheckItem(ci, 'question', $event)"
+                   placeholder="Question">
+
+            @if (check.auto) {
+              <input class="alp-input"
+                     [ngModel]="check.answer"
+                     (ngModelChange)="updateCheckItem(ci, 'answer', $event)"
+                     placeholder="Auto answer">
+              <span class="alp-badge alp-badge--auto">Auto</span>
+            }
+
+            @if (check.manual) {
+              <span class="alp-badge alp-badge--manual">Manual</span>
+            }
+
+            <button class="alp-btn alp-btn--outline alp-btn--icon alp-btn--danger-outline"
+                    (click)="removeCheckItem(ci)"
+                    title="Remove check">
+              <i class="fas fa-trash"></i>
+            </button>
+          </div>
+
+          @if (check.manual) {
+            <div class="alp-check-options">
+              <label class="alp-label">Selection mode</label>
+              <select class="alp-input"
+                      [ngModel]="check.selectionMode || 'single'"
+                      (ngModelChange)="setCheckSelectionMode(ci, $event)">
+                <option value="single">Single</option>
+                <option value="multi">Multiple</option>
+              </select>
+              @for (opt of check.options || []; track $index; let oi = $index) {
+                <div class="alp-option-row">
+                  <input class="alp-input"
+                         [ngModel]="opt.text"
+                         (ngModelChange)="updateCheckOptionText(ci, oi, $event)"
+                         placeholder="Option text">
+
+                  @if (opt.nextStep) {
+                    <div class="alp-destination-tile">
+                      <i class="fas fa-arrow-right"></i>
+                      <span>{{ opt.nextStep }}</span>
+                      <button class="alp-btn alp-btn--outline alp-btn--icon"
+                              (click)="requestStepPicker(oi, ci)"
+                              title="Edit next step">
+                        <i class="fas fa-pen"></i>
+                      </button>
+                    </div>
+                  } @else {
+                    <button class="alp-btn alp-btn--outline"
+                            (click)="requestStepPicker(oi, ci)">
+                      <i class="fas fa-share"></i> Set next step
+                    </button>
+                  }
+
+                  <button class="alp-btn alp-btn--outline alp-btn--icon alp-btn--danger-outline"
+                          (click)="removeCheckOption(ci, oi)"
+                          title="Remove option">
+                    <i class="fas fa-trash"></i>
+                  </button>
+                </div>
+              }
+
+              <button class="alp-btn alp-btn--outline" (click)="addCheckOption(ci)">
+                <i class="fas fa-plus"></i> Add Option
+              </button>
+            </div>
+          }
+        </div>
+      }
+
+      <div class="alp-btn-row">
+        <button class="alp-btn alp-btn--outline" (click)="addAutoCheck()">
+          <i class="fas fa-plus"></i> Auto Check
+        </button>
+        <button class="alp-btn alp-btn--outline" (click)="addManualCheck()">
+          <i class="fas fa-plus"></i> Manual Check
+        </button>
+      </div>
+    </div>
+  }
+
+</div>
+
+@if (showVariablePopover()) {
+  <div class="alp-script-builder__popover-overlay" (click)="closeVariablePopover()">
+    <div class="alp-script-builder__popover alp-script-builder__popover--small"
+         (click)="$event.stopPropagation()">
+      <div class="alp-script-builder__popover-header">
+        <h4>Add variable</h4>
+        <button type="button" class="alp-script-builder__close-btn" (click)="closeVariablePopover()">
+          <i class="fas fa-times"></i>
+        </button>
+      </div>
+      <div class="alp-script-builder__popover-body">
+        <input type="text"
+               class="alp-input"
+               placeholder="Search variables…"
+               [value]="variableSearch()"
+               (input)="onVariableSearch($event)"
+               style="margin-bottom: 14px">
+        <div style="display:flex;flex-direction:column;gap:8px;max-height:320px;overflow-y:auto">
+          @for (v of filteredVariables(); track v.id) {
+            <button type="button"
+                    class="alp-btn alp-btn--outline"
+                    style="justify-content:space-between;width:100%;text-align:left"
+                    [style.border-color]="selectedVariableId() === v.id ? '#444F83' : null"
+                    [style.background]="selectedVariableId() === v.id ? '#f0f4ff' : null"
+                    (click)="selectVariable(v.id)">
+              <span>{{ v.label }}</span>
+              <span style="font-family:monospace;font-size:12px;opacity:0.7">{{ '{{' + v.id + '}}' }}</span>
+            </button>
+          } @empty {
+            <p style="font-size:13px;color:#64748b;margin:0">No variables match your search.</p>
+          }
+        </div>
+      </div>
+      <div class="alp-script-builder__popover-footer">
+        <div class="alp-footer-left"></div>
+        <div class="alp-footer-right">
+          <button type="button" class="alp-btn alp-btn--outline" (click)="closeVariablePopover()">
+            Cancel
+          </button>
+          <button type="button"
+                  class="alp-btn alp-btn--primary"
+                  [disabled]="!selectedVariableId()"
+                  (click)="insertSelectedVariable()">
+            Insert
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+}

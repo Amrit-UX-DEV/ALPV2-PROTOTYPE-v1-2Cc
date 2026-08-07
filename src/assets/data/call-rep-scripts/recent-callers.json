@@ -1,0 +1,83 @@
+{
+  "policyNumber": "80007",
+  "recentCallers": [
+    {
+      "id": "rc1",
+      "name": "Mr Joe Bloggs",
+      "role": "Policy Holder, Life 1, Payer",
+      "callDateTime": "2026-07-06T10:15:00"
+    },
+    {
+      "id": "rc1",
+      "name": "Mr Joe Bloggs",
+      "role": "Policy Holder, Life 1, Payer",
+      "callDateTime": "2026-06-29T10:15:00"
+    },
+    {
+      "id": "rc2",
+      "name": "Mr Joe Bloggs",
+      "role": "Policy Holder, Life 1, Payer",
+      "callDateTime": "2026-06-28T14:35:00"
+    },
+    {
+      "id": "rc3",
+      "name": "Mr Joe Bloggs",
+      "role": "Policy Holder, Life 1, Payer",
+      "callDateTime": "2026-06-27T09:20:00"
+    },
+    {
+      "id": "rc4",
+      "name": "Mr Joe Bloggs",
+      "role": "Policy Holder, Life 1, Payer",
+      "callDateTime": "2026-06-25T16:45:00"
+    },
+    {
+      "id": "rc5",
+      "name": "Mr Joe Bloggs",
+      "role": "Policy Holder, Life 1, Payer",
+      "callDateTime": "2026-06-24T11:10:00"
+    },
+    {
+      "id": "rc6",
+      "name": "Mr Joe Bloggs",
+      "role": "Policy Holder, Life 1, Payer",
+      "callDateTime": "2026-06-22T13:55:00"
+    },
+    {
+      "id": "rc7",
+      "name": "Mr Joe Bloggs",
+      "role": "Policy Holder, Life 1, Payer",
+      "callDateTime": "2026-06-20T08:30:00"
+    },
+    {
+      "id": "rc8",
+      "name": "Mr Joe Bloggs",
+      "role": "Policy Holder, Life 1, Payer",
+      "callDateTime": "2026-06-18T15:20:00"
+    },
+    {
+      "id": "rc9",
+      "name": "Mr Joe Bloggs",
+      "role": "Policy Holder, Life 1, Payer",
+      "callDateTime": "2026-06-15T10:05:00"
+    },
+    {
+      "id": "rc10",
+      "name": "Mr Joe Bloggs",
+      "role": "Policy Holder, Life 1, Payer",
+      "callDateTime": "2026-06-12T14:40:00"
+    },
+    {
+      "id": "rc11",
+      "name": "Mr Joe Bloggs",
+      "role": "Policy Holder, Life 1, Payer",
+      "callDateTime": "2026-06-08T09:50:00"
+    },
+    {
+      "id": "rc12",
+      "name": "Mr Joe Bloggs",
+      "role": "Policy Holder, Life 1, Payer",
+      "callDateTime": "2026-06-05T11:25:00"
+    }
+  ]
+}

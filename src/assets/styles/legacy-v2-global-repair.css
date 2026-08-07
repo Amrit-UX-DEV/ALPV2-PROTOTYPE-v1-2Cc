@@ -1,0 +1,70 @@
+.ui-expanded-details {
+  border-top: 2px dashed #d6d6d6;
+  padding: 15px 10px;
+  background-color: #f3f3f3;
+  margin-left: .05rem;
+  width: calc(100% - .1rem);
+}
+
+.indicator,
+.ui-data-indicator
+{
+  min-height: 28px !important;
+  vertical-align:middle;
+}
+
+.ui-alpha-indicators {
+  display: inline-flex;
+  flex-wrap: wrap;
+  margin-top: 5px;
+}
+
+.alpha-indicators .indicator,
+.ui-alpha-indicators .indicator, .ui-data-indicator {
+  border: 2px solid #ffffff4d;
+  border-radius: 100px;
+  min-width: 45px;
+  width: auto;
+  font-weight: 700;
+  height: auto;
+  margin-bottom: 5px;
+  margin-right: 5px;
+  font-size: 13px;
+  display: inline-block;
+}
+
+.indicator.party-count,
+.ui-data-indicator.party-count {
+  padding: 4px 10px 3px;
+  background-color: #eee;
+  border-color: #d7d7d7;
+  text-align: center;
+  overflow: hidden;
+}
+
+.ui-interested-party-content {
+  padding-top: 15px;
+}
+
+.ui-no-action {
+  pointer-events: none !important;
+}
+
+button.ui-row-open {
+  background-color:#f7fafd;
+  border:0.1rem solid #3f86d3;
+  border-left:2px solid #f0f0f0;
+  width:50px;
+  border-radius:0 6px 6px 0;
+  position: relative;
+}
+
+button.ui-row-open i{
+  font-size: 22px;
+  color:#3f86d3;
+}
+
+button.ui-row-open:hover {
+  background-color:rgb(223, 231, 239);
+  cursor:pointer;
+}

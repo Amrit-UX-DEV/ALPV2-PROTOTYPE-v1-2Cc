@@ -1,0 +1,17 @@
+
+/* ------------------------------------------------------ */
+/* ------------------------------------------------------ */
+/* COMPONENT: MENU TREE --------------------------------- */
+/* ------------------------------------------------------ */
+/* ------------------------------------------------------ */
+
+.app-sidebar--menu-tree-rail {
+    background-color:var(--theme-menu-tree-rail--background);
+    width:4.4rem;
+}
+
+.app-sidebar--menu-tree{
+    width:0;
+    background-color:var(--theme-menu-tree--background);
+}
+

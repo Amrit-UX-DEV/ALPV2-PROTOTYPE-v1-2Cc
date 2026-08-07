@@ -1,0 +1,7 @@
+/* -----------------------                      --- */
+/* COMPONENT: MAIN                                  */
+/* -----------------------                      --- */
+.app-body{
+
+    background-color:var(--theme-content--background);
+}

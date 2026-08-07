@@ -1,0 +1,65 @@
+alpha-search-field .toolbar-searchform {
+  background-color: rgba(60, 73, 129, 0.3);
+  padding-top: 1rem;
+  padding-bottom: 1rem; }
+
+alpha-search-field .toolbar-searchform label {
+  color: white;
+  padding: 0.3rem; }
+
+.toolbar-searchform select {
+  padding-top: 0.4rem; }
+
+alpha-menu select.search-recent-items {
+  position: fixed;
+  border: 1px solid #85b2e2;
+  overflow: hidden;
+  width: 230px;
+  height: auto;
+  z-index: 1;
+  display: none;
+  box-shadow: 0 4px 5px 2px rgba(0, 0, 0, 0.4);
+  border-radius: 0 5px 5px; }
+
+select.search-recent-items option {
+  background-color: rgba(255, 255, 255, 0.94);
+  width: inherit;
+  padding: 0.3rem;
+  font-weight: bold;
+  font-size: 0.9rem;
+  border-left: 4px solid #85b2e2; }
+
+select.search-recent-items option:hover {
+  background-color: rgba(133, 178, 226, 0.9);
+  cursor: pointer;
+  color: #fff; }
+
+select.search-recent-items option:focus {
+  background-color: rgba(133, 178, 226, 0.9);
+  cursor: pointer;
+  color: #fff; }
+
+alpha-menu input:focus + select.search-recent-items {
+  display: block; }
+
+alpha-menu .toolbar-searchform {
+  padding-left: 0.65rem;
+  padding-right: 0.5rem; }
+
+alpha-menu .toolbar-searchform label {
+  font-size: 0.9rem;
+  padding-left: 0.1rem;
+  padding-bottom: 0rem;
+  letter-spacing: 0.5px; }
+
+alpha-menu .toolbar-searchform .form-control {
+  padding: 0.5rem; }
+
+alpha-menu .toolbar-searchform select.form-control {
+  padding-left: 0.2rem; }
+
+alpha-menu .toolbar-searchform .col-md-5 {
+  padding-left: 0; }
+
+alpha-menu .toolbar-searchform .col-md-7 {
+  padding-right: 0.7rem; }

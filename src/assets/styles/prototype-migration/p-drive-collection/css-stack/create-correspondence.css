@@ -1,0 +1,243 @@
+
+
+/* Widget: Correspondence Creation  */
+/*----------------------------------------------------------------*/
+
+.content-section-body {}
+
+alpha-letters-widget .content-section-body{
+    padding:0
+}
+
+
+/* Widget sidebar updates */
+.alpha-right-sidebar .sidebar-header {
+    padding:0;
+}
+
+.alpha-right-sidebar .sidebar-header .ui-dock-collapse{
+    margin-top:10px;
+    margin-left:5px;
+    margin-right:5px;
+}
+
+.ui-widget-toolbar {
+    position:relative;
+    padding-top:10px;
+    padding-right:5px;
+    /* background: linear-gradient(-90deg, rgb(85 87 94) 0%, rgb(72, 79, 112) 71%, rgb(70 77 83) 100%); */
+    display: flex;
+    background-color: #9194a1;
+    margin-left:40px;
+    justify-content: right;
+    text-align: right;
+}
+.ui-widget-toolbar:before {
+    content:"";
+    position:absolute;
+    width: 0;
+    height: 0;
+    border-top: 0 solid #9194a1;
+    border-left: 0 solid transparent;
+    border-bottom: 48px solid #9194a1;
+      border-left: 48px solid transparent;
+    top:0;
+    right:100%;
+}
+
+/* Updated Dock Collapse */
+
+alpha-right-sidebar.alpha-layout-col-1.alpha-right-sidebar.pinned {
+
+}
+
+.ui-button--multi-state.ui-check-for-work {
+    width:100%;
+}
+
+.ui-button--multi-state.ui-check-for-work button.ui-button .ui-button-content{
+    width:100%;
+    text-align:center;
+}
+
+/* Chunky Button */
+.ui-button--multi-state.chunky-btn button.ui-button .ui-button-text{
+    padding-top:10px;
+    padding-bottom:10px;
+}
+
+.ui-button--multi-state.ui-widget-toolbar-action{
+    /* display:block; */
+}
+
+/* Notification Update Number */
+
+.ui-button--multi-state.ui-view-correspondence-notes .ui-button-text{
+    /* padding-right:20px !important; */
+}
+
+.ui-button--multi-state .ui-update-number {
+    background-color: #e9d857;
+    width: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 5px;
+    /* position: absolute; */
+    height: 20px;
+    /* top: calc(2px); */
+    /* right: calc(3px); */
+    border-radius: 30px;
+    margin-top: -5px;
+    position: relative;
+    top: 2px;
+    right: -5px;
+}
+
+/* Work items*/
+
+/* Correspondence Set Up */
+.ui-correspondence-creation-set-up{
+    display:flex;
+    
+}
+
+.multi-action-tile.tile--default.ui-work-item-tile button.action--single,
+.multi-action-tile.tile--default.ui-work-item-tile button.action--extended {
+
+    min-height: 112px;
+}
+
+button.action--single.content--center {}
+
+/* Icon Adjust */
+
+.multi-action-tile.tile--default.ui-work-item-tile .tile--icon-col {
+    max-width:100%;color: #4ba2df;
+    }
+
+.multi-action-tile.tile--default.ui-work-item-tile.ui-empty-results {
+    
+}
+
+/* Button Disabled */
+button.ui-button.ui-disabled {
+    background-color:#eee;
+    color:#767373;
+}
+
+
+
+/* Local Overlay */
+
+.ui-local-overlay.address-book.ux-example-address-book {
+    position: fixed;
+    z-index: 9;
+    background-color: #eee;
+    top: 100px;
+    width: 653px;
+    display: flex;
+    flex-wrap: wrap;
+    flex-direction: column;
+    right: 20px;
+    box-shadow: -4px 5px 10px 1px rgb(22 22 22 / 50%);
+    border:6px solid rgb(71 71 72);
+    border-radius: 6px;
+    }
+
+.ui-local-overlay--anchor {
+    position:relative;
+}
+
+.ui-local-overlay-header {
+    background-color: rgb(71 71 72);
+    padding:10px;
+    margin:-1px;
+    /* margin-bottom:20px; */
+    color:#fff;
+}
+
+.ui-local-overlay-body {
+    padding: 10px;
+    overflow-x:hidden;
+    overflow-y:scroll;
+    max-height: 500px;
+}
+
+.ui-local-overlay-footer {
+    height: 40px;
+    display: flex;
+    background-color: #474748;
+    margin: -1px;
+    padding-top: 10px;
+    text-align: center;
+    align-items: center;
+    justify-content: center;
+}
+
+/* Temp Fix */
+
+.multi-action-tile.tile--default button .ui-tile-address-block .tile--address-details, .ui-tile-address-block .tile--address-details{
+    background-color:rgb(255 255 255 / 0%);
+    border-color:rgb(238 238 238 / 0%);
+    margin-bottom:20px;
+}
+
+
+/* Tile Width: 100% */
+
+.multi-action-tile.tile--size-w-100pc{
+    width:100%;
+}
+
+.multi-action-tile.tile--size-w-100pc button {
+    width: 100%;
+    max-width: 100%;
+    min-width: 100%;
+}
+
+.step-container content-section-body, .step-container .content-section-body {
+    display: none;
+}
+
+.ui-local-overlay.attach-correspondence {
+
+    position: fixed;
+    z-index: 9;
+    background-color: #eee;
+    top: 100px;
+    width: 750px;
+    display: flex;
+    flex-wrap: wrap;
+    flex-direction: column;
+    right: 20px;
+    box-shadow: -4px 5px 10px 1px rgb(22 22 22 / 50%);
+    border: 6px solid rgb(71 71 72);
+    border-radius: 6px;
+}
+
+
+
+.ui-local-overlay.attach-correspondence .ui-local-overlay-body {
+    max-height:800px;
+}
+
+/* Attachment Signpost */
+
+.ui-attachment-signpost {
+    padding: 10px;
+    position: relative;
+    background-color: #85b2e2;
+    color: #fff;
+    display: none;
+    font-size:14px;
+}
+
+.ui-attachment-selected .ui-attachment-signpost{
+    display:block;
+}
+
+
+alpha-wcm-tile .ui-attachment-selected .card-row.card-row--wcm.document-item .content-section-header{
+    background-color:#cadef3;
+}

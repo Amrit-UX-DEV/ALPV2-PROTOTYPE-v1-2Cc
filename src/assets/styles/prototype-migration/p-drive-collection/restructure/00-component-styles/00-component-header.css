@@ -1,0 +1,7 @@
+/* -----------------------                      --- */
+/* COMPONENT: HEADER                             */
+/* -----------------------                      --- */
+
+.app-header{
+    background-color:var(--theme-header--background);
+}

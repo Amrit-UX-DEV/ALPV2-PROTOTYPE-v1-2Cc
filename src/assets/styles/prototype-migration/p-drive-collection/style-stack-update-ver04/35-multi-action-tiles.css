@@ -1,0 +1,137 @@
+
+/* Multi Action Tiles */
+
+.multi-action-tile{
+    
+
+}
+
+
+
+
+.multi-action-tile button.deselect-comp-btn,
+.multi-action-tile button.deselect-comp-btn.alpha-selected  {
+    background-color:rgb(241, 74, 74);
+    border-color:rgb(241, 74, 74);
+    color:#fff;
+}
+
+.multi-action-tile button.select-comp-btn,
+.multi-action-tile button.select-comp-btn.alpha-selected {
+    background-color:rgb(73, 169, 79);
+    border-color:rgb(73, 169, 79);
+    color:#fff;
+    
+}
+
+/* Selected Component */
+
+.multi-action-tile.select-comp,
+.ma-group00.select-comp .multi-action-tile
+{
+    
+    background-color:rgba(92, 184, 92, 0.1);
+    padding:10px 8px 10px 2px;
+    border-radius:6px;
+    border:2px solid rgb(73, 169, 79);
+    
+}
+
+.multi-action-tile.select-comp .action-group,
+.ma-group00.select-comp .multi-action-tile  .action-group{
+
+    background-color:rgba(92, 184, 92, 0);
+    border:none;
+    margin-bottom:0;
+}
+
+.multi-action-tile.select-comp .action-group button.deselect-comp-btn,
+.ma-group00.select-comp .multi-action-tile .action-group button.deselect-comp-btn{
+    display:none;
+
+}
+
+.ma-group00.select-comp ul .multi-action-tile .action-group button.select-comp-btn{
+    background-color:rgba(0,0,0,0);
+    color:#49a94f;
+    border:0;
+    box-shadow:none;
+    pointer-events:none;
+}
+
+/* Deselected Component */
+
+.multi-action-tile.deselect-comp,
+.ma-group00.deselect-comp .multi-action-tile
+{
+    
+    background-color:rgba(241, 74, 74, 0.1);
+    padding:10px 8px 10px 2px;
+    border-radius:6px;
+    border:2px solid rgb(241, 74, 74);
+    
+}
+
+.multi-action-tile.deselect-comp .action-group,
+.ma-group00.deselect-comp .multi-action-tile  .action-group{
+
+    background-color:rgba(92, 184, 92, 0);
+    border:none;
+    margin-bottom:0;
+}
+
+.multi-action-tile.deselect-comp .action-group button.select-comp-btn,
+.ma-group00.deselect-comp .multi-action-tile .action-group button.select-comp-btn{
+    display:none;
+
+}
+
+.ma-group00.deselect-comp ul .multi-action-tile .action-group button.deselect-comp-btn{
+    background-color:rgba(0,0,0,0);
+    color:#f14a4a;
+    border:0;
+    box-shadow:none;
+    pointer-events:none;
+
+}
+
+
+/* Multi Action Tiles / Action Group */
+
+.multi-action-tile .action-group {
+    
+    background-color:#e4e5eb;
+    margin-top:-8px;
+    margin-left:8px;
+    margin-right:3px;
+    padding-top:10px;
+    margin-bottom:0px;
+    border-radius:0 0 6px 6px;
+    border:0.1rem solid #85b2e2;
+    margin-bottom:10px;
+}
+
+.multiple-items-container + .action-group{
+    margin-top:-23px;
+}
+
+.multi-action-tile .action-group.action-count-02{
+    text-align:center;
+}
+
+.multi-action-tile .action-group.action-count-02 button{
+
+    min-width:calc(20% - 8.5px);
+    min-width:40px;
+    overflow:hidden;
+    display:inline-block;
+    margin-right:0;
+    
+    z-index:1;
+    position:relative;
+    padding:5px;
+    font-size:1.2rem;
+    justify-content: center;
+    align-items: center;
+
+ }

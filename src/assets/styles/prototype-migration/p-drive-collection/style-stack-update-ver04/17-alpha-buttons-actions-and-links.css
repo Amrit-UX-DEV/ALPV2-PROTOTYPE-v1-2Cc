@@ -1,0 +1,74 @@
+/* BUTTONS */
+button.alpha-btn {
+  background-color: #49A94F;
+  color: white;
+  font-weight: 700; }
+
+button.btn-full-width {
+  width: 100%; }
+
+a#proto-show-fields-btn {
+  display: block;
+  width: 100%;
+  text-align: center;
+  padding: 0.5rem;
+  border: 1px solid;
+  border-radius: 3px; }
+
+/* SECTION LINKS AND FILTER LINKS */
+ul.section-links {
+  border-top: 2px solid white;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex; }
+
+ul.section-links > li {
+  margin-right: 0.2rem; }
+
+ul.section-links > li .alpha-section-btn {
+  padding: 0;
+  border: 0;
+  background-color: transparent; }
+
+ul.section-links > li .alpha-section-btn > span {
+  color: #186ecc;
+  font-size: 1rem;
+  padding: 0.5rem 1rem;
+  display: block;
+  text-shadow: 1px 1px 2px white;
+  position: relative; }
+
+ul.section-links > li .alpha-section-btn > span:hover {
+  background-color: rgba(133, 178, 226, 0.1);
+  border-bottom: 4px solid rgba(133, 178, 226, 0); }
+
+ul.section-links > li .alpha-section-btn.selected > span {
+  border-bottom: 4px solid #85b2e2;
+  border-color: #3c4981;
+  color: #3c4981;
+  font-weight: 700; }
+
+.alpha-grid-filter-v1 {
+  margin-bottom: 1rem; }
+
+.alpha-grid-filter-v1 .row.top-filters {
+  margin-bottom: 0.5rem; }
+
+.alpha-grid-filter-v1 .paging-btns {
+  float: left; }
+
+.alpha-grid-filter-v1 .selection-dropdown {
+  float: left; }
+
+.alpha-grid-filter-v1 .selection-dropdown select {
+  padding: 0.2rem 0.4rem 0.4rem 0.4rem;
+  margin-left: 0.5rem;
+  color: #186ecc;
+  border-radius: 0.25rem;
+  font-weight: bold; }
+
+.consumerDataMatched {
+  color: #3c4981; }
+
+.consumerDataNotMatched {
+  color: darkgray; }

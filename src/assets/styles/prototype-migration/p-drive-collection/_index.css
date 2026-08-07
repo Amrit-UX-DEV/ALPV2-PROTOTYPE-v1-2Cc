@@ -1,0 +1,90 @@
+/* ============================================= */
+/* P-DRIVE COLLECTION - MAIN BARREL FILE       */
+/* Exact order from original prototype         */
+/* ============================================= */
+
+/* Bootstrap & Core */
+@import './css-stack/bootstrap-flex.css';
+@import './style-stack-update-ver04/01-bootstrap-v4-0-0-alpha6.css';
+@import './style-stack-update-ver04/02-modal-styles.css';
+
+/* Font Awesome */
+@import url('https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.css');
+@import url('https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.13.0/css/all.min.css');
+
+/* Resets & Grids */
+@import './style-stack-update-ver04/04-html-resets.css';
+@import './style-stack-update-ver04/05-ag-grid-style-stack01.css';
+@import './style-stack-update-ver04/06-ag-grid-style-stack02.css';
+@import './style-stack-update-ver04/07-ag-grid-style-stack03.css';
+@import './style-stack-update-ver04/08-table-row-active-state.css';
+
+/* Global Variables & Utilities */
+@import './style-stack-update-ver04/09-css-global-property-vars.css';
+@import './style-stack-update-ver04/10-scrollbar-styles.css';
+@import './style-stack-update-ver04/11-switch-styles.css';
+@import './style-stack-update-ver04/12-css-transitions-fadein.css';
+
+/* Layout & Structure */
+@import './style-stack-update-ver04/13-desktop-layout-structure.css';
+@import './style-stack-update-ver04/14-alpha-dropdown.css';
+@import './style-stack-update-ver04/15-alpha-menu-toolbar.css';
+
+/* Buttons, Context, Header, Sidebar */
+@import './style-stack-update-ver04/17-alpha-buttons-actions-and-links.css';
+@import './style-stack-update-ver04/18-alpha-context-bar.css';
+@import './style-stack-update-ver04/19-alpha-menu-toolbar-search.css';
+@import './style-stack-update-ver04/20-alpha-menu-toolbar-workplan-items.css';
+@import './style-stack-update-ver04/21-alpha-header-items.css';
+@import './style-stack-update-ver04/22-alpha-sidebar.css';
+@import './style-stack-update-ver04/23-alpha-header-top-rail.css';
+
+/* Modals, Transitions, Icons, Login */
+@import './style-stack-update-ver04/24-switch-modal.css';
+@import './style-stack-update-ver04/25-css-transitions-animated-spinners.css';
+@import './style-stack-update-ver04/26-fontello-icon-stack.css';
+@import './style-stack-update-ver04/27-alpha-login-screen.css';
+
+/* Timeline & New Stack */
+@import './style-stack-update-ver04/28-new-alpha-buttons.css';
+@import './style-stack-update-ver04/33-timeline-structure-container-block.css';
+@import './style-stack-update-ver04/34-notification-blocks.css';
+@import './css-stack/pt-diagram-structure-2.css';
+
+/* Themes */
+@import './restructure/00-themes/00-theme-reassure.css';
+
+/* Restructure & Helpers */
+@import './restructure/00-layout/00-layout-presentation.css';
+@import './css-stack/ux-helpers-2.css';
+@import './restructure/00-global-states.css';
+@import './restructure/00-typography.css';
+@import './restructure/00-typography-helpers.css';
+
+/* Prototype Specific */
+
+@import './css-stack/prototype-additions.css';
+@import './css-stack/css-updates.css';
+@import './css-stack/prototype-oversea-indicator-additions.css';
+@import './css-stack/prototype-filter-additions.css';
+@import './css-stack/css-alpha-explorer.css';
+@import './css-stack/css-user-preference-dashboard.css';
+@import './css-stack/extracted-material-ui-fixes.css';
+@import './css-stack/alpha-v2-live-extract--18-02-2021.css';
+@import './css-stack/prototype-extract-fixes.css';
+@import './css-stack/create-correspondence.css';
+@import './css-stack/wcm-css-from-build-20-3-2021.css';
+@import './css-stack/wcm-component-updates.css';
+
+@import './css-stack/prototype-only.css';
+
+
+@import './demo.css';
+@import './script-builder.styles.css';
+
+
+
+/* User Themes */
+@import './css-stack/css-user-theme--dark.css';
+@import './css-stack/css-user-theme--light.css';
+

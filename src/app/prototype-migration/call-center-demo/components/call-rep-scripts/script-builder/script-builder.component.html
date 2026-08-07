@@ -1,0 +1,233 @@
+<div class="alp-script-builder">
+
+  <div class="alp-script-builder__header">
+    <div class="alp-script-builder__context">
+      <span class="alp-script-builder__product">{{ product }}</span>
+      <span class="alp-script-builder__separator">—</span>
+      <span class="alp-script-builder__request-type">{{ requestType }}</span>
+    </div>
+
+    <div class="alp-script-builder__header-row">
+      <div>
+        <h2 class="alp-script-builder__title">{{ scriptName }}</h2>
+        @if (scriptDescription) {
+          <p class="alp-script-builder__description">{{ scriptDescription }}</p>
+        }
+      </div>
+      <button type="button"
+              class="alp-btn alp-btn--primary"
+              [disabled]="steps().length === 0"
+              (click)="openPreview()">
+        <i class="fas fa-play"></i> Preview Script
+      </button>
+    </div>
+  </div>
+
+  @if (isLoadingScript()) {
+    <p class="alp-empty-hint">Loading script from shared JSON…</p>
+  }
+
+  @if (loadError()) {
+    <p class="alp-empty-hint" style="color:#b91c1c">{{ loadError() }}</p>
+  }
+
+  <div class="alp-script-builder__flow">
+
+    @for (step of steps(); track step.id; let i = $index; let first = $first; let last = $last) {
+      <div class="alp-script-builder__step">
+
+        <div class="alp-script-builder__step-shell">
+          <div class="alp-script-builder__step-move">
+            <div class="alp-script-builder__step-move-slot">
+              @if (!first) {
+                <button type="button"
+                        class="alp-btn alp-btn--outline alp-btn--icon"
+                        (click)="requestMoveStep(i, 'up')"
+                        title="Move step up">
+                  <i class="fas fa-chevron-up"></i>
+                </button>
+              }
+            </div>
+
+            <div class="alp-script-builder__step-move-slot">
+              <button type="button"
+                      class="alp-btn alp-btn--outline alp-btn--icon"
+                      (click)="openOrderPopover(i)"
+                      title="Change order">
+                <i class="fas fa-sort"></i>
+              </button>
+            </div>
+
+            <div class="alp-script-builder__step-move-slot">
+              @if (!last) {
+                <button type="button"
+                        class="alp-btn alp-btn--outline alp-btn--icon"
+                        (click)="requestMoveStep(i, 'down')"
+                        title="Move step down">
+                  <i class="fas fa-chevron-down"></i>
+                </button>
+              }
+            </div>
+          </div>
+
+          <div class="alp-script-builder__step-card" (click)="openToolkit(step.id)">
+            <div class="alp-script-builder__step-header">
+              <h3 class="alp-script-builder__step-heading">Step {{ i + 1 }}</h3>
+              @if (step.title) {
+                <span class="alp-script-builder__step-title-text">{{ step.title }}</span>
+              }
+              <div class="alp-script-builder__step-badges">
+                @if (getActivityBadge(step); as badge) {
+                  <span class="alp-step-signpost"
+                        [class.alp-step-signpost--created]="badge.variant === 'created'"
+                        [class.alp-step-signpost--edited]="badge.variant === 'edited'">
+                    {{ badge.label }}
+                  </span>
+                }
+              </div>
+            </div>
+
+            <div class="alp-script-builder__step-blocks">
+              @for (item of sortedContent(step); track item.id) {
+                <div class="alp-script-builder__block" [attr.data-type]="item.type">
+                  <div class="alp-script-builder__block-tags">
+                    <span class="alp-script-builder__block-type">{{ item.type | uppercase }}</span>
+                    @if (item.selectionMode) {
+                      <span class="alp-badge">{{ item.selectionMode }}</span>
+                    }
+                  </div>
+
+                  @if (item.type === 'prompt' && item.content) {
+                    <div
+                      class="alp-script-builder__block-content alp-script-builder__block-content--prompt"
+                      [innerHTML]="formatPromptHtml(item.content)">
+                    </div>
+                  } @else if (item.content) {
+                    <div class="alp-script-builder__block-content">
+                      {{ item.content }}
+                    </div>
+                  }
+
+                  @if (item.options?.length) {
+                    <div class="alp-script-builder__paths">
+                      @for (opt of item.options; track opt.text) {
+                        <div class="alp-script-builder__path-item">
+                          <span class="alp-script-builder__path-answer">{{ opt.text }}</span>
+                          @if (opt.nextStep) {
+                            <i class="fas fa-arrow-right alp-script-builder__path-icon"></i>
+                            <span class="alp-script-builder__path-target">
+                              {{ getStepLabel(opt.nextStep) }}
+                            </span>
+                          }
+                        </div>
+                      }
+                    </div>
+                  }
+
+                  @if (item.type === 'required-check' && item.requiredChecks?.length) {
+                    <div class="alp-script-builder__paths">
+                      @for (check of item.requiredChecks; track $index) {
+                        <div class="alp-script-builder__path-item" style="flex-direction:column;align-items:flex-start;gap:4px">
+                          <span class="alp-script-builder__path-answer">
+                            {{ check.question }}
+                            @if (check.auto) {
+                              <span class="alp-badge alp-badge--auto">AUTO</span>
+                            }
+                            @if (check.answer) {
+                              <span class="alp-badge">{{ check.answer }}</span>
+                            }
+                          </span>
+                          @if (check.options?.length) {
+                            @for (opt of check.options; track opt.text) {
+                              <div style="display:flex;align-items:center;gap:8px;padding-left:8px">
+                                <span>{{ opt.text }}</span>
+                                @if (opt.nextStep) {
+                                  <i class="fas fa-arrow-right alp-script-builder__path-icon"></i>
+                                  <span class="alp-script-builder__path-target">
+                                    {{ getStepLabel(opt.nextStep) }}
+                                  </span>
+                                }
+                              </div>
+                            }
+                          }
+                        </div>
+                      }
+                    </div>
+                  }
+
+                  @if (item.condition) {
+                    <div class="alp-script-builder__condition-badge">
+                      <i class="fas fa-link"></i>
+                      Has dependency
+                    </div>
+                  }
+                </div>
+              }
+            </div>
+          </div>
+        </div>
+
+        <div class="alp-script-builder__connector">
+          <div class="alp-script-builder__connector-line"></div>
+          <button type="button"
+                  class="alp-script-builder__add-step-btn"
+                  (click)="openToolkit(undefined, i + 1); $event.stopPropagation()"
+                  title="Insert step here">
+            <i class="fas fa-plus"></i>
+          </button>
+          @if (!last) {
+            <div class="alp-script-builder__connector-line"></div>
+          }
+        </div>
+      </div>
+    }
+
+    @if (!isLoadingScript() && steps().length === 0 && !loadError()) {
+      <button type="button"
+              class="alp-add-content-tile alp-add-first-step"
+              (click)="openToolkit(undefined, 0)">
+        <i class="fas fa-plus"></i>
+        <span>Add first step</span>
+      </button>
+    }
+  </div>
+
+  @if (showToolkit()) {
+    <alpha-script-toolkit
+      [stepId]="editingStepId()"
+      [existingSteps]="steps()"
+      (saved)="onStepSaved($event)"
+      (removed)="onStepRemoved($event)"
+      (cloned)="onStepCloned($event)"
+      (cancelled)="closeToolkit()">
+    </alpha-script-toolkit>
+  }
+
+  @if (showPreview()) {
+    <alpha-script-preview
+      [steps]="steps()"
+      [scriptTitle]="scriptName"
+      (closed)="closePreview()">
+    </alpha-script-preview>
+  }
+
+  @if (showOrderPopover()) {
+    <alpha-order-steps-popover
+      [steps]="steps()"
+      [sourceIndex]="orderSourceIndex()"
+      (confirmed)="onOrderPopoverConfirmed($event)"
+      (cancelled)="closeOrderPopover()">
+    </alpha-order-steps-popover>
+  }
+
+  @if (showConfirm()) {
+    <alpha-confirm-popover
+      [title]="confirmTitle()"
+      [message]="confirmMessage()"
+      [showDontShowAgain]="pendingAction() === 'move-step' || pendingAction() === 'order-jump'"
+      (confirmed)="onConfirm($event)"
+      (cancelled)="closeConfirm()">
+    </alpha-confirm-popover>
+  }
+
+</div>

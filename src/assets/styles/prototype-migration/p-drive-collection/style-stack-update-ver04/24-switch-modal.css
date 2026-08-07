@@ -1,0 +1,67 @@
+/* The Modal (background) */
+.switch-modal {
+  display: none;
+  /* Hidden by default */
+  position: fixed;
+  /* Stay in place */
+  z-index: 1;
+  /* Sit on top */
+  padding-top: 300px;
+  /* Location of the box */
+  left: 0;
+  top: 0;
+  width: 100%;
+  /* Full width */
+  height: 100%;
+  /* Full height */
+  overflow: none;
+  /* Enable scroll if needed */
+  /*   background-color: rgb(0,0,0); */
+  /* Fallback color */
+  /*  background-color: rgba(0,0,0,0.6); */
+  /* Black w/ opacity */ }
+
+/* Modal Content */
+/* .switch-modal-content {
+   position: relative;
+    background-color: white;
+    margin: auto;
+    padding: 0;
+    border: 1px solid #888;
+    width: 80%;
+    box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2),0 6px 20px 0 rgba(0,0,0,0.19);
+} */
+/* The Close Button */
+.switch-modal-close {
+  color: white;
+  float: right;
+  font-size: 28px;
+  font-weight: bold;
+  margin-top: -10px; }
+
+.switch-modal-close:hover,
+.switch-modal-close:focus {
+  color: #000;
+  text-decoration: none;
+  cursor: pointer; }
+
+.switch-modal-header {
+  padding: 2px 16px;
+  background-color: #3c4981;
+  height: 50px;
+  padding-top: 15px; }
+
+.switch-modal-header h2, .switch-modal-footer h3 {
+  color: white; }
+
+.switch-modal-body {
+  padding: 2px 16px;
+  min-height: 200px;
+  padding-top: 10px; }
+
+.switch-modal-footer {
+  padding: 2px 16px;
+  background-color: #3c4981;
+  color: white;
+  height: 50px;
+  padding-top: 15px; }

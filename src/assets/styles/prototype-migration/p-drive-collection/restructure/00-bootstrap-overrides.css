@@ -1,0 +1,10 @@
+/* -----------------------                      --- */
+/* BOOTSRAP OVERRIDES                               */
+/* -----------------------                      --- */
+
+
+/* Card Global Overrides */
+
+.card-header {
+  background-color:#fff;
+}

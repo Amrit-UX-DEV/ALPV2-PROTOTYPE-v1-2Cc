@@ -1,0 +1,12 @@
+/* -----------------------                      --- */
+/* COMPONENT: WIDGET DOCK                           */
+/* -----------------------                      --- */
+
+.app-sidebar--widget-dock{
+
+    background-color:var(--theme-monotone-6);
+}
+
+.app-sidebar--widget-dock-options{
+    background-color:var(--theme-monotone-5);
+}

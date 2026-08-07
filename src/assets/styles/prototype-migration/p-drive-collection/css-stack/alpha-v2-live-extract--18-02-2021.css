@@ -1,0 +1,5561 @@
+
+
+/*!* Action Type *!*/
+
+[data-action-type] {
+  background-color: var(--branding-button-color);
+  color: rgba(255, 255, 255, 1);
+  border: 1px solid var(--branding-button-color);
+  display: inline-block;
+  font-weight: normal;
+  line-height: 1.25;
+  text-align: center;
+  white-space: nowrap;
+  vertical-align: middle;
+  cursor: pointer;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+  padding: 0.2rem 0.5rem;
+  font-size: 0.9rem;
+  border-radius: 0.25rem;
+  position: relative;
+  top: -0.1rem;
+  font-family: Arial, sans-serif;
+  transition: opacity 0.25s, color 0.5s, background-color 0.25s, border-color 0.5s, ease-in-out;
+}
+
+.data-action-type-disabled {
+  opacity: 0.2;
+  background-color: grey;
+  border: grey;
+  cursor: not-allowed;
+  float: right;
+  margin-right: 20px;
+}
+
+.button-fat-workplan--width {
+  width: 6rem;
+}
+
+.data-action-type-button-right {
+  float: right;
+  margin-right: 20px;
+}
+
+.data-action-type-button-left {
+  float: left;
+}
+
+.tooltip--truncated-text-group-wrap .data-action-type-button-tooltip {
+  width: 300px;
+  min-height: 200px;
+  top: 0;
+  z-index: 1;
+}
+
+[col-id='runTaskButton'].ag-column-hover .tooltip--truncated-text-group-wrap {
+  /*  width:300px;
+  min-height:50px;
+  top:0;
+  */
+}
+
+[col-id='runTaskButton'].ag-column-hover .tooltip--truncated-text-group-wrap.tooltip-direction--right {
+  left: 8rem;
+}
+
+[col-id='runTaskButton'].ag-column-hover .tooltip--truncated-text-group-wrap.tooltip-direction--righttop {
+  left: 8rem; /*
+  background-color: #fff;
+  top: 0em;
+  position: fixed;
+  min-height: 70px;
+  min-width: 300px;*/
+}
+
+[col-id='endWorkButton'].ag-column-hover .tooltip--truncated-text-group-wrap.tooltip-direction--left {
+  left: -23rem;
+}
+
+[col-id='endWorkButton'].ag-column-hover .tooltip--truncated-text-group-wrap.tooltip-direction--lefttop {
+  left: -23rem;
+  bottom: -2rem;
+}
+
+[col-id='endWorkButton'].ag-column-hover,
+[col-id='runTaskButton'].ag-column-hover {
+  overflow: visible;
+}
+
+[data-action-type]:hover {
+  background-color: var(--branding-button-hover-color);
+}
+
+/* MVP Temp fixes to work alongside Andys changes */
+
+.data-structure-diagram-col button {
+  font-size: 1rem;
+}
+
+ul#wizard-step-list {
+  /*overflow:visible;*/
+}
+
+.alpha-layout-col-2.alpha-app-body {
+  overflow-y: auto;
+}
+
+.wizard-step-btn {
+  border: 3px solid rgba(255, 255, 255, 0.3);
+  border-radius: 50px;
+  padding: 5px 15px;
+  background-color: #4c5992;
+  text-align: center;
+  border: 2px solid rgba(255, 255, 255, 0.3);
+  transition: all 0.15s ease-in-out;
+  transform: scale(0.9);
+  color: #fff;
+  min-width: 30px;
+  min-height: 35px;
+  height: 30px;
+  margin: 5px;
+  font-size: 1rem;
+  box-sizing: border-box;
+  letter-spacing: 0.5px;
+}
+
+.wizard-step-btn:hover {
+  background-color: #4c5992;
+  transform: scale(1);
+}
+
+.wizard-step-btn[disabled] {
+  background-color: #ccc;
+  transform: scale(0.9);
+}
+
+/* MVP Temp fixes to work alongside Andys changes */
+/* -----------------------                      --- */
+/* COMPONENT: UI STATES                              */
+/* -----------------------                      --- */
+
+/* PRIMARY UI STATES */
+/*-----------------------------------------------------------------*/
+
+[class*='state--ui-'] {
+  position: relative;
+}
+
+[class*='state--ui-']:not(.alpha-tile) {
+  border-left-width: 6px !important;
+  border-style: solid;
+}
+
+[class*='state--ui-'].alpha-tile > a {
+  border-color: inherit !important;
+}
+
+/* New */
+.state--ui-new:after {
+  font-family: 'Font Awesome 5 Free';
+  font-weight: 900;
+  content: '\f055';
+  color: #3c4981;
+  font-size: 0.9rem;
+  position: absolute;
+  top: 3px;
+  right: 3px;
+  border-radius: 100%;
+  padding: 2px;
+  line-height: 0.95;
+  background-color: rgba(255, 255, 255, 0.8);
+}
+
+.state--ui-new,
+.state--ui-new--no-icon {
+  border-color: #3c4981 !important;
+}
+
+.state--ui-new .status-label,
+.state--ui-new .status-label {
+  color: #3c4981 !important;
+}
+
+/* Active */
+.state--ui-active:after {
+  font-family: 'Font Awesome 5 Free';
+  font-weight: 900;
+  content: '\f111';
+  color: #49a94f;
+  font-size: 0.8rem;
+  position: absolute;
+  top: 3px;
+  right: 3px;
+  border-radius: 100%;
+  padding: 2px;
+  line-height: 0.95;
+  background-color: rgba(255, 255, 255, 0.8);
+}
+
+.state--ui-active,
+.state--ui-active--no-icon {
+  border-color: #49a94f !important;
+}
+
+.state--ui-active .status-label,
+.state--ui-active--no-icon .status-label {
+  color: #49a94f !important;
+}
+
+/* Disabled States */
+.state--ui-disabled {
+  pointer-events: none !important;
+  background-color: #efefef !important;
+  color: #555 !important;
+  cursor: not-allowed !important;
+}
+
+.ui-disabled-with-state,
+.multi-action-tile.ui-disabled-with-state,
+.multi-action-tile .action-container button.ui-disabled-with-state,
+.multi-action-tile .action-container button.ui-disabled-with-state:hover,
+.multi-action-tile .action-container > [class^='action'].ui-disabled-with-state {
+  background-color: #efefef;
+  color: #555;
+  cursor: default;
+}
+
+.ui-disabled-events,
+.multi-action-tile.ui-disabled-events,
+.multi-action-tile .action-container button.ui-disabled-events,
+.multi-action-tile .action-container > [class^='action'].ui-disabled-events {
+  pointer-events: none;
+}
+
+/* Error (also terminated) */
+.state--ui-error:after {
+  font-family: 'Font Awesome 5 Free';
+  font-weight: 400;
+  content: '\f111 ';
+  color: #d9534f;
+  line-height: 1;
+  font-size: 0.8rem;
+  position: absolute;
+  top: 3px;
+  right: 3px;
+  border-radius: 100%;
+  padding: 2px;
+  line-height: 0.95;
+  background-color: rgba(255, 255, 255, 0.8);
+}
+
+.state--ui-error,
+.state--ui-error--no-icon {
+  border-color: #d9534f !important;
+}
+
+.state--ui-error .status-label,
+.state--ui-error--no-icon .status-label {
+  color: #d9534f !important;
+}
+
+/* Font Awesome Upgrade for Terminated/Stop/Error Icon */
+
+.fas.fa-circle-o:before {
+  content: '\f111';
+  font-weight: 400;
+}
+
+/* Selected Tick */
+
+.state--active-tick:hover,
+.state--active-tick {
+  border-color: #58ae68 !important;
+  background-color: #ffffff;
+  padding-right: 35px !important;
+}
+
+.state--active-tick span {
+  color: #58ae68 !important;
+}
+
+.state--active-tick:after {
+  font-family: 'Font Awesome 5 Free';
+  font-weight: 900;
+  content: '\f00c';
+  color: #58ae68;
+  position: absolute;
+  right: 0;
+  padding: 10px;
+  font-size: 2rem;
+  top: 0;
+  height: 100%;
+  display: flex;
+  align-items: center;
+}
+
+ul li button.active {
+  border: 0.1rem solid #49a94f;
+}
+
+ul li button.terminated {
+  border: 0.1rem solid #d9534f;
+}
+
+/* Complex ( different Slave dependencies) */
+.state--ui-complex:after {
+  font-family: 'Font Awesome 5 Free';
+  font-weight: 900;
+  content: '\f005';
+  color: rgb(55, 55, 255);
+  line-height: 1;
+  font-size: 0.8rem;
+  position: absolute;
+  top: 3px;
+  right: 3px;
+  border-radius: 100%;
+  padding: 2px;
+  line-height: 0.95;
+  background-color: rgba(255, 255, 255, 0.8);
+}
+
+.state--ui-complex {
+  border-color: rgb(55, 55, 255) !important;
+}
+
+.state--ui-complex .status-label,
+.onhold {
+  color: rgb(55, 55, 255) !important;
+}
+
+/* Warning (also on hold) */
+.state--ui-warning:after {
+  font-family: 'Font Awesome 5 Free';
+  font-weight: 900;
+  content: '\f042';
+  color: rgb(230, 138, 0);
+  line-height: 1;
+  font-size: 0.8rem;
+  position: absolute;
+  top: 3px;
+  right: 3px;
+  border-radius: 100%;
+  padding: 2px;
+  line-height: 0.95;
+  background-color: rgba(255, 255, 255, 0.8);
+}
+
+.state--ui-warning,
+.state--ui-warning--no-icon {
+  border-color: rgb(230, 138, 0) !important;
+}
+
+.state--ui-warning .status-label,
+.onhold,
+.state--ui-warning--no-icon .status-label {
+  color: rgb(230, 138, 0) !important;
+}
+
+/* SECONDARY UI STATES (can be used alongside Primary states) */
+/*-----------------------------------------------------------------*/
+
+/* Skeleton */
+.state--ui-skeleton:before {
+  font-family: 'Font Awesome 5 Free';
+  font-weight: 900;
+  content: '\f2a8 ' !important;
+  color: #2d2e33;
+  font-size: 1rem;
+  position: absolute;
+  font-weight: normal;
+  transform: rotate(0);
+  top: 1px;
+  right: 18px;
+  border-radius: 100%;
+  padding: 2px;
+  line-height: 0.95;
+  z-index: 1;
+  background-color: rgba(255, 255, 255, 0);
+}
+
+.state--ui-skeleton,
+.state--ui-skeleton--no-icon {
+  border: 2.4px dashed #222 !important;
+}
+
+.state--ui-skeleton.alpha-tile {
+  border: 1px dashed #222 !important;
+}
+
+/* Minimal */
+.state--ui-minimum:before {
+  font-family: Arial, sans-serif !important;
+  content: 'Min ' !important;
+  color: #2d2e33;
+  font-size: 12px;
+  position: absolute;
+  font-weight: bold;
+  transform: rotate(0);
+  top: 3px;
+  right: 22px;
+  border-radius: 10px;
+  padding: 2px 4px;
+  line-height: 0.95;
+  z-index: 1;
+  background-color: rgba(218, 218, 218, 0.8);
+}
+
+.min-icon:before {
+  font-family: Arial, sans-serif !important;
+  content: 'Min ' !important;
+  color: #2d2e33;
+  border-radius: 10px;
+  padding: 2px 4px;
+  font-weight: bold;
+  margin-right: 2px;
+  background-color: rgba(218, 218, 218, 0.8);
+  font-size: 12px;
+}
+
+.state--ui-minimum,
+.state--ui-minimum--no-icon {
+  border: 2.4px double #222 !important;
+}
+
+.state--ui-minimum.alpha-tile {
+  border: 1px dashed #222 !important;
+}
+
+/* ICON UI STATES */
+/*-----------------------------------------------------------------*/
+/* Circle Arrows used for navigational elements */
+
+.icon--circle-arrow--right {
+  padding-right: 40px !important;
+  position: relative;
+}
+.icon--circle-arrow--right:after {
+  font-family: 'Font Awesome 5 Free';
+  font-weight: 900;
+  content: '\f0a9';
+  width: 35px;
+  position: absolute;
+  top: 0;
+  right: 0;
+  display: flex;
+  height: 100%;
+  align-items: center;
+  justify-content: center;
+  color: #5cb85c;
+}
+
+.icon--circle-arrow--right:hover:after {
+  color: inherit;
+}
+
+/*-----------------------------------------------------------------*/
+/* Custom Styles not apart of above */
+ul.alpha-linked-data-structure alpha-policy-tile li button {
+  min-width: 195px;
+}
+
+ul.alpha-linked-data-structure alpha-client-role-tile li button {
+  min-width: 145px;
+}
+
+.cell-wrap-text {
+  white-space: normal !important;
+}
+
+.ag-cell.ag-cell-not-inline-editing.ag-cell-no-focus.ag-cell-value {
+  white-space: normal;
+}
+
+.data-bubble--status.newBusiness {
+  color: #3c4981;
+}
+
+/* Client Details Update*/
+alpha-client-details {
+  background-color: #e3e7ed;
+  height: inherit;
+}
+
+.mat-progress-spinner circle,
+.mat-spinner circle {
+  stroke: lightblue;
+}
+
+span.tooltip--truncated-text-group-wrap.tooltip--strong.tooltip--open-bottom {
+  position: absolute;
+}
+
+alpha-estimated-valuation {
+  background-color: #e3e7ed;
+  height: inherit;
+}
+
+alpha-estimated-valuation > div {
+  background-color: #e3e7ed;
+  height: inherit;
+}
+
+.investment-summary-debt {
+  color: red;
+}
+
+/* Watermark updates for control center */
+
+control-center {
+  height: unset;
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  position: relative;
+  background-color: #e3e7ed;
+}
+
+.ui-dashboards-format--flex-wrap {
+  min-height: 100vh;
+}
+
+control-center > div {
+  position: relative;
+  height: inherit;
+}
+
+control-center:before {
+  content: '';
+  position: absolute;
+  top: 30%;
+  left: 0;
+  height: 60%;
+  width: 100%;
+  background-image: var(--alpha-landing-watermark);
+  background-repeat: no-repeat;
+  background-position: center center;
+  background-size: var(--alpha-landing-watermark-background-size);
+  z-index: -1;
+}
+
+alpha-data-service-catalogue-content {
+  width: 100%;
+}
+@media (min-height: 950px) {
+  control-center:before {
+    top: 20%;
+    left: 0;
+    height: 80%;
+    width: 100%;
+  }
+}
+
+/*Ensure this class never gets removed from this CSS*/
+.hide-basecomponent {
+  visibility: hidden;
+}
+
+/* Global Screen/Component Specific Styles */
+/* To be used to target individual screens via component name */
+
+.ui-section-content {
+  padding: 0 1.25rem 1.25rem 1.25rem;
+}
+
+/* APP Container */
+/*----------------------------------------------------------------*/
+alpha-thin-client {
+  background-color: #3c4981;
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  height: inherit;
+  width: inherit;
+}
+
+/* Material Design Global CSS Fixes/Changes  */
+/*----------------------------------------------------------------*/
+
+button.mat-icon-button.mat-button-disabled {
+  background-color: transparent;
+}
+
+/* Global */
+/*----------------------------------------------------------------*/
+
+.alpha-layout-col-2.alpha-app-body .card {
+  background-color: transparent;
+}
+
+.alpha-layout-col-2.alpha-app-body .app-overlay .card.screen-detail-block-card {
+  background-color: #fff;
+}
+
+/* Main Content */
+alpha-v2-template .alpha-layout-col-2.alpha-app-body {
+  background-color: #e3e7ed;
+}
+
+/* Authorisation View */
+/*----------------------------------------------------------------*/
+.alpha-layout-col-2.alpha-app-body .card.auth-mode-header {
+  background-color: #f8f5da;
+}
+
+/* Group Summary  */
+/*----------------------------------------------------------------*/
+
+/* Scroll fix until new group/scheme summary views are in place  */
+alpha-group-summary .de-duped-group-display .multi-nested-structure .alpha-linked-data-structure {
+  height: auto !important;
+}
+
+/* Fix to give item state indicators spacing*/
+alpha-group-summary .scrollable-content {
+  padding-top: 5px;
+}
+
+/* Scheme Summary (NEW) / Default View  */
+/*----------------------------------------------------------------*/
+
+/* Scheme Summary  / Policy Resize*/
+alpha-group-summary-new alpha-scheme-container alpha-policies-container {
+  width: calc(100% - 15px);
+}
+
+/* Group Summary (NEW) / Default View  */
+/*----------------------------------------------------------------*/
+
+/* Group Summary Resize*/
+alpha-group-summary-new > .row > div {
+  width: 100%;
+}
+
+/* Scroll Fix -- Eval and remove after layout is changed */
+alpha-group-summary-new
+  .ui-diagram-col
+  .ui-diagram-content.scroll-child-items
+  virtual-scroller
+  .scrollable-content
+  > div:last-child {
+  margin-bottom: 150px;
+  padding-bottom: 100px;
+}
+
+/* Group Summary Scroll Fix */
+alpha-group-summary-new alpha-policies-container .scrollable-content {
+  /* Dynamic injected height fix - allows free flow */
+  max-height: 9999vh !important;
+  height: auto !important;
+}
+
+alpha-group-summary-new .ui-diagram-layer.ui-group {
+  position: relative;
+  z-index: 1;
+}
+
+/* Group Summary Resize / Members Resize*/
+
+alpha-group-summary-new alpha-members-container {
+  width: 215px;
+}
+
+/* Fix Horizontal Scroll from Virtual Scroller */
+alpha-group-summary-new alpha-members-container virtual-scroller.vertical.selfScroll {
+  width: 210px;
+  overflow-x: hidden !important;
+}
+
+/* Group Summary  / Policy Resize*/
+
+alpha-group-summary-new alpha-policies-container {
+  width: calc(100% - 210px);
+}
+
+alpha-group-summary-new alpha-policies-container virtual-scroller.policy-virtual-viewport.vertical {
+  width: 100%;
+}
+
+alpha-group-summary-new alpha-policies-container .ui-policy-tile--long {
+  width: calc(100% - 182px);
+}
+
+alpha-group-summary-new alpha-policies-container .ui-policy-details {
+  width: inherit;
+  flex-wrap: wrap;
+}
+
+alpha-group-summary-new alpha-policies-container .ui-action-content {
+  flex-wrap: wrap;
+}
+
+alpha-group-summary-new alpha-policies-container .ui-action-content {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+alpha-group-summary-new alpha-policies-container .ui-alpha-indicators.top-line-indicators {
+  flex: 1;
+  display: flex;
+}
+
+alpha-group-summary-new alpha-policies-container .ui-diagram-content.scroll-child-items {
+  padding-bottom: 300px;
+}
+
+alpha-group-summary-new alpha-policies-container .tile--data {
+  width: 100%;
+}
+
+alpha-group-summary-new alpha-policies-container .scrollable-content {
+  padding-bottom: 300px;
+}
+
+/* Group Summary / Filter Option Version 01   */
+
+alpha-group-summary-filter-v1 {
+  width: 100%;
+  text-align: left;
+}
+
+alpha-group-summary-new alpha-group-summary-filter-v1 .ui-filter-actions-container.ui-group-summary-filter {
+  margin: 0;
+}
+
+alpha-group-summary-new alpha-group-summary-filter-v1 .ui-filter-shelf {
+  padding: 0 !important;
+}
+
+alpha-group-summary-new alpha-group-summary-filter-v1 .ui-filter-shelf .card-header {
+  padding: 0;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  flex-wrap: wrap;
+  align-items: baseline;
+}
+
+alpha-group-summary-new alpha-group-summary-filter-v1 .data-structure-diagram-key {
+  background: rgba(255, 255, 255, 0.4);
+  display: flex !important;
+  flex-wrap: wrap;
+  border: none !important;
+  border: 3px solid rgb(210, 213, 228) !important;
+  padding-left: 50px;
+  position: relative;
+  margin-right: 15px;
+}
+
+alpha-group-summary-new alpha-group-summary-filter-v1 .data-structure-diagram-key:before {
+  position: absolute;
+  left: 0;
+  top: 0;
+  display: flex;
+  background-color: rgb(210, 213, 228) !important;
+  align-items: center;
+}
+
+alpha-group-summary-new alpha-group-summary-filter-v1 .ui-filter-description-row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+}
+
+alpha-group-summary-new alpha-group-summary-filter-v1 .ui-filter-description-text {
+  width: 177px;
+  text-align: left;
+  margin-right: 15px;
+}
+
+alpha-group-summary-new alpha-group-summary-filter-v1 .search-form-field {
+  width: calc(100% - 210px) !important;
+  left: 0 !important;
+}
+
+/* Agent Contract Details */
+/*----------------------------------------------------------------*/
+.ui-agent-contracts-container .multi-action-tile .action-container > [class^='action'] {
+  min-height: 400px;
+  border-radius: 6px;
+  padding: 20px;
+}
+
+alpha-contract-details .ui-agent-contracts-container .alpha-parent-item {
+  flex-wrap: wrap;
+}
+
+/* Maintain Personal Information */
+/*----------------------------------------------------------------*/
+.alpha-layout-col-2.alpha-app-body maintain-personal-info .card.screen-detail-block-card {
+  background-color: #fff;
+}
+
+/* Update Requirements */
+/*----------------------------------------------------------------*/
+.alpha-layout-col-2.alpha-app-body update-requirements .card.screen-detail-block-card {
+  background-color: #fff;
+}
+
+/* Policy Search */
+/*----------------------------------------------------------------*/
+alpha-policy-search .card {
+  background-color: transparent;
+}
+
+/* Policy Components / Unit Linked */
+/*----------------------------------------------------------------*/
+alpha-policy-components .card {
+  background-color: #e3e7ed;
+}
+
+/* Policy Notes */
+/*----------------------------------------------------------------*/
+
+notes-grid .alpha-grid-filter-v1 {
+  background-color: rgba(255, 255, 255, 0);
+}
+notes-grid ul.section-links {
+  border-top: 0;
+}
+
+/* Policy Summary */
+/*----------------------------------------------------------------*/
+.alpha-layout-col-2.alpha-app-bodypolicy-summary .presentation-content {
+  background-color: transparent;
+}
+
+.alpha-layout-col-2.alpha-app-body policy-summary .card .card {
+  background-color: #fff;
+}
+
+/* Billing */
+/*----------------------------------------------------------------*/
+billing ul.section-links {
+  padding-top: 15px;
+}
+
+/* Fund Prices */
+/*----------------------------------------------------------------*/
+alpha-policy-investment-fundprices .row > [class*='col-md'] {
+  background-color: rgba(255, 255, 255, 0.5);
+  padding: 15px;
+}
+
+/* Annuity Instruction */
+/*----------------------------------------------------------------*/
+alpha-annuity-instruction .card-block {
+  padding-top: 0;
+}
+
+alpha-annuity-instruction #Annuity_AnnuityDetails {
+  padding: 20px;
+}
+
+alpha-annuity-instruction #Annuity_AnnuityDetails > div {
+  background-color: rgba(255, 255, 255, 0.5);
+  padding: 20px;
+  padding-left: 35px !important;
+  border-radius: 6px;
+}
+
+alpha-annuity-instruction #AnnuityInstruction_AnnuityInstruction_Indexation {
+  padding: 20px;
+}
+
+alpha-annuity-instruction #AnnuityInstruction_AnnuityInstruction_Indexation .card-header-indexation {
+  margin-left: -15px;
+}
+
+alpha-annuity-instruction #Annuity_PayeeDetails {
+  padding: 20px;
+  width: 500px;
+  background-color: rgba(255, 255, 255, 0.5);
+  margin-left: 20px;
+  border-radius: 6px;
+}
+
+/* Third Party Enquiry/Maintenance */
+/*----------------------------------------------------------------*/
+
+alpha-policy-third-party {
+  background-color: #e3e7ed;
+  height: 100%;
+}
+
+alpha-policy-third-party > div {
+  background-color: #e3e7ed;
+}
+
+alpha-policy-third-party .mat-form-field-infix textarea {
+  padding: 10px;
+}
+
+.ui-action-type--third-party,
+.multi-action-tile .action-container > [class^='action'].ui-action-type--third-party {
+  padding-top: 15px;
+}
+
+/* Material Button Overrides */
+.stop-relationship-overlay .mat-form-field-suffix {
+  margin: 0px 0px 0px -20px;
+  position: relative;
+  top: calc(-8px - 0.09rem);
+}
+
+.stop-relationship-overlay .mat-form-field-suffix .mat-icon-button {
+  background-color: #fff;
+  border: 0.1rem solid #85b2e2;
+  color: #1580da;
+  border-radius: 0;
+  height: 30px;
+  width: 35px;
+  border-radius: 0 6px 6px 0;
+}
+
+.content-block--value .stop-details .newPolicyNote {
+  min-height: 100px;
+}
+
+.stop-relationship-overlay svg.mat-datepicker-toggle-default-icon {
+  width: 20px !important;
+}
+
+.stop-relationship-overlay .mat-form-field-suffix .mat-icon-button:hover {
+  background-color: rgb(223, 231, 239);
+}
+
+.stop-relationship-overlay #third-party-stop-date-datepicker {
+  height: 30px;
+  border: 0.1rem solid #85b2e2;
+  padding: 5px;
+}
+
+.stop-relationship-overlay .mat-form-field-label {
+  padding: 6px 5px 5px 10px !important;
+  color: #797878 !important;
+}
+.stop-relationship-overlay
+  .mat-form-field-appearance-legacy.mat-form-field-can-float.mat-form-field-should-float
+  .mat-form-field-label {
+  padding: 5px !important;
+  color: #222 !important;
+}
+
+alpha-third-party-maintenance-wizard .stop-relationship-overlay .app-overlay.default-app-overlay {
+  align-items: center;
+  justify-content: center;
+  display: flex;
+}
+
+/* Third Party Enquiry/Maintenance /
+Local overlay to full overlay fix for removing third parties */
+/*----------------------------------------------------------------*/
+
+display-existing-third-parties .local-overlay {
+  position: fixed !important;
+  z-index: 9;
+}
+
+display-existing-third-parties .local-overlay.state-ui--overlay-remove {
+  border: 4px solid red;
+}
+
+display-existing-third-parties .local-overlay.state-ui--overlay-remove .overlay-content-body .action-container {
+  background-color: rgb(238, 238, 238);
+  margin: 0 auto;
+  width: 500px;
+  padding: 20px;
+  border-radius: 10px;
+  width: 400px;
+  min-height: 200px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: absolute;
+  top: 270px;
+}
+
+display-existing-third-parties .local-overlay.state-ui--overlay-remove .overlay-content-body .overlay-heading {
+  font-size: 15px;
+  margin-bottom: 10px !important;
+  color: #3c4981;
+  text-shadow: none;
+  font-weight: bold;
+  border-bottom: 1px dashed #a79f9f !important;
+  padding-bottom: 15px;
+}
+
+/* Add Third Party Client */
+/*------------------------------------------------------------*/
+
+.alpha-layout-col-2.alpha-app-body alpha-add-third-party-client .card.screen-detail-block-card {
+  background-color: #fff;
+  height: 100%;
+}
+
+alpha-add-third-party-client .select-client-container .form-content {
+  background-color: rgb(238, 238, 238);
+  padding: 35px;
+}
+
+alpha-add-third-party-client .select-client-container .form-content .row {
+  margin: 0 !important;
+}
+
+alpha-add-third-party-client .select-client-container .form-content .row textarea:focus {
+  padding: 10px;
+}
+
+/* Error Message */
+alpha-add-third-party-client .highLightError {
+  border: 3px solid pink;
+  width: 300px;
+  position: absolute;
+  left: calc(50% - 150px);
+  top: calc(100% + 10px);
+  padding: 20px;
+  background-color: #d9534f;
+  border: 2px solid rgba(255, 255, 255, 0.2);
+  margin-bottom: 15px;
+  border-radius: 6px;
+  margin-top: 10px;
+  color: rgba(255, 255, 255, 0.8) !important;
+  z-index: 1;
+}
+
+alpha-add-third-party-client .highLightError:before {
+  content: '\f0d8';
+  font-family: 'Font Awesome 5 Free';
+  font-weight: 900;
+  position: absolute;
+  bottom: calc(100% - 5px);
+  left: calc(50% - 150px);
+  width: 300px;
+  font-size: 35px;
+  text-align: center;
+  color: #d9534f;
+}
+
+/* Toolbar Search */
+/*----------------------------------------------------------------*/
+alpha-search-field .search--date-selection input,
+alpha-search-field .search--input-gender select,
+alpha-search-field .search--input-grow .form-control {
+  background-color: #fff;
+  padding: 0.5rem;
+  width: 100%;
+  padding: 0.5rem 0.75rem;
+  font-size: 1rem;
+  line-height: 1.25;
+  color: #55595c;
+  background-color: #fff;
+  background-image: none;
+  background-clip: padding-box;
+  border: 1px solid rgba(0, 0, 0, 0.15);
+  border-radius: 0.25rem;
+  max-height: 31px;
+}
+alpha-search-field .form-group .form-control:disabled {
+  background-color: #afafaf;
+  padding: 0.5rem;
+  color: #dcdada;
+}
+alpha-search-field .form-group .form-control[readonly] {
+  background-color: #afafaf;
+  padding: 0.5rem;
+}
+alpha-search-field .search--date-selection mat-datepicker-toggle.mat-datepicker-toggle button {
+  position: absolute;
+  top: 12px;
+  right: 56px;
+  z-index: 1;
+}
+
+/* Widget Dock/Correspondance Viewer/ Overlay */
+/*----------------------------------------------------------------*/
+
+/* Stacking order fix*/
+alpha-correspondence-viewer {
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 9999;
+  height: 100vh;
+  width: 100vw;
+}
+
+alpha-correspondence-viewer .alpha-compare-view {
+  height: inherit !important;
+  width: inherit !important;
+}
+
+/* Widget Dock/Correspondance Viewer/ Correspondence Filter */
+/*----------------------------------------------------------------*/
+
+correspondence-filter .ui-app-widget-fixed-header {
+  /* Border used for position tests*/
+  border: 0px solid red;
+}
+
+/* Forced Resize & Position */
+correspondence-filter .md-drppicker {
+  border: 4px solid #e3e7ed;
+  min-width: 600px;
+  left: unset !important;
+  right: 30px !important;
+  position: fixed;
+  padding-bottom: 50px;
+}
+
+correspondence-filter .md-drppicker .ranges ul li button {
+  padding: 5px 10px;
+  border: 0.1rem solid transparent;
+  font-weight: normal;
+}
+
+correspondence-filter .md-drppicker .ranges ul li button {
+  color: #4490da;
+}
+
+correspondence-filter .md-drppicker .ranges ul li button.active {
+  background-color: #85b2e2;
+  border-color: rgba(255, 255, 255, 0.3);
+}
+
+correspondence-filter .md-drppicker .calendar td,
+correspondence-filter .md-drppicker .calendar th {
+  vertical-align: middle;
+}
+
+/* Date Picker Button Overrides */
+
+correspondence-filter .md-drppicker .buttons {
+  position: absolute;
+  bottom: -5px;
+  right: -5px;
+  background-color: #eee;
+  width: 100%;
+  padding-top: 7px;
+  padding-bottom: 3px;
+}
+
+correspondence-filter .md-drppicker .buttons .buttons_input button {
+  padding: 0;
+  margin: 0;
+  background-color: transparent;
+  color: #222;
+  font-weight: normal;
+  display: inline-block;
+  border: 0.1rem solid #85b2e2;
+  flex: 1;
+  background-color: #fff;
+  position: relative;
+  cursor: pointer;
+  text-align: left;
+  padding: 5px 10px;
+  margin-right: 5px;
+  margin-bottom: 5px;
+  border-radius: 30px;
+  box-shadow: 0px 4px 5px -4px rgba(0, 0, 0, 0.4);
+  transition: all 0.15s ease-in-out;
+  line-height: 1.2;
+  text-transform: capitalize;
+}
+
+correspondence-filter .md-drppicker .buttons .buttons_input button svg {
+  display: none;
+}
+
+correspondence-filter .md-drppicker .buttons .buttons_input button:hover {
+  background-color: rgb(223, 231, 239) !important;
+  transform: scale(0.97);
+}
+
+correspondence-filter .md-drppicker .buttons .buttons_input button:focus {
+  outline: 6px solid #f6c754;
+}
+
+correspondence-filter .md-drppicker .buttons .buttons_input button.ui-selected {
+  background-color: #85b2e2 !important;
+  color: #fff;
+  border-color: rgba(255, 255, 255, 0.3);
+  cursor: default;
+}
+
+/* Alpha Letters - Document Creation */
+/*----------------------------------------------------------------*/
+
+alpha-letters-widget .card .card-header {
+  width: 100%;
+  background-color: #eee;
+  padding: 15px;
+}
+
+/* Job Selection */
+
+alpha-letters-widget letters-job-selection strong.select-spacer {
+  display: block;
+}
+
+alpha-letters-widget letters-job-selection .ui-letter-question-block {
+  overflow: hidden;
+}
+
+alpha-letters-widget letters-job-selection .ui-letter-question-block button.mat-raised-button.mat-primary {
+  float: right;
+  overflow: hidden;
+}
+
+alpha-letters-widget letters-job-selection .multi-action-tile.tile--size-w-med {
+  margin-top: 20px;
+}
+
+/* Material Select  */
+alpha-letters-widget letters-job-selection .ui-letter-question-block mat-form-field {
+  min-width: 210px;
+}
+
+alpha-letters-widget mat-form-field .mat-error {
+  position: relative;
+  top: -15px;
+  left: 10px;
+}
+
+alpha-letters-widget .mat-form-field-infix {
+  border: 1.5px solid rgb(100, 150, 227);
+  height: 37px;
+  border-radius: 6px;
+}
+
+alpha-letters-widget .mat-form-field-infix .mat-select-trigger {
+  padding-left: 10px;
+  padding-top: 5px;
+  padding-right: 10px;
+}
+
+alpha-letters-widget .mat-form-field-appearance-legacy .mat-form-field-underline {
+  display: none;
+}
+
+alpha-letters-widget letters-job-selection .col-6 strong {
+  display: block;
+  margin-top: 5px;
+}
+
+alpha-letters-widget letters-job-selection .col-6 .margin-left-25 {
+  margin-left: 0 !important;
+}
+
+alpha-letters-widget letters-job-selection .margin-left-25 {
+  margin-left: 0 !important;
+}
+
+/* Letter Creation */
+
+alpha-letters-widget letters-create-letter strong.select-spacer {
+  display: block;
+}
+
+alpha-letters-widget letters-create-letter .ui-letter-question-block {
+  overflow: hidden;
+}
+
+alpha-letters-widget letters-create-letter .ui-letter-question-block button.mat-raised-button.mat-primary {
+  float: right;
+  overflow: hidden;
+}
+
+alpha-letters-widget letters-create-letter .multi-action-tile.tile--size-w-med {
+  margin-top: 20px;
+}
+
+/* Material Select  */
+alpha-letters-widget letters-create-letter .ui-letter-question-block mat-form-field {
+  min-width: 210px;
+}
+
+/* Material Button  */
+alpha-letters-widget button.mat-button-base,
+alpha-letters-widget button.mat-raised-button.mat-primary {
+  padding: 0;
+  margin: 0;
+  background-color: transparent;
+  color: #222;
+  font-weight: normal;
+  display: inline-block;
+  border: 2px solid #85b2e2;
+  flex: 1;
+  background-color: #fff;
+  position: relative;
+  cursor: pointer;
+  text-align: left;
+  padding: 0px 20px;
+  margin-right: 5px;
+  border-radius: 30px;
+  height: 35px;
+  box-shadow: 0px 4px 5px -4px rgba(0, 0, 0, 0.4);
+  transition: all 0.15s ease-in-out;
+  margin-bottom: 20px;
+  display: block;
+}
+
+alpha-letters-widget button.mat-button-base .mat-button-wrapper,
+alpha-letters-widget button.mat-raised-button.mat-primary .mat-button-wrapper {
+  position: relative;
+  top: -2px;
+  font-weight: bold;
+  font-size: 13px;
+}
+
+/* Ruler Style*/
+alpha-letters-widget letters-questions hr {
+  background-color: rgba(90, 90, 90, 0.5);
+  margin-top: 10px;
+  margin-bottom: 0px;
+  display: none;
+}
+
+/* Letter Questions / Check Type  */
+
+alpha-letters-widget letters-questions check-type > div {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+alpha-letters-widget letters-questions check-type > div > div {
+  display: flex;
+  align-content: center;
+  width: 100%;
+  margin-bottom: 20px;
+  background-color: rgba(221, 218, 218, 0.5);
+  padding: 15px;
+}
+
+alpha-letters-widget letters-questions check-type .mat-checkbox {
+  width: calc(50% - 30px);
+}
+
+alpha-letters-widget letters-questions check-type .mat-checkbox-layout {
+  white-space: normal;
+  display: block;
+  padding-bottom: 15px;
+  position: relative;
+  padding-left: 30px;
+  margin-bottom: 5px;
+  padding-top: 5px;
+}
+
+alpha-letters-widget letters-questions check-type .mat-checkbox-layout .mat-checkbox-inner-container {
+  position: absolute;
+  left: 0;
+  top: 0;
+  border: 1px solid rgba(19, 109, 245, 0);
+  height: 25px;
+  width: 25px;
+}
+
+alpha-letters-widget letters-questions check-type .mat-checkbox .mat-checkbox-frame {
+  border-color: rgb(100, 150, 227);
+  box-shadow: -1px 2px 3px 0px rgba(34, 34, 34, 0.4);
+}
+
+alpha-letters-widget letters-questions check-type .mat-checkbox-layout .mat-checkbox-label {
+  line-height: 1.2;
+}
+
+/* SVG Checkmark override */
+
+alpha-letters-widget letters-questions check-type svg.mat-checkbox-checkmark {
+  display: none;
+}
+
+alpha-letters-widget letters-questions check-type .mat-checkbox-checked .mat-checkbox-background {
+  background-color: #49a94f !important;
+  border: 2px solid rgba(255, 255, 255, 0.3);
+}
+
+alpha-letters-widget letters-questions check-type .mat-checkbox-checked .mat-checkbox-background:before {
+  font-family: 'Font Awesome 5 Free';
+  font-weight: 900;
+  content: '\f00c ';
+  font-size: 16px;
+  position: relative;
+  top: 0px;
+  left: 1.2px;
+  color: rgba(255, 255, 255, 1);
+}
+
+/* Letter Questions / Radio Types  */
+
+alpha-letters-widget letters-questions radio-type > div {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+alpha-letters-widget letters-questions radio-type > div > div:first-child {
+  width: 100%;
+  margin-bottom: 5px;
+  background-color: rgba(221, 218, 218, 0.5);
+  padding: 15px;
+  display: flex;
+  align-content: center;
+}
+
+alpha-letters-widget letters-questions radio-type > div mat-radio-group {
+  margin-bottom: 15px;
+  margin-top: 5px;
+  display: block;
+}
+
+alpha-letters-widget letters-questions .mat-radio-container .mat-radio-outer-circle {
+  border-color: rgb(100, 150, 227);
+  box-shadow: -1px 2px 3px 0px rgba(34, 34, 34, 0.4);
+}
+
+alpha-letters-widget letters-questions .mat-radio-container {
+  transform: scale(1.2);
+}
+
+/* Selected State */
+
+alpha-letters-widget letters-questions .mat-radio-button.mat-accent.mat-radio-checked .mat-radio-outer-circle {
+  border-color: rgb(100, 150, 227);
+}
+
+alpha-letters-widget letters-questions .mat-radio-button.mat-accent .mat-radio-inner-circle {
+  background-color: #49a94f;
+}
+
+/* Letter Questions / Select Types  */
+
+alpha-letters-widget letters-questions select-type > div > div:first-child {
+  width: 100%;
+  margin-bottom: 5px;
+  background-color: rgba(221, 218, 218, 0.5);
+  padding: 15px;
+  position: relative;
+  display: flex;
+  align-content: center;
+}
+
+alpha-letters-widget letters-questions select-type > div > div:first-child i.fa-check-circle {
+  position: relative;
+  left: 0;
+}
+
+alpha-letters-widget letters-questions select-type mat-select {
+  border: 1.5px solid rgb(100, 150, 227);
+  height: 37px;
+  margin-bottom: 20px;
+  border-radius: 6px;
+}
+
+alpha-letters-widget letters-questions select-type mat-select .mat-select-trigger {
+  padding: 10px;
+}
+
+/* Tooltip Changes*/
+
+alpha-letters-widget .tooltip--truncated-text-group-wrap {
+  min-width: 177px !important;
+  min-height: 40px !important;
+  padding-left: 0 !important;
+  font-weight: bold;
+}
+
+alpha-letters-widget alpha-info-tool-tip {
+  margin-left: 5px;
+  position: relative;
+  top: -3px;
+}
+
+/* Workplan: Add Collect Method/ Direct Debit Instruction */
+/*----------------------------------------------------------------*/
+/* Scroll Fix */
+alpha-direct-debit-container .multi-nested-structure {
+  height: auto;
+}
+
+alpha-direct-debit-container .data-structure-diagram-col.multi-nested-structure {
+  overflow-y: scroll;
+}
+
+/* Workplan: Terminations */
+/*----------------------------------------------------------------*/
+/* Workplan Dependencies - Error Status Change */
+alpha-workplan-dependencies .data-row-tile.state--data-row-tile-error .content-section-header:after {
+  content: '\f111' !important;
+  font-weight: 400 !important;
+}
+
+/* Font Awesome CSS Global Upgrades */
+/*----------------------------------------------------------------*/
+/* Contains updated CSS content rules for previous icons without needing to change html */
+
+/* Pencil/Pen Icon */
+span.fas.fa-pencil,
+i.fas.fa-pencil,
+.fas.fa-pencil {
+  margin-right: 5px;
+}
+
+span.fas.fa-pencil:before,
+i.fas.fa-pencil:before,
+.fas.fa-pencil:before {
+  content: '\f303' !important;
+}
+
+/* Floppy Disk Icon*/
+span.fas.fa-floppy-o,
+i.fas.fa-floppy-o,
+.fas.fa-floppy-o {
+  margin-right: 5px;
+}
+
+span.fas.fa-floppy-o:before,
+i.fas.fa-floppy-o:before,
+.fas.fa-floppy-o:before {
+  content: '\f0c7' !important;
+}
+
+/* Unlock Icon  */
+i.fas.fa-unlock:before,
+.fas.fa-unlock:before {
+  content: '\f3c1';
+}
+
+/* Refresh Icon */
+i.fas.fa-refresh:before,
+.fas.fa-refresh:before {
+  content: '\f2f1' !important;
+}
+
+/* Line Chart Icon */
+i.fas fa-line-chart:before,
+.fas.fa-line-chart:before {
+  content: '\f201' !important;
+}
+
+/* Clock Icon */
+i.fas fa-clock-o:before,
+.fas.fa-clock-o:before {
+  content: '\f017' !important;
+  font-weight: 400 !important;
+}
+
+/* External Link Icon */
+i.fa.fa-external-link:before,
+i.fas.fa-external-link:before,
+.fa.fa-external-link:before,
+.fas.fa-external-link:before {
+  content: '\f35d' !important;
+}
+
+
+/* Workplan: Global Update for AG Grids */
+/*----------------------------------------------------------------*/
+
+.ag-theme-fresh i.fas.fa-check {
+  color: green;
+}
+.ag-theme-fresh i.fas.fa-times {
+  color: red;
+}
+.ag-theme-fresh .ag-row-selected i.fas,
+.ag-theme-fresh .ag-row-selected:hover i.fas {
+  color: inherit;
+}
+
+/* Workplan: Change Manual Calculation Flag */
+/*----------------------------------------------------------------*/
+
+/* Font Awesome Pencil Icon upgrade */
+maintain-manual-indicators .pencil i.fas.fa-pencil {
+  margin-right: 5px;
+}
+maintain-manual-indicators .pencil i.fas.fa-pencil:before {
+  content: '\f303';
+}
+
+/* Workplan: Payments Out Wizard : Money Laundering */
+/*----------------------------------------------------------------*/
+
+payment-instruction-container .data-row-tile--flex-actions button .fas {
+  margin-right: 5px;
+}
+
+payment-instruction-container .data-row-tile--flex-actions button .fas.fa-check {
+  color: #49a94f;
+}
+
+/* Money Laundering */
+
+alpha-money-laundering-questions .question-sets--navigation {
+  position: relative;
+}
+
+/* Question Text Header Alignment */
+alpha-money-laundering-questions .question-sets--navigation .current-question.question-number {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  margin: 0 !important;
+  height: 100%;
+  padding-top: 15px !important;
+}
+
+alpha-money-laundering-questions .question-sets--navigation button {
+  z-index: 1;
+}
+
+/* Font Awesome Upgrade */
+alpha-money-laundering-questions .content-section-header .fas.fa-circle-o:before {
+  font-weight: 900;
+}
+
+/* Workplan: Toggle Features */
+/*----------------------------------------------------------------*/
+
+/* Font Awesome Upgrade */
+.state-off .feature-flag-tile--content:before {
+  font-weight: 400 !important;
+  content: '\f024' !important;
+}
+
+/* System Dashboard */
+/*----------------------------------------------------------------*/
+
+/* Font Awesome Upgrade */
+alpha-dashboard-keybar .fas.fa-clock-o:before {
+  content: '\f017';
+  font-weight: 400 !important;
+  -webkit-text-stroke: 0.4px;
+}
+
+/* Workplan: System Dashboard Maintenance */
+/*----------------------------------------------------------------*/
+
+/* Font Awesome Upgrade */
+alpha-item-manager .status-delayed .system-status-tile--content:before {
+  content: '\f017';
+  font-weight: 400 !important;
+}
+
+/* Investment Summary */
+/*----------------------------------------------------------------*/
+
+/* Scroll Fix */
+investment-summary-detail .multi-nested-structure {
+  overflow-y: scroll;
+}
+
+investment-summary-detail .tile--fund-item:before {
+  color: #5c5c5c;
+}
+
+/* Investment Action */
+investment-summary-detail button.tile--fund-item.tile--extend-icon.tile--show-values [data-action-type] {
+  margin-top: 10px;
+  position: relative;
+  left: -10px;
+  padding: 5px 15px;
+  border-radius: 30px;
+  border: 2px solid rgba(255, 255, 255, 0.6);
+}
+
+/* Data Services Catalogue */
+/*----------------------------------------------------------------*/
+
+/* Favourite Icon Font Awesome Fix */
+alpha-data-service-catalogue-menu .add-favourite-menu-action:after,
+alpha-data-service-catalogue-content .add-favourite-action:after {
+  content: '\f005' !important;
+  font-weight: 400 !important;
+}
+
+alpha-data-service-catalogue-menu .add-favourite-menu-action.active:after,
+alpha-data-service-catalogue-content .add-favourite-action.active:after {
+  font-weight: 900 !important;
+}
+
+/* Correspondence Filter */
+/*----------------------------------------------------------------*/
+
+/* Inbound Arrow  */
+alpha-correspondence-widget .ui-filter-button .fas.fa-arrow-right:before {
+  transform: rotate(135deg);
+  display: block;
+}
+
+/* Outbound Arrow  */
+alpha-correspondence-widget .ui-filter-button .fas.fa-arrow-left:before {
+  transform: rotate(135deg);
+  display: block;
+}
+
+/* In/OutBound item gutter  */
+alpha-correspondence-widget .card-row.card-row--wcm.correspondence-item .content-block--data-values.icon-in-gutter:before {
+  width: 15px !important;
+  opacity: 1 !important;
+}
+
+alpha-correspondence-widget .content-block--data-values.left-gutter.right-gutter {
+  padding-left: 15px !important;
+}
+
+alpha-correspondence-widget .correspondence-heading .ui-tooltip-icon-block {
+  border: 2px solid rgba(0, 0, 0, 0.1) !important;
+  background-color: rgba(224, 225, 229, 0.6) !important;
+  border-radius: 100% !important;
+  width: 25px !important;
+}
+
+alpha-correspondence-widget .correspondence-heading .ui-tooltip-icon-block .ui-content-icon {
+  font-weight: bold !important;
+  font-size: 14px !important;
+  transform: rotate(135deg);
+  color: #222 !important;
+}
+
+/* App Header & Breadcrumb Navigation (Landmarks) */
+/*----------------------------------------------------------------*/
+
+.alpha-layout-col-2.alpha-app-body {
+  padding-top: 0;
+  padding-left: 0;
+  padding-right: 0;
+  overflow: hidden;
+  height: calc(100vh - var(--app-header-height));
+}
+
+.context-brand-logo {
+  content: var(--alpha-toolbar-brand-logo);
+}
+
+.app-header {
+  background-color: var(--brand-primary);
+  overflow: hidden;
+  border-bottom: 2px solid #fff;
+  min-height: 61px;
+}
+
+.app-branding--block {
+  width: 60px;
+  float: left;
+  height: 61px;
+  border-right: 2px solid rgba(255, 255, 255, 0.2);
+  text-align: center;
+}
+
+.app-branding--block img {
+  width: 63%;
+  margin: 17px 12px 0 12px;
+}
+
+/*  Breadcrumb/Landmark Styles */
+.app-navigation--breadcrumbs {
+  padding-bottom: 5px;
+  padding: 5px 15px 0px 10px;
+}
+
+.app-navigation--breadcrumbs li {
+  display: inline-block;
+  position: relative;
+  padding-left: 5px;
+  color: var(--brand-secondary);
+}
+
+.app-navigation--breadcrumbs li:before {
+  font-family: 'Font Awesome 5 Free';
+  font-weight: 900;
+  content: '\f105';
+  font-size: 20px;
+  position: absolute;
+  top: calc(50% - 12.5px);
+  left: -2px;
+  color: var(--brand-secondary);
+}
+
+.app-navigation--breadcrumbs a {
+  padding: 5px;
+  display: block;
+  font-weight: bold;
+  cursor: pointer;
+  color: inherit;
+  transition: all 0.15s ease-in-out;
+  text-decoration: underline !important;
+  font-size: 11px;
+}
+
+.app-navigation--breadcrumbs a:hover,
+.app-navigation--breadcrumbs a:active {
+  transform: scaleY(1.05);
+  transform: scaleX(1.05);
+  background-color: rgba(255, 255, 255, 0.09);
+  border-radius: 4px;
+}
+
+.app-navigation--breadcrumbs li:first-child {
+  padding-left: 0;
+}
+
+.app-navigation--breadcrumbs li:first-child:before {
+  display: none;
+}
+
+/* Header Updates for Resize */
+.app-page--header {
+  display: flex;
+  float: none;
+  flex-direction: column;
+  height: auto;
+  padding-bottom: 10px;
+}
+
+.app-header {
+  height: auto;
+}
+
+.app-page--heading {
+  padding: 0 15px 0 15px;
+  display: flex;
+}
+
+.app-page--heading h1 {
+  font-size: 14px;
+  line-height: 1.2;
+  margin-bottom: 0;
+  color: #fff;
+  padding-top: 0;
+}
+
+.context-info {
+  color: var(--brand-text-primary);
+  border-radius: 4px;
+  display: inline-block;
+}
+
+.data-bubble--status {
+  background-color: rgb(231, 240, 249);
+  padding: 2px 5px;
+  border-radius: 4px;
+  margin-right: 2px;
+  display: inline !important;
+  font-weight: bold;
+}
+
+.context-info span {
+  display: inline-block;
+}
+
+span.portal-ready {
+  background-image: url(/Images/ReAssureNow_Logo_White-01.png);
+  background-size: contain;
+  background-repeat: no-repeat;
+  border: 0px solid red;
+  width: 93px;
+  height: 18px;
+  display: inline-block;
+  margin-bottom: -5px;
+}
+
+.app-details {
+  float: right;
+  height: 61px;
+  display: flex;
+}
+
+.app-system-date {
+  display: flex;
+  flex-direction: column;
+  color: #fff;
+  font-weight: bold;
+  padding: 5px 10px 5px 10px;
+  font-size: 14px;
+  height: 100%;
+
+  align-items: flex-start;
+  justify-content: center;
+}
+
+.app-system-date--label {
+  font-size: 11px;
+  padding-bottom: 3px;
+  color: var(--brand-text-primary);
+}
+
+.app-system-date--value {
+  color: var(--brand-text-primary);
+}
+
+/* App Header Notifications */
+/*----------------------------------------------------------------*/
+
+.app-notifications {
+  display: flex;
+  align-content: center;
+  float: right;
+  height: 61px;
+  padding: 10px;
+  border-right: 2px solid rgba(255, 255, 255, 0.2);
+}
+
+.app-notifications--bell {
+  align-self: center;
+  font-size: 17px;
+  flex: 1;
+  padding: 5px;
+  position: relative;
+  float: left;
+  min-width: 46px;
+  height: 46px;
+  border: 2px solid var(--brand-secondary);
+  background-color: rgba(255, 255, 255, 0.2);
+  color: var(--brand-secondary);
+  text-align: center;
+  border-radius: 30px;
+  transition: all 0.15s ease-in-out;
+  pointer-events: none;
+}
+
+.app-notifications--envelope {
+  align-self: center;
+  font-size: 17px;
+  flex: 1;
+  padding: 5px;
+  position: relative;
+  float: left;
+  min-width: 46px;
+  height: 46px;
+  border: 2px solid var(--brand-secondary);
+  background-color: rgba(255, 255, 255, 0.2);
+  color: var(--brand-secondary);
+  text-align: center;
+  border-radius: 30px;
+  transition: all 0.15s ease-in-out;
+  pointer-events: none;
+}
+
+button.app-notifications--envelope.status-active-notifications {
+  line-height: 1;
+  background-color: #f0ad4e;
+  color: #fff;
+  border-color: 2px solid var(--brand-border-active);
+  padding-right: 15px;
+  padding-left: 12px;
+  -webkit-animation: pulseInOut 0.4s linear forwards;
+  animation: pulseInOut 0.4s linear forwards;
+  font-size: 21px;
+  pointer-events: all;
+  cursor: unset;
+}
+
+.app-notifications--results {
+  width: 90%;
+  margin: 0 auto;
+  max-width: 600px;
+}
+
+.app-user--info {
+  overflow: hidden;
+  font-weight: bold;
+  align-self: center;
+  font-size: 17px;
+  padding: 10px 5px;
+  position: relative;
+  float: left;
+  width: 48px;
+  height: 48px;
+  border: 2px solid var(--brand-secondary);
+  background-color: rgba(255, 255, 255, 0.2);
+  margin-right: 10px;
+  text-align: center;
+  border-radius: 30px;
+  transition: all 0.15s ease-in-out;
+  text-decoration: none;
+  transform: scale(1);
+  color: var(--brand-secondary);
+  white-space: pre;
+}
+
+.app-user--info:hover {
+  background-color: var(--brand-secondary-mild);
+  color: var(--brand-text-secondary);
+}
+
+.app-user--info > i {
+  font-size: 13px;
+  margin-left: 3px;
+  margin-right: 3px;
+  top: 25px;
+  right: 16px;
+}
+
+span.app-user--greeting {
+  color: rgba(255, 255, 255, 0.8);
+  margin-right: 5px;
+  font-style: italic;
+  font-size: 11px;
+}
+
+.app-user--info:after {
+  position: absolute;
+  font-family: 'Font Awesome 5 Free';
+  font-weight: 900;
+  content: '\F107';
+  top: 25px;
+  right: 16px;
+}
+
+.status-active-notifications {
+  line-height: 1;
+  background-color: #f0ad4e;
+  border-color: 2px solid var(--brand-border-active);
+  color: #fff;
+  padding-right: 15px;
+  padding-left: 12px;
+  -webkit-animation: pulseInOut 0.4s linear forwards;
+  animation: pulseInOut 0.4s linear forwards;
+  font-size: 21px;
+  pointer-events: all;
+  cursor: pointer;
+}
+
+.status-service-notifications {
+  line-height: 1;
+  background-color: red;
+  color: #fff;
+  padding-right: 15px;
+  padding-left: 12px;
+  -webkit-animation: pulseInOut 0.4s linear forwards;
+  animation: pulseInOut 0.4s linear forwards;
+  font-size: 21px;
+  pointer-events: all;
+}
+
+.app-header {
+  border-color: #f0ad4e;
+}
+
+.status-active-notifications i,
+.status-active-notifications span {
+  -webkit-animation: ring 6s 0.4s ease-in-out forwards;
+  animation: ring 6s 0.4s ease-in-out forwards;
+  -webkit-transform-origin: 50% 4px;
+  transform-origin: 50% 4px;
+}
+
+.app-notifications-number {
+  font-weight: bold;
+  padding-left: 0.4rem;
+}
+
+/* App Control: Buttons */
+/*----------------------------------------------------------------*/
+/* Component level CSS will be migrated here overtime */
+
+/* Companion App Dock (Right Side Dock) */
+/*----------------------------------------------------------------*/
+/* Component level CSS will be migrated here, currently only new rules are here */
+
+alpha-right-sidebar .view-widgets ul.widget-selection {
+  height: auto;
+}
+
+alpha-right-sidebar .sidebar-header {
+  padding-top: 10px;
+}
+
+alpha-right-sidebar {
+  max-width: 520px;
+}
+alpha-right-sidebar.pinned {
+  width: 520px;
+}
+
+/* Transition Resets */
+alpha-right-sidebar,
+alpha-right-sidebar.pinned,
+alpha-right-sidebar alpha-menu-toolbar-handle,
+alpha-right-sidebar.pinned alpha-menu-toolbar-handle {
+  transition: none;
+  transition-delay: 0s;
+}
+
+/* App Explorer Toolbar (Left Menu)  */
+/*----------------------------------------------------------------*/
+/* Component level CSS will be migrated here, currently only new rules are here */
+
+/* Extended Menu */
+alpha-explorer-toolbar .ui-action-menu-extended {
+  position: absolute;
+  background-color: rgba(34, 34, 34, 0.95);
+}
+
+alpha-explorer-toolbar .alpha-nav-app-explorer > ul li > ul li > a > span {
+  background-color: rgba(51, 52, 58, 0.9);
+}
+
+.alpha-explorer-toolbar.extended {
+  margin-right: 230px;
+}
+
+/* Workplan: Wizard Navigation */
+/*----------------------------------------------------------------*/
+/* Component level CSS will be migrated here, currently only new rules are here */
+
+/* Sticky Navigation */
+.wizard-container.wizard-vertical-theme-01
+  .step-container
+  .content-section-header.step-open
+  + .content-section-body
+  .wizard-navigation {
+  position: fixed;
+  bottom: 0;
+  z-index: 5;
+  left: 60px;
+  min-height: 60px;
+  border-top: 3px solid rgba(255, 255, 255, 1);
+  border-bottom: 6px solid rgba(255, 255, 255, 0.3);
+  padding-top: 5px;
+  box-shadow: -5px -2px 10px rgba(0, 0, 0, 0.4);
+}
+
+/* Legacy App Explorer Support (Version 1) */
+.ui-app-explorer-v1
+  .wizard-container.wizard-vertical-theme-01
+  .step-container
+  .content-section-header.step-open
+  + .content-section-body
+  .wizard-navigation {
+  left: 225px;
+}
+
+/* Sticky Wizard Actions / Width changes for companion dock */
+
+.wizard-container .step-container-list {
+  padding-bottom: 200px;
+}
+
+/* Default Sticky Navigation */
+.wizard-container.wizard-vertical-theme-01
+  .step-container
+  .content-section-header.step-open
+  + .content-section-body
+  .wizard-navigation {
+    width: calc((100% - 60px) - 631px);
+    left: 50px;
+}
+
+/* Only Companion Dock Open */
+.companion-dock-open
+  .wizard-container.wizard-vertical-theme-01
+  .step-container
+  .content-section-header.step-open
+  + .content-section-body
+  .wizard-navigation {
+  width: calc((100% - 520px) - 60px);
+}
+
+/* Only App Explorer */
+.ui-app-explorer-v2.ui-app-exp-open
+  .wizard-container.wizard-vertical-theme-01
+  .step-container
+  .content-section-header.step-open
+  + .content-section-body
+  .wizard-navigation {
+  width: calc((100% - 60px) - 60px - 230px);
+  left: 290px;
+}
+
+/* Both App Explorer & Companion Dock Open */
+.companion-dock-open.ui-app-explorer-v2.ui-app-exp-open
+  .wizard-container.wizard-vertical-theme-01
+  .step-container
+  .content-section-header.step-open
+  + .content-section-body
+  .wizard-navigation {
+  width: calc((100% - 520px) - 60px - 230px);
+  left: 290px;
+}
+
+/* Workplan: Wizard Navigation - Legacy App Explorer Support */
+/*----------------------------------------------------------------*/
+
+/* Default Sticky Navigation */
+.ui-app-explorer-v1
+  .wizard-container.wizard-vertical-theme-01
+  .step-container
+  .content-section-header.step-open
+  + .content-section-body
+  .wizard-navigation {
+  width: calc((100% - 30px) - 255px);
+}
+
+/* Companion Dock Open */
+.ui-app-explorer-v1.companion-dock-open
+  .wizard-container.wizard-vertical-theme-01
+  .step-container
+  .content-section-header.step-open
+  + .content-section-body
+  .wizard-navigation {
+  width: calc((100% - 490px) - 255px);
+}
+
+/* End: Sticky Navigation */
+
+/* Workplan: Investment Options (Fund Switch/Redirection) */
+/*----------------------------------------------------------------*/
+
+alpha-fund-switching .content-section-body .content-block--fund-switch,
+alpha-fund-switching .content-block--fund-switch,
+alpha-fund-redirection-dialog .content-section-body .content-block--fund-switch,
+alpha-fund-redirection-dialog .content-block--fund-switch {
+  margin-top: -15px;
+  margin-right: -10px;
+  margin-left: -10px;
+  min-height: 300px;
+  background: rgb(237, 236, 240);
+  background: linear-gradient(198deg, rgba(237, 236, 240, 1) 0%, rgba(226, 226, 237, 1) 35%, rgba(131, 139, 157, 1) 100%);
+}
+
+alpha-fund-switching .ui-ana--selection-options .card.question-sets.centered-questions,
+alpha-fund-redirection-dialog .ui-ana--selection-options .card.question-sets.centered-questions {
+  background-color: rgba(255, 255, 255, 0.2);
+  box-shadow: 0px 5px 10px -4px rgba(0, 0, 0, 0.3);
+}
+
+alpha-fund-switching .ui-ana--selection-options .card.question-sets.centered-questions .card-header,
+alpha-fund-redirection-dialog .ui-ana--selection-options .card.question-sets.centered-questions .card-header {
+  background: none;
+}
+
+alpha-fund-switching .ui-iso-data-block .ui-key-icons.ui-key-icon-selected,
+alpha-fund-redirection-dialog .ui-iso-data-block .ui-key-icons.ui-key-icon-selected {
+  z-index: 4;
+}
+
+alpha-fund-switching .ui-iso-data-block .ui-tooltip-icon-block:hover .ui-content-tooltip,
+alpha-fund-redirection-dialog .ui-iso-data-block .ui-tooltip-icon-block:hover .ui-content-tooltip {
+  display: none;
+}
+
+alpha-fund-switching .ui-iso-data-block .ui-key-icons.ui-key-icon-selected .ui-content-tooltip,
+alpha-fund-redirection-dialog .ui-iso-data-block .ui-key-icons.ui-key-icon-selected .ui-content-tooltip {
+  display: block;
+  display: flex;
+  flex-wrap: wrap;
+}
+
+alpha-fund-switching .ui-iso-data-block .ui-key-icons.ui-key-icon-selected .ui-tooltip-icon-block,
+alpha-fund-redirection-dialog .ui-iso-data-block .ui-key-icons.ui-key-icon-selected .ui-tooltip-icon-block {
+  border-color: #1c2447;
+}
+
+alpha-fund-switching .ui-iso-data-block .ui-content-tooltip--larger,
+alpha-fund-redirection-dialog .ui-iso-data-block .ui-content-tooltip--larger {
+  width: 430px;
+  align-items: start;
+}
+
+alpha-fund-switching .ui-content-tooltip--actions .ui-button--multi-state,
+alpha-fund-redirection-dialog .ui-content-tooltip--actions .ui-button--multi-state {
+  margin-right: 0;
+  margin-top: 5px;
+  margin-bottom: 0;
+}
+
+alpha-fund-switching .ui-content-tooltip--actions .ui-button--multi-state button.ui-button .ui-button-content,
+alpha-fund-redirection-dialog .ui-content-tooltip--actions .ui-button--multi-state button.ui-button .ui-button-content {
+  text-align: center;
+  width: 100%;
+}
+
+alpha-fund-switching .ui-content-tooltip--actions .ui-button--multi-state:last-child,
+alpha-fund-redirection-dialog .ui-content-tooltip--actions .ui-button--multi-state:last-child {
+  margin-bottom: 5px;
+}
+
+alpha-fund-switching .ui-header-container,
+alpha-fund-switching .ui-content-tooltip--actions .ui-button--multi-state,
+alpha-fund-redirection-dialog .ui-header-container,
+alpha-fund-redirection-dialog .ui-content-tooltip--actions .ui-button--multi-state {
+  width: 100%;
+}
+
+alpha-fund-switching .ui-header-container .ui-diagram-header,
+alpha-fund-redirection-dialog .ui-header-container .ui-diagram-header {
+  color: #fff;
+  border-color: #fff;
+}
+
+alpha-fund-switching .ui-coverages-container,
+alpha-fund-redirection-dialog .ui-coverages-container {
+  max-height: 230px;
+  overflow: auto;
+}
+
+alpha-fund-switching .data-shelf--fund-value,
+alpha-fund-redirection-dialog .data-shelf--fund-value {
+  border: 1px solid #ccc;
+  border-left: 6px solid #ccc;
+  background-color: #eee;
+  margin-left: -15px;
+  width: 190px;
+  padding: 10px;
+  margin-bottom: -10px;
+  border-radius: 0 0 6px 6px;
+  color: black;
+}
+
+alpha-fund-switching .ui-coverages-container ul.alpha-linked-data-structure li .multi-action-tile.tile--size-w-lrg button,
+alpha-fund-switching .ui-coverages-container .multi-action-tile.tile--size-w-lrg button,
+alpha-fund-switching .ui-coverages-container .multi-action-tile.tile--size-w-lrg .action--psuedo,
+alpha-fund-switching .ui-coverages-container .tile--size-w-lrg .data-shelf--fund-value,
+alpha-fund-redirection-dialog .ui-coverages-container ul.alpha-linked-data-structure li .multi-action-tile.tile--size-w-lrg button,
+alpha-fund-redirection-dialog .ui-coverages-container .multi-action-tile.tile--size-w-lrg button,
+alpha-fund-redirection-dialog .ui-coverages-container .multi-action-tile.tile--size-w-lrg .action--psuedo,
+alpha-fund-redirection-dialog .ui-coverages-container .tile--size-w-lrg .data-shelf--fund-value {
+  max-width: 190px;
+  min-width: 190px;
+  width: 190px;
+}
+
+alpha-fund-switching .ui-coverages-container .multi-action-tile.tile--size-w-lrg,
+alpha-fund-redirection-dialog .ui-coverages-container .multi-action-tile.tile--size-w-lrg {
+  display: flex;
+  flex-direction: column;
+  align-content: center;
+  justify-content: center;
+  border-radius: 6px;
+  box-shadow: none;
+  background-color: white;
+  color: black;
+  transition: all 75ms ease-in-out;
+  flex-shrink: 0;
+  margin: 0 5px;
+  align-items: flex-start;
+}
+
+alpha-fund-switching .ui-coverages-container .alpha-linked-data-structure,
+alpha-fund-redirection-dialog .ui-coverages-container .alpha-linked-data-structure {
+  pointer-events: none;
+}
+
+alpha-fund-switching .ui-coverages-container ul.alpha-linked-data-structure li.alpha-item-group,
+alpha-fund-redirection-dialog .ui-coverages-container ul.alpha-linked-data-structure li.alpha-item-group {
+  padding: 0;
+  margin: 0;
+  border-left: 0;
+}
+
+alpha-fund-switching .ui-coverages-overlay-container,
+alpha-fund-redirection-dialog .ui-coverages-overlay-container {
+  max-width: 760px;
+}
+
+alpha-fund-switching .ui-coverages-overlay-container .ui-coverages-container,
+alpha-fund-redirection-dialog .ui-coverages-overlay-container .ui-coverages-container {
+  max-height: 52%;
+}
+
+alpha-fund-switching .ui-coverages-overlay-container .ui-iso-diagram-section,
+alpha-fund-redirection-dialog .ui-coverages-overlay-container .ui-iso-diagram-section {
+  margin-bottom: 0;
+  display: flex;
+  justify-content: center;
+}
+
+alpha-fund-switching .ui-coverages-overlay-container .ui-iso-data-block .ui-iso-data-title,
+alpha-fund-redirection-dialog .ui-coverages-overlay-container .ui-iso-data-block .ui-iso-data-title {
+  color: #fff;
+}
+
+alpha-fund-switching .ui-coverages-overlay-container .ui-iso-data-bar,
+alpha-fund-redirection-dialog .ui-coverages-overlay-container .ui-iso-data-bar {
+  left: 0;
+}
+
+alpha-fund-switching .ui-coverages-overlay-container .ui-iso-data-bar .ui-data-indicator.total-amount,
+alpha-fund-redirection-dialog .ui-coverages-overlay-container .ui-iso-data-bar .ui-data-indicator.total-amount {
+  border-left: 2px solid rgba(255, 255, 255, 0.5);
+  border-radius: 30px;
+  left: 0;
+}
+
+alpha-fund-switching .ui-coverages-overlay-container .ui-coverages-container .multi-action-tile.tile--size-w-lrg,
+alpha-fund-redirection-dialog .ui-coverages-overlay-container .ui-coverages-container .multi-action-tile.tile--size-w-lrg {
+  margin: 5px;
+  display: inline-block;
+}
+
+alpha-fund-switching .ui-button--multi-state button.ui-button.ui-button--negative,
+alpha-fund-redirection-dialog .ui-button--multi-state button.ui-button.ui-button--negative {
+  background-color: #d9534f;
+  color: #fff;
+  border-color: rgba(255, 255, 255, 0.5);
+}
+
+alpha-fund-switching .ui-button--multi-state button.ui-button.ui-button--negative:hover,
+alpha-fund-redirection-dialog .ui-button--multi-state button.ui-button.ui-button--negative:hover {
+  background-color: #c2403c;
+}
+
+/* Fund Switch Redesign/ Options Menu */
+
+alpha-fund-switching .content-block--fund-switch .ui-fs-view-menu,
+alpha-fund-redirection-dialog .content-block--fund-switch .ui-fs-view-menu {
+  background-color: rgba(19, 19, 19, 0.1);
+}
+
+alpha-fund-switching .ui-options-toolbar,
+alpha-fund-redirection-dialog .ui-options-toolbar {
+  padding: 10px;
+}
+
+/* UI Action - Options Menu */
+
+alpha-fund-switching .ui-button--option,
+alpha-fund-redirection-dialog .ui-button--option {
+  padding: 0;
+  margin: 0;
+  background-color: transparent;
+  color: #3c4981;
+  color: #222;
+  font-weight: normal;
+  display: inline-block;
+  border: 0.1rem solid #85b2e2;
+  flex: 1;
+  background-color: #fff;
+  position: relative;
+  cursor: pointer;
+  padding: 5px 10px;
+  margin-right: 5px;
+  min-height: 40px;
+  min-width: 40px;
+  justify-content: center;
+  align-content: center;
+  border-radius: 30px;
+  box-shadow: 0px 4px 5px -4px rgba(0, 0, 0, 0.4);
+  transition: all 0.15s ease-in-out;
+  justify-items: center;
+  text-align: center;
+  font-size: 16px;
+}
+
+alpha-fund-switching .ui-button--option:hover,
+alpha-fund-redirection-dialog .ui-button--option:hover {
+  background-color: rgb(223, 231, 239);
+  transform: scale(0.97);
+}
+
+alpha-fund-switching .ui-button--option:focus,
+alpha-fund-redirection-dialog .ui-button--option:focus {
+  outline: 6px solid #f6c754;
+}
+
+alpha-fund-switching .ui-button--option.ui-selected,
+alpha-fund-redirection-dialog .ui-button--option.ui-selected {
+  background-color: #85b2e2;
+  color: #fff;
+  border-color: rgba(255, 255, 255, 0.3);
+  cursor: default;
+}
+
+/* Isometric Diagram Container */
+
+alpha-fund-switching .ui-iso-diagram-container,
+alpha-fund-redirection-dialog .ui-iso-diagram-container {
+  min-height: 100px;
+  padding: 20px;
+}
+
+/* Isometric Data Bar */
+
+alpha-fund-switching .ui-iso-data-block,
+alpha-fund-redirection-dialog .ui-iso-data-block {
+  position: relative;
+  border-top: 0 dashed #fff;
+  padding-bottom: 10px;
+  margin-bottom: 20px;
+  min-width: 380px;
+}
+
+alpha-fund-switching .ui-iso-data-block .ui-tooltip-icon-block,
+alpha-fund-redirection-dialog .ui-iso-data-block .ui-tooltip-icon-block {
+  width: 24.5px;
+  height: 24px;
+}
+
+alpha-fund-switching .ui-iso-data-block:before,
+alpha-fund-redirection-dialog .ui-iso-data-block:before {
+  content: '';
+  position: absolute;
+  left: -30px;
+  height: calc(100% - 25px);
+  top: 0;
+}
+
+alpha-fund-switching .ui-iso-data-block .ui-iso-data-value,
+alpha-fund-redirection-dialog .ui-iso-data-block .ui-iso-data-value {
+  position: absolute;
+  z-index: 2;
+  top: 20px;
+  left: -26px;
+  display: flex;
+  min-width: 250px;
+}
+
+alpha-fund-switching .ui-iso-data-block .ui-iso-data-value .ui-iso-data-amount,
+alpha-fund-switching .ui-iso-data-block .ui-iso-data-value .ui-iso-data-percent,
+alpha-fund-redirection-dialog .ui-iso-data-block .ui-iso-data-value .ui-iso-data-amount,
+alpha-fund-redirection-dialog .ui-iso-data-block .ui-iso-data-value .ui-iso-data-percent {
+  background-color: rgba(255, 255, 255, 0.8);
+  border: 2px solid rgba(255, 255, 255, 0.7);
+  padding: 3px 10px;
+}
+
+alpha-fund-switching .ui-iso-data-block .ui-iso-data-value .ui-iso-data-amount,
+alpha-fund-redirection-dialog .ui-iso-data-block .ui-iso-data-value .ui-iso-data-amount {
+  border-radius: 30px;
+}
+
+alpha-fund-switching .ui-iso-data-block .ui-iso-data-value .ui-iso-data-percent,
+alpha-fund-redirection-dialog .ui-iso-data-block .ui-iso-data-value .ui-iso-data-percent {
+  border-radius: 30px;
+  background-color: rgba(60, 73, 129, 0.9);
+  border: 2px solid rgba(255, 255, 255, 0.5);
+  margin-right: 2px;
+  overflow: hidden;
+  color: #fff;
+}
+
+/* Updated Premium Input */
+
+alpha-fund-switching alpha-available-fund-bar .ui-iso-data-block .ui-iso-data-value .ui-iso-data-percent {
+  background-color: rgba(255, 255, 255, 1);
+  border: 2px solid rgba(60, 73, 129, 0.9);
+}
+
+alpha-fund-switching alpha-available-fund-bar .ui-iso-data-block .ui-iso-data-value .ui-iso-data-percent:before {
+  content: '\f30a';
+  font-family: 'Font Awesome 5 Free';
+  font-weight: 900;
+  position: absolute;
+  right: calc(100% + 10px);
+  top: -4px;
+  color: #5a6493;
+  font-size: 26px;
+
+  border-radius: 100%;
+}
+
+alpha-fund-switching alpha-available-fund-bar .ui-iso-data-block .ui-iso-data-value .ui-iso-data-percent:after {
+  content: '';
+  height: 30px;
+  border-left: 3px solid #5a6493;
+  position: absolute;
+  left: -10px;
+  top: -2px;
+  width: 30px;
+  border-radius: 100%;
+}
+
+alpha-fund-switching alpha-available-fund-bar .ui-iso-data-block .ui-iso-data-value .ui-iso-data-percent input {
+  width: 35px;
+  border: 0;
+  color: rgb(28, 117, 188);
+  text-align: right;
+  padding-right: 3px;
+  outline: 0;
+}
+
+alpha-fund-switching alpha-available-fund-bar .ui-iso-data-block .ui-iso-data-value .ui-iso-data-percent .ui-percent-symbol {
+  font-weight: bold;
+  color: rgba(60, 73, 129, 0.9);
+}
+
+alpha-fund-switching .ui-iso-data-block.ui-drop.no-funds .ui-iso-data-title,
+alpha-fund-redirection-dialog .ui-iso-data-block.ui-drop.no-funds .ui-iso-data-title {
+  top: 0;
+  left: -10px;
+}
+
+alpha-fund-switching .ui-iso-data-block .ui-iso-data-title,
+alpha-fund-redirection-dialog .ui-iso-data-block .ui-iso-data-title {
+  padding: 5px 5px 5px 10px;
+  margin-bottom: 2px;
+  position: relative;
+  left: -10px;
+  font-size: 13px;
+}
+
+/* Editable Premium Capsules */
+
+alpha-fund-switching .ui-iso-data-block .ui-iso-data-value .ui-iso-percent-entry,
+alpha-fund-redirection-dialog .ui-iso-data-block .ui-iso-data-value .ui-iso-percent-entry {
+  border-radius: 30px;
+  background-color: rgba(60, 73, 129, 0.9);
+  background-color: #fff;
+  border: 2px solid rgba(255, 255, 255, 0.5);
+  border: 0.2rem solid #85b2e2;
+  margin-right: 10px;
+  padding: 5px;
+  color: #fff;
+  width: 75px;
+  right: 10px;
+  top: -2px;
+  position: relative;
+  text-align: right;
+  color: #222;
+}
+
+alpha-fund-switching .ui-iso-data-block .ui-iso-data-value .ui-iso-percent-entry:before,
+alpha-fund-redirection-dialog .ui-iso-data-block .ui-iso-data-value .ui-iso-percent-entry:before {
+  content: '\f177 ';
+  font-family: 'Font Awesome 5 Free';
+  font-weight: 900;
+  position: absolute;
+  right: calc(100% + 10px);
+  top: -4px;
+  color: #5a6493;
+  font-size: 26px;
+
+  border-radius: 100%;
+}
+
+alpha-fund-switching .ui-iso-data-block .ui-iso-data-value .ui-iso-percent-entry:after,
+alpha-fund-redirection-dialog .ui-iso-data-block .ui-iso-data-value .ui-iso-percent-entry:after {
+  content: '';
+  height: 30px;
+  border-left: 3px solid #5a6493;
+  position: absolute;
+  left: -10px;
+  top: -2px;
+  width: 30px;
+  border-radius: 100%;
+}
+
+alpha-fund-switching .ui-iso-data-block .ui-iso-data-value .ui-iso-percent-entry input,
+alpha-fund-redirection-dialog .ui-iso-data-block .ui-iso-data-value .ui-iso-percent-entry input {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: calc(100%);
+  height: 100%;
+  border: 0;
+  padding-left: 5px;
+  padding-right: 20px;
+  background-color: transparent;
+  text-align: right;
+  z-index: 2;
+  color: #1c75bc;
+  margin-left: -1px;
+}
+alpha-fund-switching .ui-iso-data-block .ui-iso-data-value .ui-iso-percent-entry input:focus,
+alpha-fund-redirection-dialog .ui-iso-data-block .ui-iso-data-value .ui-iso-percent-entry input:focus {
+  outline: 0;
+}
+alpha-fund-switching .ui-iso-data-block .ui-iso-data-value .ui-iso-percent-entry input:focus + .ux-focus-helper,
+alpha-fund-redirection-dialog .ui-iso-data-block .ui-iso-data-value .ui-iso-percent-entry input:focus + .ux-focus-helper {
+  outline: 6px solid rgba(246, 199, 84, 0.7);
+  content: '';
+  position: absolute;
+  top: -5px;
+  left: -5px;
+  width: calc(100% + 10px);
+  height: calc(100% + 10px);
+  z-index: 1;
+}
+
+/* Isometric Diagram Data Bar */
+
+alpha-fund-switching .ui-iso-data-bar,
+alpha-fund-redirection-dialog .ui-iso-data-bar {
+  display: flex;
+  width: 100%;
+  position: relative;
+  left: -10px;
+  width: 275px;
+}
+
+alpha-fund-switching .ui-iso-data-bar .ui-iso-data,
+alpha-fund-redirection-dialog .ui-iso-data-bar .ui-iso-data {
+  width: 100%;
+  position: relative;
+  transition: all 0.5s;
+}
+
+/* Single Premium Bar Stacking */
+
+alpha-fund-switching .ui-iso-data.ui-filled-bar.ux-bar-example {
+  z-index: 1;
+}
+
+alpha-fund-switching .ui-iso-data-block.no-funds .ui-iso-data-bar .ui-iso-data,
+alpha-fund-redirection-dialog .ui-iso-data-block.no-funds .ui-iso-data-bar .ui-iso-data {
+  width: 0px;
+}
+
+alpha-fund-switching .ui-iso-data-block.no-funds .ui-iso-data-bar .ui-iso-data.ui-iso-data-empty,
+alpha-fund-redirection-dialog .ui-iso-data-block.no-funds .ui-iso-data-bar .ui-iso-data.ui-iso-data-empty {
+  width: 20px;
+}
+
+alpha-fund-switching .ui-iso-data-bar .ui-iso-data [class*='ui-iso-data'],
+alpha-fund-redirection-dialog .ui-iso-data-bar .ui-iso-data [class*='ui-iso-data'] {
+  min-height: 32px;
+}
+
+alpha-fund-switching .ui-iso-data-bar .ui-iso-data .ui-iso-data-top,
+alpha-fund-redirection-dialog .ui-iso-data-bar .ui-iso-data .ui-iso-data-top {
+  transform: skewX(-35deg);
+  position: relative;
+}
+
+alpha-fund-switching .ui-iso-data-bar .ui-iso-data .ui-iso-data-top > .ui-iso-data-value,
+alpha-fund-redirection-dialog .ui-iso-data-bar .ui-iso-data .ui-iso-data-top > .ui-iso-data-value {
+  transform: skewX(35deg);
+  position: absolute;
+  top: -17px;
+  left: 1px;
+  z-index: 2;
+}
+
+alpha-fund-switching .ui-iso-data-bar .ui-iso-data .ui-iso-data-bottom,
+alpha-fund-redirection-dialog .ui-iso-data-bar .ui-iso-data .ui-iso-data-bottom {
+  transform: skewX(35deg);
+}
+
+alpha-fund-switching .ui-iso-data-bar .ui-iso-data:after,
+alpha-fund-redirection-dialog .ui-iso-data-bar .ui-iso-data:after {
+  content: '';
+  display: block;
+  height: 40px;
+  width: 40px;
+  transform: rotate(45deg) skew(10deg, 10deg);
+  position: absolute;
+  top: 12.2px;
+  right: -33px;
+  z-index: 1;
+  border-radius: 2px;
+}
+
+/* Isometric Data Bar/ Colours / Active Fund */
+
+alpha-fund-switching .fund-amount-bar .ui-iso-data-block .ui-iso-data-bar .ui-iso-data-top,
+alpha-fund-switching .fund-amount-bar .ui-iso-data-block .ui-iso-data-bar .ui-iso-data-bottom,
+alpha-fund-switching .fund-amount-barn .ui-iso-data-block .ui-iso-data-bar .ui-iso-data:after,
+alpha-fund-redirection-dialog .fund-amount-bar .ui-iso-data-block .ui-iso-data-bar .ui-iso-data-top,
+alpha-fund-redirection-dialog .fund-amount-bar .ui-iso-data-block .ui-iso-data-bar .ui-iso-data-bottom,
+alpha-fund-redirection-dialog .fund-amount-barn .ui-iso-data-block .ui-iso-data-bar .ui-iso-data:after {
+  border-color: rgba(255, 255, 255, 0.9);
+  background-color: rgba(255, 255, 255, 0.5);
+  border-style: solid;
+}
+
+alpha-fund-switching .fund-amount-bar .ui-iso-data-block .ui-iso-data-bar .ui-iso-data-top,
+alpha-fund-redirection-dialog .fund-amount-bar .ui-iso-data-block .ui-iso-data-bar .ui-iso-data-top {
+  border-width: 2px;
+  border-bottom-width: 1px;
+  border-color: rgba(255, 255, 255, 0.2);
+  background-color: #8dc641;
+}
+
+alpha-fund-switching .fund-amount-bar .ui-iso-data-block .ui-iso-data-bar .ui-iso-data-bottom,
+alpha-fund-redirection-dialog .fund-amount-bar .ui-iso-data-block .ui-iso-data-bar .ui-iso-data-bottom {
+  border-width: 2px;
+  border-color: rgba(255, 255, 255, 0.2);
+  background-color: #079247;
+}
+
+alpha-fund-switching .fund-amount-bar .ui-iso-data-block .ui-iso-data-bar .ui-iso-data:after,
+alpha-fund-redirection-dialog .fund-amount-bar .ui-iso-data-block .ui-iso-data-bar .ui-iso-data:after {
+  border-width: 2px;
+  border-color: rgba(65, 71, 88, 0.3);
+  background-color: #d9e028;
+  border-style: solid;
+}
+
+/* Isometric Data Bar/ Colours / Active Fund */
+
+alpha-fund-switching .fund-amount-single-bar .ui-iso-data-block .ui-iso-data-bar .ui-iso-data-top,
+alpha-fund-switching .fund-amount-single-bar .ui-iso-data-block .ui-iso-data-bar .ui-iso-data-bottom,
+alpha-fund-switching .fund-amount-single-bar .ui-iso-data-block .ui-iso-data-bar .ui-iso-data:after,
+alpha-fund-redirection-dialog .fund-amount-single-bar .ui-iso-data-block .ui-iso-data-bar .ui-iso-data-top,
+alpha-fund-redirection-dialog .fund-amount-single-bar .ui-iso-data-block .ui-iso-data-bar .ui-iso-data-bottom,
+alpha-fund-redirection-dialog .fund-amount-single-bar .ui-iso-data-block .ui-iso-data-bar .ui-iso-data:after {
+  border-color: rgba(255, 255, 255, 0.9);
+  background-color: rgba(255, 255, 255, 0.5);
+  border-style: solid;
+}
+
+alpha-fund-switching .fund-amount-single-bar .ui-iso-data-block .ui-iso-data-bar .ui-iso-data-top,
+alpha-fund-redirection-dialog .fund-amount-single-bar .ui-iso-data-block .ui-iso-data-bar .ui-iso-data-top {
+  border-width: 2px;
+  border-bottom-width: 1px;
+  border-color: rgba(255, 255, 255, 0.2);
+  background-color: #be5ecc;
+}
+
+alpha-fund-switching .fund-amount-single-bar .ui-iso-data-block .ui-iso-data-bar .ui-iso-data-bottom,
+alpha-fund-redirection-dialog .fund-amount-single-bar .ui-iso-data-block .ui-iso-data-bar .ui-iso-data-bottom {
+  border-width: 2px;
+  border-color: rgba(255, 255, 255, 0.2);
+  background-color: #911e90;
+}
+
+alpha-fund-switching .fund-amount-single-bar .ui-iso-data-block .ui-iso-data-bar .ui-iso-data:after,
+alpha-fund-redirection-dialog .fund-amount-single-bar .ui-iso-data-block .ui-iso-data-bar .ui-iso-data:after {
+  border-width: 2px;
+  border-color: rgba(255, 255, 255, 0.2);
+  background-color: #d673de;
+}
+
+/* Isometric Data Bar/ Colours / Redirected Fund */
+
+alpha-fund-switching .fund-redirect-preview .ui-iso-data-block .ui-iso-data-bar .ui-iso-data-top,
+alpha-fund-switching .fund-redirect-preview .ui-iso-data-block .ui-iso-data-bar .ui-iso-data-bottom,
+alpha-fund-switching .fund-redirect-preview .ui-iso-data-block .ui-iso-data-bar .ui-iso-data:after,
+alpha-fund-redirection-dialog .fund-redirect-preview .ui-iso-data-block .ui-iso-data-bar .ui-iso-data-top,
+alpha-fund-redirection-dialog .fund-redirect-preview .ui-iso-data-block .ui-iso-data-bar .ui-iso-data-bottom,
+alpha-fund-redirection-dialog .fund-redirect-preview .ui-iso-data-block .ui-iso-data-bar .ui-iso-data:after {
+  border-color: rgba(255, 255, 255, 0.9);
+  background-color: rgba(255, 255, 255, 0.5);
+  border-style: solid;
+}
+
+alpha-fund-switching .fund-redirect-preview .ui-iso-data-block .ui-iso-data-bar .ui-iso-data-top,
+alpha-fund-redirection-dialog .fund-redirect-preview .ui-iso-data-block .ui-iso-data-bar .ui-iso-data-top {
+  border-width: 2px;
+  border-bottom-width: 1px;
+  border-color: rgba(255, 255, 255, 0.2);
+  background-color: #808dc3;
+}
+
+alpha-fund-switching .fund-redirect-preview .ui-iso-data-block .ui-iso-data-bar .ui-iso-data-bottom,
+alpha-fund-redirection-dialog .fund-redirect-preview .ui-iso-data-block .ui-iso-data-bar .ui-iso-data-bottom {
+  border-width: 2px;
+  border-color: rgba(255, 255, 255, 0.2);
+  background-color: #3c4981;
+}
+
+alpha-fund-switching .fund-redirect-preview .ui-iso-data-block .ui-iso-data-bar .ui-iso-data:after,
+alpha-fund-redirection-dialog .fund-redirect-preview .ui-iso-data-block .ui-iso-data-bar .ui-iso-data:after {
+  border-width: 2px;
+  border-color: rgba(255, 255, 255, 0.2);
+  background-color: #a6b4ee;
+}
+
+/* Isometric Data Bar/ Colours / Active Fund */
+
+alpha-fund-switching .fund-switch-available-options .ui-iso-data-block .ui-iso-data-bar .ui-iso-data-top,
+alpha-fund-switching .fund-switch-available-options .ui-iso-data-block .ui-iso-data-bottom,
+alpha-fund-switching .fund-switch-available-options .ui-iso-data-block .ui-iso-data:after,
+alpha-fund-redirection-dialog .fund-switch-available-options .ui-iso-data-block .ui-iso-data-bar .ui-iso-data-top,
+alpha-fund-redirection-dialog .fund-switch-available-options .ui-iso-data-block .ui-iso-data-bottom,
+alpha-fund-redirection-dialog .fund-switch-available-options .ui-iso-data-block .ui-iso-data:after {
+  border-color: rgba(255, 255, 255, 0.9);
+  background-color: rgba(255, 255, 255, 0.5);
+  border-style: solid;
+}
+
+alpha-fund-switching .fund-switch-available-options .ui-iso-data-block .ui-iso-data-bar .ui-iso-data-top,
+alpha-fund-redirection-dialog .fund-switch-available-options .ui-iso-data-block .ui-iso-data-bar .ui-iso-data-top {
+  border-width: 2px;
+  border-bottom-width: 1px;
+  border-color: rgba(255, 255, 255, 0.2);
+  background-color: #1c75bc;
+}
+
+alpha-fund-switching .fund-switch-available-options .ui-iso-data-block .ui-iso-data-bar .ui-iso-data-bottom,
+alpha-fund-redirection-dialog .fund-switch-available-options .ui-iso-data-block .ui-iso-data-bar .ui-iso-data-bottom {
+  border-width: 2px;
+  border-color: rgba(255, 255, 255, 0.2);
+  background-color: #262262;
+}
+
+alpha-fund-switching .fund-switch-available-options .ui-iso-data-block .ui-iso-data-bar .ui-iso-data:after,
+alpha-fund-redirection-dialog .fund-switch-available-options .ui-iso-data-block .ui-iso-data-bar .ui-iso-data:after {
+  border-width: 2px;
+  border-color: rgba(255, 255, 255, 0.2);
+  border-color: rgba(65, 71, 88, 0.3);
+  background-color: #27aae1;
+}
+
+alpha-fund-switching .fund-switch-available-options .ui-iso-data-block .ui-iso-data-bar .ui-iso-data.ux-bar-example:after,
+alpha-fund-redirection-dialog .fund-switch-available-options .ui-iso-data-block .ui-iso-data-bar .ui-iso-data.ux-bar-example:after {
+  border-width: 2px;
+  border-color: rgba(255, 255, 255, 0.2);
+  border-color: rgba(65, 71, 88, 0.3);
+  background-color: #27aae1;
+}
+
+/* Liquidated Pool */
+
+alpha-fund-switching .ui-iso-diagram-components.ui-liquidated-pool,
+alpha-fund-redirection-dialog .ui-iso-diagram-components.ui-liquidated-pool {
+  margin-top: -25px;
+}
+
+alpha-fund-switching .ui-iso-diagram-components.ui-liquidated-pool .fund-switch-current-position,
+alpha-fund-redirection-dialog .ui-iso-diagram-components.ui-liquidated-pool .fund-switch-current-position {
+  margin-bottom: 0;
+  padding-bottom: 0;
+  padding-top: 5px;
+  justify-items: center;
+  text-align: center;
+  background-color: transparent;
+  border: 0;
+}
+
+alpha-fund-switching .ui-iso-diagram-components.ui-liquidated-pool .ui-iso-data-title,
+alpha-fund-redirection-dialog .ui-iso-diagram-components.ui-liquidated-pool .ui-iso-data-title {
+  background-color: rgba(52, 57, 54, 0.6);
+  color: #fff;
+  padding: 10px;
+  margin-bottom: 5px;
+  border-radius: 10px;
+}
+
+alpha-fund-switching .ui-liquidated-pool .ui-iso-data-block .ui-iso-data-bar .ui-iso-data-top,
+alpha-fund-switching .ui-liquidated-pool .ui-iso-data-block .ui-iso-data-bottom,
+alpha-fund-switching .ui-liquidated-pool .ui-iso-data-block .ui-iso-data:after,
+alpha-fund-redirection-dialog .ui-liquidated-pool .ui-iso-data-block .ui-iso-data-bar .ui-iso-data-top,
+alpha-fund-redirection-dialog .ui-liquidated-pool .ui-iso-data-block .ui-iso-data-bottom,
+alpha-fund-redirection-dialog .ui-liquidated-pool .ui-iso-data-block .ui-iso-data:after {
+  border-color: rgba(255, 255, 255, 0.9);
+  background-color: rgba(255, 255, 255, 0.5);
+  border-style: solid;
+}
+
+alpha-fund-switching .ui-liquidated-pool .ui-iso-data-block .ui-iso-data-bar .ui-iso-data-top,
+alpha-fund-redirection-dialog .ui-liquidated-pool .ui-iso-data-block .ui-iso-data-bar .ui-iso-data-top {
+  border-width: 2px;
+  border-bottom-width: 1px;
+  border-color: rgba(255, 255, 255, 0.2);
+  background-color: #1c75bc;
+}
+
+alpha-fund-switching .ui-liquidated-pool .ui-iso-data-block .ui-iso-data-bar .ui-iso-data-bottom,
+alpha-fund-redirection-dialog .ui-liquidated-pool .ui-iso-data-block .ui-iso-data-bar .ui-iso-data-bottom {
+  border-width: 2px;
+  border-color: rgba(255, 255, 255, 0.2);
+  background-color: #262262;
+}
+
+alpha-fund-switching .ui-liquidated-pool .ui-iso-data-block .ui-iso-data-bar .ui-iso-data:after,
+alpha-fund-redirection-dialog .ui-liquidated-pool .ui-iso-data-block .ui-iso-data-bar .ui-iso-data:after {
+  border-width: 2px;
+  border-color: rgba(255, 255, 255, 0.2);
+  background-color: #27aae1;
+}
+
+/* Isometric Data Bar/ Colours / Empty */
+
+alpha-fund-switching .ui-iso-data-bar .ui-iso-data.ui-iso-data-empty,
+alpha-fund-redirection-dialog .ui-iso-data-bar .ui-iso-data.ui-iso-data-empty {
+  z-index: 1;
+  flex-shrink: 1;
+  flex-grow: 0;
+  margin-left: 0px;
+  width: 0;
+}
+
+alpha-fund-switching .ui-iso-data-bar .ui-iso-data.ui-iso-data-empty .ui-iso-data-top,
+alpha-fund-switching .ui-iso-data-bar .ui-iso-data.ui-iso-data-empty .ui-iso-data-bottom,
+alpha-fund-switching .ui-iso-data-bar .ui-iso-data.ui-iso-data-empty .ui-iso-data:after,
+alpha-fund-redirection-dialog .ui-iso-data-bar .ui-iso-data.ui-iso-data-empty .ui-iso-data-top,
+alpha-fund-redirection-dialog .ui-iso-data-bar .ui-iso-data.ui-iso-data-empty .ui-iso-data-bottom,
+alpha-fund-redirection-dialog .ui-iso-data-bar .ui-iso-data.ui-iso-data-empty .ui-iso-data:after {
+  border-color: rgba(65, 71, 88, 0.3);
+  background-color: rgba(255, 255, 255, 0.3);
+  border-style: solid;
+}
+
+alpha-fund-switching .ui-iso-data-bar .ui-iso-data.ui-iso-data-empty .ui-iso-data-top,
+alpha-fund-redirection-dialog .ui-iso-data-bar .ui-iso-data.ui-iso-data-empty .ui-iso-data-top {
+  border-width: 2px;
+  border-bottom-width: 1px;
+}
+
+alpha-fund-switching .ui-iso-data-bar .ui-iso-data.ui-iso-data-empty .ui-iso-data-bottom,
+alpha-fund-redirection-dialog .ui-iso-data-bar .ui-iso-data.ui-iso-data-empty .ui-iso-data-bottom {
+  border-width: 2px;
+  background-color: rgba(255, 255, 255, 0.6);
+}
+
+alpha-fund-switching .ui-iso-data-bar .ui-iso-data.ui-iso-data-empty:after,
+alpha-fund-redirection-dialog .ui-iso-data-bar .ui-iso-data.ui-iso-data-empty:after {
+  border-width: 2px;
+  background-color: rgba(255, 255, 255, 0.3) !important;
+}
+
+/* Isometric Diagram Cylinder Data Bar */
+
+alpha-fund-switching .ui-iso-data-cylinder-bar,
+alpha-fund-redirection-dialog .ui-iso-data-cylinder-bar {
+  height: 30px;
+  background-color: rgba(255, 255, 255, 0.5);
+  margin-bottom: 10px;
+  margin-top: 10px;
+  position: relative;
+  left: -10px;
+  width: 300px;
+  border-radius: 15px/15px;
+  border: 1px solid rgba(62, 65, 114, 0.5);
+  border: 1px solid #fff;
+}
+
+alpha-fund-switching .ui-iso-data-cylinder-bar[ux_current_premium_percent='0'] .ui-iso-data-fill,
+alpha-fund-redirection-dialog .ui-iso-data-cylinder-bar[ux_current_premium_percent='0'] .ui-iso-data-fill {
+  opacity: 0;
+}
+
+alpha-fund-switching .ui-iso-data-cylinder-bar:after,
+alpha-fund-redirection-dialog .ui-iso-data-cylinder-bar:after {
+  position: absolute;
+  right: -3px;
+  top: 2px;
+  width: 25px;
+  height: 25px;
+  border-radius: 15px/15px;
+  background-color: rgba(255, 255, 255, 0.8);
+  content: '';
+  transform: rotate(45deg) skew(10deg, 10deg);
+  border: 1px solid rgba(255, 255, 255, 1);
+}
+
+alpha-fund-switching .ui-iso-data-cylinder-bar:before,
+alpha-fund-redirection-dialog .ui-iso-data-cylinder-bar:before {
+  position: absolute;
+  left: -1px;
+  top: 2px;
+  width: 23px;
+  height: 23px;
+  border-radius: 15px/15px;
+  background-color: rgba(0, 0, 0, 0.1);
+  content: '';
+  transform: rotate(45deg) skew(10deg, 10deg);
+  border: 1px solid rgba(62, 65, 114, 0.5);
+  border: 1px solid #fff;
+}
+
+alpha-fund-switching .ui-iso-data-cylinder-bar .ui-iso-data-value,
+alpha-fund-redirection-dialog .ui-iso-data-cylinder-bar .ui-iso-data-value {
+  top: 2px;
+  left: calc(100% + 52px);
+}
+
+alpha-fund-switching .ui-iso-data-fill,
+alpha-fund-redirection-dialog .ui-iso-data-fill {
+  height: 30px;
+  background-color: rgba(62, 65, 114, 0.6);
+  background: rgb(209, 213, 232);
+  background: linear-gradient(180deg, rgba(209, 213, 232, 0.6) 0%, rgba(131, 137, 167, 0.6) 35%, rgba(60, 73, 129, 1) 100%);
+  position: relative;
+  left: 0;
+  top: -1px;
+  border-radius: 15px/15px;
+  border: 1px solid rgba(62, 65, 114, 0.5);
+  border: 1px solid #fff;
+  transition: all 0.5s;
+}
+
+alpha-fund-switching .ui-iso-data-fill:after,
+alpha-fund-redirection-dialog .ui-iso-data-fill:after {
+  position: absolute;
+  right: -3px;
+  top: 2px;
+  width: 23px;
+  height: 23px;
+  border-radius: 15px/15px;
+  background-color: rgba(60, 73, 129, 0.7);
+  content: '';
+  transform: rotate(45deg) skew(10deg, 10deg);
+  border: 2px solid rgba(234, 235, 248, 0.3);
+}
+
+alpha-fund-switching .ui-iso-data-cylinder-bar .ui-percent-value-amount,
+alpha-fund-redirection-dialog .ui-iso-data-cylinder-bar .ui-percent-value-amount {
+  position: absolute;
+  z-index: 1;
+  top: 3px;
+  right: -56px;
+  color: #4c588b;
+  padding: 3px 10px;
+  text-shadow: 0px 1px 1px rgba(255, 255, 255, 0.5);
+}
+
+alpha-fund-switching .ui-iso-data-cylinder-bar .ui-percent-value-amount i,
+alpha-fund-redirection-dialog .ui-iso-data-cylinder-bar .ui-percent-value-amount i {
+  transform: scaleX(-1);
+  position: absolute;
+  right: 357px;
+  font-size: 25px;
+  color: #5a6493;
+  bottom: 6px;
+}
+
+/* ISO Diagram Sections */
+
+alpha-fund-switching .ui-iso-diagram-section,
+alpha-fund-redirection-dialog .ui-iso-diagram-section {
+  margin-bottom: 75px;
+}
+
+alpha-fund-switching .ui-iso-diagram-section.regular-premiums,
+alpha-fund-redirection-dialog .ui-iso-diagram-section.regular-premiums {
+  position: relative;
+}
+
+alpha-fund-switching .ui-iso-diagram-section.regular-premiums:after,
+alpha-fund-redirection-dialog .ui-iso-diagram-section.regular-premiums:after {
+  content: '';
+  border-right: 5.5px solid rgba(60, 73, 129, 0.5);
+  height: calc(100% - 25px);
+  position: absolute;
+  right: -32px;
+  top: -15px;
+  border-radius: 0 0 10px 10px;
+}
+
+alpha-fund-switching .ui-iso-diagram-section.regular-premiums.no-line:after,
+alpha-fund-redirection-dialog .ui-iso-diagram-section.regular-premiums.no-line:after {
+  border: none !important;
+}
+
+alpha-fund-switching .ui-iso-diagram-map,
+alpha-fund-redirection-dialog .ui-iso-diagram-map {
+  background-color: rgba(255, 255, 255, 0.4);
+  flex: 1;
+  max-width: 25px;
+  border-left: 3px dashed #4595de;
+}
+
+alpha-fund-switching .ui-iso-diagram-components.fund-options .ui-iso-diagram-map,
+alpha-fund-redirection-dialog .ui-iso-diagram-components.fund-options .ui-iso-diagram-map {
+  background-color: rgba(255, 255, 255, 0.4);
+  border-color: transparent;
+}
+
+alpha-fund-switching .ui-iso-scroll-wrap,
+alpha-fund-redirection-dialog .ui-iso-scroll-wrap {
+  display: flex;
+  flex: 1;
+  overflow-y: hidden;
+  overflow-x: visible;
+  max-height: 500px;
+}
+
+alpha-fund-switching .ui-iso-data-indicators,
+alpha-fund-redirection-dialog .ui-iso-data-indicators {
+  display: flex;
+  justify-content: space-between;
+  position: relative;
+}
+
+alpha-fund-switching .ui-iso-data-indicators .ui-data-indicator.total-amount:before,
+alpha-fund-redirection-dialog .ui-iso-data-indicators .ui-data-indicator.total-amount:before {
+  content: '';
+  position: absolute;
+  border-left: 5.5px solid #4f4f4f;
+  left: 10px;
+  bottom: 0;
+  height: 5px;
+}
+
+alpha-fund-switching .ui-iso-data-indicators .ui-data-indicator.premium-count:before,
+alpha-fund-redirection-dialog .ui-iso-data-indicators .ui-data-indicator.premium-count:before {
+  content: '';
+  position: absolute;
+  border-left: 5.5px solid rgba(60, 73, 129, 0.5);
+  right: 18px;
+  bottom: 0;
+  height: 5px;
+}
+
+alpha-fund-switching .ui-data-indicator.liquidated-pool,
+alpha-fund-redirection-dialog .ui-data-indicator.liquidated-pool {
+  background-color: rgb(28, 117, 188);
+  color: #fff;
+  border-color: rgba(255, 255, 255, 0.5);
+}
+
+alpha-fund-switching .ui-iso-data-indicators .ui-data-indicator.liquidated-pool:before,
+alpha-fund-redirection-dialog .ui-iso-data-indicators .ui-data-indicator.liquidated-pool:before {
+  content: '';
+  position: absolute;
+  border-left: 5.5px solid rgb(28, 117, 188);
+  left: 10px;
+  bottom: 0;
+  height: 5px;
+}
+
+alpha-fund-switching .ui-iso-diagram-container.fund-switch-available-options .ui-data-indicator.total-amount,
+alpha-fund-redirection-dialog .ui-iso-diagram-container.fund-switch-available-options .ui-data-indicator.total-amount {
+  background-color: rgb(28, 117, 188);
+}
+
+alpha-fund-switching .ui-iso-data-bar .ui-iso-data-sources,
+alpha-fund-redirection-dialog .ui-iso-data-bar .ui-iso-data-sources {
+  position: absolute;
+  right: 0;
+  top: 17px;
+  z-index: 3;
+}
+
+alpha-fund-switching .ui-iso-data-bar .ui-iso-data-sources.switched-amount-action,
+alpha-fund-redirection-dialog .ui-iso-data-bar .ui-iso-data-sources.switched-amount-action {
+  right: -100px;
+}
+
+alpha-fund-switching .ui-iso-data-bar .ui-iso-data-sources label,
+alpha-fund-redirection-dialog .ui-iso-data-bar .ui-iso-data-sources label {
+  display: block;
+  margin-top: -10px;
+  padding-left: 15px;
+  color: #0b679c;
+  display: none;
+}
+
+/* CSS Hide Premium Tethers */
+
+alpha-fund-switching .ui-iso-diagram-components.ui-hide-premium-tethers .ui-iso-data-cylinder-bar,
+alpha-fund-switching .ui-iso-diagram-components.ui-hide-premium-tethers .ui-data-indicator.premium-count,
+alpha-fund-redirection-dialog .ui-iso-diagram-components.ui-hide-premium-tethers .ui-iso-data-cylinder-bar,
+alpha-fund-redirection-dialog .ui-iso-diagram-components.ui-hide-premium-tethers .ui-data-indicator.premium-count {
+  display: none;
+}
+
+/* Centering Investments */
+
+alpha-fund-switching .ui-iso-diagram-container.ui-center-investments,
+alpha-fund-redirection-dialog .ui-iso-diagram-container.ui-center-investments {
+  display: flex;
+  align-items: center;
+}
+
+/* ISO Diagram Data Block Heading */
+
+alpha-fund-switching .ui-iso-data-block-heading,
+alpha-fund-redirection-dialog .ui-iso-data-block-heading {
+  margin-top: -16px;
+  margin-left: -55px;
+  margin-right: -55px;
+  padding: 0px 20px 5px 0px;
+  background-color: #b0b5c7;
+  background: transparent;
+  border-bottom: 2px solid rgba(60, 73, 129, 0);
+  margin-bottom: 25px;
+}
+
+alpha-fund-switching .ui-iso-data-block-heading h3,
+alpha-fund-redirection-dialog .ui-iso-data-block-heading h3 {
+  color: #fff;
+  font-weight: bold;
+  border-left: 4px solid rgb(79, 79, 79);
+  background-color: rgb(79, 79, 79);
+  display: inline-block;
+  padding: 5px 25px 7px 10px;
+  border-radius: 0 0 30px 0;
+  position: relative;
+}
+
+alpha-fund-switching .ui-tooltip-icon-block.ui-tooltip--regular-premium,
+alpha-fund-switching .ui-tooltip-icon-block.ui-tooltip--single-premium,
+alpha-fund-redirection-dialog .ui-tooltip-icon-block.ui-tooltip--regular-premium,
+alpha-fund-redirection-dialog .ui-tooltip-icon-block.ui-tooltip--single-premium {
+  background-color: #636d9a;
+  margin-left: 0;
+  color: rgba(255, 255, 255, 1);
+  border: 2px solid #9ca1b9;
+  padding: 4px 10px 3px 5px;
+  height: 30px;
+  width: 30px;
+  margin-right: 5px;
+  position: relative;
+}
+
+alpha-fund-switching .ui-tooltip-icon-block.ui-tooltip--single-premium,
+alpha-fund-redirection-dialog .ui-tooltip-icon-block.ui-tooltip--single-premium {
+  background-color: #be5ecc;
+  border: 2px solid #911e90;
+}
+
+alpha-fund-switching .ui-iso-data-block-heading.regular-premium h3,
+alpha-fund-redirection-dialog .ui-iso-data-block-heading.regular-premium h3 {
+  background-color: #636d9a;
+  border-color: #4c588b;
+  position: absolute;
+  right: -26px;
+  border-radius: 0 0 0 30px;
+  top: -10px;
+  border-right: 4px solid #4c588b;
+  border-left: 0;
+  padding-left: 20px;
+}
+
+alpha-fund-switching .ui-iso-data-block-heading.single-premium h3,
+alpha-fund-redirection-dialog .ui-iso-data-block-heading.single-premium h3 {
+  background-color: #be5ecc;
+  border-color: #911e90;
+}
+
+/*Alpha Indicators - Premium Count */
+alpha-fund-switching .ui-data-indicator.premium-count,
+alpha-fund-redirection-dialog .ui-data-indicator.premium-count {
+  background-color: rgba(60, 73, 129, 0.8);
+  color: #fff;
+  border-color: rgba(255, 255, 255, 0.5);
+  margin-left: auto;
+}
+
+alpha-fund-switching .ui-data-indicator.total-amount,
+alpha-fund-redirection-dialog .ui-data-indicator.total-amount {
+  background-color: rgb(79, 79, 79);
+  color: #fff;
+  border-color: rgba(255, 255, 255, 0.5);
+}
+
+alpha-fund-switching .ui-iso-data-bar .ui-data-indicator.total-amount,
+alpha-fund-redirection-dialog .ui-iso-data-bar .ui-data-indicator.total-amount {
+  left: -19px;
+  position: relative;
+  border-radius: 0 30px 30px 0;
+  border-left: 0;
+}
+
+alpha-available-investments-container .ui-iso-data-bar .ui-data-indicator.total-amount {
+  left: 0;
+}
+
+/* Isometric Data Outer Container Structure */
+
+alpha-fund-switching .ui-fs-view01,
+alpha-fund-redirection-dialog .ui-fs-view01 {
+  display: flex;
+  justify-content: center;
+  /* max-height: 700px; */
+}
+
+alpha-fund-switching .ui-iso-diagram-container.fund-switch-current-position,
+alpha-fund-switching .ui-iso-diagram-container.fund-switch-available-options,
+alpha-fund-switching .ui-iso-diagram-container.fund-redirect-preview,
+alpha-fund-redirection-dialog .ui-iso-diagram-container.fund-switch-current-position,
+alpha-fund-redirection-dialog .ui-iso-diagram-container.fund-switch-available-options,
+alpha-fund-redirection-dialog .ui-iso-diagram-container.fund-redirect-preview {
+  max-width: 500px;
+  flex: 1;
+  /* margin-bottom: 35px; */
+  padding: 30px 55px 30px;
+  overflow-y: scroll;
+  overflow-x: hidden;
+}
+
+alpha-fund-switching .ui-iso-diagram-components,
+alpha-fund-redirection-dialog .ui-iso-diagram-components {
+  display: flex;
+  flex-direction: column;
+  max-width: 500px;
+  margin: 35px auto;
+}
+
+alpha-fund-switching .ui-iso-diagram-components.fund-options,
+alpha-fund-redirection-dialog .ui-iso-diagram-components.fund-options {
+  margin-left: 30px;
+}
+
+alpha-fund-switching .ui-iso-diagram-container.fund-switch-available-options,
+alpha-fund-redirection-dialog .ui-iso-diagram-container.fund-switch-available-options {
+  background-color: rgba(255, 255, 255, 0.4);
+  border-left: 5.5px solid rgb(28, 117, 188);
+}
+
+alpha-fund-switching .ui-iso-diagram-container.fund-switch-available-options .ui-iso-diagram-section,
+alpha-fund-redirection-dialog .ui-iso-diagram-container.fund-switch-available-options .ui-iso-diagram-section {
+  position: relative;
+}
+
+alpha-fund-switching .ui-iso-diagram-container.fund-switch-available-options .ui-percent-value-amount strong,
+alpha-fund-redirection-dialog .ui-iso-diagram-container.fund-switch-available-options .ui-percent-value-amount strong {
+  display: none;
+}
+
+alpha-fund-switching .fund-switch-available-options .ui-iso-data-cylinder-bar .ui-percent-value-amount i,
+alpha-fund-redirection-dialog .fund-switch-available-options .ui-iso-data-cylinder-bar .ui-percent-value-amount i {
+  bottom: -11px;
+}
+
+alpha-fund-switching .ui-iso-diagram-container.fund-switch-available-options .ui-iso-diagram-section:after,
+alpha-fund-redirection-dialog .ui-iso-diagram-container.fund-switch-available-options .ui-iso-diagram-section:after {
+  content: '';
+  border-right: 5.5px solid rgba(60, 73, 129, 0.5);
+  height: calc(100%);
+  position: absolute;
+  right: -32px;
+  top: -30px;
+  border-radius: 0 0 10px 10px;
+}
+
+/* Updated Premium Border Line Right*/
+
+alpha-fund-switching .fund-switch-available-options {
+  position: relative;
+}
+
+alpha-fund-switching alpha-available-fund-bar-group-container .fund-switch-available-options:after {
+  content: '';
+  position: absolute;
+  right: -31px;
+  top: -30px;
+  z-index: 2;
+  border-right: 5.5px solid rgba(60, 73, 129, 0.5);
+  height: calc(100% + 20px);
+}
+
+alpha-fund-switching .ui-iso-diagram-container.fund-switch-available-options .ui-iso-data-cylinder-bar .ui-iso-data-value,
+alpha-fund-redirection-dialog .ui-iso-diagram-container.fund-switch-available-options .ui-iso-data-cylinder-bar .ui-iso-data-value {
+  left: calc(100% + 45px);
+}
+
+/* UI Header Block */
+
+alpha-fund-switching .ui-iso-header-block,
+alpha-fund-redirection-dialog .ui-iso-header-block {
+  background-color: #fff;
+  padding: 15px 15px 0 15px;
+  max-width: 500px;
+  width: calc(100% + 110px);
+  border-radius: 0 20px 0 0;
+  margin-bottom: 0;
+  position: relative;
+  z-index: 4;
+}
+
+alpha-fund-switching .fund-options .ui-iso-header-block,
+alpha-fund-redirection-dialog .fund-options .ui-iso-header-block {
+  border-radius: 20px 0 0 0;
+}
+
+alpha-fund-switching .ui-iso-header-block .ui-key-icons,
+alpha-fund-redirection-dialog .ui-iso-header-block .ui-key-icons {
+  position: absolute;
+  z-index: 1;
+  left: -14px;
+  top: 115px;
+  display: flex;
+  flex-direction: column;
+}
+
+alpha-fund-switching .ui-iso-header-block .ui-key-icons .ui-tooltip-icon-block,
+alpha-fund-redirection-dialog .ui-iso-header-block .ui-key-icons .ui-tooltip-icon-block {
+  margin-bottom: 10px;
+}
+
+alpha-fund-switching .ui-iso-header-title,
+alpha-fund-redirection-dialog .ui-iso-header-title {
+  margin-bottom: 10px;
+  display: inline-block;
+}
+
+alpha-fund-switching .ui-iso-diagram-components > h2 .ui-data-indicator,
+alpha-fund-redirection-dialog .ui-iso-diagram-components > h2 .ui-data-indicator {
+  overflow: hidden;
+}
+
+alpha-fund-switching .ui-iso-diagram-components.fund-options > h2,
+alpha-fund-redirection-dialog .ui-iso-diagram-components.fund-options > h2 {
+  border-radius: 20px 0 0 0;
+}
+
+alpha-fund-switching .ui-iso-diagram-container.fund-switch-current-position,
+alpha-fund-redirection-dialog.ui-iso-diagram-container.fund-switch-current-position {
+  background-color: rgba(255, 255, 255, 0.4);
+  border-left: 5.5px solid rgba(79, 79, 79, 1);
+}
+
+alpha-fund-switching .ui-iso-diagram-container.fund-redirect-preview,
+alpha-fund-redirection-dialog .ui-iso-diagram-container.fund-redirect-preview {
+  background-color: rgba(255, 255, 255, 0.4);
+  border-left: 6px solid #fff;
+}
+
+/* Extended Header Options */
+
+alpha-fund-switching .ui-header-extented-options h2,
+alpha-fund-redirection-dialog .ui-header-extented-options h2 {
+  display: inline-block;
+  font-size: 14px;
+}
+
+alpha-fund-switching .ui-header-extented-options,
+alpha-fund-redirection-dialog .ui-header-extented-options {
+  display: flex;
+  justify-content: space-between;
+  border-bottom: 1px dashed #ccc;
+  margin-bottom: 5px;
+}
+
+alpha-fund-switching .ui-filter-actions-container.iso-diagram-filter,
+alpha-fund-redirection-dialog .ui-filter-actions-container.iso-diagram-filter {
+  margin-left: 0;
+  margin-right: 0;
+}
+
+/* UI Indicator */
+alpha-fund-switching .ui-count-indicator,
+alpha-fund-redirection-dialog .ui-count-indicator {
+  background-color: #eee;
+  color: #3c4981;
+  font-weight: bold;
+  min-width: 25px;
+  max-width: 60px;
+  align-items: center;
+  justify-content: center;
+  margin-left: 0px;
+  padding: 3px 4px;
+  margin-top: -3px;
+  margin-right: 5px;
+  border: 2px solid rgba(0, 0, 0, 0.1);
+  border-radius: 30px;
+  margin-bottom: -3px;
+  position: relative;
+  text-align: center;
+  display: inline-block !important;
+}
+
+/* Expanded Details Tooltip Content */
+alpha-fund-switching .ui-iso-data-block .ui-key-icons,
+alpha-fund-redirection-dialog .ui-iso-data-block .ui-key-icons {
+  position: absolute;
+  left: -35px;
+  z-index: 3;
+}
+
+/*Alpha Indicators - Fund Type */
+alpha-fund-switching .ui-iso-data-title .ui-data-indicator,
+alpha-fund-redirection-dialog .ui-iso-data-title .ui-data-indicator {
+  display: inline-block;
+}
+
+alpha-fund-switching .ui-data-indicator.fund-type,
+alpha-fund-redirection-dialog .ui-data-indicator.fund-type {
+  padding: 4px 10px 5px 10px;
+  background-color: #42aeb6;
+  color: #fff;
+  display: inline-block;
+  position: relative;
+  left: -11px;
+}
+
+/* Drag and Drop Events */
+
+alpha-fund-switching .ui-iso-data-block.ui-drag.ui-draggable-dragging,
+alpha-fund-redirection-dialog .ui-iso-data-block.ui-drag.ui-draggable-dragging {
+  outline: 2px dashed #fff;
+  z-index: 9;
+  position: fixed !important;
+}
+
+alpha-fund-switching .ui-iso-data-block.ui-drop.ui-droppable-active,
+alpha-fund-redirection-dialog .ui-iso-data-block.ui-drop.ui-droppable-active {
+  outline: 2px dashed #148ada;
+}
+
+alpha-fund-switching .ui-iso-data-block.ui-drop.ui-droppable-hover,
+alpha-fund-redirection-dialog .ui-iso-data-block.ui-drop.ui-droppable-hover {
+  outline: 2px dashed #148ada;
+  background-color: rgba(20, 138, 218, 0.5);
+}
+
+/* END: Fund Switch Redesign */
+
+/* Fund Action "Hamburger" Menu */
+
+alpha-fund-switching .ui-data-indicator.ui-has-fund-options,
+alpha-fund-redirection-dialog .ui-data-indicator.ui-has-fund-options {
+  position: relative;
+  padding-left: 35px;
+}
+
+alpha-fund-switching .ui-data-indicator.ui-has-fund-options .ui-button--multi-state,
+alpha-fund-redirection-dialog .ui-data-indicator.ui-has-fund-options .ui-button--multi-state {
+  position: absolute;
+  left: 0;
+  top: -4px;
+}
+
+alpha-fund-switching .ui-data-indicator.ui-has-fund-options .ui-button--multi-state button.ui-button .ui-button-icon-right,
+alpha-fund-switching .ui-data-indicator.ui-has-fund-options .ui-button--multi-state button.ui-button .ui-button-icon-left,
+alpha-fund-redirection-dialog .ui-data-indicator.ui-has-fund-options .ui-button--multi-state button.ui-button .ui-button-icon-right,
+alpha-fund-redirection-dialog .ui-data-indicator.ui-has-fund-options .ui-button--multi-state button.ui-button .ui-button-icon-left {
+  padding: 0;
+}
+
+alpha-fund-switching .ui-data-indicator.ui-has-fund-options .ui-button--multi-state button.ui-button .ui-button-text,
+alpha-fund-redirection-dialog .ui-data-indicator.ui-has-fund-options .ui-button--multi-state button.ui-button .ui-button-text {
+  padding: 5px 7px;
+  color: #0f6ab2;
+}
+
+/* END: Fund Action "Hamburger" Menu */
+
+alpha-fund-switching .ui-diagram-header.ui-header-fill.ui-action-log,
+alpha-fund-redirection-dialog .ui-diagram-header.ui-header-fill.ui-action-log {
+  justify-content: center;
+}
+
+alpha-fund-switching .ui-diagram-content.scroll-chxild-items.ui-action-log,
+alpha-fund-redirection-dialog .ui-diagram-content.scroll-chxild-items.ui-action-log {
+  margin: 0 auto;
+  display: block;
+}
+
+alpha-fund-switching .ui-diagram-view.scroll-child-items.ui-action-log,
+alpha-fund-redirection-dialog .ui-diagram-view.scroll-child-items.ui-action-log {
+  min-width: 800px;
+}
+
+alpha-fund-switching .tile--data-action-log,
+alpha-fund-redirection-dialog .tile--data-action-log {
+  display: flex;
+  min-height: 100px;
+  margin-top: 15px;
+}
+
+alpha-fund-switching .tile--left-actions-log,
+alpha-fund-redirection-dialog .tile--left-actions-log {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+alpha-fund-switching .tile-right-actions-log,
+alpha-fund-redirection-dialog .tile-right-actions-log {
+  flex: 1;
+  align-content: center;
+  align-items: center;
+  display: flex;
+  border-left: 2px dashed #a8cae5;
+  padding-left: 20px;
+}
+
+alpha-fund-switching .tile--left-actions-log .tile--data-block,
+alpha-fund-redirection-dialog .tile--left-actions-log .tile--data-block {
+  border-bottom: 2px solid #eee;
+  padding-bottom: 10px;
+  text-align: left;
+  justify-content: left;
+  justify-items: left;
+}
+
+alpha-fund-switching .ui-diagram-col.ui-policies.ui-scheme-policies.ui-action-log .ui-row-tile-action,
+alpha-fund-redirection-dialog .ui-diagram-col.ui-policies.ui-scheme-policies.ui-action-log .ui-row-tile-action {
+  padding-left: 20px;
+}
+
+/* Invetment Options Overlay*/
+
+alpha-fund-redirection-dialog .investment-options-overlay-content .ui-fs-view01.investment-fund-switch-options {
+  height: inherit;
+}
+
+alpha-fund-redirection-dialog .investment-options-overlay-content .ui-iso-diagram-container.fund-switch-available-options,
+alpha-fund-redirection-dialog .investment-options-overlay-content .ui-iso-diagram-container.fund-switch-current-position {
+  justify-content: center;
+  display: flex;
+  background-color: rgba(255, 255, 255, 0.4);
+  flex-direction: column;
+  overflow-y: scroll;
+}
+
+alpha-fund-switching .overlay-content-body.flex-layout-top,
+alpha-fund-redirection-dialog .overlay-content-body.flex-layout-top {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: start;
+  height: 100%;
+}
+
+/* Fund Switch Overylay (Dialog Options) */
+
+alpha-action-log-dialog,
+alpha-fund-redirection-dialog {
+  position: fixed;
+  z-index: 9999;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+}
+alpha-action-log-dialog .app-overlay-body,
+alpha-fund-redirection-dialog .app-overlay-body {
+  height: calc(100vh - 152px);
+  margin-bottom: 20px;
+  overflow: hidden;
+}
+
+alpha-action-log-dialog .content-overlay,
+alpha-fund-redirection-dialog .content-overlay {
+  width: calc(100vw - 10px) !important;
+  height: calc(100vh - 0px) !important;
+  overflow: hidden !important;
+}
+
+alpha-fund-redirection-dialog .content-section-body .content-block--fund-switch,
+alpha-fund-redirection-dialog .content-block--fund-switch {
+  height: inherit;
+  width: 100%;
+  border-radius: 6px;
+  margin: 0;
+}
+
+alpha-fund-redirection-dialog .ui-iso-diagram-components.fund-options,
+alpha-fund-redirection-dialog .ui-iso-diagram-components {
+  height: calc(100% - 100px);
+  overflow-y: scroll;
+  overflow-x: hidden;
+  justify-content: start;
+}
+
+/* Invetment Options Switch Block */
+
+alpha-fund-switching .ui-iso-data-block.ui-invetment-option-switch-block,
+alpha-fund-redirection-dialog .ui-iso-data-block.ui-invetment-option-switch-block {
+  position: relative;
+  margin-bottom: 35px;
+  z-index: 3;
+  margin-top: 15px;
+}
+
+alpha-fund-switching .ui-iso-data-block.ui-invetment-option-switch-block.init-selected-fund:before,
+alpha-fund-redirection-dialog .ui-iso-data-block.ui-invetment-option-switch-block.init-selected-fund:before {
+  content: ' ';
+  border: 2px dashed #67a3d3;
+  background-color: rgba(198, 221, 239, 0.2);
+  position: absolute;
+  top: calc(-20px);
+  left: calc(-45px);
+  width: calc(100% + 85px);
+  height: calc(100% + 25px);
+  z-index: -1;
+}
+
+alpha-fund-switching .ui-iso-data-block.ui-invetment-option-switch-block.init-selected-fund:after,
+alpha-fund-redirection-dialog .ui-iso-data-block.ui-invetment-option-switch-block.init-selected-fund:after {
+  content: 'Selected Fund';
+  position: absolute;
+  top: calc(-43px);
+  left: calc(-45px);
+  background-color: #1c75bc;
+  height: 25px;
+  padding: 5px 10px;
+  color: #fff;
+  font-weight: bold;
+}
+
+alpha-fund-switching .tile-data.ui-fund-switch-actions,
+alpha-fund-redirection-dialog .tile-data.ui-fund-switch-actions {
+  border-bottom: 2px solid #1c75bc;
+  margin-bottom: 15px;
+  margin-left: -30px;
+  margin-right: -30px;
+}
+/* Updated Overlay Investment Switch Options */
+
+alpha-fund-redirection-dialog .tile-data.ui-fund-switch-actions .tile--data {
+  position: relative;
+  min-height: 30px;
+}
+
+alpha-fund-redirection-dialog .tile-data.ui-fund-switch-actions .tile--data input {
+  min-width: 65px;
+  text-align: right;
+  background-color: rgba(255, 255, 255, 0);
+  border: 0 solid transparent;
+  font-weight: bold;
+}
+
+alpha-fund-redirection-dialog .tile-data.ui-fund-switch-actions .tile--data input[disabled] {
+  background-color: rgba(204, 204, 204, 0.5);
+  padding: 5px 5px 3px 5px;
+  border-radius: 30px;
+  margin-right: -5px;
+  margin-left: -5px;
+  pointer: not-allowed;
+}
+
+alpha-fund-redirection-dialog .tile-data.ui-fund-switch-actions .tile--data input:not([disabled]) {
+  outline: 0;
+  border: none;
+  color: #1c75bc;
+}
+
+alpha-fund-switching .tile-data.ui-fund-switch-actions .tile--data,
+alpha-fund-redirection-dialog .tile-data.ui-fund-switch-actions .tile--data {
+  background-color: #fff;
+  padding: 5px 10px;
+  border-radius: 30px;
+  color: #1c75bc;
+}
+
+/* Filter */
+
+alpha-fund-switching .ui-filter-actions-container.iso-diagram-filter,
+alpha-fund-redirection-dialog .ui-filter-actions-container.iso-diagram-filter {
+  margin-left: 0;
+  margin-right: 0;
+}
+
+alpha-fund-switching .ui-filter-shelf,
+alpha-fund-redirection-dialog .ui-filter-shelf {
+  padding: 0 15px;
+  text-align: center;
+}
+
+/* UI Filtered Results Container */
+
+alpha-fund-switching .ui-filtered-results-info,
+alpha-fund-redirection-dialog .ui-filtered-results-info {
+  padding: 5px 20px;
+  display: none;
+}
+
+alpha-fund-switching .ui-filter-description-row,
+alpha-fund-redirection-dialog .ui-filter-description-row {
+  border-bottom: 1px dashed rgb(169, 169, 169);
+  padding-bottom: 10px;
+  display: flex;
+  align-content: stretch;
+  align-items: center;
+  justify-content: left;
+  margin-bottom: 5px;
+  margin-top: 10px;
+}
+
+alpha-fund-switching .ui-filter-description-row .ui-button--multi-state,
+alpha-fund-redirection-dialog .ui-filter-description-row .ui-button--multi-state {
+  margin-bottom: 0;
+}
+
+alpha-fund-switching .ui-filter-description-row .ui-button--multi-state.ui-text-nowrap .ui-button,
+alpha-fund-redirection-dialog .ui-filter-description-row .ui-button--multi-state.ui-text-nowrap .ui-button {
+  white-space: nowrap;
+}
+
+alpha-fund-switching .ui-filter-description-row .ui-filter-description-text,
+alpha-fund-redirection-dialog .ui-filter-description-row .ui-filter-description-text {
+  display: inline-block;
+}
+
+alpha-fund-switching .ui-filter-description-row .ui-filter-description-text:first-child,
+alpha-fund-redirection-dialog .ui-filter-description-row .ui-filter-description-text:first-child {
+  margin-right: 5px;
+  min-width: 40px;
+  text-align: left;
+}
+
+alpha-fund-switching .ui-filter-description-row .ui-filter-description-text:last-child,
+alpha-fund-redirection-dialog .ui-filter-description-row .ui-filter-description-text:last-child {
+  margin-left: 5px;
+}
+
+alpha-fund-switching .ui-datarange-container,
+alpha-fund-redirection-dialog .ui-datarange-container {
+  position: relative;
+  background: #fff;
+  border: 0.1rem solid #85b2e2;
+  border-radius: 4px;
+}
+
+alpha-fund-switching .ui-datarange-container:hover,
+alpha-fund-redirection-dialog .ui-datarange-container:hover {
+  background-color: rgb(244, 247, 251);
+}
+
+alpha-fund-switching .ui-datarange-container .ui-daterange-input,
+alpha-fund-redirection-dialog .ui-datarange-container .ui-daterange-input {
+  background: transparent;
+  padding: 5px 10px;
+  border: 0;
+  padding-right: 45px;
+  position: relative;
+  z-index: 1;
+  min-width: 220px;
+}
+
+alpha-fund-switching .ui-datarange-container .ui-daterange-input:focus,
+alpha-fund-redirection-dialog .ui-datarange-container .ui-daterange-input:focus {
+  outline: 6px solid #f6c754;
+}
+
+alpha-fund-switching .ui-datarange-container .ui-datarange-dropdown-icons,
+alpha-fund-redirection-dialog .ui-datarange-container .ui-datarange-dropdown-icons {
+  position: absolute;
+  width: 40px;
+  right: 0;
+  display: flex;
+  top: 0;
+  align-items: center;
+  justify-content: center;
+  height: calc(100% + 2px);
+  border-left: 0.1rem solid #85b2e2;
+}
+
+alpha-fund-switching .ui-datarange-container .ui-datarange-dropdown-icons .fa-calendar,
+alpha-fund-redirection-dialog .ui-datarange-container .ui-datarange-dropdown-icons .fa-calendar {
+  margin-right: 4px;
+}
+
+alpha-fund-switching .ui-datarange-container .ui-datarange-dropdown-icons .fa-caret-down,
+alpha-fund-redirection-dialog .ui-datarange-container .ui-datarange-dropdown-icons .fa-caret-down {
+  font-size: 18px;
+  color: #1580da;
+}
+
+/* UI Filter Actions Container */
+
+alpha-fund-switching .ui-app-widget-header-toolbar .ui-filter-info-text,
+alpha-fund-redirection-dialog .ui-app-widget-header-toolbar .ui-filter-info-text {
+  padding: 7px 0 0 0;
+}
+
+alpha-fund-switching .filter-underline--default,
+alpha-fund-redirection-dialog .filter-underline--default {
+  border-bottom: 2px solid #85b2e2;
+}
+
+alpha-fund-switching .ui-filter-actions-container.ui-correspondence-filter,
+alpha-fund-switching .ui-filter-actions-container.ui-correspondence-short-filter-info,
+alpha-fund-redirection-dialog .ui-filter-actions-container.ui-correspondence-filter,
+alpha-fund-redirection-dialog .ui-filter-actions-container.ui-correspondence-short-filter-info {
+  position: relative;
+  border-color: #85b2e2;
+}
+
+alpha-fund-switching .ui-filter-actions-container.ui-correspondence-filter:after,
+alpha-fund-switching .ui-filter-actions-container.ui-correspondence-short-filter-info:after,
+alpha-fund-redirection-dialog .ui-filter-actions-container.ui-correspondence-filter:after,
+alpha-fund-redirection-dialog .ui-filter-actions-container.ui-correspondence-short-filter-info:after {
+  position: absolute;
+  content: '';
+  font-family: 'Font Awesome 5 Free';
+  font-weight: 900;
+  content: '\f0d7';
+  position: absolute;
+  bottom: -27px;
+  left: 6px;
+  font-size: 35px;
+  color: #85b2e2;
+}
+
+alpha-fund-switching .ui-filter-actions-container.ui-correspondence-short-filter-info,
+alpha-fund-redirection-dialog .ui-filter-actions-container.ui-correspondence-short-filter-info {
+  display: none;
+}
+
+alpha-fund-switching
+  .ui-filter-actions-container.ui-correspondence-filter.ux-hide
+  + .ui-filter-actions-container.ui-correspondence-short-filter-info,
+alpha-fund-redirection-dialog
+  .ui-filter-actions-container.ui-correspondence-filter.ux-hide
+  + .ui-filter-actions-container.ui-correspondence-short-filter-info {
+  display: block;
+}
+
+alpha-fund-switching .ui-filter-actions-container,
+alpha-fund-redirection-dialog .ui-filter-actions-container {
+  background-color: #e3e5ef;
+  margin: 0 15px 15px 15px;
+  border-radius: 6px;
+  border: 2px solid rgba(0, 0, 0, 0.05);
+  transition: all 0.25s ease-in-out;
+}
+
+alpha-fund-switching .ui-filter-heading,
+alpha-fund-redirection-dialog .ui-filter-heading {
+  font-weight: bold;
+  display: flex;
+  padding: 5px;
+  height: 100%;
+  background-color: #dddee8;
+  left: 0;
+  top: 0;
+  font-size: 11px;
+  align-items: center;
+  justify-content: center;
+  border-bottom: 2px solid rgba(0, 0, 0, 0.05);
+  margin-bottom: 5px;
+}
+
+alpha-fund-switching .ui-filter-shelf,
+alpha-fund-redirection-dialog .ui-filter-shelf {
+  padding: 0 15px;
+  text-align: center;
+}
+
+/* END: UI Filter Actions Container */
+
+/* Isometric Diagram Container */
+
+alpha-fund-switching .ui-iso-diagram-container,
+alpha-fund-redirection-dialog .ui-iso-diagram-container {
+  min-height: 100px;
+  padding: 20px;
+}
+
+/* Isometric Data Bar */
+
+alpha-fund-switching .ui-iso-data-block,
+alpha-fund-redirection-dialog .ui-iso-data-block {
+  position: relative;
+  border-top: 0 dashed #fff;
+  padding-bottom: 10px;
+  margin-bottom: 20px;
+  min-width: 380px;
+}
+
+alpha-fund-switching .ui-iso-data-block .ui-tooltip-icon-block,
+alpha-fund-redirection-dialog .ui-iso-data-block .ui-tooltip-icon-block {
+  width: 24.5px;
+  height: 24px;
+}
+
+alpha-fund-switching .ui-iso-data-block:before,
+alpha-fund-redirection-dialog .ui-iso-data-block:before {
+  content: '';
+  position: absolute;
+  left: -30px;
+  height: calc(100% - 25px);
+  top: 0;
+}
+
+alpha-fund-switching .ui-iso-data-value,
+alpha-fund-redirection-dialog .ui-iso-data-value {
+  position: absolute;
+  z-index: 2;
+  top: 20px;
+  left: -26px;
+  display: flex;
+  min-width: 250px;
+}
+
+alpha-fund-switching .ui-iso-data-value .ui-iso-data-amount,
+alpha-fund-switching .ui-iso-data-value .ui-iso-data-percent,
+alpha-fund-redirection-dialog .ui-iso-data-value .ui-iso-data-amount,
+alpha-fund-redirection-dialog .ui-iso-data-value .ui-iso-data-percent {
+  background-color: rgba(255, 255, 255, 0.8);
+  border: 2px solid rgba(255, 255, 255, 0.7);
+  padding: 3px 10px;
+}
+
+alpha-fund-switching .ui-iso-data-value .ui-iso-data-amount,
+alpha-fund-redirection-dialog .ui-iso-data-value .ui-iso-data-amount {
+  border-radius: 30px;
+}
+
+alpha-fund-switching .ui-iso-data-value .ui-iso-data-percent,
+alpha-fund-redirection-dialog .ui-iso-data-value .ui-iso-data-percent {
+  border-radius: 30px;
+  background-color: rgba(60, 73, 129, 0.9);
+  border: 2px solid rgba(255, 255, 255, 0.5);
+  margin-right: 2px;
+  overflow: hidden;
+  color: #fff;
+}
+
+alpha-fund-switching .ui-drop.no-funds .ui-iso-data-title,
+alpha-fund-redirection-dialog .ui-drop.no-funds .ui-iso-data-title {
+  top: 0;
+  left: -10px;
+}
+
+alpha-fund-switching .ui-iso-data-title,
+alpha-fund-redirection-dialog .ui-iso-data-title {
+  padding: 5px 5px 5px 10px;
+  margin-bottom: 2px;
+  position: relative;
+  left: -10px;
+  font-size: 15px;
+}
+
+/* Editable Premium Capsules */
+
+alpha-fund-switching .ui-iso-data-value .ui-iso-percent-entry,
+alpha-fund-redirection-dialog .ui-iso-data-value .ui-iso-percent-entry {
+  border-radius: 30px;
+  background-color: rgba(60, 73, 129, 0.9);
+  background-color: #fff;
+  border: 2px solid rgba(255, 255, 255, 0.5);
+  border: 0.2rem solid #85b2e2;
+  margin-right: 10px;
+  padding: 5px;
+  color: #fff;
+  width: 52px;
+  right: 10px;
+  top: -2px;
+  position: relative;
+  text-align: right;
+  color: #222;
+}
+
+alpha-fund-switching .ui-iso-data-value .ui-iso-percent-entry:before,
+alpha-fund-redirection-dialog .ui-iso-data-value .ui-iso-percent-entry:before {
+  content: '\f177 ';
+  font-family: 'Font Awesome 5 Free';
+  font-weight: 900;
+  position: absolute;
+  right: calc(100% + 10px);
+  top: -4px;
+  color: #5a6493;
+  font-size: 26px;
+
+  border-radius: 100%;
+}
+
+alpha-fund-switching .ui-iso-data-value .ui-iso-percent-entry:after,
+alpha-fund-redirection-dialog .ui-iso-data-value .ui-iso-percent-entry:after {
+  content: '';
+  height: 30px;
+  border-left: 3px solid #5a6493;
+  position: absolute;
+  left: -10px;
+  top: -2px;
+  width: 30px;
+  border-radius: 100%;
+}
+
+alpha-fund-switching .ui-iso-data-value .ui-iso-percent-entry input,
+alpha-fund-redirection-dialog .ui-iso-data-value .ui-iso-percent-entry input {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: calc(100%);
+  height: 100%;
+  border: 0;
+  padding-left: 5px;
+  padding-right: 20px;
+  background-color: transparent;
+  text-align: right;
+  z-index: 2;
+  color: #1c75bc;
+}
+alpha-fund-switching .ui-iso-data-value .ui-iso-percent-entry input:focus,
+alpha-fund-redirection-dialog .ui-iso-data-value .ui-iso-percent-entry input:focus {
+  outline: 0;
+}
+alpha-fund-switching .ui-iso-data-value .ui-iso-percent-entry input:focus + .ux-focus-helper,
+alpha-fund-redirection-dialog .ui-iso-data-value .ui-iso-percent-entry input:focus + .ux-focus-helper {
+  outline: 6px solid rgba(246, 199, 84, 0.7);
+  content: '';
+  position: absolute;
+  top: -5px;
+  left: -5px;
+  width: calc(100% + 10px);
+  height: calc(100% + 10px);
+  z-index: 1;
+}
+
+/* Isometric Diagram Cylinder Data Bar */
+alpha-fund-switching .ui-iso-data-cylinder-bar,
+alpha-fund-redirection-dialog .ui-iso-data-cylinder-bar {
+  height: 30px;
+  background-color: rgba(255, 255, 255, 0.5);
+  margin-bottom: 10px;
+  margin-top: 10px;
+  position: relative;
+  left: -10px;
+  width: 300px;
+  border-radius: 15px/15px;
+  border: 1px solid rgba(62, 65, 114, 0.5);
+  border: 1px solid #fff;
+  z-index: 3;
+}
+
+alpha-fund-switching .ui-iso-data-cylinder-bar[ux_current_premium_percent='0'] .ui-iso-data-fill,
+alpha-fund-redirection-dialog .ui-iso-data-cylinder-bar[ux_current_premium_percent='0'] .ui-iso-data-fill {
+  opacity: 0;
+}
+
+alpha-fund-switching .ui-iso-data-cylinder-bar:after,
+alpha-fund-redirection-dialog .ui-iso-data-cylinder-bar:after {
+  position: absolute;
+  right: -3px;
+  top: 2px;
+  width: 25px;
+  height: 25px;
+  border-radius: 15px/15px;
+  background-color: rgba(255, 255, 255, 0.8);
+  content: '';
+  transform: rotate(45deg) skew(10deg, 10deg);
+  border: 1px solid rgba(255, 255, 255, 1);
+}
+
+alpha-fund-switching .ui-iso-data-cylinder-bar:before,
+alpha-fund-redirection-dialog .ui-iso-data-cylinder-bar:before {
+  position: absolute;
+  left: -1px;
+  top: 2px;
+  width: 23px;
+  height: 23px;
+  border-radius: 15px/15px;
+  background-color: rgba(0, 0, 0, 0.1);
+  content: '';
+  transform: rotate(45deg) skew(10deg, 10deg);
+  border: 1px solid rgba(62, 65, 114, 0.5);
+  border: 1px solid #fff;
+}
+
+alpha-fund-switching .ui-iso-data-cylinder-bar .ui-iso-data-value,
+alpha-fund-redirection-dialog .ui-iso-data-cylinder-bar .ui-iso-data-value {
+  top: 2px;
+  left: calc(100% + 52px);
+}
+
+alpha-fund-switching .ui-iso-data-fill,
+alpha-fund-redirection-dialog .ui-iso-data-fill {
+  height: 30px;
+  background-color: rgba(62, 65, 114, 0.6);
+  background: rgb(209, 213, 232);
+  background: linear-gradient(180deg, rgba(209, 213, 232, 0.6) 0%, rgba(131, 137, 167, 0.6) 35%, rgba(60, 73, 129, 1) 100%);
+  position: relative;
+  left: 0;
+  top: -1px;
+  border-radius: 15px/15px;
+  border: 1px solid rgba(62, 65, 114, 0.5);
+  border: 1px solid #fff;
+  transition: all 0.5s;
+}
+
+alpha-fund-switching .ui-iso-data-fill:after,
+alpha-fund-redirection-dialog .ui-iso-data-fill:after {
+  position: absolute;
+  right: -3px;
+  top: 2px;
+  width: 23px;
+  height: 23px;
+  border-radius: 15px/15px;
+  background-color: rgba(60, 73, 129, 0.7);
+  content: '';
+  transform: rotate(45deg) skew(10deg, 10deg);
+  border: 2px solid rgba(234, 235, 248, 0.3);
+}
+
+alpha-fund-switching .ui-iso-data-cylinder-bar .ui-percent-value-amount,
+alpha-fund-redirection-dialog .ui-iso-data-cylinder-bar .ui-percent-value-amount {
+  position: absolute;
+  z-index: 1;
+  top: 3px;
+  right: -56px;
+  color: #4c588b;
+  padding: 3px 10px;
+  text-shadow: 0px 1px 1px rgba(255, 255, 255, 0.5);
+}
+
+alpha-fund-switching .ui-iso-data-cylinder-bar .ui-percent-value-amount i,
+alpha-fund-redirection-dialog .ui-iso-data-cylinder-bar .ui-percent-value-amount i {
+  transform: scaleX(-1);
+  position: absolute;
+  right: 357px;
+  font-size: 25px;
+  color: #5a6493;
+  bottom: 6px;
+}
+/* Isometric Diagram Cylinder Data Bar - End */
+
+/* Fund Switch - Investment Options */
+
+alpha-fund-switching .ui-fund-switch-container,
+alpha-fund-redirection-dialog .ui-fund-switch-container {
+  position: relative;
+}
+
+alpha-fund-switching .ui-fund-switch-container .ui-fs-view01,
+alpha-fund-redirection-dialog .ui-fund-switch-container .ui-fs-view01 {
+  margin-left: 0;
+}
+
+alpha-fund-switching .ui-iso-diagram-components.fund-options,
+alpha-fund-switching .ui-fund-switch-container .ui-iso-diagram-components.fund-options,
+alpha-fund-redirection-dialog .ui-iso-diagram-components.fund-options,
+alpha-fund-redirection-dialog .ui-fund-switch-container .ui-iso-diagram-components.fund-options {
+  margin-left: 30px;
+}
+
+alpha-fund-switching .fund-switch-available-options .ui-iso-diagram-section:after,
+alpha-fund-switching
+  .ui-fund-switch-container
+  .ui-iso-diagram-container.fund-switch-available-options
+  .ui-iso-diagram-section:after,
+alpha-fund-redirection-dialog .fund-switch-available-options .ui-iso-diagram-section:after,
+alpha-fund-redirection-dialog
+  .ui-fund-switch-container
+  .ui-iso-diagram-container.fund-switch-available-options
+  .ui-iso-diagram-section:after {
+  display: none;
+}
+
+alpha-fund-switching .fund-switch-available-options .ui-iso-data-value .ui-iso-percent-entry,
+alpha-fund-switching
+  .ui-fund-switch-container
+  .ui-iso-diagram-container.fund-switch-available-options
+  .ui-iso-data-value
+  .ui-iso-percent-entry,
+alpha-fund-redirection-dialog .fund-switch-available-options .ui-iso-data-value .ui-iso-percent-entry,
+alpha-fund-redirection-dialog
+  .ui-fund-switch-container
+  .ui-iso-diagram-container.fund-switch-available-options
+  .ui-iso-data-value
+  .ui-iso-percent-entry {
+  border-top-left-radius: 0;
+
+  border-bottom-left-radius: 0;
+  border-left: none;
+  border-color: rgb(28, 117, 188);
+}
+
+alpha-fund-switching .fund-switch-available-options .ui-iso-data-value .ui-iso-percent-entry,
+alpha-fund-switching .fund-switch-available-options .ui-iso-data-value .ui-iso-percent-entry input,
+alpha-fund-switching
+  .ui-fund-switch-container
+  .ui-iso-diagram-container.fund-switch-available-options
+  .ui-iso-data-value
+  .ui-iso-percent-entry,
+alpha-fund-switching
+  .ui-fund-switch-container
+  .ui-iso-diagram-container.fund-switch-available-options
+  .ui-iso-data-value
+  .ui-iso-percent-entry
+  input,
+alpha-fund-redirection-dialog .fund-switch-available-options .ui-iso-data-value .ui-iso-percent-entry,
+alpha-fund-redirection-dialog .fund-switch-available-options .ui-iso-data-value .ui-iso-percent-entry input,
+alpha-fund-redirection-dialog
+  .ui-fund-switch-container
+  .ui-iso-diagram-container.fund-switch-available-options
+  .ui-iso-data-value
+  .ui-iso-percent-entry,
+alpha-fund-redirection-dialog
+  .ui-fund-switch-container
+  .ui-iso-diagram-container.fund-switch-available-options
+  .ui-iso-data-value
+  .ui-iso-percent-entry
+  input {
+  color: rgb(28, 117, 188);
+}
+
+alpha-fund-switching .fund-switch-available-options .ui-iso-data-value,
+alpha-fund-switching .ui-fund-switch-container .ui-iso-diagram-container.fund-switch-available-options .ui-iso-data-value,
+alpha-fund-redirection-dialog .fund-switch-available-options .ui-iso-data-value,
+alpha-fund-redirection-dialog .ui-fund-switch-container .ui-iso-diagram-container.fund-switch-available-options .ui-iso-data-value {
+  left: -45px;
+}
+
+alpha-fund-switching .fund-switch-available-options .ui-iso-data-value.percentage-equivalent,
+alpha-fund-switching
+  .ui-fund-switch-container
+  .ui-iso-diagram-container.fund-switch-available-options
+  .ui-iso-data-value.percentage-equivalent,
+alpha-fund-redirection-dialog .fund-switch-available-options .ui-iso-data-value.percentage-equivalent,
+alpha-fund-redirection-dialog
+  .ui-fund-switch-container
+  .ui-iso-diagram-container.fund-switch-available-options
+  .ui-iso-data-value.percentage-equivalent {
+  left: 0;
+}
+
+alpha-fund-switching .fund-switch-available-options .ui-iso-data-value .ui-iso-percent-entry:after,
+alpha-fund-switching .fund-switch-available-options .ui-iso-data-value .ui-iso-percent-entry:before,
+alpha-fund-switching
+  .ui-fund-switch-container
+  .ui-iso-diagram-container.fund-switch-available-options
+  .ui-iso-data-value
+  .ui-iso-percent-entry:after,
+alpha-fund-switching
+  .ui-fund-switch-container
+  .ui-iso-diagram-container.fund-switch-available-options
+  .ui-iso-data-value
+  .ui-iso-percent-entry:before.action--psuedo,
+alpha-fund-redirection-dialog .fund-switch-available-options .ui-iso-data-value .ui-iso-percent-entry:after,
+alpha-fund-redirection-dialog .fund-switch-available-options .ui-iso-data-value .ui-iso-percent-entry:before,
+alpha-fund-redirection-dialog
+  .ui-fund-switch-container
+  .ui-iso-diagram-container.fund-switch-available-options
+  .ui-iso-data-value
+  .ui-iso-percent-entry:after,
+alpha-fund-redirection-dialog
+  .ui-fund-switch-container
+  .ui-iso-diagram-container.fund-switch-available-options
+  .ui-iso-data-value
+  .ui-iso-percent-entry:before {
+  display: none;
+}
+
+alpha-fund-switching .ui-content-tooltip .data-row-tile--flex-actions,
+alpha-fund-switching .ui-fund-switch-container .ui-content-tooltip .data-row-tile--flex-actions,
+alpha-fund-redirection-dialog .ui-content-tooltip .data-row-tile--flex-actions,
+alpha-fund-redirection-dialog .ui-fund-switch-container .ui-content-tooltip .data-row-tile--flex-actions {
+  margin-left: -10px;
+  margin-bottom: -5px;
+  margin-right: -10px;
+}
+
+alpha-fund-switching .ui-content-tooltip .data-row-tile--flex-actions [class*='action'],
+alpha-fund-switching .ui-fund-switch-container .ui-content-tooltip .data-row-tile--flex-actions [class*='action'],
+alpha-fund-redirection-dialog .ui-content-tooltip .data-row-tile--flex-actions [class*='action'],
+alpha-fund-redirection-dialog .ui-fund-switch-container .ui-content-tooltip .data-row-tile--flex-actions [class*='action'] {
+  min-height: auto;
+}
+
+alpha-fund-switching .local-overlay,
+alpha-fund-switching .ui-fund-switch-container .local-overlay,
+alpha-fund-redirection-dialog .local-overlay,
+alpha-fund-redirection-dialog .ui-fund-switch-container .local-overlay {
+  /* background-color: rgba(0, 0, 0, 0.85); */
+  background-color: rgba(18, 24, 50, 0.9);
+}
+
+alpha-fund-switching .local-overlay.show-local-overlay,
+alpha-fund-switching .ui-fund-switch-container .local-overlay.show-local-overlay,
+alpha-fund-redirection-dialog .local-overlay.show-local-overlay,
+alpha-fund-redirection-dialog .ui-fund-switch-container .local-overlay.show-local-overlay {
+  display: block;
+  opacity: 1;
+  height: 100%;
+  z-index: 5;
+}
+
+alpha-fund-switching .local-overlay .app-overlay--context-bar,
+alpha-fund-switching .ui-fund-switch-container .local-overlay .app-overlay--context-bar,
+alpha-fund-redirection-dialog .local-overlay .app-overlay--context-bar,
+alpha-fund-redirection-dialog .ui-fund-switch-container .local-overlay .app-overlay--context-bar {
+  background-color: transparent;
+  margin: 0;
+  position: relative;
+}
+
+alpha-fund-switching .local-overlay .app-overlay--context-bar .ui-button--multi-state,
+alpha-fund-switching .ui-fund-switch-container .local-overlay .app-overlay--context-bar .ui-button--multi-state,
+alpha-fund-redirection-dialog .local-overlay .app-overlay--context-bar .ui-button--multi-state,
+alpha-fund-redirection-dialog .ui-fund-switch-container .local-overlay .app-overlay--context-bar .ui-button--multi-state {
+  position: absolute;
+  right: 10px;
+  top: 25%;
+}
+
+alpha-fund-switching .ui-fund-sheet-document-container,
+alpha-fund-switching .ui-fund-switch-container .ui-fund-sheet-document-container,
+alpha-fund-redirection-dialog .ui-fund-sheet-document-container,
+alpha-fund-redirection-dialog .ui-fund-switch-container .ui-fund-sheet-document-container {
+  width: 95%;
+  height: 90%;
+  margin-top: 15px;
+}
+
+/* End: Fund Switch - Investment Options */
+/* ---------------------------------------------------------------------------------------- */
+
+/* Workplan: Investment Options (Fund Switch/Redirection) RESIZED */
+/* Set of overrides that refactor the design for this workplan */
+/*----------------------------------------------------------------*/
+
+/* Column Spacing */
+
+alpha-fund-switching .ui-iso-diagram-container.fund-switch-current-position,
+alpha-fund-switching .ui-iso-diagram-container.fund-switch-available-options,
+alpha-fund-switching .ui-iso-diagram-container.fund-redirect-preview,
+alpha-fund-redirection-dialog .ui-iso-diagram-container.fund-switch-current-position,
+alpha-fund-redirection-dialog .ui-iso-diagram-container.fund-switch-available-options,
+alpha-fund-redirection-dialog .ui-iso-diagram-container.fund-redirect-preview {
+  max-width: 500px;
+  flex: 1;
+  padding: 30px 55px 30px;
+  overflow-y: scroll;
+  overflow-x: hidden;
+  padding-left: 5px;
+  padding-top: 0;
+  padding-right: 10px;
+}
+
+alpha-fund-switching .ui-fs-view01.ui-fs-view-relative {
+  padding-left: 20px;
+}
+
+alpha-fund-redirection-dialog .ui-iso-diagram-container.fund-switch-available-options {
+  padding-bottom: 0;
+}
+
+alpha-fund-switching .ui-iso-data-block.ui-invetment-option-switch-block.init-selected-fund:after,
+alpha-fund-redirection-dialog .ui-iso-data-block.ui-invetment-option-switch-block.init-selected-fund:after {
+  content: 'Selected Fund';
+  position: absolute;
+  top: calc(-33px);
+  left: calc(-4px);
+  background-color: #1c75bc;
+  height: 25px;
+  padding: 5px 10px;
+  color: #fff;
+  font-weight: bold;
+}
+
+alpha-fund-switching .ui-iso-diagram-section,
+alpha-fund-redirection-dialog .ui-iso-diagram-section {
+  margin-bottom: 35px;
+}
+
+/* Fund Heading */
+alpha-fund-switching .ui-iso-data-block .ui-iso-data-title {
+  left: 0;
+  font-size: 13px;
+  padding: 5px 5px 8px 40px;
+}
+
+alpha-fund-redirection-dialog .ui-iso-data-block .ui-iso-data-title {
+  left: 0;
+  font-size: 13px;
+  padding: 5px 30px 5px 35px;
+}
+
+alpha-fund-redirection-dialog .ui-iso-data-block .ui-key-icons {
+  position: absolute;
+  left: 2px;
+  z-index: 3;
+}
+
+alpha-fund-switching alpha-current-investments-container .ui-iso-data-block .ui-iso-data-title {
+  padding-left: 32px;
+}
+
+alpha-fund-switching .ui-data-indicator.fund-type,
+alpha-fund-redirection-dialog .ui-data-indicator.fund-type {
+  left: 0px;
+}
+
+/* Data Capsule Themes */
+
+alpha-fund-switching .ui-data-indicator.fund-type.sector-name,
+alpha-fund-redirection-dialog .ui-data-indicator.fund-type.sector-name {
+  background-color: #eee;
+  border-color: rgba(34, 34, 34, 0.2);
+  color: #222;
+}
+
+/* Fund Type Header Flags */
+
+alpha-fund-switching .ui-iso-data-block,
+alpha-fund-redirection-dialog .ui-iso-data-block {
+  position: relative;
+  border-top: 0 dashed #fff;
+  padding-bottom: 0px;
+  margin-bottom: 10px;
+  min-width: 340px;
+}
+
+alpha-fund-switching .ui-iso-data-block-heading.regular-premium h3,
+alpha-fund-redirection-dialog .ui-iso-data-block-heading.regular-premium h3 {
+  background-color: #636d9a;
+  border-color: #4c588b;
+  position: absolute;
+  right: -3px;
+  border-radius: 0 0 0 30px;
+  top: 0;
+  border-right: 4px solid #4c588b;
+  border-left: 0;
+  padding-left: 20px;
+}
+
+alpha-fund-switching .ui-iso-data-block-heading,
+alpha-fund-redirection-dialog .ui-iso-data-block-heading {
+  margin-top: 10px;
+  margin-left: -5px;
+  margin-right: 5px;
+  padding: 0px 20px 5px 0px;
+  background-color: #b0b5c7;
+  background: transparent;
+  border-bottom: 2px solid rgba(60, 73, 129, 0);
+  margin-bottom: 25px;
+}
+
+alpha-fund-switching .ui-iso-data-block-heading.single-premium,
+alpha-fund-redirection-dialog .ui-iso-data-block-heading.single-premium {
+  margin-bottom: 5px;
+}
+
+/* Fund Containers: Current Fund */
+
+alpha-fund-switching alpha-current-fund-bar-container,
+alpha-fund-redirection-dialog alpha-current-fund-bar-container {
+  display: block;
+  border-top: 2px solid rgba(255, 255, 255, 0.8);
+  position: relative;
+  padding-top: 10px;
+}
+
+alpha-fund-switching alpha-current-fund-bar-container:after,
+alpha-fund-redirection-dialog alpha-current-fund-bar-container:after {
+  content: '';
+  border-bottom: 1px solid #8a94ac;
+  position: absolute;
+  bottom: calc(-10px);
+  width: 100%;
+}
+
+/* Fund Containers: Available Funds */
+alpha-fund-switching alpha-available-fund-bar,
+alpha-fund-redirection-dialog alpha-available-fund-bar {
+  display: block;
+  border-top: 2px solid rgba(255, 255, 255, 0.8);
+  position: relative;
+  padding-top: 10px;
+}
+
+alpha-fund-switching alpha-available-fund-bar:after,
+alpha-fund-redirection-dialog alpha-available-fund-bar:after {
+  content: '';
+  border-bottom: 1px solid #8a94ac;
+  position: absolute;
+  bottom: calc(-10px);
+  width: 100%;
+}
+
+/* Current Investments */
+alpha-fund-switching alpha-current-investments-container .ui-iso-diagram-components,
+alpha-current-investments-container alpha-current-investments-container alpha-fund-redirection-dialog .ui-iso-diagram-components {
+  display: flex;
+  flex-direction: column;
+  max-width: 500px;
+  margin: 35px 0px 35px 20px;
+  border: 0px solid red;
+  width: 380px;
+}
+
+/* Header Block */
+alpha-fund-switching .ui-iso-header-block,
+alpha-fund-redirection-dialog .ui-iso-header-block {
+  max-width: 500px;
+  width: calc(100% + 110px);
+  width: 100%;
+  padding: 15px 12px 0 5px;
+}
+
+alpha-fund-redirection-dialog .ui-iso-header-block h2 {
+  font-size: 14px;
+}
+
+alpha-fund-redirection-dialog .investment-fund-switch-options .ui-iso-header-block {
+  padding-left: 10px;
+}
+
+alpha-fund-switching .ui-header-actions {
+  /* width: 181px; */
+  display: flex;
+  position: relative;
+  top: -4px;
+  right: -6px;
+  justify-content: right;
+}
+
+/* Header Block - Date Blocks */
+
+alpha-fund-switching .ui-iso-data-indicators,
+alpha-fund-redirection-dialog .ui-iso-data-indicators {
+  display: flex;
+  justify-content: space-between;
+  position: relative;
+  padding-left: 5px;
+}
+
+alpha-available-investments-container .ui-iso-data-indicators {
+  border-left: 5.5px solid rgb(28, 117, 188);
+}
+
+alpha-fund-switching .ui-data-indicator.liquidated-pool,
+alpha-fund-redirection-dialog .ui-data-indicator.liquidated-pool {
+  position: relative;
+  margin-top: 14px;
+  min-width: 109px;
+}
+
+alpha-fund-switching .ui-data-indicator.liquidated-pool .ui-text,
+alpha-fund-redirection-dialog .ui-data-indicator.liquidated-pool .ui-text {
+  position: absolute;
+  bottom: calc(100% + 2px);
+  left: 0;
+  color: #222;
+  width: 160px;
+  font-size: 13px;
+}
+
+alpha-fund-switching i.fas.fa-calendar:before,
+alpha-fund-redirection-dialog i.fas.fa-calendar:before {
+  content: '\f073';
+}
+
+/* Header Block: Total Amount */
+
+alpha-fund-switching .ui-iso-data-indicators .ui-data-indicator.total-amount:before,
+alpha-fund-redirection-dialog .ui-iso-data-indicators .ui-data-indicator.total-amount:before {
+  content: '';
+  position: absolute;
+  border-left: 5.5px solid #4f4f4f;
+  left: 8px;
+  bottom: -8px;
+  height: 10px;
+}
+
+alpha-fund-switching .ui-data-indicator.total-amount,
+alpha-fund-redirection-dialog .ui-data-indicator.total-amount {
+  position: relative;
+  margin-top: 14px;
+  min-width: 30px;
+}
+
+alpha-fund-switching .ui-data-indicator.total-amount .ui-text,
+alpha-fund-redirection-dialog .ui-data-indicator.total-amount .ui-text {
+  position: absolute;
+  bottom: calc(100% + 2px);
+  left: 0;
+  color: #222;
+  width: 160px;
+  font-size: 13px;
+}
+
+/* Header Block - Regular Premium Block */
+
+alpha-fund-switching .ui-data-indicator.premium-count,
+alpha-fund-redirection-dialog .ui-data-indicator.premium-count {
+  position: relative;
+  margin-top: 14px;
+  min-width: 50px;
+  margin-right: 0;
+}
+
+alpha-fund-switching .ui-data-indicator.premium-count .ui-text,
+alpha-fund-redirection-dialog .ui-data-indicator.premium-count .ui-text {
+  position: absolute;
+  bottom: calc(100% + 2px);
+  right: 0;
+  color: #222;
+  width: 160px;
+  font-size: 13px;
+  text-align: right;
+}
+
+/* Regular Premium Tether */
+
+alpha-fund-switching .ui-iso-data-indicators .ui-data-indicator.premium-count:before,
+alpha-fund-redirection-dialog .ui-iso-data-indicators .ui-data-indicator.premium-count:before {
+  content: '';
+  position: absolute;
+  border-left: 5.5px solid rgba(60, 73, 129, 0.5);
+  right: -2px;
+  bottom: -7px;
+  display: none;
+  height: 10px;
+}
+
+alpha-fund-switching .ui-iso-diagram-section.regular-premiums:after,
+alpha-fund-redirection-dialog .ui-iso-diagram-section.regular-premiums:after {
+  content: '';
+  border-right: 5.5px solid rgba(60, 73, 129, 0.5);
+  height: calc(100% + 15px);
+  position: absolute;
+  right: -8px;
+  top: 0px;
+  border-radius: 0 0 10px 10px;
+}
+
+/* Regular Premium Data Capsules */
+alpha-fund-switching alpha-current-investments-container .ui-iso-data-block .ui-iso-data-value .ui-iso-data-percent,
+alpha-fund-redirection-dialog alpha-current-investments-container .ui-iso-data-block .ui-iso-data-value .ui-iso-data-percent {
+  border-radius: 30px;
+  background-color: rgba(60, 73, 129, 0.9);
+  border: 2px solid rgba(255, 255, 255, 0.5);
+  margin-right: 2px;
+  overflow: hidden;
+  color: #fff;
+  min-width: 52px;
+  text-align: center;
+}
+
+/* Investment Options Premium Tether */
+
+alpha-fund-switching alpha-available-fund-bar-group-container .fund-switch-available-options:after {
+  content: '';
+  position: absolute;
+  right: -3px;
+  top: -30px;
+  z-index: 2;
+  border-right: 5.5px solid rgba(60, 73, 129, 0.5);
+  height: calc(100% + 20px);
+}
+
+alpha-fund-switching alpha-current-investments-container .ui-iso-data-cylinder-bar .ui-iso-data-value,
+alpha-fund-redirection-dialog alpha-current-investments-container .ui-iso-data-cylinder-bar .ui-iso-data-value {
+  top: 2px;
+  left: calc(100% + 52px);
+  min-width: 0;
+}
+
+/* Map Rail */
+
+alpha-fund-switching .ui-iso-diagram-map,
+alpha-fund-redirection-dialog .ui-iso-diagram-map {
+  max-width: 20px;
+}
+
+/* Investments Options */
+
+alpha-fund-switching .ui-iso-diagram-components,
+alpha-fund-redirection-dialog .ui-iso-diagram-components {
+  border: 0px solid #ba00ff;
+  width: 380px;
+}
+
+alpha-fund-switching .ui-iso-diagram-components.fund-options,
+alpha-fund-switching .ui-fund-switch-container .ui-iso-diagram-components.fund-options,
+alpha-fund-redirection-dialog .ui-iso-diagram-components.fund-options,
+alpha-fund-redirection-dialog .ui-fund-switch-container .ui-iso-diagram-components.fund-options {
+  margin-left: 10px;
+}
+
+/* Menu Button */
+
+alpha-fund-switching .ui-data-indicator.ui-has-fund-options,
+alpha-fund-redirection-dialog .ui-data-indicator.ui-has-fund-options {
+  position: relative;
+  padding-left: 40px;
+  padding-left: 10px;
+}
+
+/* Gutter Change */
+alpha-fund-switching alpha-available-investments-container .ui-iso-diagram-map,
+alpha-fund-redirection-dialog alpha-available-investments-container .ui-iso-diagram-map {
+  max-width: 5px;
+}
+
+/* Overlay Container */
+
+alpha-fund-switching .ui-iso-diagram-components,
+alpha-fund-redirection-dialog .ui-iso-diagram-components {
+  display: flex;
+  flex-direction: column;
+  max-width: 500px;
+  margin: 35px 30px;
+}
+
+alpha-fund-redirection-dialog .ui-iso-diagram-container.fund-switch-current-position {
+  border-left: 5.5px solid rgb(79, 79, 79);
+}
+
+/* Fund Bars: Overlay Resize */
+
+alpha-fund-redirection-dialog .ui-iso-data-bar {
+  border: 0px solid #20559e;
+  transform: scale(1);
+  transform-origin: top left;
+}
+
+alpha-fund-switching .ui-iso-data-bar .ui-iso-data .ui-iso-data-value,
+alpha-fund-redirection-dialog .ui-iso-data-bar .ui-iso-data-value {
+  border: 0px solid #20559e;
+  transform: scale(1);
+  transform-origin: top left;
+  left: -6px;
+  top: 4px;
+}
+
+alpha-fund-redirection-dialog .ui-iso-data-bar .ui-iso-data-value {
+  left: -5px;
+}
+
+alpha-fund-redirection-dialog .fund-switch-available-options .ui-iso-data-value {
+  left: 0;
+}
+
+/* Fund Bars - Main Screen Resize */
+
+alpha-fund-switching .ui-iso-data-bar {
+  transform: scale(1);
+  transform-origin: top left;
+}
+/* Fund Action */
+alpha-fund-switching .ui-iso-data-bar .ui-iso-data-value {
+  transform: scale(1);
+  transform-origin: top left;
+  min-width: auto;
+  left: -6px;
+  top: 5px;
+}
+
+/* Switched/Funds Actions */
+alpha-fund-switching .ui-iso-data-bar .ui-iso-data-sources,
+alpha-fund-redirection-dialog .ui-iso-data-bar .ui-iso-data-sources {
+  right: 15px !important;
+  top: 36.5px;
+  top: 19px;
+  left: unset;
+  z-index: 1;
+}
+
+alpha-fund-switching .ui-iso-data-bar .ui-iso-data-sources:before,
+alpha-fund-redirection-dialog .ui-iso-data-bar .ui-iso-data-sources:before {
+  font-family: 'Font Awesome 5 Free';
+  font-weight: 600;
+  content: ' ';
+  width: 338px;
+  border-top: 2px dashed rgba(27, 111, 160, 0.5);
+  position: absolute;
+  right: 7px;
+  top: 12.6px;
+  border-radius: 30px;
+}
+
+/* Fund Bars Placement */
+
+alpha-fund-switching .ui-iso-data-bar .ui-iso-data,
+alpha-fund-redirection-dialog .ui-iso-data-bar .ui-iso-data {
+  position: relative;
+  left: 28px;
+  margin-top: 1px;
+  margin-bottom: 9px;
+}
+
+/* Fund Bars - Core Change */
+
+alpha-fund-switching .ui-iso-data-bar,
+alpha-fund-redirection-dialog .ui-iso-data-bar {
+  display: flex;
+  width: 100%;
+  position: relative;
+  left: -10px;
+  left: 0;
+  width: 275px;
+  width: 100%;
+  border: 0px solid red;
+}
+
+alpha-fund-switching .ui-iso-data-bar .ui-data-indicator.total-amount,
+alpha-fund-redirection-dialog .ui-iso-data-bar .ui-data-indicator.total-amount {
+  left: 0;
+  position: relative;
+  border-radius: 0 30px 30px 0;
+  border-left: 0;
+}
+
+alpha-fund-switching .ui-iso-data-bar .ui-data-indicator.total-amount:before,
+alpha-fund-redirection-dialog .ui-iso-data-bar .ui-data-indicator.total-amount:before {
+  font-family: 'Font Awesome 5 Free';
+  font-weight: 600;
+  content: '';
+  position: absolute;
+  color: rgba(63, 64, 63, 0.5);
+  font-size: 30px;
+  top: 20px;
+  left: 7px;
+  transform: rotate(180deg);
+}
+
+alpha-available-investments-container .ui-iso-data-bar .ui-data-indicator.total-amount {
+  left: 0;
+  min-height: 25px;
+  min-width: 20px;
+}
+
+/* Fund Selection Box */
+
+alpha-fund-switching .ui-iso-data-block.ui-invetment-option-switch-block,
+alpha-fund-redirection-dialog .ui-iso-data-block.ui-invetment-option-switch-block {
+  position: relative;
+  margin-bottom: 15px;
+  z-index: 3;
+  margin-top: 33px;
+  width: calc(100% + 14px);
+  min-width: auto;
+}
+
+alpha-fund-switching .ui-iso-data-block.ui-invetment-option-switch-block.init-selected-fund:before,
+alpha-fund-redirection-dialog .ui-iso-data-block.ui-invetment-option-switch-block.init-selected-fund:before {
+  content: ' ';
+  border: 2px dashed #67a3d3;
+  background-color: rgba(198, 221, 239, 0.2);
+  position: absolute;
+  top: calc(-10px);
+  left: calc(-4px);
+  width: calc(100% + 0px);
+  height: calc(100% + 25px);
+  z-index: -1;
+}
+
+alpha-fund-switching .tile-data.ui-fund-switch-actions,
+alpha-fund-redirection-dialog .tile-data.ui-fund-switch-actions {
+  border-bottom: 2px solid #1c75bc;
+  margin-bottom: 15px;
+  margin-left: 10px;
+  margin-right: 20px;
+  padding-left: 0px;
+}
+
+/* Font Awesome Upgrades */
+
+/* Arrow Right */
+.fa.fa-long-arrow-right:before {
+  content: '\f30b';
+}
+
+/*Arrow Left */
+.fa.fa-long-arrow-left:before {
+  content: '\f30a';
+}
+
+/* Key Icons Update */
+
+alpha-fund-switching alpha-fund-key-icons .ui-iso-data-block .ui-key-icons {
+  top: 2px !important;
+  left: 2px;
+  position: absolute;
+}
+
+alpha-fund-switching alpha-fund-key-icons .ui-iso-data-block {
+  width: auto;
+  min-width: 0;
+  margin-bottom: 0;
+}
+
+/* Total Fund Tethering */
+
+alpha-fund-switching .ui-data-indicator.ui-has-fund-options .ui-button--multi-state,
+alpha-fund-redirection-dialog .ui-data-indicator.ui-has-fund-options .ui-button--multi-state {
+  position: relative;
+  left: 6px;
+  top: -4px;
+  left: 0;
+  top: 7px;
+  margin-bottom: -20px;
+  margin-top: -20px;
+  margin-left: -3px;
+}
+
+/* Investment Question Block Sizing  */
+alpha-fund-switching alpha-fund-switch-question-container .address-questions {
+  /* border:1px solid red; */
+  width: 380px !important;
+  margin: 0 20px 0px 15px !important;
+}
+
+alpha-fund-switching alpha-fund-switch-question-container .card.question-sets {
+  width: 100%;
+  padding: 0 !important;
+  min-width: 0;
+}
+
+/* Data Item Percent Add-on*/
+
+alpha-fund-switching .ui-data-percent,
+alpha-fund-redirection-dialog .ui-data-percent {
+  display: inline-flex;
+  background-color: rgb(255 255 255 / 20%);
+  position: relative;
+  padding-top: 5px;
+  margin-top: -5px;
+  padding-bottom: 5px;
+  margin-bottom: -5px;
+  padding-right: 8px;
+  padding-left: 5px;
+  border-left: 2px dashed rgb(255 255 255 / 0.5);
+  margin-left: 3px;
+  margin-right: -10px;
+  border-radius: 0 30px 30px 0;
+}
+
+/* Header Data Indicator Actions */
+
+alpha-fund-switching .ui-data-indicator.total-amount .action-menu,
+alpha-fund-redirection-dialog .ui-data-indicator.total-amount .action-menu {
+  margin-left: -13px;
+}
+
+/* Header: Investment Options Column */
+
+alpha-fund-switching alpha-fund-switch-question-container h2.app-overlay--body-heading {
+  font-size: 14px;
+  width: 380px !important;
+  margin: 35px 20px 0px 15px !important;
+  background-color: #fff;
+  border-radius: 20px 20px 0 0;
+  text-align: center;
+}
+
+alpha-fund-switching alpha-fund-switch-question-container .question {
+  margin-top: 0 !important;
+}
+
+alpha-fund-switching alpha-fund-switch-question-container .card-block {
+  padding: 15px;
+}
+
+alpha-fund-switching alpha-fund-switch-question-container .card-block .card-block {
+  padding: 0 !important;
+}
+
+/* Floating Fund Action Title  */
+alpha-fund-switching .ui-floating-title {
+  position: absolute;
+  bottom: 100%;
+  left: 5px;
+  background-color: hsla(207, 74%, 42%, 0);
+  color: rgb(28, 117, 188);
+  padding: 2px 10px;
+  width: calc(100% - 19px);
+}
+
+/* Cylinder Bar Updates */
+alpha-fund-switching alpha-fund-bar-cylinder .ui-iso-data-cylinder-bar {
+  /* border:1px solid red; */
+  width: 231px;
+  margin-left: 15px;
+}
+
+/* Application Content Overflow/Scrolling (Scroll Fixes) */
+/*----------------------------------------------------------------*/
+
+/* Main Body Overflow & Frame Lock*/
+body {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100vh;
+  overflow: hidden;
+}
+
+/* Main Content */
+alpha-v2-template .alpha-layout-col-2.alpha-app-body {
+  overflow-y: scroll;
+  overflow-x: hidden;
+}
+
+/* Companion App Dock (Right Side Dock) Scroll */
+alpha-right-side-menu-apps .alpha-nav-app-explorer {
+  overflow: hidden;
+  height: inherit !important;
+}
+
+alpha-right-sidebar .sidebar-header {
+  position: static;
+}
+
+alpha-right-side-menu-apps.widget-dock {
+  height: 100% !important;
+  flex: 1;
+}
+
+alpha-scratch-pad-footer .ui-docked-scratch-pad.sp-min {
+  overflow: hidden;
+  height: 52px !important;
+}
+
+alpha-right-sidebar .view-widgets ul.widget-selection {
+  flex: 1;
+  overflow-y: scroll;
+  height: 100%;
+  padding-bottom: 100px;
+}
+
+/* Widget Dock: Correspondence */
+/*----------------------------------------------------------------*/
+
+/* Spacing & Border Adjustments*/
+alpha-correspondence-widget .ui-correspondence-widget-body.step-container {
+  padding-left: 0;
+}
+
+alpha-correspondence-widget .ui-app-widget-fixed-header {
+  padding-top: 5px;
+  margin-top: -10px;
+}
+
+/* Gutter Icon Adjust */
+alpha-correspondence-widget .card-row.card-row--wcm.correspondence-item .content-block--data-values.icon-in-gutter::before {
+  width: 0px !important;
+  border-right: 0px solid #ddd !important;
+}
+
+/* Filter Button Update */
+alpha-correspondence-widget correspondence-filter-select-all-contexts .ui-button-text {
+  font-weight: bold;
+}
+
+/* Letter Block Title Format*/
+
+alpha-correspondence-widget .content-block--data-values .name-position {
+  padding-right: 15px;
+}
+
+/* Correspondence Heading Realign*/
+
+alpha-correspondence-widget .content-block--data-values .content-block--col .flex-container .name-position {
+  position: relative;
+  margin-top: 0 !important;
+}
+
+alpha-correspondence-widget .content-block--label.larger-font.correspondence-heading {
+  display: flex;
+  align-items: center;
+}
+
+/* Filter Size Normalising */
+
+alpha-correspondence-widget .ui-filter-actions-container.ui-correspondence-filter:after,
+alpha-correspondence-widget .ui-filter-actions-container.ui-correspondence-short-filter-info:after {
+  bottom: -30px !important;
+  left: -2px !important;
+  font-size: 40px !important;
+  transform: rotate(-225deg) !important;
+}
+
+alpha-correspondence-widget alpha-correspondence-search .ui-filter-criteria {
+  text-align: left;
+}
+
+alpha-correspondence-widget alpha-correspondence-search .ui-filter-criteria mat-form-field {
+  max-width: 295px;
+  margin-right: 10px;
+  margin-top: -15px;
+}
+
+alpha-correspondence-widget .ui-filter-description-row {
+  padding-left: 15px;
+}
+
+alpha-correspondence-widget correspondence-filter-select-all-contexts {
+  margin-bottom: -10px;
+}
+
+alpha-correspondence-widget correspondence-filter-select-all-contexts .ui-filter-description-text {
+  margin-right: 5px;
+}
+
+alpha-correspondence-widget correspondence-filter-select-all-contexts .ui-filter-description-text {
+  margin-right: 5px;
+}
+
+alpha-correspondence-widget correspondence-filter-select-all-contexts button.ui-button + button.ui-button .ui-button-text {
+  min-width: 84px;
+  text-align: center !important;
+}
+
+alpha-correspondence-widget .ui-filter-description-row {
+  padding-bottom: 7px !important;
+  margin-top: 7px !important;
+}
+
+alpha-correspondence-widget .ui-correspondence-view-filters {
+  padding-left: 5px !important;
+}
+
+alpha-correspondence-widget .ui-filter-actions-container.ui-correspondence-filter {
+  padding-top: 5px;
+}
+
+/* Date Input Filter*/
+
+alpha-correspondence-widget .ui-datarange-container input.mat-input-element {
+  background: transparent;
+  padding: 6px 35px 6px 5px;
+  border: 0;
+  position: relative;
+  z-index: 1;
+  min-width: 240px;
+  font-weight: bold;
+}
+
+alpha-correspondence-widget .ui-datarange-container {
+  position: relative;
+  background: #fff;
+  border: 1px solid #85b2e2;
+  border-radius: 4px;
+  position: relative;
+}
+
+alpha-correspondence-widget .ui-datarange-container:after {
+  font-family: 'Font Awesome 5 Free';
+  font-weight: 900;
+  content: '\f073  \f0d7';
+  position: absolute;
+  right: 0;
+  top: 0;
+  color: #2174cc;
+  padding: 4px 5px;
+}
+
+/* AND/OR Filter Button*/
+alpha-correspondence-widget alpha-correspondence-search .ui-button-text {
+  font-weight: bold;
+}
+
+/* Letter (PDF) Container Adjust */
+alpha-correspondence-widget .letter-format {
+  border: 0px solid #1c1818 !important;
+  padding-left: 0px !important;
+}
+
+alpha-correspondence-widget .card-row.card-row--wcm .content-section-header.step-open + .content-section-body.sub-step {
+  border: 0;
+  border-radius: 0;
+  background-color: #dee0e8;
+  width: calc(100%) !important;
+}
+
+/* Linked Contexts */
+
+alpha-correspondence-widget .linked-contexts-details-container {
+  width: 100%;
+  padding-left: 0 !important;
+}
+
+alpha-correspondence-widget .linked-contexts-details {
+  width: 100%;
+}
+
+alpha-correspondence-widget .linked-contexts-details-container .linked-context-info {
+  width: 100%;
+  padding: 4px 45px 0px 15px !important;
+  border-bottom: 1px dashed #0d57c3;
+}
+
+alpha-correspondence-widget .linked-context-header {
+  width: 100%;
+  padding-left: 0 !important;
+}
+
+alpha-correspondence-widget .linked-context-header .linked-contexts-title {
+  padding-left: 7px;
+}
+
+alpha-correspondence-widget .linked-context-header .fas {
+  font-size: 22px;
+  position: absolute;
+  left: 5px;
+  top: 5px;
+}
+
+alpha-correspondence-widget .linked-context-info .linked-selected-context {
+  background-color: #eee;
+  border-color: rgb(182, 196, 210);
+  border-style: solid;
+  border-width: 2px;
+  border-radius: 100px;
+  min-width: 45px;
+  width: auto;
+  font-weight: bold;
+  height: auto;
+  margin-bottom: 5px;
+  margin-right: 5px;
+  font-size: 11px;
+  display: inline-block;
+  padding: 4px 10px 3px 10px !important;
+  position: relative;
+}
+
+/* Selected Context */
+
+alpha-correspondence-widget .linked-selected-context.selected-context-flag {
+  position: absolute;
+  right: 45px;
+  top: 4px;
+  width: 25px;
+  height: 25px;
+  min-width: 25px;
+  padding: 0px !important;
+  display: flex;
+  border-radius: 100px;
+  color: #fff;
+}
+
+alpha-correspondence-widget .linked-selected-context.selected-context-flag .fas {
+  font-size: 16px;
+  line-height: 1;
+}
+
+alpha-correspondence-widget .linked-selected-context.selected-context-flag + .linked-context-info {
+  background-color: rgba(133, 178, 226, 0.1);
+  color: rgba(255, 255, 255, 1);
+  border-bottom: 1px dashed #1869de;
+}
+
+alpha-correspondence-widget .linked-selected-context.selected-context-flag + .linked-context-info .linked-selected-context {
+  background-color: #85b2e2 !important;
+  border-color: rgba(255, 255, 255, 0.4);
+  border-style: solid;
+  border-width: 2px;
+  border-radius: 100px;
+  min-width: 45px;
+  width: auto;
+  font-weight: bold;
+  height: auto;
+  margin-bottom: 5px;
+  margin-right: 5px;
+  font-size: 11px;
+  display: inline-block;
+  padding: 4px 10px 4px 10px !important;
+  position: relative;
+}
+
+alpha-correspondence-widget .linked-selected-context.selected-context-flag + .linked-context-info .linked-selected-context:before {
+  content: 'Selected';
+  position: relative;
+  left: -2px;
+}
+
+alpha-correspondence-widget .linked-selected-context.selected-context-flag + .linked-context-info .linked-selected-context:after {
+  font-family: 'Font Awesome 5 Free';
+  font-weight: 900;
+  content: '\f069';
+  position: absolute;
+  left: calc(100% + 5px);
+  color: #1869de;
+}
+
+alpha-correspondence-widget .linked-selected-context.selected-context-flag + .linked-context-info .linked-contexts-title {
+  color: #1869de;
+}
+
+alpha-correspondence-widget .content-section-header.sub-step {
+  position: relative !important;
+}
+
+/* MEDIA RESIZE */
+/* Only Media Resize Styles should be placed beyond this block */
+/*----------------------------------------------------------------*/
+
+/* BREAK POINT 01 */
+/*----------------------------------------------------------------*/
+/*----------------------------------------------------------------*/
+@media only screen and (max-width: 1342px) {
+  /* App Resize Notification */
+  /*----------------------------------------------------------------*/
+  body:before {
+    content: ' ALPHA window has been reduced to a size below recommended size.';
+    font-weight: bold;
+    height: 50px;
+    display: flex;
+    background-color: #f0ad4e;
+    align-items: center;
+    justify-content: center;
+    border-bottom: 2px solid white;
+    /* padding-top: 10px; */
+  }
+
+  .app-page--header h1 {
+    font-size: 13px !important;
+    line-height: 1.5 !important;
+  }
+
+  .app-page--header {
+    display: flex;
+    float: none;
+    flex-direction: column;
+    height: auto;
+    padding-bottom: 10px;
+  }
+
+  .app-header {
+    height: auto;
+  }
+
+  /* App Explorer Toolbar (Left Menu)  */
+  /*----------------------------------------------------------------*/
+  .alpha-explorer-toolbar.extended {
+    margin-right: 0;
+  }
+
+  /* Workplan: Wizard Navigation */
+  /*----------------------------------------------------------------*/
+
+  /* Sticky Navigation Actons */
+  .wizard-container.wizard-vertical-theme-01
+    .step-container
+    .content-section-header.step-open
+    + .content-section-body
+    .wizard-navigation {
+      width: calc((100% - 60px) - 631px);
+      left: 50px;
+  }
+
+  /* Only Companion Dock Open */
+  .companion-dock-open
+    .wizard-container.wizard-vertical-theme-01
+    .step-container
+    .content-section-header.step-open
+    + .content-section-body
+    .wizard-navigation {
+    width: calc((100% - 520px) - 60px);
+  }
+
+  /* Only App Explorer */
+  .ui-app-explorer-v2.ui-app-exp-open
+    .wizard-container.wizard-vertical-theme-01
+    .step-container
+    .content-section-header.step-open
+    + .content-section-body
+    .wizard-navigation {
+    width: calc((100% - 60px) - 60px - 0px);
+    left: 60px;
+  }
+
+  /* Both App Explorer & Companion Dock Open */
+  .companion-dock-open.ui-app-explorer-v2.ui-app-exp-open
+    .wizard-container.wizard-vertical-theme-01
+    .step-container
+    .content-section-header.step-open
+    + .content-section-body
+    .wizard-navigation {
+    width: calc((100% - 520px) - 60px - 0px);
+    left: 60px;
+  }
+}
+
+alpha-pdf-container {
+  height: 100%;
+  width: 100%;
+}
+
+/* BREAK POINT 02 */
+/*----------------------------------------------------------------*/
+/*----------------------------------------------------------------*/
+@media only screen and (max-width: 1266px) {
+  alpha-group-summary ul.alpha-linked-data-structure {
+    transform: scale(0.9);
+    margin-left: -3rem;
+    margin-top: -2rem;
+  }
+}
+
+/* BREAK POINT 03 */
+/*----------------------------------------------------------------*/
+/*----------------------------------------------------------------*/
+@media only screen and (max-width: 1024px) {
+  /* For half desktop: */
+  .app-branding--block {
+    display: none;
+  }
+}
+
+/* END: MEDIA RESIZE*/
+/*----------------------------------------------------------------*/
+/*----------------------------------------------------------------*/
+/* NO CSS should be placed beyond this point */
+/*----------------------------------------------------------------*/
+/*----------------------------------------------------------------*/
+alpha-letters-widget button.mat-raised-button.mat-primary.ui-btn-center {
+  margin: 0 auto;
+}
+
+alpha-letters-widget letters-job-selection .ui-letter-question-block mat-form-field.ui-full-width {
+  width: 100%;
+}
