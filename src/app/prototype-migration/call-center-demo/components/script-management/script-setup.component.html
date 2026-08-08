@@ -5,31 +5,37 @@
 
     <!-- Product placeholder tile -->
     <button type="button"
-            class="alp-script-setup__placeholder-tile"
-            [class.alp-script-setup__placeholder-tile--selected]="selectedProduct()"
+            class="alp-add-content-tile"
+            [class.alp-add-content-tile--selected]="selectedProduct()"
             (click)="openProductDialog()">
       @if (selectedProduct()) {
-        <span class="alp-script-setup__placeholder-tile-label">{{ selectedProductLabel() }}</span>
-        <span class="alp-script-setup__placeholder-tile-hint">Change product</span>
+        <i class="fas fa-check-circle alp-add-content-tile__check"></i>
+        <div class="alp-add-content-tile__content">
+          <span>{{ selectedProductLabel() }}</span>
+          <span class="alp-add-content-tile__hint">Change product</span>
+        </div>
       } @else {
-        <i class="fas fa-plus alp-script-setup__placeholder-tile-icon"></i>
-        <span class="alp-script-setup__placeholder-tile-label">Select product</span>
+        <i class="fas fa-plus"></i>
+        <span>Select product</span>
       }
     </button>
 
     <!-- Request type placeholder tile -->
     <button type="button"
-            class="alp-script-setup__placeholder-tile"
-            [class.alp-script-setup__placeholder-tile--selected]="selectedRequestType()"
-            [class.alp-script-setup__placeholder-tile--disabled]="!selectedProduct()"
+            class="alp-add-content-tile"
+            [class.alp-add-content-tile--selected]="selectedRequestType()"
+            [class.alp-add-content-tile--disabled]="!selectedProduct()"
             [disabled]="!selectedProduct()"
             (click)="openRequestTypeDialog()">
       @if (selectedRequestType()) {
-        <span class="alp-script-setup__placeholder-tile-label">{{ selectedRequestTypeLabel() }}</span>
-        <span class="alp-script-setup__placeholder-tile-hint">Change request type</span>
+        <i class="fas fa-check-circle alp-add-content-tile__check"></i>
+        <div class="alp-add-content-tile__content">
+          <span>{{ selectedRequestTypeLabel() }}</span>
+          <span class="alp-add-content-tile__hint">Change request type</span>
+        </div>
       } @else {
-        <i class="fas fa-plus alp-script-setup__placeholder-tile-icon"></i>
-        <span class="alp-script-setup__placeholder-tile-label">Select request type</span>
+        <i class="fas fa-plus"></i>
+        <span>Select request type</span>
       }
     </button>
 
@@ -42,12 +48,12 @@
       </h3>
 
       <button type="button"
-              class="alp-script-setup__placeholder-tile alp-script-setup__placeholder-tile--create"
+              class="alp-add-content-tile"
               *ngIf="showCreateTile()"
-              [class.alp-script-setup__placeholder-tile--selected]="isCreateNewSelected()"
+              [class.alp-add-content-tile--selected]="isCreateNewSelected()"
               (click)="toggleCreateNew()">
-        <i class="fas fa-plus alp-script-setup__placeholder-tile-icon"></i>
-        <span class="alp-script-setup__placeholder-tile-label">Create new script</span>
+        <i class="fas fa-plus"></i>
+        <span>Create new script</span>
       </button>
 
       <div class="alp-script-setup__script-list">
@@ -58,9 +64,9 @@
               <strong>{{ script.name }}</strong>
               <span class="alp-script-setup__last-edited">Last edited: {{ script.lastEdited }}</span>
               @if (script.copy) {
-                <span class="alp-type-tag" data-type="copy-draft">Copy Draft</span>
+                <span class="alp-status-tag alp-status-tag--copy-draft">Copy Draft</span>
               } @else {
-                <span class="alp-type-tag" data-type="draft">Draft</span>
+                <span class="alp-status-tag alp-status-tag--draft">Draft</span>
               }
             </div>
             <div class="alp-script-setup__script-actions">
@@ -82,7 +88,7 @@
               <strong>{{ script.name }}</strong>
               <span class="alp-script-setup__last-edited">Last edited: {{ script.lastEdited }}</span>
               @if (script.isActive) {
-                <span class="alp-type-tag" data-type="primary-script">Primary Script</span>
+                <span class="alp-status-tag alp-status-tag--primary">Primary Script</span>
               }
             </div>
 
@@ -104,7 +110,7 @@
             <div class="alp-script-setup__historic-card">
               <div class="alp-script-setup__historic-info">
                 <div class="alp-script-setup__historic-header">
-                  <span class="alp-type-tag" data-type="copy-draft">Historic Version Selected</span>
+                  <span class="alp-status-tag alp-status-tag--copy-draft">Historic Version Selected</span>
                   <strong>v{{ selectedHistoricVersion()!.version }}</strong>
                 </div>
                 <div class="alp-script-setup__historic-meta">
@@ -140,15 +146,19 @@
             @for (product of filteredProductsForDialog(); track product.id) {
               <button type="button"
                       class="alp-script-setup__tile"
-                      [class.alp-script-setup__tile--selected]="selectedProduct() === product.id"
-                      (click)="selectProduct(product.id)">
+                      [class.alp-script-setup__tile--selected]="selectedProductInDialog() === product.id"
+                      (click)="selectProductInDialog(product.id)">
                 <span class="alp-script-setup__tile-label">{{ product.label }}</span>
-                @if (selectedProduct() === product.id) {
+                @if (selectedProductInDialog() === product.id) {
                   <i class="fas fa-check-circle alp-script-setup__tile-check"></i>
                 }
               </button>
             }
           </div>
+        </div>
+        <div class="alp-script-setup__dialog-footer">
+          <button type="button" (click)="closeProductDialog()" class="alp-btn alp-btn--secondary">Cancel</button>
+          <button type="button" (click)="confirmProductDialog()" class="alp-btn alp-btn--primary">Confirm</button>
         </div>
       </div>
     </div>
@@ -173,15 +183,19 @@
             @for (request of filteredRequestTypesForDialog(); track request.id) {
               <button type="button"
                       class="alp-script-setup__tile"
-                      [class.alp-script-setup__tile--selected]="selectedRequestType() === request.id"
-                      (click)="selectRequestType(request.id)">
+                      [class.alp-script-setup__tile--selected]="selectedRequestTypeInDialog() === request.id"
+                      (click)="selectRequestTypeInDialog(request.id)">
                 <span class="alp-script-setup__tile-label">{{ request.label }}</span>
-                @if (selectedRequestType() === request.id) {
+                @if (selectedRequestTypeInDialog() === request.id) {
                   <i class="fas fa-check-circle alp-script-setup__tile-check"></i>
                 }
               </button>
             }
           </div>
+        </div>
+        <div class="alp-script-setup__dialog-footer">
+          <button type="button" (click)="closeRequestTypeDialog()" class="alp-btn alp-btn--secondary">Cancel</button>
+          <button type="button" (click)="confirmRequestTypeDialog()" class="alp-btn alp-btn--primary">Confirm</button>
         </div>
       </div>
     </div>

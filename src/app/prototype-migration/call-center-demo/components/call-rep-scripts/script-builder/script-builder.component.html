@@ -39,16 +39,16 @@
         <div class="alp-script-builder__step-shell">
           <div class="alp-script-builder__step-move">
             <button type="button"
-                    class="alp-btn alp-btn--outline alp-btn--icon alp-btn--icon-18"
+                    class="alp-btn alp-btn--outline alp-btn--icon"
                     (click)="openOrderPopover(i)"
                     title="Change Order">
-              <i class="fas fa-sort"></i>
+              <i class="fas fa-sort alp-btn__icon--18"></i>
             </button>
             <button type="button"
-                    class="alp-btn alp-btn--outline alp-btn--icon alp-btn--icon-18"
+                    class="alp-btn alp-btn--outline alp-btn--icon"
                     (click)="openCopyPopover(i)"
                     title="Copy Step">
-              <i class="fas fa-clone"></i>
+              <i class="fas fa-clone alp-btn__icon--18"></i>
             </button>
           </div>
 
@@ -170,7 +170,7 @@
               class="alp-add-content-tile alp-add-first-step"
               (click)="openToolkit(undefined, 0)">
         <i class="fas fa-plus"></i>
-        <span>Create step</span>
+        <span>Create</span>
       </button>
     }
   </div>

@@ -26,73 +26,13 @@
   display: grid;
   grid-template-columns: repeat(2, 1fr);
   gap: var(--alp-space-6);
+  margin-bottom: var(--alp-space-6);
 }
 
 @media (max-width: 640px) {
   .alp-script-setup__placeholder-tiles {
     grid-template-columns: 1fr;
   }
-}
-
-.alp-script-setup__placeholder-tile {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  gap: var(--alp-space-2);
-  padding: var(--alp-space-6) var(--alp-space-4);
-  border: 2px dashed var(--alp-color-border-strong);
-  border-radius: var(--alp-radius-lg);
-  background: var(--alp-color-surface);
-  cursor: pointer;
-  transition: all 0.15s ease;
-  min-height: 120px;
-  text-align: center;
-}
-
-.alp-script-setup__placeholder-tile:hover:not(:disabled) {
-  border-color: var(--alp-color-brand);
-  background: var(--alp-color-brand-50);
-}
-
-.alp-script-setup__placeholder-tile--selected {
-  border-style: solid;
-  border-color: var(--alp-color-brand);
-  background: var(--alp-color-brand-50);
-  box-shadow: 0 0 0 3px oklch(from var(--alp-color-brand) l c h / 0.2);
-}
-
-.alp-script-setup__placeholder-tile--disabled {
-  opacity: 0.5;
-  cursor: not-allowed;
-}
-
-.alp-script-setup__placeholder-tile--disabled:hover {
-  border-color: var(--alp-color-border-strong);
-  background: var(--alp-color-surface);
-}
-
-.alp-script-setup__placeholder-tile-icon {
-  font-size: var(--alp-font-size-xl);
-  color: var(--alp-color-brand);
-}
-
-.alp-script-setup__placeholder-tile-label {
-  font-size: var(--alp-font-size-lg);
-  font-weight: var(--alp-font-weight-semibold);
-  color: var(--alp-color-text);
-}
-
-.alp-script-setup__placeholder-tile-hint {
-  font-size: var(--alp-font-size-sm);
-  color: var(--alp-color-text-muted);
-}
-
-.alp-script-setup__placeholder-tile--create {
-  margin-bottom: var(--alp-space-5);
-  max-width: 320px;
-  min-height: auto;
-  padding: var(--alp-space-4) var(--alp-space-5);
 }
 
 .alp-script-setup__section-title {
@@ -232,6 +172,16 @@
 
 .alp-script-setup__dialog-content .alp-script-setup__filter-input {
   margin-bottom: var(--alp-space-4);
+}
+
+.alp-script-setup__dialog-footer {
+  padding: var(--alp-space-4) var(--alp-space-5);
+  background: var(--alp-color-slate-50);
+  border-top: 1px solid var(--alp-color-border);
+  display: flex;
+  justify-content: flex-end;
+  gap: var(--alp-space-3);
+  flex-shrink: 0;
 }
 
 /* ---- Create-script popover overlay (tightly coupled to setup layout) ---- */
