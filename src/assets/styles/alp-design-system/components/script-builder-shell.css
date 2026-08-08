@@ -1,0 +1,170 @@
+/* =========================================================
+   ALP DESIGN SYSTEM — SCRIPT BUILDER SHELL
+   Flow layout, step shells, connectors, add-step button,
+   condition rail, answer tiles, and condition footer.
+   ========================================================= */
+
+/* ---- Flow + steps ---- */
+.alp-script-builder__flow {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0;
+  position: relative;
+  padding: var(--alp-space-4) 0;
+}
+
+.alp-script-builder__step {
+  position: relative;
+  width: 100%;
+  max-width: 560px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.alp-script-builder__step-shell {
+  position: relative;
+  width: 100%;
+}
+
+.alp-script-builder__step-move {
+  position: absolute;
+  left: -52px;
+  top: 0;
+  transform: none;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 6px;
+  min-width: 40px;
+  padding: 6px;
+  background: var(--alp-color-slate-200);
+  border: 1px solid var(--alp-color-border-strong);
+  border-radius: var(--alp-radius-lg);
+  box-shadow: var(--alp-shadow-sm);
+}
+
+/* ---- Connectors ---- */
+.alp-script-builder__connector {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+}
+
+.alp-script-builder__connector-line {
+  width: 3px;
+  height: 18px;
+  background: var(--alp-color-text-muted);
+  border-radius: 2px;
+}
+
+/* ---- Add step button ---- */
+.alp-script-builder__add-step-btn {
+  width: 44px;
+  height: 44px;
+  margin: 0;
+  background: var(--alp-color-brand);
+  color: var(--alp-color-white);
+  border: none;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  font-size: var(--alp-font-size-lg);
+  transition: background 0.15s ease;
+  box-shadow: var(--alp-shadow-sm);
+  flex-shrink: 0;
+}
+.alp-script-builder__add-step-btn:hover {
+  background: var(--alp-color-brand-hover);
+}
+
+/* ---- Condition rail ---- */
+.alp-condition-rail {
+  display: flex;
+  gap: var(--alp-space-2);
+  padding: var(--alp-space-3) var(--alp-space-6);
+  background: var(--alp-color-background);
+  border-bottom: 1px solid var(--alp-color-border);
+}
+
+.alp-condition-rail__step {
+  flex: 1;
+  text-align: center;
+  padding: var(--alp-space-2);
+  font-size: var(--alp-font-size-sm);
+  font-weight: var(--alp-font-weight-medium);
+  color: var(--alp-color-text-muted);
+  border-radius: var(--alp-radius-sm);
+}
+
+.alp-condition-rail__step.active {
+  background: var(--alp-color-brand);
+  color: var(--alp-color-white);
+}
+
+/* ---- Condition intro + answer tiles ---- */
+.alp-condition-intro {
+  margin: 0 0 14px;
+  font-size: 14px;
+  color: var(--alp-color-text-muted);
+}
+
+.alp-answer-tiles {
+  display: flex;
+  flex-direction: column;
+  gap: var(--alp-space-2);
+}
+
+.alp-answer-tile {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: var(--alp-space-3) 16px;
+  border: 1.5px solid var(--alp-color-border);
+  border-radius: var(--alp-radius-md);
+  background: var(--alp-color-surface);
+  font-size: 14px;
+  cursor: pointer;
+  transition: all 0.15s ease;
+  text-align: left;
+  color: var(--alp-color-text);
+}
+.alp-answer-tile:hover {
+  border-color: var(--alp-color-brand);
+}
+.alp-answer-tile.selected {
+  border-color: var(--alp-color-brand);
+  background: var(--alp-color-brand-soft);
+  color: var(--alp-color-brand);
+  font-weight: var(--alp-font-weight-medium);
+}
+
+/* ---- Condition footer ---- */
+.alp-condition-footer {
+  display: flex;
+  justify-content: space-between;
+  margin-top: var(--alp-space-6);
+  padding-top: var(--alp-space-4);
+  border-top: 1px solid var(--alp-color-border);
+}
+
+/* ---- Checkbox label ---- */
+.alp-checkbox-label {
+  display: flex;
+  align-items: center;
+  gap: var(--alp-space-2);
+  margin-top: var(--alp-space-4);
+  font-size: 14px;
+  color: var(--alp-color-text-muted);
+  cursor: pointer;
+}
+
+/* ---- Icon button icon sizing ---- */
+.alp-btn--icon-18 i {
+  font-size: var(--alp-font-size-lg);
+}

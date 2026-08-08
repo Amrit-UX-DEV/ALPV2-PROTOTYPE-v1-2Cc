@@ -1,0 +1,387 @@
+/* =========================================================
+   ALP DESIGN SYSTEM — TILES
+   Selectable tile surfaces for type picking, step picking,
+   variable selection, and add-content prompts.
+   ========================================================= */
+
+/* ---- Type tiles (used in type-picker grid) ---- */
+.alp-type-tile {
+  padding: 18px 16px;
+  border: 1px solid var(--alp-color-border);
+  border-radius: var(--alp-radius-md);
+  background: var(--alp-color-surface);
+  text-align: left;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+.alp-type-tile:hover {
+  border-color: var(--alp-color-brand);
+  box-shadow: var(--alp-shadow-sm);
+}
+
+.alp-type-tile__label {
+  display: inline-block;
+  font-weight: var(--alp-font-weight-semibold);
+  font-size: 14px;
+  margin-bottom: 6px;
+  padding: 2px 8px;
+  border-radius: 4px;
+  color: var(--alp-color-white);
+}
+
+.alp-type-tile[data-type="prompt"] .alp-type-tile__label {
+  background: var(--alp-color-prompt);
+}
+.alp-type-tile[data-type="question"] .alp-type-tile__label {
+  background: var(--alp-color-question);
+}
+.alp-type-tile[data-type="required-check"] .alp-type-tile__label {
+  background: var(--alp-color-required-check);
+}
+.alp-type-tile[data-type="log-task"] .alp-type-tile__label {
+  background: var(--alp-color-log-task);
+}
+.alp-type-tile[data-type="end-call"] .alp-type-tile__label,
+.alp-type-tile[data-type="action"] .alp-type-tile__label {
+  background: var(--alp-color-end-call);
+}
+
+.alp-type-tile__desc {
+  display: block;
+  font-size: var(--alp-font-size-sm);
+  color: var(--alp-color-text-muted);
+  margin-top: 4px;
+}
+
+/* ---- Step pick tiles (used in step-picker grid) ---- */
+.alp-step-pick-tile {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 4px;
+  padding: 16px;
+  border: 2px solid var(--alp-color-border);
+  border-radius: var(--alp-radius-md);
+  background: var(--alp-color-surface);
+  text-align: left;
+  cursor: pointer;
+  transition: all 0.15s ease;
+  color: var(--alp-color-text);
+}
+.alp-step-pick-tile:hover {
+  border-color: var(--alp-color-brand);
+  box-shadow: var(--alp-shadow-sm);
+  background: var(--alp-color-brand-soft);
+}
+
+.alp-step-pick-tile--selected {
+  border-color: var(--alp-color-brand);
+  background: var(--alp-color-brand-soft);
+  box-shadow: 0 0 0 1px var(--alp-color-brand);
+}
+
+.alp-step-pick-tile__label {
+  display: flex;
+  align-items: center;
+  gap: var(--alp-space-2);
+  font-weight: var(--alp-font-weight-semibold);
+  font-size: var(--alp-font-size-md);
+  color: var(--alp-color-text);
+  margin: 0;
+  padding: 0;
+  background: transparent;
+}
+
+.alp-step-pick-tile__id {
+  display: block;
+  font-size: 12px;
+  color: var(--alp-color-text-muted);
+  font-family: var(--alp-font-family-mono);
+  margin: 0;
+  padding: 0;
+  background: transparent;
+}
+
+/* ---- Add content / first step tiles ---- */
+.alp-add-content-tile {
+  width: 100%;
+  padding: 18px 14px;
+  border: 2px dashed var(--alp-color-brand);
+  border-radius: var(--alp-radius-md);
+  background: var(--alp-color-surface);
+  color: var(--alp-color-slate-700);
+  font-size: 16px;
+  font-weight: var(--alp-font-weight-bold);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  min-height: 70px;
+  transition: all 0.2s ease;
+  text-align: center;
+}
+
+.alp-add-content-tile i {
+  font-size: var(--alp-font-size-lg);
+  color: var(--alp-color-brand);
+}
+
+.alp-add-content-tile:hover {
+  border-color: var(--alp-color-brand);
+  background: var(--alp-color-brand-50);
+  box-shadow: 0 0 0 3px rgba(68, 79, 131, 0.2);
+  color: var(--alp-color-slate-700);
+}
+
+.alp-add-content-tile:hover i {
+  color: var(--alp-color-slate-700);
+}
+
+.alp-add-first-step {
+  max-width: 560px;
+  margin: 40px auto;
+}
+
+/* ---- Variable tiles (used in content-card variable selection) ---- */
+.alp-variable-tile {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: var(--alp-space-3);
+  width: 100%;
+  text-align: left;
+  padding: var(--alp-space-3) 14px;
+  border: 2px solid var(--alp-color-slate-200);
+  border-radius: var(--alp-radius-md);
+  background: var(--alp-color-surface);
+  cursor: pointer;
+}
+
+.alp-variable-tile:hover {
+  border-color: var(--alp-color-brand);
+  background: var(--alp-color-brand-50);
+}
+
+.alp-variable-tile--selected {
+  border-color: var(--alp-color-brand);
+  background: var(--alp-color-brand-50);
+  box-shadow: 0 0 0 1px var(--alp-color-brand);
+}
+
+.alp-variable-tile__label {
+  font-weight: var(--alp-font-weight-semibold);
+  font-size: 14px;
+  color: var(--alp-color-text);
+}
+
+.alp-variable-tile__token {
+  font-family: var(--alp-font-family-mono);
+  font-size: 12px;
+  color: var(--alp-color-text-muted);
+}
+
+/* =========================================================
+   SCRIPT SETUP TILES
+   Product / request-type selection tiles and create tile.
+   ========================================================= */
+
+.alp-script-setup__tile {
+  padding: 18px 14px;
+  border: 2px solid var(--alp-color-border);
+  border-radius: var(--alp-radius-md);
+  background: var(--alp-color-surface);
+  cursor: pointer;
+  transition: all 0.2s ease;
+  text-align: center;
+  min-height: 70px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+}
+
+.alp-script-setup__tile:hover {
+  border-color: var(--alp-color-slate-400);
+  box-shadow: var(--alp-shadow-sm);
+}
+
+.alp-script-setup__tile--selected {
+  border-color: var(--alp-color-brand);
+  background: var(--alp-color-brand-50);
+  box-shadow: 0 0 0 3px rgba(68, 79, 131, 0.2);
+}
+
+.alp-script-setup__tile-label {
+  font-size: 16px;
+  font-weight: var(--alp-font-weight-medium);
+  color: var(--alp-color-slate-700);
+}
+
+.alp-script-setup__tile-check {
+  position: absolute;
+  top: var(--alp-space-2);
+  right: var(--alp-space-2);
+  font-size: var(--alp-font-size-lg);
+  color: var(--alp-color-brand);
+}
+
+.alp-script-setup__create-tile {
+  margin-bottom: var(--alp-space-4);
+  border-style: dashed;
+  border-color: var(--alp-color-brand);
+}
+
+/* ---- Existing script items (tile-like rows) ---- */
+.alp-script-setup__script-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: var(--alp-space-4);
+  background: var(--alp-color-surface);
+  border: 1px solid var(--alp-color-border);
+  border-radius: var(--alp-radius-md);
+  flex-wrap: wrap;
+  gap: var(--alp-space-3);
+}
+
+.alp-script-setup__script-item--selected {
+  border: 2px solid var(--alp-color-brand);
+  background: var(--alp-color-brand-50);
+}
+
+.alp-script-setup__script-item--historic-selected {
+  border: 2px solid #ca8a04;
+  background: #fefce8;
+}
+
+/* =========================================================
+   TRANSFER REASON TILES
+   Grid tiles for selecting a transfer reason.
+   ========================================================= */
+
+.alp-transfer-reason-tile {
+  padding: 14px;
+  border: 2px solid var(--alp-color-border);
+  border-radius: var(--alp-radius-md);
+  background: var(--alp-color-surface);
+  text-align: center;
+  font-weight: var(--alp-font-weight-medium);
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.alp-transfer-reason-tile:hover {
+  border-color: var(--alp-color-purple-600);
+  background: #f8f5ff;
+}
+
+.alp-transfer-reason-tile.selected {
+  border-color: var(--alp-color-purple-600);
+  background: #ede9fe;
+  color: var(--alp-color-purple-700);
+  font-weight: var(--alp-font-weight-semibold);
+}
+
+/* =========================================================
+   RECENT CALLERS TILES
+   Caller tile surfaces with transferred / expired / DPA variants.
+   ========================================================= */
+
+.alp-recent-callers__tile {
+  position: relative;
+  background: var(--alp-color-surface);
+  border: 1px solid var(--alp-color-border);
+  border-radius: var(--alp-radius-md);
+  margin-bottom: var(--alp-space-3);
+  box-shadow: var(--alp-shadow-xs);
+  overflow: hidden;
+}
+
+/* ---- Transferred call tile variants ---- */
+.alp-recent-callers__tile--transferred {
+  border-left: 6px solid var(--alp-color-purple-600);
+  background: #f8f5ff;
+  position: relative;
+}
+
+.alp-recent-callers__tile--transferred.expired {
+  border-left-color: var(--alp-color-red-500);
+  background: var(--alp-color-red-50);
+  opacity: 0.95;
+}
+
+.alp-recent-callers__tile--transferred .timer {
+  font-size: var(--alp-font-size-sm);
+  font-weight: var(--alp-font-weight-medium);
+  color: #6b21a8;
+}
+
+.alp-recent-callers__tile--transferred.expired .timer {
+  color: var(--alp-color-red-700);
+  font-style: italic;
+}
+
+/* Make sure main button still takes full space */
+.alp-recent-callers__tile--transferred .alp-recent-callers__main-btn {
+  padding-bottom: 58px; /* space for View Details button */
+}
+
+/* View Details button positioning for transferred tiles */
+.alp-recent-callers__tile--transferred .alp-recent-callers__view-details-btn {
+  position: absolute;
+  bottom: var(--alp-space-3);
+  right: var(--alp-space-3);
+  background: #e0d4ff;
+  color: var(--alp-color-purple-700);
+  border: 1px solid var(--alp-color-purple-300);
+}
+
+.alp-recent-callers__tile--transferred .alp-recent-callers__view-details-btn:hover {
+  background: #d1c4ff;
+}
+
+.alp-recent-callers__tile--transferred.dpa-required {
+  border-left-color: var(--alp-color-red-500);
+  background: var(--alp-color-red-50);
+}
+
+/* Override: reduce bottom padding when no view-details button is shown */
+.alp-recent-callers__tile--transferred .alp-recent-callers__main-btn {
+  padding-bottom: var(--alp-space-5);
+}
+
+/* ---- Script status tile (call-center demo home) ---- */
+.alp-script-status-tile {
+  background: var(--alp-color-surface-raised);
+  border: 1px solid var(--alp-color-border);
+  border-radius: var(--alp-radius-md);
+  padding: var(--alp-space-4);
+  margin: var(--alp-space-3) 0;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--alp-space-4);
+}
+
+.alp-script-status-tile__content {
+  display: flex;
+  align-items: center;
+  gap: var(--alp-space-3);
+  flex: 1;
+}
+
+.alp-script-status-tile__icon {
+  font-size: 24px;
+  color: var(--alp-color-success);
+}
+
+.alp-script-status-tile__text {
+  font-size: var(--alp-font-size-md);
+  line-height: var(--alp-line-height-normal);
+  color: var(--alp-color-slate-700);
+}
+
+.alp-script-status-tile__text strong {
+  color: var(--alp-color-slate-800);
+}

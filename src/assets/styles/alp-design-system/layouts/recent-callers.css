@@ -1,0 +1,106 @@
+/* =========================================================
+   ALP DESIGN SYSTEM — RECENT CALLERS LAYOUT
+   Layout and text classes for the call-center recent-callers
+   panel: compact tile view, header, info text, navigation,
+   actions, and legacy non-prefixed timer/DPA helpers.
+   ========================================================= */
+
+.alp-recent-callers {
+  margin-bottom: var(--alp-space-5);
+}
+
+.alp-recent-callers__compact {
+  background: var(--alp-color-slate-50);
+  border: 1px solid var(--alp-color-border);
+  border-radius: 10px;
+  padding: var(--alp-space-4);
+}
+
+.alp-recent-callers__header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 14px;
+  font-size: var(--alp-font-size-sm);
+  font-weight: var(--alp-font-weight-semibold);
+  color: var(--alp-color-slate-700);
+}
+
+.alp-recent-callers__title {
+  display: flex;
+  align-items: center;
+  gap: var(--alp-space-2);
+}
+
+.alp-recent-callers__info strong {
+  display: block;
+  font-size: 14px;
+  color: var(--alp-color-slate-800);
+  margin-bottom: var(--alp-space-1);
+}
+
+.alp-recent-callers__role {
+  font-size: 14px;
+  color: var(--alp-color-text-muted);
+}
+
+.alp-recent-callers__meta {
+  font-size: var(--alp-font-size-sm);
+  color: var(--alp-color-text-muted);
+  margin-top: var(--alp-space-2);
+}
+
+.alp-recent-callers__days-ago {
+  font-weight: var(--alp-font-weight-medium);
+  color: var(--alp-color-blue-500);
+}
+
+.alp-recent-callers__nav {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--alp-space-4);
+  margin-top: var(--alp-space-3);
+}
+
+.alp-recent-callers__actions {
+  display: flex;
+  justify-content: space-between;
+  padding: 10px var(--alp-space-4);
+}
+
+/* ---- Legacy non-prefixed text helpers (used in templates) ---- */
+.role {
+  font-size: 14px;
+  color: var(--alp-color-text-muted);
+}
+
+.date {
+  font-size: var(--alp-font-size-sm);
+  color: var(--alp-color-text-muted);
+}
+
+.timer.active {
+  color: #6b21a8;
+  font-weight: var(--alp-font-weight-medium);
+}
+
+.timer.expired {
+  color: var(--alp-color-red-700);
+}
+
+.timer.dpa-required {
+  color: var(--alp-color-red-700);
+  font-weight: var(--alp-font-weight-semibold);
+}
+
+.dpa-label {
+  color: var(--alp-color-red-700);
+  font-size: var(--alp-font-size-sm);
+  font-weight: var(--alp-font-weight-medium);
+  margin-left: var(--alp-space-2);
+}
+
+.dpa-label.show {
+  display: inline;
+}

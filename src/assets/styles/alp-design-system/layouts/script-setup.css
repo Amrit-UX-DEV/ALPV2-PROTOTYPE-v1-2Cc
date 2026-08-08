@@ -1,0 +1,202 @@
+/* =========================================================
+   ALP DESIGN SYSTEM — SCRIPT SETUP LAYOUT
+   Layout classes for the call-center script-setup panel:
+   two-column selection, existing scripts, historic versions,
+   and the create-script popover overlay.
+   ========================================================= */
+
+.alp-script-setup {
+  padding: var(--alp-space-6);
+  border-radius: var(--alp-radius-lg);
+  border: 1px solid var(--alp-color-border);
+}
+
+.alp-script-setup__title {
+  margin: 0 0 var(--alp-space-6) 0;
+  font-size: var(--alp-font-size-lg);
+  color: var(--alp-color-text);
+}
+
+.alp-script-setup__two-column {
+  display: flex;
+  gap: var(--alp-space-6);
+  flex-wrap: wrap;
+}
+
+.alp-script-setup__section {
+  flex: 1;
+  min-width: 320px;
+}
+
+.alp-script-setup__section-title {
+  margin: 0 0 var(--alp-space-3) 0;
+  font-size: 16px;
+  color: var(--alp-color-slate-700);
+  font-weight: var(--alp-font-weight-semibold);
+}
+
+.alp-script-setup__tile-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+  gap: var(--alp-space-3);
+}
+
+/* Non-prefixed request-type visibility helpers (legacy) */
+.request-type-section {
+  transition: all 0.2s ease;
+}
+
+.request-type-hidden {
+  visibility: hidden;
+  opacity: 0;
+  pointer-events: none;
+  min-height: 180px;
+}
+
+.alp-script-setup__existing {
+  margin-top: var(--alp-space-8);
+  padding-top: var(--alp-space-6);
+  border-top: 1px solid var(--alp-color-border);
+}
+
+.alp-script-setup__script-group {
+  margin-bottom: var(--alp-space-4);
+}
+
+.alp-script-setup__script-info {
+  flex: 1;
+  min-width: 200px;
+}
+
+.alp-script-setup__last-edited {
+  display: block;
+  color: var(--alp-color-text-muted);
+  font-size: 14px;
+  margin-top: var(--alp-space-1);
+}
+
+.alp-script-setup__script-actions {
+  display: flex;
+  gap: var(--alp-space-2);
+  flex-wrap: wrap;
+}
+
+.alp-script-setup__historic-container {
+  margin-top: var(--alp-space-2);
+  padding: var(--alp-space-3);
+  border: 2px dashed #ca8a04;
+  border-radius: var(--alp-radius-md);
+  background: #fefce8;
+}
+
+.alp-script-setup__historic-card {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: var(--alp-space-4);
+}
+
+.alp-script-setup__historic-info {
+  flex: 1;
+}
+
+.alp-script-setup__historic-header {
+  display: flex;
+  align-items: center;
+  gap: var(--alp-space-3);
+  margin-bottom: 6px;
+}
+
+.alp-script-setup__historic-meta {
+  color: var(--alp-color-text-muted);
+  font-size: 14px;
+}
+
+.alp-script-setup__version-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 14px;
+  border-bottom: 1px solid var(--alp-color-slate-100);
+}
+
+.alp-script-setup__version-info {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.alp-script-setup__close-btn {
+  background: none;
+  border: none;
+  font-size: var(--alp-font-size-2xl);
+  line-height: 1;
+  cursor: pointer;
+  color: var(--alp-color-text-muted);
+}
+
+/* ---- Create-script popover overlay (tightly coupled to setup layout) ---- */
+.alp-script-setup__popover-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: var(--alp-z-modal);
+}
+
+.alp-script-setup__popover {
+  background: var(--alp-color-surface);
+  width: 420px;
+  border-radius: var(--alp-radius-lg);
+  box-shadow: var(--alp-shadow-xl);
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  max-height: 70vh;
+}
+
+.alp-script-setup__popover-header {
+  padding: var(--alp-space-4) var(--alp-space-5);
+  background: var(--alp-color-slate-50);
+  border-bottom: 1px solid var(--alp-color-border);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-shrink: 0;
+}
+
+.alp-script-setup__popover-content {
+  padding: var(--alp-space-6);
+  flex: 1;
+  overflow-y: auto;
+}
+
+.alp-script-setup__form-group {
+  margin-bottom: var(--alp-space-5);
+}
+
+.alp-script-setup__form-group label {
+  display: block;
+  margin-bottom: var(--alp-space-2);
+  font-weight: var(--alp-font-weight-medium);
+  color: var(--alp-color-slate-700);
+}
+
+.alp-script-setup__confirmation {
+  background: var(--alp-color-slate-50);
+  padding: var(--alp-space-4);
+  border-radius: var(--alp-radius-md);
+  font-size: var(--alp-font-size-md);
+  line-height: var(--alp-line-height-relaxed);
+}
+
+.alp-script-setup__popover-footer {
+  padding: var(--alp-space-4) var(--alp-space-5);
+  background: var(--alp-color-slate-50);
+  border-top: 1px solid var(--alp-color-border);
+  display: flex;
+  justify-content: flex-end;
+  gap: var(--alp-space-3);
+}

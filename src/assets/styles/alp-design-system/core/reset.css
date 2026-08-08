@@ -1,0 +1,23 @@
+/* =========================================================
+   ALP DESIGN SYSTEM — RESET
+   Minimal, targeted resets for ALP components only.
+   ========================================================= */
+
+.alp-component *,
+.alp-component *::before,
+.alp-component *::after {
+  box-sizing: border-box;
+}
+
+.alp-component :where(dialog) {
+  border: none;
+  padding: 0;
+}
+
+.alp-component :where(button) {
+  font-family: inherit;
+}
+
+.alp-component :where(input, textarea, select) {
+  font-family: inherit;
+}

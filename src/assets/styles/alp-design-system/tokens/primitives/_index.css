@@ -1,0 +1,10 @@
+/* =========================================================
+   ALP DESIGN SYSTEM — PRIMITIVE TOKENS BARREL
+   ========================================================= */
+
+@import './colors.css';
+@import './spacing.css';
+@import './typography.css';
+@import './radius.css';
+@import './shadows.css';
+@import './elevation.css';

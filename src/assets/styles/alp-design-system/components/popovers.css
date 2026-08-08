@@ -1,0 +1,333 @@
+/* =========================================================
+   ALP DESIGN SYSTEM — POPOVERS
+   Popover, modal, and dialog shells plus order/copy placeholders.
+   ========================================================= */
+
+/* Order / copy step popover shell */
+.alp-order-popover {
+  background: var(--alp-color-surface);
+  border-radius: var(--alp-radius-lg);
+  width: min(720px, 100%);
+  max-height: min(80vh, 720px);
+  display: flex;
+  flex-direction: column;
+  box-shadow: var(--alp-shadow-xl);
+  overflow: hidden;
+  border: none;
+  padding: 0;
+  margin: auto;
+}
+
+.alp-order-popover::backdrop {
+  background: rgba(var(--alp-shadow-color), var(--alp-opacity-backdrop));
+}
+
+/* Generic modal header used inside popovers/dialogs */
+.alp-builder-modal__header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  padding: var(--alp-space-4) var(--alp-space-5);
+  border-bottom: 1px solid var(--alp-color-border);
+  flex-shrink: 0;
+}
+
+.alp-builder-modal__header > div {
+  display: flex;
+  flex-direction: column;
+}
+
+.alp-builder-modal__title {
+  margin: 0;
+  font-size: var(--alp-font-size-lg);
+  font-weight: var(--alp-font-weight-bold);
+  color: var(--alp-color-text);
+  letter-spacing: var(--alp-letter-spacing-tight);
+  line-height: var(--alp-line-height-tight);
+}
+
+.alp-builder-modal__close {
+  border: none;
+  background: transparent;
+  color: var(--alp-color-text-muted);
+  width: 32px;
+  height: 32px;
+  border-radius: var(--alp-radius-sm);
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.alp-builder-modal__close:hover {
+  background: var(--alp-color-surface-raised);
+  color: var(--alp-color-text);
+}
+
+.alp-order-popover__body {
+  padding: var(--alp-space-4) var(--alp-space-5);
+  overflow-y: auto;
+  flex: 1;
+}
+
+.alp-order-popover__hint {
+  margin: 0;
+  font-size: var(--alp-font-size-sm);
+  color: var(--alp-color-text-muted);
+}
+
+.alp-builder-modal__header .alp-order-popover__hint {
+  margin-top: var(--alp-space-1);
+}
+
+/* Graph-paper canvas used inside order/copy dialogs */
+.alp-order-popover__canvas {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0;
+  padding: var(--alp-space-5) var(--alp-space-4);
+  border-radius: var(--alp-radius-md);
+  background-color: var(--alp-color-background);
+  background-image: radial-gradient(var(--alp-dot-color) var(--alp-dot-size), transparent var(--alp-dot-size));
+  background-size: var(--alp-dot-spacing) var(--alp-dot-spacing);
+  border: 1px solid var(--alp-color-border);
+}
+
+.alp-order-popover__footer {
+  display: flex;
+  justify-content: flex-end;
+  gap: var(--alp-space-3);
+  padding: var(--alp-space-4) var(--alp-space-5);
+  border-top: 1px solid var(--alp-color-border);
+  background: var(--alp-color-surface-raised);
+  flex-shrink: 0;
+}
+
+/* Placeholders used when a destination is selected */
+.alp-order-placeholder {
+  width: 100%;
+  max-width: 280px;
+  min-height: 100px;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: var(--alp-space-3);
+  padding: var(--alp-space-4) var(--alp-space-5);
+  border: 2px dashed var(--alp-color-brand);
+  border-radius: var(--alp-radius-md);
+  background: var(--alp-color-brand-50);
+  color: var(--alp-color-slate-700);
+  cursor: pointer;
+  text-align: center;
+}
+
+.alp-order-placeholder:hover {
+  background: var(--alp-color-brand-100);
+}
+
+.alp-order-placeholder--nested {
+  max-width: 316px;
+  min-height: auto;
+  padding: var(--alp-space-4);
+  align-items: center;
+  gap: var(--alp-space-3);
+  cursor: default;
+}
+
+.alp-order-placeholder--nested:hover {
+  background: var(--alp-color-brand-50);
+}
+
+.alp-order-placeholder--nested .alp-order-card {
+  width: 100%;
+  max-width: 280px;
+}
+
+/* Moved-from placeholder in reorder dialog */
+.alp-order-moved-from {
+  width: 100%;
+  max-width: 280px;
+  min-height: 100px;
+  box-sizing: border-box;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--alp-color-slate-200);
+  border-radius: var(--alp-radius-md);
+  padding: var(--alp-space-4) var(--alp-space-5);
+  color: var(--alp-color-slate-700);
+  font-size: var(--alp-font-size-md);
+  font-weight: var(--alp-font-weight-semibold);
+  text-align: center;
+}
+
+/* Copy source wrapper in copy dialog */
+.alp-order-copy-source {
+  width: 100%;
+  max-width: 316px;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--alp-space-3);
+  padding: var(--alp-space-4);
+  border: 2px solid transparent;
+  border-radius: var(--alp-radius-md);
+  background: var(--alp-color-slate-200);
+  color: var(--alp-color-slate-700);
+  text-align: center;
+}
+
+.alp-order-copy-source .alp-order-card {
+  width: 100%;
+  max-width: 280px;
+}
+
+.alp-order-copy-source__label {
+  font-size: var(--alp-font-size-sm);
+  font-weight: var(--alp-font-weight-semibold);
+}
+
+/* =========================================================
+   TYPE PICKER GRID & STEP PICKER GRID
+   Grid layouts for type-picker and step-picker popovers.
+   Tile styles live in tiles.css.
+   ========================================================= */
+
+.alp-type-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--alp-space-3);
+  padding: 4px;
+}
+
+.alp-step-pick-hint {
+  font-size: var(--alp-font-size-sm);
+  color: var(--alp-color-text-muted);
+  margin: 0 0 var(--alp-space-4);
+  display: flex;
+  align-items: center;
+  gap: var(--alp-space-2);
+}
+
+.alp-step-pick-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--alp-space-3);
+  padding: 4px;
+}
+
+/* =========================================================
+   TRANSFER CALL POPOVER
+   Overlay, shell, header, search, reasons grid, notes, actions.
+   ========================================================= */
+
+.alp-transfer-popover-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 2000;
+}
+
+.alp-transfer-popover {
+  background: var(--alp-color-surface);
+  width: 420px;
+  max-width: 95%;
+  border-radius: var(--alp-radius-lg);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+  overflow: hidden;
+}
+
+.alp-transfer-popover__header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: var(--alp-space-4) var(--alp-space-5);
+  border-bottom: 1px solid var(--alp-color-border);
+}
+
+.alp-transfer-popover__search {
+  padding: var(--alp-space-4) var(--alp-space-5) var(--alp-space-2);
+}
+
+.alp-transfer-popover__reasons {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 10px;
+  padding: 0 var(--alp-space-5) var(--alp-space-4);
+}
+
+.alp-transfer-popover__notes {
+  padding: 0 var(--alp-space-5) var(--alp-space-4);
+}
+
+.alp-transfer-popover__actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: var(--alp-space-3);
+  padding: var(--alp-space-4) var(--alp-space-5);
+  background: #f9fafb;
+  border-top: 1px solid var(--alp-color-border);
+}
+
+/* =========================================================
+   RECENT CALLERS FULL-LIST POPOVER
+   Overlay, shell, header, scrollable list, and full-item button.
+   ========================================================= */
+
+.alp-recent-callers__overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.4);
+  display: flex;
+  align-items: flex-start;
+  justify-content: flex-end;
+  padding: 80px var(--alp-space-5) var(--alp-space-5);
+  z-index: var(--alp-z-modal);
+}
+
+.alp-recent-callers__popover {
+  background: var(--alp-color-surface);
+  width: 400px;
+  max-height: 70vh;
+  border-radius: var(--alp-radius-lg);
+  box-shadow: var(--alp-shadow-xl);
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
+.alp-recent-callers__popover-header {
+  padding: var(--alp-space-4) var(--alp-space-5);
+  border-bottom: 1px solid var(--alp-color-border);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: var(--alp-color-slate-50);
+}
+
+.alp-recent-callers__full-list {
+  overflow-y: auto;
+  padding: var(--alp-space-2);
+  flex: 1;
+}
+
+.alp-recent-callers__full-item {
+  position: relative;
+  border-bottom: 1px solid var(--alp-color-slate-100);
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.alp-recent-callers__full-item:hover {
+  background: var(--alp-color-slate-50);
+}

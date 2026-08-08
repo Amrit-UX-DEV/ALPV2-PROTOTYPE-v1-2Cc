@@ -1,0 +1,34 @@
+/* =========================================================
+   ALP DESIGN SYSTEM — PRIMITIVE TYPOGRAPHY
+   ========================================================= */
+
+:root {
+  /* Font stacks */
+  --alp-font-family-sans: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  --alp-font-family-mono: "SFMono-Regular", Consolas, "Liberation Mono", Menlo, Courier, monospace;
+
+  /* Font sizes */
+  --alp-font-size-xs: 11px;
+  --alp-font-size-sm: 13px;
+  --alp-font-size-md: 15px;
+  --alp-font-size-lg: 18px;
+  --alp-font-size-xl: 22px;
+  --alp-font-size-2xl: 28px;
+
+  /* Line heights */
+  --alp-line-height-tight: 1.2;
+  --alp-line-height-normal: 1.4;
+  --alp-line-height-relaxed: 1.6;
+
+  /* Font weights */
+  --alp-font-weight-normal: 400;
+  --alp-font-weight-medium: 500;
+  --alp-font-weight-semibold: 600;
+  --alp-font-weight-bold: 700;
+
+  /* Letter spacing */
+  --alp-letter-spacing-tight: -0.01em;
+  --alp-letter-spacing-normal: 0;
+  --alp-letter-spacing-wide: 0.03em;
+  --alp-letter-spacing-wider: 0.04em;
+}

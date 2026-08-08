@@ -1,0 +1,46 @@
+/* =========================================================
+   ALP DESIGN SYSTEM — SEMANTIC THEME TOKENS
+   Maps primitive colors to application meaning.
+   ========================================================= */
+
+:root {
+  /* Brand */
+  --alp-color-brand: var(--alp-color-brand-600);
+  --alp-color-brand-soft: var(--alp-color-brand-100);
+  --alp-color-brand-hover: var(--alp-color-brand-700);
+  --alp-color-brand-active: var(--alp-color-brand-800);
+  --alp-color-brand-text: var(--alp-color-white);
+
+  /* Backgrounds & surfaces */
+  --alp-color-background: var(--alp-color-slate-50);
+  --alp-color-surface: var(--alp-color-white);
+  --alp-color-surface-raised: var(--alp-color-slate-100);
+  --alp-color-surface-hover: var(--alp-color-slate-100);
+  --alp-color-surface-active: var(--alp-color-slate-200);
+
+  /* Borders */
+  --alp-color-border: var(--alp-color-slate-200);
+  --alp-color-border-strong: var(--alp-color-slate-300);
+  --alp-color-border-focus: var(--alp-color-brand-600);
+
+  /* Text */
+  --alp-color-text: var(--alp-color-slate-900);
+  --alp-color-text-muted: var(--alp-color-slate-500);
+  --alp-color-text-soft: var(--alp-color-slate-400);
+  --alp-color-text-on-brand: var(--alp-color-white);
+  --alp-color-text-on-dark: var(--alp-color-white);
+
+  /* Interactive */
+  --alp-color-link: var(--alp-color-brand-600);
+  --alp-color-link-hover: var(--alp-color-brand-700);
+
+  /* Legacy aliases — keep existing code working during the migration */
+  --alp-color-brand-primary: var(--alp-color-brand);
+  --alp-color-brand-primary-soft: var(--alp-color-brand-soft);
+  --alp-color-brand-primary-hover: var(--alp-color-brand-hover);
+
+  /* Canvas background dots */
+  --alp-dot-color: #c5cdd8;
+  --alp-dot-size: 1.2px;
+  --alp-dot-spacing: 24px;
+}

@@ -1,0 +1,13 @@
+/* =========================================================
+   ALP DESIGN SYSTEM — TAGS
+   Small inline labels / status chips.
+   ========================================================= */
+
+.alp-order-card__tag {
+  font-size: var(--alp-font-size-xs);
+  font-weight: var(--alp-font-weight-semibold);
+  padding: var(--alp-space-1) var(--alp-space-3);
+  border-radius: var(--alp-radius-full);
+  background: var(--alp-color-amber-100);
+  color: var(--alp-color-amber-800);
+}

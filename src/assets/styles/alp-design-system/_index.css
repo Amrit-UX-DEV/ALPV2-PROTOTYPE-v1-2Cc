@@ -1,0 +1,9 @@
+/* =========================================================
+   ALP DESIGN SYSTEM — PUBLIC BARREL
+   Import this file to load the full ALP design system.
+   ========================================================= */
+
+@import './tokens/_index.css';
+@import './core/_index.css';
+@import './components/_index.css';
+@import './layouts/_index.css';
