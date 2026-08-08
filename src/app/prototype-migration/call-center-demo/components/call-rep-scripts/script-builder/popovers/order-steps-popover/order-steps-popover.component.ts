@@ -7,7 +7,7 @@ import {
   computed,
   ElementRef,
   ViewChild,
-  AfterViewInit,
+  AfterViewInit
 } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ScriptStep, ContentBlock } from '../../models/script-builder.models';
@@ -23,8 +23,7 @@ export type StepPositionMode = 'move' | 'copy';
   selector: 'alpha-order-steps-popover',
   standalone: true,
   imports: [CommonModule],
-  templateUrl: './order-steps-popover.component.html',
-  styleUrls: ['./order-steps-popover.component.css'],
+  templateUrl: './order-steps-popover.component.html'
 })
 export class OrderStepsPopoverComponent implements AfterViewInit {
   @ViewChild('dialogRef') dialogRef!: ElementRef<HTMLDialogElement>;
@@ -33,10 +32,7 @@ export class OrderStepsPopoverComponent implements AfterViewInit {
   @Input({ required: true }) sourceIndex = 0;
   @Input() mode: StepPositionMode = 'move';
 
-  @Output() confirmed = new EventEmitter<{
-    sourceIndex: number;
-    targetIndex: number;
-  }>();
+  @Output() confirmed = new EventEmitter<{ sourceIndex: number; targetIndex: number }>();
   @Output() cancelled = new EventEmitter<void>();
 
   readonly pendingTarget = signal<OrderMoveTarget | null>(null);
@@ -46,16 +42,17 @@ export class OrderStepsPopoverComponent implements AfterViewInit {
   readonly sourceStepNumber = computed(() => this.sourceIndex + 1);
 
   readonly dialogTitle = computed(() =>
-    this.isCopyMode()
-      ? `Copy Step ${this.sourceStepNumber()}`
-      : `Change Step ${this.sourceStepNumber()} Order`
+    this.isCopyMode() ? `Copy Step ${this.sourceStepNumber()}` : `Change Step ${this.sourceStepNumber()} Order`
   );
+
   readonly confirmButtonText = computed(() =>
     this.isCopyMode() ? 'Copy Step' : 'Change Order'
   );
+
   readonly moveButtonText = computed(() =>
     this.isCopyMode() ? 'Copy Here' : 'Move Here'
   );
+
   readonly undoButtonText = computed(() =>
     this.isCopyMode() ? 'Undo Copy' : 'Undo Move'
   );
@@ -102,16 +99,14 @@ export class OrderStepsPopoverComponent implements AfterViewInit {
     return index === this.sourceIndex;
   }
 
-  contentTypeInfos(
-    step: ScriptStep
-  ): { type: string; meta: string; hasDependency: boolean }[] {
+  contentTypeInfos(step: ScriptStep): { type: string; meta: string; hasDependency: boolean }[] {
     const content = [...(step.content || [])].sort(
       (a, b) => (a.order ?? 0) - (b.order ?? 0)
     );
     return content.map((b: ContentBlock) => ({
       type: (b.type || '').toUpperCase(),
       meta: this.metaForBlock(b),
-      hasDependency: !!b.condition,
+      hasDependency: !!b.condition
     }));
   }
 
@@ -125,10 +120,7 @@ export class OrderStepsPopoverComponent implements AfterViewInit {
         return `${checkCount} check${checkCount === 1 ? '' : 's'}`;
       case 'prompt':
         const words = block.content
-          ? block.content
-              .trim()
-              .split(/\s+/)
-              .filter((w) => w.length > 0).length
+          ? block.content.trim().split(/\s+/).filter(w => w.length > 0).length
           : 0;
         return `${words} word${words === 1 ? '' : 's'}`;
       case 'log-task':
@@ -148,35 +140,24 @@ export class OrderStepsPopoverComponent implements AfterViewInit {
     return this.previewNumbers()[index] ?? index + 1;
   }
 
-  /** * Number to display for a step card in the order/copy dialog. * Returns the original number when not renumbering, otherwise the preview number. */
-  displayNumber(
-    index: number,
-    renumberTo: number | null,
-    showRenumber: boolean
-  ): number {
-    return showRenumber
-      ? renumberTo ?? this.previewNumber(index)
-      : this.currentNumber(index);
+  /**
+   * Number to display for a step card in the order/copy dialog.
+   * Returns the original number when not renumbering, otherwise the preview number.
+   */
+  displayNumber(index: number, renumberTo: number | null, showRenumber: boolean): number {
+    return showRenumber ? (renumberTo ?? this.previewNumber(index)) : this.currentNumber(index);
   }
-  /** * Whether the step card should show the original -> new number mapping. */
-  showRenumberMapping(
-    index: number,
-    renumberTo: number | null,
-    showRenumber: boolean
-  ): boolean {
-    return (
-      showRenumber &&
-      this.displayNumber(index, renumberTo, showRenumber) !==
-        this.currentNumber(index)
-    );
+
+  /**
+   * Whether the step card should show the original -> new number mapping.
+   */
+  showRenumberMapping(index: number, renumberTo: number | null, showRenumber: boolean): boolean {
+    return showRenumber && this.displayNumber(index, renumberTo, showRenumber) !== this.currentNumber(index);
   }
 
   willRenumber(index: number): boolean {
     if (this.isMoveMode()) {
-      return (
-        this.pendingTarget() !== null &&
-        this.previewNumber(index) !== this.currentNumber(index)
-      );
+      return this.pendingTarget() !== null && this.previewNumber(index) !== this.currentNumber(index);
     }
     // Copy mode: the source at its original location only renumbers if the copy is inserted before it.
     const p = this.pendingTarget();
@@ -192,10 +173,7 @@ export class OrderStepsPopoverComponent implements AfterViewInit {
 
   showAfter(index: number): boolean {
     if (this.isCopyMode()) return true;
-    return (
-      this.computeToIndex({ kind: 'after', afterIndex: index }) !==
-      this.sourceIndex
-    );
+    return this.computeToIndex({ kind: 'after', afterIndex: index }) !== this.sourceIndex;
   }
 
   isSelectedBeforeFirst(): boolean {

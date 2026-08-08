@@ -11,8 +11,7 @@ interface TransferReason {
   selector: 'alpha-transfer-call-popover',
   standalone: true,
   imports: [CommonModule, FormsModule],
-  templateUrl: './transfer-call-popover.component.html',
-  styleUrls: ['./transfer-call-popover.component.css']
+  templateUrl: './transfer-call-popover.component.html'
 })
 export class TransferCallPopoverComponent {
 

@@ -39,8 +39,7 @@ const PROMPT_VARIABLE_LABELS: Record<string, string> = {
     ConfirmPopoverComponent,
     OrderStepsPopoverComponent
   ],
-  templateUrl: './script-builder.component.html',
-  styleUrls: ['./script-builder.component.css']
+  templateUrl: './script-builder.component.html'
 })
 export class ScriptBuilderComponent implements OnChanges, OnInit, OnDestroy {
   private readonly now = signal(Date.now());

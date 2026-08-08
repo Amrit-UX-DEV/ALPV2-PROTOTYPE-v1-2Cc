@@ -20,8 +20,7 @@ import {
   selector: 'alpha-content-card',
   standalone: true,
   imports: [CommonModule, FormsModule],
-  templateUrl: './content-card.component.html',
-  styleUrls: ['./content-card.component.css']
+  templateUrl: './content-card.component.html'
 })
 export class ContentCardComponent {
 

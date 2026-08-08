@@ -16,8 +16,7 @@ const PROMPT_VARIABLE_LABELS: Record<string, string> = {
   selector: 'alpha-script-preview',
   standalone: true,
   imports: [CommonModule, FormsModule],
-  templateUrl: './script-preview.component.html',
-  styleUrls: ['./script-preview.component.css']
+  templateUrl: './script-preview.component.html'
 })
 export class ScriptPreviewComponent {
 

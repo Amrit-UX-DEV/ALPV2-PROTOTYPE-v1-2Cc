@@ -16,8 +16,7 @@ import { ContentBlock, ContentCondition } from '../../models/script-builder.mode
   selector: 'alpha-condition-popover',
   standalone: true,
   imports: [CommonModule],
-  templateUrl: './condition-popover.component.html',
-  styleUrls: ['./condition-popover.component.css']
+  templateUrl: './condition-popover.component.html'
 })
 export class ConditionPopoverComponent implements AfterViewInit {
   @ViewChild('dialogRef') dialogRef!: ElementRef<HTMLDialogElement>;

@@ -14,8 +14,7 @@ import { CommonModule } from '@angular/common';
   selector: 'alpha-confirm-popover',
   standalone: true,
   imports: [CommonModule],
-  templateUrl: './confirm-popover.component.html',
-  styleUrls: ['./confirm-popover.component.css']
+  templateUrl: './confirm-popover.component.html'
 })
 export class ConfirmPopoverComponent implements AfterViewInit {
   @ViewChild('dialogRef') dialogRef!: ElementRef<HTMLDialogElement>;

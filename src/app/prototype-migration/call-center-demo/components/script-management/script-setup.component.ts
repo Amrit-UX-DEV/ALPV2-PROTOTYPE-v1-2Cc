@@ -47,8 +47,7 @@ interface CreatedScript {
   selector: 'alpha-script-setup',
   standalone: true,
   imports: [CommonModule, FormsModule],
-  templateUrl: './script-setup.component.html',
-  styleUrls: ['./script-setup.component.css']
+  templateUrl: './script-setup.component.html'
 })
 export class ScriptSetupComponent {
 
