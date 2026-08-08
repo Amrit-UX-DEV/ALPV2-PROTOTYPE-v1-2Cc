@@ -72,6 +72,9 @@
 }
 
 .alp-btn--icon-18 {
+  width: 18px;
+  height: 18px;
+  padding: 0;
   font-size: 10px;
 }
 
@@ -140,8 +143,14 @@
 }
 
 .alp-script-setup .alp-btn--secondary {
-  background-color: var(--alp-color-brand-100);
+  background: var(--alp-color-surface);
+  border: 2px solid var(--alp-color-brand);
   color: var(--alp-color-brand);
+}
+
+.alp-script-setup .alp-btn--secondary:hover {
+  background: var(--alp-color-brand-soft);
+  color: var(--alp-color-slate-700);
 }
 
 /* =========================================================

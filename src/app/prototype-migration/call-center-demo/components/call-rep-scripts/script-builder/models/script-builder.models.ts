@@ -51,6 +51,8 @@ export interface ScriptSetupSelection {
   scriptId?: string;
   /** Filename key used under assets/data/call-rep-scripts/ */
   scriptFileId?: string;
+  /** When creating a copy, this is the source script file to preload content from. */
+  sourceScriptFileId?: string;
   scriptName: string;
   scriptDescription: string;
   productId: string;

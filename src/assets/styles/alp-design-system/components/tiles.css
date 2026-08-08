@@ -226,12 +226,6 @@
   color: var(--alp-color-brand);
 }
 
-.alp-script-setup__create-tile {
-  margin-bottom: var(--alp-space-4);
-  border-style: dashed;
-  border-color: var(--alp-color-brand);
-}
-
 /* ---- Existing script items (tile-like rows) ---- */
 .alp-script-setup__script-item {
   display: flex;
