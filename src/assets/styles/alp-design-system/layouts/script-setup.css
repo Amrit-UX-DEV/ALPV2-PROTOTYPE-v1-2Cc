@@ -70,6 +70,14 @@
   margin-top: var(--alp-space-1);
 }
 
+.alp-script-setup__script-description {
+  display: block;
+  color: var(--alp-color-text);
+  font-size: 14px;
+  margin-top: var(--alp-space-2);
+  line-height: var(--alp-line-height-normal);
+}
+
 .alp-script-setup__script-actions {
   display: flex;
   gap: var(--alp-space-2);
@@ -121,105 +129,8 @@
   gap: 2px;
 }
 
-.alp-script-setup__close-btn {
-  background: none;
-  border: none;
-  font-size: var(--alp-font-size-2xl);
-  line-height: 1;
-  cursor: pointer;
-  color: var(--alp-color-text-muted);
-}
-
-/* ---- Product / request-type selection dialog ---- */
-.alp-script-setup__dialog-overlay {
-  position: fixed;
-  inset: 0;
-  background: oklch(from var(--alp-shadow-color) l c h / 0.5);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  z-index: var(--alp-z-modal);
-  padding: var(--alp-space-4);
-}
-
-.alp-script-setup__dialog {
-  background: var(--alp-color-surface);
-  width: 520px;
-  max-width: 100%;
-  border-radius: var(--alp-radius-lg);
-  box-shadow: var(--alp-shadow-xl);
-  overflow: hidden;
-  display: flex;
-  flex-direction: column;
-  max-height: 80vh;
-}
-
-.alp-script-setup__dialog-header {
-  padding: var(--alp-space-4) var(--alp-space-5);
-  background: var(--alp-color-slate-50);
-  border-bottom: 1px solid var(--alp-color-border);
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  flex-shrink: 0;
-}
-
-.alp-script-setup__dialog-content {
-  padding: var(--alp-space-5);
-  flex: 1;
-  overflow-y: auto;
-}
-
-.alp-script-setup__dialog-content .alp-script-setup__filter-input {
+.alp-script-setup__filter-input {
   margin-bottom: var(--alp-space-4);
-}
-
-.alp-script-setup__dialog-footer {
-  padding: var(--alp-space-4) var(--alp-space-5);
-  background: var(--alp-color-slate-50);
-  border-top: 1px solid var(--alp-color-border);
-  display: flex;
-  justify-content: flex-end;
-  gap: var(--alp-space-3);
-  flex-shrink: 0;
-}
-
-/* ---- Create-script popover overlay (tightly coupled to setup layout) ---- */
-.alp-script-setup__popover-overlay {
-  position: fixed;
-  inset: 0;
-  background: oklch(from var(--alp-shadow-color) l c h / 0.5);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  z-index: var(--alp-z-modal);
-}
-
-.alp-script-setup__popover {
-  background: var(--alp-color-surface);
-  width: 420px;
-  border-radius: var(--alp-radius-lg);
-  box-shadow: var(--alp-shadow-xl);
-  overflow: hidden;
-  display: flex;
-  flex-direction: column;
-  max-height: 70vh;
-}
-
-.alp-script-setup__popover-header {
-  padding: var(--alp-space-4) var(--alp-space-5);
-  background: var(--alp-color-slate-50);
-  border-bottom: 1px solid var(--alp-color-border);
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  flex-shrink: 0;
-}
-
-.alp-script-setup__popover-content {
-  padding: var(--alp-space-6);
-  flex: 1;
-  overflow-y: auto;
 }
 
 .alp-script-setup__form-group {
@@ -233,19 +144,19 @@
   color: var(--alp-color-slate-700);
 }
 
+.alp-script-setup__copy-hint {
+  background: var(--alp-color-slate-50);
+  padding: var(--alp-space-4);
+  border-radius: var(--alp-radius-md);
+  font-size: var(--alp-font-size-md);
+  line-height: var(--alp-line-height-relaxed);
+  margin-bottom: var(--alp-space-5);
+}
+
 .alp-script-setup__confirmation {
   background: var(--alp-color-slate-50);
   padding: var(--alp-space-4);
   border-radius: var(--alp-radius-md);
   font-size: var(--alp-font-size-md);
   line-height: var(--alp-line-height-relaxed);
-}
-
-.alp-script-setup__popover-footer {
-  padding: var(--alp-space-4) var(--alp-space-5);
-  background: var(--alp-color-slate-50);
-  border-top: 1px solid var(--alp-color-border);
-  display: flex;
-  justify-content: flex-end;
-  gap: var(--alp-space-3);
 }

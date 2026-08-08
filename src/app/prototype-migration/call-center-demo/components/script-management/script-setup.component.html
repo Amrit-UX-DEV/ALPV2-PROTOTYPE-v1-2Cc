@@ -12,11 +12,11 @@
         <i class="fas fa-check-circle alp-placeholder-tile__check"></i>
         <div class="alp-placeholder-tile__content">
           <span>{{ selectedProductLabel() }}</span>
-          <span class="alp-placeholder-tile__hint">Change product</span>
+          <span class="alp-placeholder-tile__hint">Change Product</span>
         </div>
       } @else {
         <i class="fas fa-plus"></i>
-        <span>Select product</span>
+        <span>Select Product</span>
       }
     </button>
 
@@ -31,11 +31,11 @@
         <i class="fas fa-check-circle alp-placeholder-tile__check"></i>
         <div class="alp-placeholder-tile__content">
           <span>{{ selectedRequestTypeLabel() }}</span>
-          <span class="alp-placeholder-tile__hint">Change request type</span>
+          <span class="alp-placeholder-tile__hint">Change Request Type</span>
         </div>
       } @else {
         <i class="fas fa-plus"></i>
-        <span>Select request type</span>
+        <span>Select Request Type</span>
       }
     </button>
 
@@ -53,7 +53,7 @@
               [class.alp-placeholder-tile--selected]="isCreateNewSelected()"
               (click)="toggleCreateNew()">
         <i class="fas fa-plus"></i>
-        <span>Create new script</span>
+        <span>Create New Script</span>
       </button>
 
       <div class="alp-script-setup__script-list">
@@ -63,6 +63,7 @@
             <div class="alp-script-setup__script-info">
               <strong>{{ script.name }}</strong>
               <span class="alp-script-setup__last-edited">Last edited: {{ script.lastEdited }}</span>
+              <span class="alp-script-setup__script-description">{{ script.description }}</span>
               @if (script.copy) {
                 <span class="alp-status-tag alp-status-tag--copy-draft">Copy Draft</span>
               } @else {
@@ -73,8 +74,8 @@
               <button type="button" (click)="cancelCreatedScript(script.id)" class="alp-btn alp-btn--secondary">
                 Cancel
               </button>
-              <button type="button" (click)="selectScript(script.id)" class="alp-btn alp-btn--primary">
-                Select Script
+              <button type="button" (click)="editCreatedScript(script)" class="alp-btn alp-btn--primary">
+                Edit
               </button>
             </div>
           </div>
@@ -87,21 +88,34 @@
             <div class="alp-script-setup__script-info">
               <strong>{{ script.name }}</strong>
               <span class="alp-script-setup__last-edited">Last edited: {{ script.lastEdited }}</span>
+              <span class="alp-script-setup__script-description">{{ script.description }}</span>
               @if (script.isActive) {
                 <span class="alp-status-tag alp-status-tag--primary">Primary Script</span>
               }
             </div>
 
             <div class="alp-script-setup__script-actions">
-              <button type="button" (click)="openCopyDialog(script)" class="alp-btn alp-btn--secondary">
-                Copy Script
+              <button type="button"
+                      (click)="openCopyDialog(script)"
+                      class="alp-btn alp-btn--outline alp-btn--icon"
+                      title="Copy Script">
+                <i class="fas fa-clone alp-btn__icon--18"></i>
               </button>
-              <button type="button" (click)="openVersionHistory(script)" class="alp-btn alp-btn--secondary">
-                View Version History
+              <button type="button"
+                      (click)="openVersionHistory(script)"
+                      class="alp-btn alp-btn--outline alp-btn--icon"
+                      title="View Version History">
+                <i class="fas fa-history alp-btn__icon--18"></i>
               </button>
-              <button type="button" (click)="selectScript(script.id)" class="alp-btn alp-btn--primary">
-                Select Script
-              </button>
+              @if (selectedScriptId() === script.id) {
+                <button type="button" (click)="clearScriptSelection()" class="alp-btn alp-btn--secondary">
+                  Cancel
+                </button>
+              } @else {
+                <button type="button" (click)="selectScript(script.id)" class="alp-btn alp-btn--primary">
+                  Select Script
+                </button>
+              }
             </div>
           </div>
 
@@ -117,7 +131,7 @@
                   {{ selectedHistoricVersion()!.date }} • {{ selectedHistoricVersion()!.editedBy }}
                 </div>
               </div>
-              <button type="button" (click)="cancelHistoricSelection()" class="alp-btn alp-btn--secondary">
+              <button type="button" (click)="clearScriptSelection()" class="alp-btn alp-btn--secondary">
                 Cancel Selection
               </button>
             </div>
@@ -129,13 +143,15 @@
 
   <!-- Product selection dialog -->
   @if (showProductDialog()) {
-    <div class="alp-script-setup__dialog-overlay" (click)="closeProductDialog()">
-      <div class="alp-script-setup__dialog" (click)="$event.stopPropagation()">
-        <div class="alp-script-setup__dialog-header">
+    <div class="alp-dialog-overlay" (click)="closeProductDialog()">
+      <div class="alp-dialog alp-dialog--medium" (click)="$event.stopPropagation()">
+        <div class="alp-dialog__header">
           <h4>Select Product</h4>
-          <button type="button" (click)="closeProductDialog()" class="alp-script-setup__close-btn">×</button>
+          <button type="button" (click)="closeProductDialog()" class="alp-dialog__close-btn" aria-label="Close">
+            <i class="fas fa-times"></i>
+          </button>
         </div>
-        <div class="alp-script-setup__dialog-content">
+        <div class="alp-dialog__content">
           <input
             type="text"
             placeholder="Filter products..."
@@ -156,7 +172,7 @@
             }
           </div>
         </div>
-        <div class="alp-script-setup__dialog-footer">
+        <div class="alp-dialog__footer">
           <button type="button" (click)="closeProductDialog()" class="alp-btn alp-btn--secondary">Cancel</button>
           <button type="button" (click)="confirmProductDialog()" class="alp-btn alp-btn--primary">Confirm</button>
         </div>
@@ -166,13 +182,15 @@
 
   <!-- Request type selection dialog -->
   @if (showRequestTypeDialog()) {
-    <div class="alp-script-setup__dialog-overlay" (click)="closeRequestTypeDialog()">
-      <div class="alp-script-setup__dialog" (click)="$event.stopPropagation()">
-        <div class="alp-script-setup__dialog-header">
+    <div class="alp-dialog-overlay" (click)="closeRequestTypeDialog()">
+      <div class="alp-dialog alp-dialog--medium" (click)="$event.stopPropagation()">
+        <div class="alp-dialog__header">
           <h4>Select Request Type</h4>
-          <button type="button" (click)="closeRequestTypeDialog()" class="alp-script-setup__close-btn">×</button>
+          <button type="button" (click)="closeRequestTypeDialog()" class="alp-dialog__close-btn" aria-label="Close">
+            <i class="fas fa-times"></i>
+          </button>
         </div>
-        <div class="alp-script-setup__dialog-content">
+        <div class="alp-dialog__content">
           <input
             type="text"
             placeholder="Filter request types..."
@@ -193,7 +211,7 @@
             }
           </div>
         </div>
-        <div class="alp-script-setup__dialog-footer">
+        <div class="alp-dialog__footer">
           <button type="button" (click)="closeRequestTypeDialog()" class="alp-btn alp-btn--secondary">Cancel</button>
           <button type="button" (click)="confirmRequestTypeDialog()" class="alp-btn alp-btn--primary">Confirm</button>
         </div>
@@ -203,13 +221,22 @@
 
   <!-- Create / copy script dialog -->
   @if (showCreateScriptPopover()) {
-    <div class="alp-script-setup__popover-overlay" (click)="cancelNewScript()">
-      <div class="alp-script-setup__popover" (click)="$event.stopPropagation()">
-        <div class="alp-script-setup__popover-header">
+    <div class="alp-dialog-overlay" (click)="cancelNewScript()">
+      <div class="alp-dialog alp-dialog--medium" (click)="$event.stopPropagation()">
+        <div class="alp-dialog__header">
           <h4>{{ isCopyDialog() ? 'Copy Script' : 'Create New Script' }}</h4>
-          <button type="button" (click)="cancelNewScript()" class="alp-script-setup__close-btn">×</button>
+          <button type="button" (click)="cancelNewScript()" class="alp-dialog__close-btn" aria-label="Close">
+            <i class="fas fa-times"></i>
+          </button>
         </div>
-        <div class="alp-script-setup__popover-content">
+        <div class="alp-dialog__content">
+          @if (isCopyDialog() && copySourceScript()) {
+            <div class="alp-script-setup__copy-hint">
+              You are about to create a copy draft of <strong>{{ copySourceScript()!.name }}</strong>.
+              You can edit the name and description below.
+            </div>
+          }
+
           <div class="alp-script-setup__form-group">
             <label>Script Name</label>
             <input
@@ -235,7 +262,7 @@
             <strong>{{ selectedProductLabel() }} — {{ selectedRequestTypeLabel() }}</strong>
           </div>
         </div>
-        <div class="alp-script-setup__popover-footer">
+        <div class="alp-dialog__footer">
           <button type="button" (click)="cancelNewScript()" class="alp-btn alp-btn--secondary">Cancel</button>
           <button type="button"
                   (click)="saveNewScript()"
@@ -250,13 +277,15 @@
 
   <!-- Version history dialog -->
   @if (showVersionHistory()) {
-    <div class="alp-script-setup__popover-overlay" (click)="closeVersionHistory()">
-      <div class="alp-script-setup__popover" (click)="$event.stopPropagation()">
-        <div class="alp-script-setup__popover-header">
+    <div class="alp-dialog-overlay" (click)="closeVersionHistory()">
+      <div class="alp-dialog alp-dialog--medium" (click)="$event.stopPropagation()">
+        <div class="alp-dialog__header">
           <h4>Version History - {{ selectedScriptForHistory()?.name }}</h4>
-          <button type="button" (click)="closeVersionHistory()" class="alp-script-setup__close-btn">×</button>
+          <button type="button" (click)="closeVersionHistory()" class="alp-dialog__close-btn" aria-label="Close">
+            <i class="fas fa-times"></i>
+          </button>
         </div>
-        <div class="alp-script-setup__popover-content">
+        <div class="alp-dialog__content">
           <div *ngFor="let version of selectedScriptForHistory()?.versionHistory"
                class="alp-script-setup__version-item">
             <div class="alp-script-setup__version-info">
@@ -264,7 +293,7 @@
               <span>{{ version.date }} • {{ version.editedBy }}</span>
             </div>
             <button type="button" (click)="selectVersion(version)" class="alp-btn alp-btn--primary">
-              Select This Version
+              Select
             </button>
           </div>
         </div>
