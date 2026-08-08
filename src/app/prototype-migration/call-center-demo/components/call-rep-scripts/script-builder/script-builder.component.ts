@@ -11,7 +11,8 @@ import {
 import { CommonModule } from '@angular/common';
 import {
   ScriptStep,
-  ContentBlock
+  ContentBlock,
+  ScriptSetupSelection
 } from './models/script-builder.models';
 import { ScriptToolkitComponent } from './toolkit/script-toolkit.component';
 import { ScriptPreviewComponent } from './preview/script-preview.component';
@@ -47,20 +48,7 @@ export class ScriptBuilderComponent implements OnChanges, OnInit, OnDestroy {
 
   private readonly scriptDefinition = inject(ScriptDefinitionService);
 
-  /**
-   * Accept work-plan ScriptSetupSelection as-is (no extra index signature).
-   * Property names resolved at runtime in resolveScriptFileId().
-   */
-  @Input() setup: {
-    product?: string;
-    requestType?: string;
-    scriptName?: string;
-    scriptDescription?: string;
-    scriptId?: string | null;
-    scriptFileId?: string | null;
-    filename?: string | null;
-    mode?: string;
-  } | null = null;
+  @Input() setup: ScriptSetupSelection | null = null;
 
   product = 'Policy Surrender';
   requestType = 'Full Surrender';
@@ -106,27 +94,26 @@ export class ScriptBuilderComponent implements OnChanges, OnInit, OnDestroy {
     }
   }
 
-  private applySetup(setup: ScriptBuilderComponent['setup']) {
+  private applySetup(setup: ScriptSetupSelection | null) {
     if (!setup) {
       this.steps.set([]);
       this.loadError.set(null);
       return;
     }
 
-    if (setup.product) {
-      this.product = String(setup.product);
-    }
-    if (setup.requestType) {
-      this.requestType = String(setup.requestType);
-    }
-    if (setup.scriptName) {
-      this.scriptName = String(setup.scriptName);
-    }
-    if (setup.scriptDescription) {
-      this.scriptDescription = String(setup.scriptDescription);
+    this.product = setup.productLabel || setup.productId || this.product;
+    this.requestType = setup.requestTypeLabel || setup.requestTypeId || this.requestType;
+    this.scriptName = setup.scriptName || this.scriptName;
+    this.scriptDescription = setup.scriptDescription || this.scriptDescription;
+
+    if (setup.mode === 'new') {
+      this.steps.set([]);
+      this.loadError.set(null);
+      this.isLoadingScript.set(false);
+      return;
     }
 
-    const fileId = this.resolveScriptFileId(setup);
+    const fileId = setup.scriptFileId?.trim() || null;
 
     if (fileId) {
       void this.loadScriptById(fileId);
@@ -135,25 +122,6 @@ export class ScriptBuilderComponent implements OnChanges, OnInit, OnDestroy {
       this.loadError.set(null);
       this.isLoadingScript.set(false);
     }
-  }
-
-  private resolveScriptFileId(setup: NonNullable<ScriptBuilderComponent['setup']>): string | null {
-    const anySetup = setup as Record<string, unknown>;
-    const raw =
-      anySetup['scriptFileId'] ??
-      anySetup['scriptId'] ??
-      anySetup['filename'] ??
-      anySetup['fileId'] ??
-      anySetup['id'] ??
-      null;
-
-    if (raw == null || raw === '') return null;
-
-    let id = String(raw).trim();
-    if (id.endsWith('.json')) {
-      id = id.slice(0, -5);
-    }
-    return id || null;
   }
 
   private async loadScriptById(id: string) {
