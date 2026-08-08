@@ -71,10 +71,7 @@
   flex-shrink: 0;
 }
 
-.alp-btn--icon-18 {
-  width: 18px;
-  height: 18px;
-  padding: 0;
+.alp-btn__icon--18 {
   font-size: 10px;
 }
 

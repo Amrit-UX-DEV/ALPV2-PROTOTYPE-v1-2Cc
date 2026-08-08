@@ -118,6 +118,7 @@ export class ScriptSetupComponent {
   /* Product dialog */
   readonly showProductDialog = signal(false);
   readonly productDialogSearch = signal('');
+  readonly selectedProductInDialog = signal<string | null>(null);
   readonly filteredProductsForDialog = computed(() => {
     const term = this.productDialogSearch().toLowerCase().trim();
     if (!term) return this.products;
@@ -127,6 +128,7 @@ export class ScriptSetupComponent {
   /* Request type dialog */
   readonly showRequestTypeDialog = signal(false);
   readonly requestTypeDialogSearch = signal('');
+  readonly selectedRequestTypeInDialog = signal<string | null>(null);
   readonly filteredRequestTypesForDialog = computed(() => {
     const term = this.requestTypeDialogSearch().toLowerCase().trim();
     let list = [...this.requestTypes];
@@ -159,20 +161,32 @@ export class ScriptSetupComponent {
 
   /* Product selection via dialog */
   openProductDialog() {
+    this.selectedProductInDialog.set(this.selectedProduct());
     this.productDialogSearch.set('');
     this.showProductDialog.set(true);
   }
 
   closeProductDialog() {
     this.showProductDialog.set(false);
+    this.selectedProductInDialog.set(null);
   }
 
-  selectProduct(id: string) {
-    if (this.selectedProduct() === id) {
-      this.selectedProduct.set(null);
-      this.selectedRequestType.set(null);
+  selectProductInDialog(id: string) {
+    if (this.selectedProductInDialog() === id) {
+      this.selectedProductInDialog.set(null);
     } else {
+      this.selectedProductInDialog.set(id);
+    }
+  }
+
+  confirmProductDialog() {
+    const id = this.selectedProductInDialog();
+    if (id && id !== this.selectedProduct()) {
       this.selectedProduct.set(id);
+      this.selectedRequestType.set(null);
+      this.clearScriptSelection();
+    } else if (!id) {
+      this.selectedProduct.set(null);
       this.selectedRequestType.set(null);
       this.clearScriptSelection();
     }
@@ -187,19 +201,31 @@ export class ScriptSetupComponent {
   /* Request type selection via dialog */
   openRequestTypeDialog() {
     if (!this.selectedProduct()) return;
+    this.selectedRequestTypeInDialog.set(this.selectedRequestType());
     this.requestTypeDialogSearch.set('');
     this.showRequestTypeDialog.set(true);
   }
 
   closeRequestTypeDialog() {
     this.showRequestTypeDialog.set(false);
+    this.selectedRequestTypeInDialog.set(null);
   }
 
-  selectRequestType(id: string) {
-    if (this.selectedRequestType() === id) {
-      this.selectedRequestType.set(null);
+  selectRequestTypeInDialog(id: string) {
+    if (this.selectedRequestTypeInDialog() === id) {
+      this.selectedRequestTypeInDialog.set(null);
     } else {
+      this.selectedRequestTypeInDialog.set(id);
+    }
+  }
+
+  confirmRequestTypeDialog() {
+    const id = this.selectedRequestTypeInDialog();
+    if (id && id !== this.selectedRequestType()) {
       this.selectedRequestType.set(id);
+      this.clearScriptSelection();
+    } else if (!id) {
+      this.selectedRequestType.set(null);
       this.clearScriptSelection();
     }
     this.closeRequestTypeDialog();

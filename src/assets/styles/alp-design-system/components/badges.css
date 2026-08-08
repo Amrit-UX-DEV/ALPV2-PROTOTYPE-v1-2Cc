@@ -64,22 +64,30 @@
   border-color: var(--alp-color-red-300);
 }
 
-.alp-type-tag[data-type="primary-script"] {
-  background: var(--alp-color-green-100);
-  color: var(--alp-color-green-800);
-  border-color: var(--alp-color-green-300);
+/* ---- Status tags (match content-card type tags) ---- */
+.alp-status-tag {
+  font-size: var(--alp-font-size-xs);
+  font-weight: var(--alp-font-weight-bold);
+  text-transform: uppercase;
+  letter-spacing: var(--alp-letter-spacing-wide);
+  padding: 3px 9px;
+  border-radius: 4px;
+  color: var(--alp-color-white);
+  display: inline-flex;
+  align-items: center;
+  line-height: 1;
 }
 
-.alp-type-tag[data-type="draft"] {
-  background: var(--alp-color-blue-100);
-  color: var(--alp-color-blue-700);
-  border-color: var(--alp-color-blue-300);
+.alp-status-tag--primary {
+  background: var(--alp-color-green-700);
 }
 
-.alp-type-tag[data-type="copy-draft"] {
-  background: var(--alp-color-purple-100);
-  color: var(--alp-color-purple-700);
-  border-color: var(--alp-color-purple-300);
+.alp-status-tag--draft {
+  background: var(--alp-color-blue-600);
+}
+
+.alp-status-tag--copy-draft {
+  background: var(--alp-color-purple-600);
 }
 
 /* ---- ID tags (monospace identifier chips) ---- */
@@ -113,41 +121,6 @@
 .alp-script-journey__check-badge.manual {
   background-color: #8b5cf6;
   color: var(--alp-color-white);
-}
-
-/* =========================================================
-   SCRIPT SETUP BADGES
-   Active, new, and historic version badges.
-   ========================================================= */
-
-.alp-script-setup__active-badge {
-  background: var(--alp-color-green-800);
-  color: var(--alp-color-white);
-  font-size: 12px;
-  padding: var(--alp-space-1) var(--alp-space-2) 2px var(--alp-space-2);
-  border-radius: var(--alp-radius-full);
-  margin-top: var(--alp-space-2);
-  display: inline-block;
-}
-
-.alp-script-setup__new-badge {
-  background: var(--alp-color-blue-500);
-  color: var(--alp-color-white);
-  font-size: 12px;
-  padding: var(--alp-space-1) var(--alp-space-2) 2px var(--alp-space-2);
-  border-radius: var(--alp-radius-full);
-  display: inline-block;
-  font-weight: var(--alp-font-weight-semibold);
-  margin-top: var(--alp-space-2);
-}
-
-.alp-script-setup__historic-badge {
-  background: #ca8a04;
-  color: var(--alp-color-white);
-  font-size: 12px;
-  padding: 2px 10px;
-  border-radius: var(--alp-radius-full);
-  font-weight: var(--alp-font-weight-semibold);
 }
 
 /* =========================================================
