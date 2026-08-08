@@ -5,14 +5,14 @@
 
     <!-- Product placeholder tile -->
     <button type="button"
-            class="alp-add-content-tile"
-            [class.alp-add-content-tile--selected]="selectedProduct()"
+            class="alp-script-setup__selection-tile"
+            [class.alp-script-setup__selection-tile--selected]="selectedProduct()"
             (click)="openProductDialog()">
       @if (selectedProduct()) {
-        <i class="fas fa-check-circle alp-add-content-tile__check"></i>
-        <div class="alp-add-content-tile__content">
+        <i class="fas fa-check-circle alp-script-setup__selection-tile__check"></i>
+        <div class="alp-script-setup__selection-tile__content">
           <span>{{ selectedProductLabel() }}</span>
-          <span class="alp-add-content-tile__hint">Change product</span>
+          <span class="alp-script-setup__selection-tile__hint">Change product</span>
         </div>
       } @else {
         <i class="fas fa-plus"></i>
@@ -22,16 +22,16 @@
 
     <!-- Request type placeholder tile -->
     <button type="button"
-            class="alp-add-content-tile"
-            [class.alp-add-content-tile--selected]="selectedRequestType()"
-            [class.alp-add-content-tile--disabled]="!selectedProduct()"
+            class="alp-script-setup__selection-tile"
+            [class.alp-script-setup__selection-tile--selected]="selectedRequestType()"
+            [class.alp-script-setup__selection-tile--disabled]="!selectedProduct()"
             [disabled]="!selectedProduct()"
             (click)="openRequestTypeDialog()">
       @if (selectedRequestType()) {
-        <i class="fas fa-check-circle alp-add-content-tile__check"></i>
-        <div class="alp-add-content-tile__content">
+        <i class="fas fa-check-circle alp-script-setup__selection-tile__check"></i>
+        <div class="alp-script-setup__selection-tile__content">
           <span>{{ selectedRequestTypeLabel() }}</span>
-          <span class="alp-add-content-tile__hint">Change request type</span>
+          <span class="alp-script-setup__selection-tile__hint">Change request type</span>
         </div>
       } @else {
         <i class="fas fa-plus"></i>
@@ -48,9 +48,9 @@
       </h3>
 
       <button type="button"
-              class="alp-add-content-tile"
+              class="alp-script-setup__create-script-tile"
               *ngIf="showCreateTile()"
-              [class.alp-add-content-tile--selected]="isCreateNewSelected()"
+              [class.alp-script-setup__create-script-tile--selected]="isCreateNewSelected()"
               (click)="toggleCreateNew()">
         <i class="fas fa-plus"></i>
         <span>Create new script</span>
