@@ -167,10 +167,10 @@
 
     @if (!isLoadingScript() && steps().length === 0 && !loadError()) {
       <button type="button"
-              class="alp-add-content-tile alp-add-first-step"
+              class="alp-placeholder-tile alp-placeholder-tile--first-step"
               (click)="openToolkit(undefined, 0)">
         <i class="fas fa-plus"></i>
-        <span>Create</span>
+        <span>Create Step</span>
       </button>
     }
   </div>

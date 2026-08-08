@@ -102,8 +102,13 @@
   background: transparent;
 }
 
-/* ---- Add content / first step tiles (script builder) ---- */
-.alp-add-content-tile {
+/* =========================================================
+   GENERIC PLACEHOLDER TILE
+   Reusable dashed prompt for empty states (create step,
+   add content, create new script, select product, etc.).
+   ========================================================= */
+
+.alp-placeholder-tile {
   width: 100%;
   padding: 18px 14px;
   border: 2px dashed var(--alp-color-brand);
@@ -120,34 +125,66 @@
   min-height: 70px;
   transition: all 0.2s ease;
   text-align: center;
+  position: relative;
 }
 
-.alp-add-content-tile i {
+.alp-placeholder-tile i {
   font-size: var(--alp-font-size-lg);
   color: var(--alp-color-brand);
   flex-shrink: 0;
 }
 
-.alp-add-content-tile:hover:not(:disabled) {
+.alp-placeholder-tile:hover:not(:disabled) {
   border-color: var(--alp-color-brand);
   background: var(--alp-color-brand-50);
   box-shadow: 0 0 0 3px oklch(from var(--alp-color-brand) l c h / 0.2);
   color: var(--alp-color-slate-700);
 }
 
-.alp-add-content-tile:hover:not(:disabled) i {
+.alp-placeholder-tile:hover:not(:disabled) i {
   color: var(--alp-color-slate-700);
 }
 
-.alp-add-content-tile:disabled,
-.alp-add-content-tile--disabled {
+.alp-placeholder-tile:disabled,
+.alp-placeholder-tile--disabled {
   opacity: 0.5;
   cursor: not-allowed;
 }
 
-.alp-add-first-step {
+.alp-placeholder-tile--selected {
+  border-style: solid;
+  border-color: var(--alp-color-brand);
+  background: var(--alp-color-brand-50);
+}
+
+.alp-placeholder-tile--spaced {
+  margin-bottom: var(--alp-space-4);
+}
+
+.alp-placeholder-tile--first-step {
   max-width: 560px;
   margin: 40px auto;
+}
+
+.alp-placeholder-tile__check {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  font-size: var(--alp-font-size-lg);
+  color: var(--alp-color-brand);
+}
+
+.alp-placeholder-tile__content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  line-height: 1.3;
+}
+
+.alp-placeholder-tile__hint {
+  font-size: var(--alp-font-size-sm);
+  color: var(--alp-color-text-muted);
+  font-weight: var(--alp-font-weight-normal);
 }
 
 /* ---- Variable tiles (used in content-card variable selection) ---- */
