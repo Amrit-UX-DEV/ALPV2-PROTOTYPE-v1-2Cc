@@ -1,0 +1,41 @@
+<dialog #dialogRef
+        class="alp-script-builder__popover alp-script-builder__popover--small"
+        (cancel)="onDialogCancel()"
+        aria-labelledby="type-picker-title">
+  <div class="alp-script-builder__popover-header">
+    <h4 id="type-picker-title">Add Content</h4>
+    <button type="button"
+            (click)="close()"
+            class="alp-script-builder__close-btn"
+            aria-label="Close">
+      <i class="fas fa-times"></i>
+    </button>
+  </div>
+
+  <div class="alp-type-grid">
+    <button class="alp-type-tile" data-type="prompt" (click)="select('prompt')">
+      <span class="alp-type-tile__label">Prompt</span>
+      <span class="alp-type-tile__desc">Read-out text for the agent</span>
+    </button>
+
+    <button class="alp-type-tile" data-type="question" (click)="select('question')">
+      <span class="alp-type-tile__label">Question</span>
+      <span class="alp-type-tile__desc">Single or multi-select</span>
+    </button>
+
+    <button class="alp-type-tile" data-type="required-check" (click)="select('required-check')">
+      <span class="alp-type-tile__label">Required Check</span>
+      <span class="alp-type-tile__desc">Auto or manual checks</span>
+    </button>
+
+    <button class="alp-type-tile" data-type="log-task" (click)="select('log-task')">
+      <span class="alp-type-tile__label">Log Task</span>
+      <span class="alp-type-tile__desc">Record an action / note</span>
+    </button>
+
+    <button class="alp-type-tile" data-type="end-call" (click)="select('end-call')">
+      <span class="alp-type-tile__label">End Call</span>
+      <span class="alp-type-tile__desc">Terminates the journey</span>
+    </button>
+  </div>
+</dialog>

@@ -1,0 +1,103 @@
+
+
+/* Updates and Amendments */
+
+.tile-row-address .ui-tile-address-block .tile--address-details .ui-key-icons{
+    display:flex;
+}
+
+/* Active */
+.state--ui-active:after {
+            font-family: "Font Awesome 5 Free";
+            content: "\f058";
+            color: #49A94F;
+            font-size: 0.8rem;
+            position: absolute;
+            top: -4px;
+            right: -7px;
+            border-radius: 100%;
+            padding: 2px;
+            line-height: 0.95;
+            background-color: rgba(255,255,255,0.8);
+        }
+
+.state--ui-active,
+.state--ui-active--no-icon{
+	border-color:#49A94F !important;
+}
+
+.state--ui-active .status-label,
+.state--ui-active--no-icon .status-label{
+	color: #49A94F !important;
+}
+
+/* Error (also terminated) */
+.state--ui-error:after {
+            font-family: FontAwesome;
+            content:"\f057";
+            color: #d9534f;
+            line-height: 1;
+            font-size: 0.9rem;
+            position: absolute;
+            top: -5px;
+            right: -8px;
+            border-radius: 100%;
+            padding: 2px;
+            line-height: 0.95;
+            background-color: rgba(255,255,255,0.8);
+        }
+
+
+.state--ui-error,
+.state--ui-error--no-icon{
+	border-color:#d9534f !important;
+}
+
+
+.state--ui-error .status-label,
+.state--ui-error--no-icon .status-label{
+	color: #d9534f !important;
+}
+
+
+
+
+/*Alpha Tile Indicators - Overseas */
+
+.tile-row-address .ui-tile-address-block .tile--address-details .ui-data-indicator.overseas{
+    margin:0;
+    margin-top:-6px;
+    margin-bottom:-6px;
+    margin-right:-2px;
+    min-width:30px;
+}
+
+.ui-tile-address-block .tile--address-details .ui-data-indicator.overseas{
+    margin-left:20px;
+    margin-top:5px;
+}
+
+.ui-tile-address-block .tile--address-details .ui-data-indicator.overseas i{
+    margin-right:4px;
+    margin-left:-4px;
+}
+
+.ui-data-indicator.overseas {
+    background-color:#487892;
+    border-color:rgba(252, 255, 255, 0.3);
+    color: #fff; 
+    text-align:center;
+}
+
+
+.tile-row-address .ui-data-indicator.overseas{
+    padding: 5px 10px 4px 10px;
+}
+
+
+/* Correspondence Address Update */
+.multi-action-tile.tile--default button .ui-tile-address-block .tile--address-details.correspondence , 
+.ui-tile-address-block .tile--address-details.correspondence {
+    border-bottom:0;
+}
+

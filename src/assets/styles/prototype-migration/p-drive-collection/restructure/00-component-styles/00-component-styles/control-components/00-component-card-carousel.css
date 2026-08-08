@@ -1,0 +1,275 @@
+/* -----------------------                      --- */
+/* COMPONENT: CARD CAROUSEL                         */
+/* -----------------------                      --- */
+
+card-carousel{
+    float: left;
+    max-width: 400px;
+    width: 400px;
+}
+
+ul.card-carousel{
+    width: 100%;
+    overflow: hidden;
+}
+
+.card-carousel li.card-deck-container{
+    width: 100%;
+    overflow: hidden;
+}
+
+.card-carousel .alpha-data-structure-heading {
+    color: #3c4981;
+    font-weight: bold;
+    font-size: 1rem;
+    display: block;
+    margin-bottom: 10px;
+}
+
+
+.card-carousel .card-item {
+
+    border: 0.1rem solid #ccc;
+    background-color: #fff;
+    border-radius: 6px;
+    box-shadow: 0 1px 1px 1px rgba(0, 0, 0, 0.1);
+    color: black;
+    -webkit-transition: all 75ms ease-in-out;
+    transition: all 75ms ease-in-out;
+    width:250px;
+    height: 235px;
+    margin: 0.5rem;
+    position: relative;
+    padding:5px;
+    padding-bottom:10px;
+}
+
+.card-carousel .card-item.state-active {
+    border: 3px solid var(--theme-state--active);
+}
+
+.card-carousel .card-item.state-historical {
+    border: 3px solid var(--theme-state--historical);
+}
+
+.card-carousel .card-item.state-inactive {
+    border: 3px solid #ccc;
+    background-color:#ccc;
+    
+}
+
+.card-carousel .card-item.state-inactive .text-state-inherit{
+    color:var(--theme-state--historical);
+}
+
+.card-carousel .card-item.state-inactive .card-header-block{
+    padding:20px 10px;
+    background-color:#dedede;
+}
+
+
+.card-carousel .card-count {
+    border: 2px solid rgba(255, 255, 255, 0.6);
+    color: #dee0e8;
+    background-color: #333333;
+    opacity: 0.9;
+    width: auto;
+    display: block;
+    position: absolute;
+    z-index: 1;
+    top: 1px;
+    right: 0px;
+    font-size: 0.8rem;
+    border-radius: 56px;
+    padding:5px;
+    min-width:28px;
+    text-align:center;
+    line-height: 1;
+    transform: scale(0.9);
+}
+
+.card-carousel .card-deck-controls .card-count{
+    display:block;
+    transform: scale(1);
+    padding: 0.3rem 0.8rem 0.5rem;
+    margin-top: 0.5rem;
+    margin-left:0.5rem;
+    position:static;
+    overflow:hidden;
+    float:left;
+}
+
+.card-carousel .card-deck-controls .control-buttons{
+    overflow:hidden;
+    float:left;
+}
+
+.card-carousel .card-count-break {
+    font-size: 0.8rem;
+    font-style: italic;
+    padding: 0 5px 0 2px;
+    color: rgb(249, 249, 249);
+    letter-spacing: 1px;
+}
+
+.card-carousel .card-count-current-item,
+.card-carousel .card-count-value{
+    padding: 0;
+    font-size: 1rem;
+    font-weight: bold;
+}
+
+.card-carousel .card-count-total-items {
+    padding: 0;
+    color: rgb(255, 255, 255);
+    font-size: 1rem;
+    font-weight: bold;
+}
+
+.card-carousel ul.card-deck {
+    border-radius: 6px;
+    width: 330px;
+    position: relative;
+    height: 285px;
+    border-bottom: 1px solid #ccc;
+    margin:0;
+    padding:0;
+}
+
+.card-carousel li.card-item-container {
+    position: absolute;
+    display: block;
+    top: 35px;
+    opacity: 0;
+    left: 0;
+    height: auto;
+    z-index: 1;
+    transition: all 0.55s ease-in-out;
+}
+
+    /* CSS BASED POSITION TO RUN OF CLASSES */
+
+    .card-carousel li.card-item-container.current-card {
+        left: 0;
+        z-index: 5;
+        opacity: 1;
+    }
+
+        .card-carousel li.card-item-container.current-card + li {
+            left: 35px;
+            transform: scale(0.9);
+            opacity: 1;
+            z-index: 4;
+        }
+
+            .card-carousel li.card-item-container.current-card + li + li {
+                left: 65px;
+                transform: scale(0.8);
+                opacity: 1;
+                z-index: 3;
+            }
+
+                .card-carousel li.card-item-container.current-card + li + li + li {
+                    left: 93px;
+                    transform: scale(0.7);
+                    opacity: 0.7;
+                    z-index: 2;
+                }
+
+                    .card-carousel li.card-item-container.current-card + li + li + li + li {
+                        transform: scale(0.6);
+                        left: 117px;
+                        opacity: 0.3;
+                        z-index: 1;
+                    }
+
+    .card-carousel li.card-item-container.previous-card,
+    .card-carousel li.card-item-container.current-card + li.previous-card
+     {
+        left: -350px;
+        z-index: 6;
+        opacity: 0;
+        transform: scale(1.5);
+    }
+
+.card-carousel li.card-deck-controls {
+    height: 40px;
+    display: block;
+}
+
+/* CARD DETAIL BLOCKS */
+
+.card-carousel .card-detail-block {
+    box-sizing:border-box;
+
+    
+}
+
+.card-carousel .layout-50pc {
+    width:calc(50%);
+    float:left;
+}
+
+.card-carousel .layout-50pc + div:not(.layout-50pc){
+    clear:left;
+
+}
+
+.card-carousel .card-detail-block,
+.card-carousel .card-header-block,
+.card-carousel .card-state-block{
+    padding:5px;
+    position:relative;
+    display:block;
+}
+
+.card-carousel .card-header-block{
+    background-color:#e4e5eb;
+    border-radius:4px 4px 0 0;
+    border-bottom:0px solid #cccccc;
+    border-top:4px solid #d1d2d8;
+
+}
+
+.card-carousel .card-state-block{ 
+background-color:#f4f4f5;   
+border-radius:4px 4px 0 0;
+border-top:4px solid #e4e5eb;  
+border-bottom:1px solid rgb(228, 229, 235);
+}
+
+.card-carousel .card-state-block + .card-header-block{
+    border-radius:0;
+    border-top:1px solid #ffffff;
+
+}
+
+.card-carousel .card-state-icon{
+    display:inline-block;
+    
+}
+
+.card-carousel .card-state{
+     display:inline-block;
+    
+}
+
+.card-carousel .card-detail-block .card-detail-label {
+  
+  display:block;
+
+}
+
+.card-carousel .card-detail-block .card-detail-value {
+    display:block;
+}
+
+/* CARD HEIGHTS */
+
+.card-carousel.card-size-reg-med .card-item{
+    height:260px; 
+}
+
+.card-carousel.card-size-reg-med .card-deck{
+    height:310px; 
+}

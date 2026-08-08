@@ -1,0 +1,135 @@
+/* Cross out selected component */
+.cross-selected-component ul.alpha-linked-data-structure li button.alpha-selected{
+    position:relative;
+    background-color:rgba(133, 178, 226, 0.6);
+    
+ 
+}
+
+.cross-selected-component ul.alpha-linked-data-structure li button.alpha-selected .alpha-multiple-items .alpha-item-count{
+    
+    background-color:rgba(0,0,0,0);
+    color:rgba(0,0,0,0.4);
+    top:-5px;
+    right:5px;
+    position:relative;
+
+}
+
+.cross-selected-component ul.alpha-linked-data-structure li button.alpha-selected .alpha-multiple-items .description{
+    color:rgba(0,0,0,0.4);
+}
+
+.cross-selected-component ul.alpha-linked-data-structure li button.alpha-selected .alpha-multiple-items:after{
+    font-family:"FontAwesome";
+    content:"";
+    color: rgba(217, 83, 79, 0.9);
+    position:absolute;
+    z-index:2;
+    font-size:1.2rem;
+    right:51%;
+    top:-5px;
+}
+
+.cross-selected-component ul.alpha-linked-data-structure li button.alpha-selected .alpha-multiple-items:before{
+    content:"";
+    border-top:2px solid rgba(217, 83, 79, 0.9);
+    width:50%;
+    position:absolute;
+    right:5px;
+    top:6px;
+}
+
+
+.cross-selected-component ul.alpha-linked-data-structure li button.alpha-selected > .alpha-info:before,
+.cross-selected-component ul.alpha-linked-data-structure li button.alpha-selected > .alpha-info:after{
+    font-family:"FontAwesome";
+    content:"";
+    color: rgba(217, 83, 79, 0.9);
+    border-bottom:10px solid rgba(217, 83, 79, 0.9);
+    z-index:1;
+    position:absolute;
+    box-shadow:0 2px 6px rgba(0,0,0,0.2);
+    width:45%;
+    left:0;
+    top:40%;
+    transform:rotate(45deg);
+   
+}
+
+.cross-selected-component ul.alpha-linked-data-structure li button.alpha-selected > .alpha-info:after{
+    transform:rotate(-45deg);
+
+}
+
+
+/* Cross out selected component- VERSION 2 */
+.cross-selected-component-2 ul.alpha-linked-data-structure li button.alpha-selected{
+    position:relative;
+    background-color:rgb(180, 207, 236);
+    
+ 
+}
+
+.cross-selected-component-2 ul.alpha-linked-data-structure li button.alpha-selected .alpha-multiple-items .alpha-item-count{
+    
+    background-color:rgba(0,0,0,0);
+    color:rgba(0,0,0,0.4);
+    top:-5px;
+    right:5px;
+    position:relative;
+
+}
+
+.cross-selected-component-2 ul.alpha-linked-data-structure li button.alpha-selected .alpha-multiple-items .description{
+    color:rgba(0,0,0,0.4);
+}
+
+.cross-selected-component-2 ul.alpha-linked-data-structure li button.alpha-selected .alpha-multiple-items:after{
+    font-family:"FontAwesome";
+    content:"";
+    color: rgba(217, 83, 79, 0.9);
+    position:absolute;
+    z-index:2;
+    font-size:1.2rem;
+    right:51%;
+    top:-5px;
+}
+
+.cross-selected-component-2 ul.alpha-linked-data-structure li button.alpha-selected .alpha-multiple-items:before{
+    content:"";
+    border-top:0 solid rgba(217, 83, 79, 0.9);
+    width:50%;
+    position:absolute;
+    right:5px;
+    top:6px;
+}
+
+
+.cross-selected-component-2 ul.alpha-linked-data-structure li button.alpha-selected > .alpha-info:before,
+.cross-selected-component-2 ul.alpha-linked-data-structure li button.alpha-selected > .alpha-info:after{
+    font-family:"FontAwesome";
+    content:"";
+    color: rgba(217, 83, 79, 0.9);
+    border-bottom:0 solid rgba(217, 83, 79, 0.9);
+    height:10px;
+    background-color:rgba(217, 83, 79, 0.9);
+    
+    z-index:1;
+    position:absolute;
+    box-shadow:0 -2px 4px rgba(0,0,0,0.5);
+    width:calc(100% + 20px);
+    left:calc(25% - 10px);
+    left:-10px;
+    top:45%;
+    transform:rotate(0);
+}
+
+.cross-selected-component-2 ul.alpha-linked-data-structure li button.alpha-selected > .alpha-info:before{
+    display:none;
+}
+
+.cross-selected-component-2 ul.alpha-linked-data-structure li button.alpha-selected > .alpha-info:after{
+    transform:rotate(20deg);
+ 
+}

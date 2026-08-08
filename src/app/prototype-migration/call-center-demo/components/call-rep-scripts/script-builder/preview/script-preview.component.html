@@ -1,0 +1,191 @@
+<div class="alp-preview-overlay" (click)="close()">
+<div class="alp-preview-shell" (click)="$event.stopPropagation()">
+
+  <div class="alp-preview-modal-header">
+    <h4 class="alp-preview-modal-header__title">Interactive Preview</h4>
+    <button
+      type="button"
+      class="alp-preview-modal-header__close"
+      (click)="close()"
+      aria-label="Close">
+      <i class="fas fa-times"></i>
+    </button>
+  </div>
+
+  <section class="alp-script-journey" aria-label="Script Preview">
+
+    @if (!showSummary() && currentStep(); as step) {
+      <div class="alp-script-journey__container">
+
+        <div class="alp-script-journey__header">
+          <h2 class="alp-script-journey__title">
+            <i class="fas fa-scroll"></i>
+            {{ scriptTitle || 'Script Preview' }}
+          </h2>
+          <div class="alp-script-journey__progress">
+            Step {{ currentStepIndex() + 1 }} of {{ stepsList().length }}
+          </div>
+        </div>
+
+        <div class="alp-script-journey__content">
+
+          @for (item of orderedContent(step); track item.id) {
+            @if (isBlockVisible(item)) {
+
+              @if (item.type === 'prompt') {
+                <div class="notification-block status-prompt">
+                  <div class="notification-message">
+                    <span class="alp-script-journey__read-prompt-label">
+                      Read Prompt
+                    </span>
+                    <p
+                      class="alp-script-journey__read-prompt-text"
+                      [innerHTML]="formatPromptHtml(item.content)">
+                    </p>
+                  </div>
+                </div>
+              }
+
+              @if (item.type === 'question') {
+                <div class="alp-script-journey__question">
+                  <h3 class="alp-script-journey__question-text">{{ item.content }}</h3>
+                </div>
+                <div class="alp-script-journey__options">
+                  @for (option of item.options || []; track option.text) {
+                    <label class="alp-script-journey__option-label">
+                      <input
+                        type="radio"
+                        [name]="'preview-q-' + item.id"
+                        [checked]="isOptionSelected(item, option.text)"
+                        (change)="selectOption(item, option.text)">
+                      <span class="alp-script-journey__option-text">{{ option.text }}</span>
+                    </label>
+                  }
+                </div>
+              }
+
+              @if (item.type === 'required-check') {
+                <div class="alp-script-journey__checks">
+                  <h4 class="alp-script-journey__section-title">Required Checks</h4>
+                  <div class="alp-script-journey__check-list">
+                    @for (check of item.requiredChecks || []; track $index) {
+                      @let checkText = check.question
+                        ? (check.answer ? check.question + ': ' + check.answer : check.question)
+                        : '';
+                      @let isAuto = !!check.auto;
+                      @let isManual = !isAuto && (!!check.manual || !!check.selectionMode);
+
+                      <div
+                        class="alp-script-journey__check-item"
+                        [class.alp-script-journey__check-item--auto]="isAuto"
+                        [class.alp-script-journey__check-item--manual]="isManual">
+
+                        @if (isManual && check.selectionMode && check.question) {
+                          <div class="alp-script-journey__manual-question">
+                            <strong>{{ check.question }}</strong>
+                            <div class="alp-script-journey__options">
+                              @for (option of check.options || []; track option.text) {
+                                <label class="alp-script-journey__option-label">
+                                  <input
+                                    type="radio"
+                                    [name]="'preview-manual-' + check.question"
+                                    [checked]="isOptionSelectedByKey(check.question, option.text)"
+                                    (change)="selectOptionByKey(check.question, option.text)">
+                                  <span>{{ option.text }}</span>
+                                </label>
+                              }
+                            </div>
+                          </div>
+                        } @else if (!isAuto) {
+                          <input
+                            type="checkbox"
+                            [checked]="isCheckDone(checkText)"
+                            (change)="toggleCheck(checkText, $any($event.target).checked)">
+                          <span>
+                            {{ check.question || '' }}
+                            @if (check.answer) {
+                              <strong>{{ check.answer }}</strong>
+                            }
+                          </span>
+                        } @else {
+                          <span>
+                            {{ check.question || '' }}
+                            @if (check.answer) {
+                              <strong>{{ check.answer }}</strong>
+                            }
+                          </span>
+                        }
+
+                        @if (isAuto) {
+                          <span class="alp-script-journey__check-badge">Auto</span>
+                        } @else if (isManual) {
+                          <span class="alp-script-journey__check-badge manual">Manual</span>
+                        }
+                      </div>
+                    }
+                  </div>
+                </div>
+              }
+
+              @if (item.type === 'log-task') {
+                <div class="alp-script-journey__actions">
+                  <div class="alp-script-journey__action-list">
+                    <span class="alp-script-journey__btn alp-script-journey__btn--secondary">
+                      {{ item.content }}
+                    </span>
+                  </div>
+                </div>
+              }
+
+              @if (item.type === 'end-call') {
+                <button
+                  type="button"
+                  class="alp-script-journey__btn alp-script-journey__btn--danger"
+                  (click)="finishPreview()">
+                  {{ item.content || 'End Call' }}
+                </button>
+              }
+
+            }
+          }
+
+        </div>
+
+        <footer class="alp-script-journey__footer">
+          <button
+            type="button"
+            class="alp-script-journey__btn alp-script-journey__btn--secondary"
+            [disabled]="currentStepIndex() === 0"
+            (click)="goPrev()">
+            Previous
+          </button>
+
+          @if (!shouldShowEndCall()) {
+            <button
+              type="button"
+              class="alp-script-journey__btn alp-script-journey__btn--primary"
+              (click)="goNext()">
+              {{ isLastStep() ? 'Finish' : 'Next' }}
+            </button>
+          }
+        </footer>
+
+      </div>
+    }
+
+    @if (showSummary()) {
+      <div class="alp-script-journey__summary">
+        <h2 class="alp-script-journey__summary-title">Journey Complete</h2>
+        <button
+          type="button"
+          class="alp-script-journey__btn alp-script-journey__btn--primary"
+          (click)="restart()">
+          Restart Journey
+        </button>
+      </div>
+    }
+
+  </section>
+
+</div>
+</div>

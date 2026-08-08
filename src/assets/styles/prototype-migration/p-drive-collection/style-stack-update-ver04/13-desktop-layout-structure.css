@@ -1,0 +1,89 @@
+* {
+    box-sizing: border-box;
+   /* transition: width 0.15s ease-in-out, height 0.15s ease-in-out, left 0.15s ease-in-out, margin-left 0.15s ease-in-out; */
+}
+
+html {
+    font-size: 13px;
+    font-family: Arial, sans-serif;
+}
+
+a {
+    text-decoration: none;
+}
+
+.ag-header-cell-label {
+    text-overflow: clip;
+    overflow: visible;
+    white-space: normal;
+}
+
+header {
+    background-color: var(--branding-bg-color);
+    transition: all 200ms ease-in-out;
+    height: var(--app-header-height);
+    display: flex;
+    flex-direction: column;
+}
+
+.alpha-app-body {
+    background-color: rgba(255, 255, 255, 1);
+    overflow-y: auto;
+}
+
+.alpha-layout-wrap {
+    display: flex;
+    /* flex-direction: column; */
+    box-sizing: border-box;
+    /*min-height: 100vh;*/
+    position: relative;
+}
+
+.alpha-layout-main{
+    flex:1;
+}
+
+.alpha-layout-row-2 {
+    display: flex;
+    flex: 1;
+}
+
+.alpha-layout-col-2 {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+}
+
+main {
+    overflow: hidden;
+    height:calc(100vh - var(--app-header-height));
+}
+
+
+.esnotify-info {
+    background: rgba(0, 0, 255);
+}
+
+.esnotify-warning {
+    background: rgba(255, 194, 0);
+    color: #fff;
+}
+
+.esnotify-error {
+    background: rgba(255, 0, 0);
+    color: #fff;
+}
+
+
+.loading {
+    display: none;
+    position: absolute;
+    top: 0;
+    z-index: 1000;
+    height: 100%;
+    width: 100%;
+    padding: 0;
+    margin: 0;
+    align-items: center;
+    justify-content: center;
+}

@@ -1,0 +1,119 @@
+<div class="alp-recent-callers">
+
+<!-- ==================== TRANSFERRED CALL TILE (Updated with DPA) ==================== -->
+@for (call of transferredCalls(); track call.id) {
+  <div class="alp-recent-callers__tile alp-recent-callers__tile--transferred"
+       [class.dpa-required]="call.elapsedSeconds() >= 120">
+
+    <button type="button" 
+            class="alp-recent-callers__main-btn"
+            (click)="resumeTransferredCall(call)">
+      
+      <div class="alp-recent-callers__info">
+        <strong>{{ call.name }}</strong>
+        <span class="alp-recent-callers__role">{{ call.role }}</span>
+        <span class="alp-recent-callers__reason">Transferred: {{ call.reason || 'No reason provided' }}</span>
+      </div>
+
+      <div class="alp-recent-callers__meta">
+        <span class="timer" [class.dpa-required]="call.elapsedSeconds() >= 120">
+          {{ getElapsedTime(call.elapsedSeconds()) }}
+        </span>
+        @if (call.elapsedSeconds() >= 120) {
+          <span class="dpa-required-label"> <strong>DPA required </strong></span>
+        }
+      </div>
+    </button>
+
+    <div class="alp-recent-callers__actions">
+      <button type="button" 
+              class="alp-recent-callers__resume-btn"
+              (click)="resumeTransferredCall(call); $event.stopPropagation()">
+        <i class="fas fa-play"></i> Resume Call
+      </button>
+      <button type="button" 
+              class="alp-recent-callers__bailout-btn"
+              (click)="bailoutTransferredCall(call); $event.stopPropagation()">
+        Bailout
+      </button>
+    </div>
+  </div>
+}
+
+  <!-- ==================== ORIGINAL RECENT CALLERS (Unchanged) ==================== -->
+  <div class="alp-recent-callers__compact">
+    <div class="alp-recent-callers__header">
+      <span class="alp-recent-callers__title">Recent Calls</span>
+      <button type="button" class="alp-recent-callers__expand-btn" (click)="openFullList()">
+        View All
+      </button>
+    </div>
+
+    @if (currentCaller()) {
+      <div class="alp-recent-callers__tile">
+
+        <!-- Main Select Area -->
+        <button type="button" 
+                class="alp-recent-callers__main-btn"
+                (click)="selectCurrentCaller()">
+          <div class="alp-recent-callers__info">
+            <strong>{{ currentCaller()!.name }}</strong>
+            <span class="alp-recent-callers__role">{{ currentCaller()!.role }}</span>
+          </div>
+          <div class="alp-recent-callers__meta">
+            {{ currentCaller()!.callDateTime | date:'dd MMM yyyy, HH:mm' }}
+            <span class="alp-recent-callers__days-ago">({{ getDaysAgo(currentCaller()!.callDateTime) }})</span>
+          </div>
+        </button>
+
+        <!-- Secondary Button -->
+        <button type="button" 
+                class="alp-recent-callers__view-details-btn"
+                (click)="viewDetails(currentCaller()!); $event.stopPropagation()">
+          View Details
+        </button>
+      </div>
+
+      <div class="alp-recent-callers__nav">
+        <button (click)="previous()" [disabled]="currentIndex() === 0">
+          <i class="fas fa-chevron-left"></i>
+        </button>
+        <span>{{ currentIndex() + 1 }} / {{ totalCallers() }}</span>
+        <button (click)="next()" [disabled]="currentIndex() === totalCallers() - 1">
+          <i class="fas fa-chevron-right"></i>
+        </button>
+      </div>
+    }
+  </div>
+
+  <!-- Full List (Popover) - Unchanged -->
+  @if (showFullList()) {
+    <div class="alp-recent-callers__overlay" (click)="closeFullList()">
+      <div class="alp-recent-callers__popover" (click)="$event.stopPropagation()">
+        <div class="alp-recent-callers__popover-header">
+          <h4>Recent Callers (Last 30 Days)</h4>
+          <button (click)="closeFullList()"><i class="fas fa-times"></i></button>
+        </div>
+
+        <div class="alp-recent-callers__full-list">
+          @for (caller of sortedCallers; track caller.id) {
+            <div class="alp-recent-callers__full-item">
+              <button type="button" class="alp-recent-callers__full-main-btn" 
+                      (click)="callerSelected.emit(caller); closeFullList()">
+                <strong>{{ caller.name }}</strong>
+                <span class="role">{{ caller.role }}</span>
+                <span class="date">{{ caller.callDateTime | date:'dd MMM yyyy, HH:mm' }} ({{ getDaysAgo(caller.callDateTime) }})</span>
+              </button>
+
+              <button type="button" class="alp-recent-callers__view-details-btn" 
+                      (click)="viewDetails(caller); $event.stopPropagation()">
+                View Details
+              </button>
+            </div>
+          }
+        </div>
+      </div>
+    </div>
+  }
+
+</div>

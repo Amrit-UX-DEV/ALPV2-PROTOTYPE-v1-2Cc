@@ -1,0 +1,30 @@
+:root {
+    --branding-bg-color-value: 60,73,129;
+    --branding-bg-color: rgba(var(--branding-bg-color-value),1);
+    --selected-element-color: 133, 178, 226;
+    --main-bg-color: rgba(255, 255, 255, 0.5);
+    --top-rail-height: 0;
+    --app-header-items-height: 3.61531rem;
+    --app-header-height: calc(var(--app-header-items-height));
+    --nav-main-bg-color: rgba(0, 0, 0, 1);
+    --nav-sub-height: 4.61531rem;
+    --nav-sub-bg-color: rgba(244, 244, 244, 1);
+    --nav-app-exp-bg-color: rgba(0, 0, 0, 0.8);
+    --nav-app-exp--standard-width: 17.3076rem;
+    --nav-app-exp-item-nesting-left-space: 1.0769rem;
+    --nav-app-exp-item-core-color: 255, 255, 255;
+    --nav-app-exp-item-text-shadow-color: 0, 0, 0, 0.5;
+    --nav-app-exp-item-hover-bg: rgba(var(--nav-app-exp-item-core-color), 0.1);
+    --nav-app-exp-item-selected-bg: rgba(var(--nav-app-exp-item-core-color), 0.3);
+    --nav-app-exp-item-selected-bg: rgba(118, 133, 199, 0.3);
+    --nav-app-exp-item-color: rgba(var(--nav-app-exp-item-core-color), 0.8);
+    --nav-app-exp-item-color-hover: rgba(var(--nav-app-exp-item-core-color), 1);
+    --nav-app-exp-item-text-shadow: 1px 1px 2px rgba(var(--nav-app-exp-item-text-shadow-color));
+    --nav-app-exp-item-color-disabled: rgba(var(--nav-app-exp-item-core-color), 0.4);
+    --nav-app-exp-item-border: 4px solid rgba(var(--selected-element-color), 0.8);
+    --nav-app-exp-item-tether-border: 1px dashed rgba(var(--nav-app-exp-item-core-color), 0.2);
+    --no-data-border: 4px double rgba(var(--nav-app-exp-item-core-color), 0.4);
+    --context-bar-height: 4.6153rem;
+    --context-bar-bg-color: rgba(244, 244, 244, 0.9);
+    
+}

@@ -1,0 +1,311 @@
+.switchSys:hover {
+  cursor: Pointer; }
+
+.alpha-app-body {
+  padding: 0;
+  }
+
+  .alpha-layout-col-2.alpha-app-body > router-outlet + *{
+
+    padding:1.25rem;
+}
+
+
+alpha-sidebar {
+  /* width: 17.30rem; */
+  }
+
+.alpha-context-bar-details {
+  font-size: 1.3rem; }
+
+alpha-thin-client section.form-group[class*="col-md"] {
+  padding-left: 0; }
+
+alpha-thin-client section.form-group[class*="col-md"] label {
+  margin-bottom: 0rem;
+  font-size: 1rem; }
+
+alpha-thin-client section.form-group[class*="col-md"] .form-control:disabled,
+alpha-thin-client section.form-group[class*="col-md"] .form-control[readonly] {
+  border: 1px solid transparent;
+  background: transparent;
+  padding-left: 0;
+  padding-top: 0;
+  font-size: 1rem;
+  font-weight: bold; }
+
+.form-group {
+  margin-bottom: 0.5rem;
+  }
+
+  .form-group p{
+    font-weight:bold;
+    padding-top:3px;
+  }
+
+.highlighted {
+  background-color: yellow; }
+
+h2,
+h1 {
+  font-weight: 600;
+  margin-bottom: 0.5rem;
+  font-size: 1.4rem;
+  color: #3c4981; 
+
+  }
+
+  .card-header h1{
+  display:inline;
+    
+  }
+
+  h1{
+    /* font-size:1.2rem; */
+  }
+
+/* Form Changes */
+alpha-v2-template .form-group .form-control:disabled, alpha-v2-template .form-group .form-control[readonly] {
+  border: 1px solid transparent;
+  background: transparent;
+  padding-left: 0;
+  padding-top: 0;
+  font-size: 18.4px;
+  font-size: 1rem;
+  font-weight: 700; }
+
+.full-width {
+  width: 100%; }
+
+.no-padding-left {
+  padding-left: 0; }
+
+/* TOOLBAR ENHANCEMENTS */
+/* Hide Favourites */
+a[title="Favourites"] {
+  display: none !important; }
+
+/* Menu Item Icons */
+a[title="Enquiry"] span:before {
+  font-family: FontAwesome;
+  content: "\F2BC";
+  margin-right: 8px;
+  margin-right: 0.5rem; }
+
+a[title="Search"] span:before {
+  font-family: FontAwesome;
+  content: "\F002";
+  margin-right: 8px;
+  margin-right: 0.5rem; }
+
+a[title="Business Processes"] span:before {
+  font-family: FontAwesome;
+  content: "\F0B1";
+  margin-right: 8px;
+  margin-right: 0.5rem; }
+
+.alpha-data-inspector\[no-data\],
+.alpha-data-inspector\[no-data\] > a,
+[alpha-data-inspector="no-data"] {
+  pointer-events: none; }
+
+/* BUTTONS */
+button.alpha-btn {
+  background-color: #49A94F;
+  color: white;
+  font-weight: 700; }
+
+button.btn-full-width {
+  width: 100%; }
+
+a#proto-show-fields-btn {
+  display: block;
+  width: 100%;
+  text-align: center;
+  padding: 0.5rem;
+  border: 1px solid;
+  border-radius: 3px; }
+
+div#PolicySearch_SearchCriteria label {
+  display: block;
+  margin-right: 1rem; }
+
+div#PolicySearch_SearchCriteria input.form-control {
+  display: block;
+  width: 100%;
+  padding: 0.5rem 0.75rem;
+  font-size: 1rem;
+  line-height: 1.25;
+  color: #55595c;
+  background-color: #fff;
+  background-image: none;
+  background-clip: padding-box;
+  border: 1px solid rgba(0, 0, 0, 0.15);
+  border-radius: 0.25rem;
+  margin-right: 0.5rem;
+  z-index: 1; }
+
+button {
+  background-color: #49A94F;
+  color: white;
+  border: 1px solid #49A94F;
+  display: inline-block;
+  font-weight: normal;
+  line-height: 1.25;
+  text-align: center;
+  white-space: nowrap;
+  vertical-align: middle;
+  cursor: pointer;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+  border: 1px solid transparent;
+  padding: 0.5rem 1rem;
+  font-size: 1rem;
+  border-radius: 0.25rem;
+  font-weight: 700;
+  -webkit-transition: opacity .25s, color 0.5s, background-color 0.5s, border-color .5s, ease-in-out;
+  transition: opacity .25s, color 0.5s, background-color 0.5s, border-color .5s, ease-in-out;
+  }
+
+button:hover {
+  background-color: #377737; }
+
+button:disabled {
+  cursor: not-allowed;
+  background-color: grey;
+  color: #ddd; }
+
+/* Action Type */
+[data-action-type] {
+  background-color: #49A94F;
+  color: white;
+  border: 1px solid #49A94F;
+  display: inline-block;
+  font-weight: normal;
+  line-height: 1.25;
+  text-align: center;
+  white-space: nowrap;
+  vertical-align: middle;
+  cursor: pointer;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+  border: 1px solid transparent;
+  padding: 0.2rem 0.5rem;
+  font-size: 0.9rem;
+  border-radius: 0.25rem;
+  position: relative;
+  top: -0.1rem;
+  font-family:arial;
+  -webkit-transition: opacity .25s, color 0.5s, background-color 0.25s, border-color .5s, ease-in-out;
+  transition: opacity .25s, color 0.5s, background-color 0.25s, border-color .5s, ease-in-out; }
+
+[data-action-type]:hover {
+  background-color: #377737; }
+
+/*BUTTONS / SEARCH */
+div#PolicySearch_SearchCriteria button {
+  text-transform: capitalize; }
+
+div#PolicySearch_SearchCriteria button:hover {
+  background-color: #377737; }
+
+div#PolicySearch_SearchCriteria button:before {
+  font-family: FontAwesome;
+  content: "\F002";
+  margin-right: 8px;
+  margin-right: 0.5rem; }
+
+/* SECTION LINKS AND FILTER LINKS */
+ul.section-links {
+  border-top: 2px solid white;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex; }
+
+ul.section-links > li {
+  margin-right: 0.2rem; }
+
+ul.section-links > li .alpha-section-btn {
+  padding: 0;
+  border: 0;
+  background-color: transparent; }
+
+ul.section-links > li .alpha-section-btn > span {
+  color: #186ecc;
+  font-size: 1rem;
+  padding: 0.5rem 1rem;
+  display: block;
+  text-shadow: 1px 1px 2px white;
+  position: relative; }
+
+ul.section-links > li .alpha-section-btn > span:hover {
+  background-color: rgba(133, 178, 226, 0.1);
+  border-bottom: 4px solid rgba(133, 178, 226, 0); }
+
+ul.section-links > li .alpha-section-btn.selected > span {
+  border-bottom: 4px solid #85b2e2;
+  border-color: #3c4981;
+  color: #3c4981;
+  font-weight: 700; }
+
+.alpha-grid-filter-v1 {
+  margin-bottom: 1rem; }
+
+.alpha-grid-filter-v1 .row.top-filters {
+  margin-bottom: 0.5rem; }
+
+.alpha-grid-filter-v1 .paging-btns {
+  float: left; }
+
+.alpha-grid-filter-v1 .selection-dropdown {
+  float: left; }
+
+.alpha-grid-filter-v1 .selection-dropdown select {
+  padding: 0.2rem 0.4rem 0.4rem 0.4rem;
+  margin-left: 0.5rem;
+  color: #186ecc;
+  border-radius: 0.25rem;
+  font-weight: bold; }
+
+.alpha-grid-filter-v1 .selection-dropdown select {
+  min-width: 220px; }
+
+.wider-toolbar alpha-sidebar,
+.wider-toolbar alpha-menu .alpha-nav-app-explorer {
+  width: 21.3076rem; }
+
+/* Benefit Summary Table Styles*/
+table.alpha-benefits-summary {
+  font-size: 1rem; }
+
+td.alpha-benefits-summary.rowLabel {
+  font-weight: bold; }
+
+table.alpha-benefits-summary td {
+  border-top: 0; }
+
+table.alpha-benefits-summary td {
+  border-bottom: 1px solid rgba(0, 0, 0, 0.2); }
+
+/* Global Font Clean up*/
+html,
+body {
+  font-family: Arial, sans-serif;
+
+  }
+
+/* Card Header Amendment */
+.card-header {
+  border: none;
+  background: none;
+  font-weight: 600;
+  margin-bottom: 0.5rem;
+  font-size: 1.2rem;
+  padding-bottom: 5px;
+  padding-top: 12px;
+  color: #3c4981;
+  }

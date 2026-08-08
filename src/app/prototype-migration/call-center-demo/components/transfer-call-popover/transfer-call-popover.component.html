@@ -1,0 +1,60 @@
+<div class="alp-transfer-popover-overlay" (click)="cancel()">
+  <div class="alp-transfer-popover" (click)="$event.stopPropagation()">
+
+    <!-- Header -->
+    <div class="alp-transfer-popover__header">
+      <h3>Transfer Call</h3>
+      <button class="close-btn" (click)="cancel()">
+        <i class="fas fa-times"></i>
+      </button>
+    </div>
+
+    <!-- Search -->
+    <div class="alp-transfer-popover__search">
+      <input 
+        type="text" 
+        placeholder="Search transfer reason..."
+        [value]="searchTerm()"
+        (input)="searchTerm.set($any($event.target).value)">
+    </div>
+
+    <!-- Reason Tiles -->
+    <div class="alp-transfer-popover__reasons">
+      @for (reason of filteredReasons(); track reason.id) {
+        <button 
+          type="button"
+          class="alp-transfer-reason-tile"
+          [class.selected]="selectedReason()?.id === reason.id"
+          (click)="selectReason(reason)">
+          {{ reason.label }}
+        </button>
+      }
+    </div>
+
+    <!-- Notes -->
+    <div class="alp-transfer-popover__notes">
+      <label>Additional notes (optional)</label>
+      <textarea 
+        placeholder="Add any extra context for the receiving agent..."
+        [value]="notes()"
+        (input)="updateNotes($any($event.target).value)">
+      </textarea>
+      <div class="char-count">
+        {{ notesLength() }} / {{ maxNotesLength }}
+      </div>
+    </div>
+
+    <!-- Actions -->
+    <div class="alp-transfer-popover__actions">
+      <button type="button" class="btn-secondary" (click)="cancel()">Cancel</button>
+      <button 
+        type="button" 
+        class="btn-primary"
+        [disabled]="!selectedReason()"
+        (click)="confirmTransfer()">
+        Transfer Call
+      </button>
+    </div>
+
+  </div>
+</div>

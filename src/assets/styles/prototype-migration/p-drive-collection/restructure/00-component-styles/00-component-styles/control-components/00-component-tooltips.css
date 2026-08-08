@@ -1,0 +1,322 @@
+/* -----------------------                      --- */
+/* COMPONENT: TOOLTIPS                              */
+/* -----------------------                      --- */
+
+.tooltip--truncated-text{
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    color:var(--theme-action-link);
+}
+
+.tooltip--truncated-text:hover{
+    overflow: unset;
+}
+
+.tooltip--truncated-text-wrap {
+    transition: all 0s ease-in-out;
+    color:var(--theme-text--default);
+    position:relative;
+    left:0;
+    bottom:0;
+}
+
+.tooltip--truncated-text:hover .tooltip--truncated-text-wrap{
+    padding:0.4rem 0.5rem 0.4rem 0.5rem;
+    position:relative;
+    z-index:1;
+    left:1rem;
+    bottom:0;
+    background-color:var(--theme-light-shade-9);
+    border:2px solid var(--theme-tooltip--truncate);
+    transition: all 0.25s ease-in-out;
+    transform: scale(1.03);
+    border-radius:4px;
+    transition: all 0.15s ease-in-out;
+    box-shadow:0px 5px 10px -4px var(--theme-dark-shade-8);  
+}
+
+.tooltip--truncated-text-wrap:before{
+    
+    font-size: 0rem;
+}
+
+.tooltip--truncated-text:hover .tooltip--truncated-text-wrap:before{
+    transition: all 0.15s ease-in-out;
+    font-family:"FontAwesome";
+    content:"\f0d9";
+    position:absolute;
+    right:calc(100% + 1px);
+    font-size: 1.6rem;
+    display:flex;
+    top: 0;
+    height: 100%;
+    justify-content: center; 
+    align-items: center;
+    color:var(--theme-tooltip--truncate);
+}
+
+/*Truncated Tooltip Group */
+
+.tooltip--truncated-text-group{
+    position:relative;
+}
+
+.tooltip--truncated-text-group > div:not(.tooltip--truncated-text-group-wrap){
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    
+}
+
+.tooltip--truncated-text-group-wrap{
+    transition: all 0s ease-in-out;
+    position:absolute;
+    bottom:0;
+    left:0;
+    background-color:var(--theme-monotone-1);
+    box-shadow:0px 5px 10px -4px var(--theme-dark-shade-8);
+    line-height:1.2;
+    overflow:hidden;
+    max-width:0;
+    max-height:0;
+    z-index: 1;
+    border-radius:4px;
+}
+
+.tooltip--truncated-text-group:not(.tooltip--no-hover):hover .tooltip--truncated-text-group-wrap{
+    transition: all 0.25s ease-in-out;
+    left:-1.1rem;
+    bottom:0;
+    max-width:400px;
+    max-height:400px;
+    padding:0.4rem 0.5rem 0.4rem 0.5rem;
+    border:2px solid var(--theme-tooltip--truncate);
+}
+
+/* Checkbox group trigger */
+
+.tooltip--checkbox-trigger {
+    position:relative;
+}
+
+.tooltip--checkbox-trigger > i{
+    cursor:pointer;
+}
+
+.tooltip--checkbox-trigger input[type="checkbox"],
+.tooltip--checkbox{
+    visibility:hidden;
+    width:0;
+    height:0;
+    position:absolute;
+    z-index:-1;
+}
+
+
+.tooltip--checkbox-trigger input[type="checkbox"]:checked + .tooltip--truncated-text-group-wrap{
+    transition: all 0.25s ease-in-out;
+    top:initial;
+    right:initial;
+    bottom:1.5rem;
+    left:-1.3rem;
+    min-width:400px;
+    max-height:400px;
+    padding:1rem;
+    border:2px solid var(--theme-tooltip--truncate);
+    box-shadow:-5px 5px 15px -4px var(--theme-dark-shade-8);
+}
+
+/* Tool Tip Open Directions */
+
+.tooltip--open-bottom{
+    top:1.5rem !important;
+    right:initial !important;
+    bottom:initial !important;
+    left:-1.5rem !important;
+}
+
+.tooltip--icon-trigger{
+    color:rgba(255,255,255,0.8);
+    font-size:0.9rem;
+    position:relative;
+    background-color:var(--theme-btn-primary);
+    border: 0.2rem solid rgba(255,255,255,0.4);
+    border-radius:100%;
+    width:19px;
+    height:19px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    transition: all 0.15s ease-in-out;
+    transform: scale(1);
+}
+
+.tooltip--icon-trigger:hover,
+.tooltip--icon-trigger:active,
+.tooltip--icon-trigger:focus{
+    transform: scale(0.9);
+}
+.tooltip--truncated-text-group-wrap.tooltip--strong{
+    background-color:var(--theme-btn-primary);
+    color:rgba(255,255,255,0.8);
+}
+
+.tooltip--checkbox-trigger input[type="checkbox"]:checked + .tooltip--truncated-text-group-wrap.tooltip--strong{
+     
+     border: 0.2rem solid rgba(255,255,255,0.4);
+     padding:0 1rem;
+     
+}
+
+/* Tool Tip Multiline Truncated icon*/
+
+.tooltip--truncated-icon{
+    overflow:hidden;
+    position:relative;
+}
+
+.tooltip--truncated-icon:before {
+  content: '...';
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  z-index:1;
+  background-color: #fff; 
+}
+
+
+/* Tool Tip Page Notifications */
+
+.tooltip--page-notification{
+    text-overflow: ellipsis;
+    overflow:hidden;  
+}
+
+.tooltip--page-notification-trigger{
+    cursor:pointer;
+}
+
+.tooltip--page-notification-wrap{
+    transition: all 0.25s ease-in-out;
+    position:relative;
+    display:block;
+    line-height:1.2;
+    max-width:0;
+    min-width:0;
+    max-height:0;
+    z-index: 1;
+    /* background-color:var(--theme-primary--light); */
+    border-radius:4px;
+    /* border-top:2px solid var(--theme-primary--light); */
+    margin-left:100%;
+}
+
+.tooltip--page-notification-wrap--header{
+    display:block;
+    position:relative;
+}
+
+.tooltip--page-notification-wrap--body{
+    overflow-y:scroll;
+    max-height:250px;
+    display:block;
+    padding:1rem 0 0 0;
+}
+
+.tooltip--page-notification-wrap--footer{
+    display:block;
+    position:relative;
+    height:50px;
+}
+
+.tooltip--page-notification-block{
+    width:80%;
+    overflow:hidden;
+    text-overflow: ellipsis;
+    display:block;
+    color:var(--theme-text--default);
+    background-color:#fefced;
+    border:0.2rem solid var(--theme-light-shade-8);
+    box-shadow:0px 5px 10px -4px var(--theme-dark-shade-4);
+    border-radius:4px;
+    margin:0 auto 1.5rem auto;
+}
+
+.tooltip--page-notification-sticky-actions{
+    display:block;
+    width:100%;
+}
+
+.tooltip--page-notification-block--header{
+    width:100%;
+    display:block;
+    background-color:#faf0a3;
+    padding:0.5rem 1rem;
+    border-bottom:0.05rem dashed var(--theme-dark-shade-3);
+    color:var(--theme-dark-shade-6);
+}
+
+.tooltip--page-notification-block--body{
+    padding:1rem;
+    display:block;
+    font-weight:normal;
+}
+
+.tooltip--page-notification-tile{
+    width:220px;
+    height:180px;
+    overflow:hidden;
+    display:inline-block;
+    color:var(--theme-text--default);
+    background-color:#fefced;
+    border: 0.5rem solid var(--theme-light-shade-8);
+    box-shadow: 0px 5px 10px -4px var(--theme-dark-shade-6);
+    border-radius:4px;
+    margin:1.5rem 0 1.5rem 1.5rem;
+    font-size:1rem;
+    
+}
+
+.tooltip--page-notification-tile .tooltip--page-notification-block--body.tooltip--truncated-icon:before{
+    font-family:"FontAwesome";
+    content:"...";
+    right: 1.6rem;
+    bottom: 0.2rem;
+    padding:0 0.3rem 0 0;
+    background-color:#fefced;
+    font-size: 2.5rem;
+    font-weight:bold;
+    color:#5da4e0;
+    line-height: 0;
+    padding-bottom: 0.2rem;
+    letter-spacing: -0.1rem;
+    height: 14px;
+    align-items: flex-start;
+    flex-direction: column;
+}
+
+.tooltip--page-notification-tile .tooltip--page-notification-block--body.tooltip--truncated-icon:after{
+    font-family:"FontAwesome";
+    content:"\f27a  ";
+    position:absolute;
+    right: 0.6rem;
+    bottom: 0.2rem;
+    color:#5da4e0;
+}
+
+.tooltip--page-notification-tile .tooltip--page-notification-block--body{
+
+    height: 107px;
+}
+
+
+
+.tooltip--page-notification input[type="checkbox"].tooltip--checkbox:checked + .tooltip--page-notification-wrap{
+    transition: all 0.25s ease-in-out;
+    min-width:100%;
+    max-height:300px;
+    line-height:1.2;
+    max-width:0;
+    margin-left:0;
+}

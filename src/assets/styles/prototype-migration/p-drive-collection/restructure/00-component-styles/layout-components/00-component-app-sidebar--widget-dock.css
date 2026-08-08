@@ -1,0 +1,17 @@
+
+/* ------------------------------------------------------ */
+/* ------------------------------------------------------ */
+/* COMPONENT: WIDGET DOCK ------------------------------- */
+/* ------------------------------------------------------ */
+/* ------------------------------------------------------ */
+
+.app-sidebar--widget-dock-rail{
+    width:4.4rem;
+    background-color:var(--theme-widget-dock-rail--background);
+}
+
+.app-sidebar--widget-dock{
+    width:0;
+    background-color:var(--theme-widget-dock--background);
+}
+

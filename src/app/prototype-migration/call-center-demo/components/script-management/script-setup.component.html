@@ -1,0 +1,195 @@
+<div class="alp-script-setup">
+  <h2 class="alp-script-setup__title">Product & Request Type Association</h2>
+
+  <div class="alp-script-setup__two-column">
+
+    <div class="alp-script-setup__section">
+      <h3 class="alp-script-setup__section-title">Select Product</h3>
+
+      <input
+        type="text"
+        placeholder="Filter products..."
+        (input)="onProductSearchChange($event)"
+        class="alp-script-setup__filter-input">
+
+      <div class="alp-script-setup__tile-grid">
+        <div
+          *ngFor="let product of filteredProducts()"
+          class="alp-script-setup__tile"
+          [class.alp-script-setup__tile--selected]="selectedProduct() === product.id"
+          (click)="toggleProduct(product.id)"
+          role="button"
+          tabindex="0">
+          <span class="alp-script-setup__tile-label">{{ product.label }}</span>
+          <i *ngIf="selectedProduct() === product.id" class="fas fa-check-circle alp-script-setup__tile-check"></i>
+        </div>
+      </div>
+    </div>
+
+    <div class="alp-script-setup__section request-type-section"
+         [class.request-type-hidden]="!selectedProduct()">
+      <h3 class="alp-script-setup__section-title">Select Request Type</h3>
+
+      <input
+        type="text"
+        placeholder="Filter request types..."
+        (input)="onRequestTypeSearchChange($event)"
+        class="alp-script-setup__filter-input">
+
+      <div class="alp-script-setup__tile-grid">
+        <div
+          *ngFor="let request of filteredRequestTypes()"
+          class="alp-script-setup__tile"
+          [class.alp-script-setup__tile--selected]="selectedRequestType() === request.id"
+          (click)="toggleRequestType(request.id)"
+          role="button"
+          tabindex="0">
+          <span class="alp-script-setup__tile-label">{{ request.label }}</span>
+          <i *ngIf="selectedRequestType() === request.id" class="fas fa-check-circle alp-script-setup__tile-check"></i>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="alp-script-setup__existing" *ngIf="selectedProduct() && selectedRequestType()">
+    <h3 class="alp-script-setup__section-title">
+      Existing Scripts for {{ selectedProductLabel() }} — {{ selectedRequestTypeLabel() }}
+    </h3>
+
+    <div class="alp-script-setup__tile alp-script-setup__create-tile"
+         *ngIf="showCreateTile()"
+         [class.alp-script-setup__tile--selected]="isCreateNewSelected()"
+         (click)="toggleCreateNew()"
+         role="button"
+         tabindex="0">
+      <span class="alp-script-setup__tile-label"><strong>Create New Script</strong></span>
+      <i *ngIf="isCreateNewSelected()" class="fas fa-check-circle alp-script-setup__tile-check"></i>
+    </div>
+
+    <div class="alp-script-setup__script-list">
+      <div *ngFor="let script of createdScripts()" class="alp-script-setup__script-group">
+        <div class="alp-script-setup__script-item"
+             [class.alp-script-setup__script-item--selected]="selectedScriptId() === script.id">
+          <div class="alp-script-setup__script-info">
+            <strong>{{ script.name }}</strong>
+            <span class="alp-script-setup__last-edited">Last edited: {{ script.lastEdited }}</span>
+            <span class="alp-script-setup__new-badge">DRAFT</span>
+          </div>
+          <div class="alp-script-setup__script-actions">
+            <button type="button" (click)="cancelCreatedScript(script.id)" class="alp-btn alp-btn--secondary">
+              Cancel
+            </button>
+            <button type="button" (click)="selectScript(script.id)" class="alp-btn alp-btn--primary">
+              Select Script
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <div *ngFor="let script of existingScripts" class="alp-script-setup__script-group">
+        <div class="alp-script-setup__script-item"
+             [class.alp-script-setup__script-item--selected]="selectedScriptId() === script.id"
+             [class.alp-script-setup__script-item--historic-selected]="selectedHistoricVersion() && selectedScriptForHistory()?.id === script.id">
+          <div class="alp-script-setup__script-info">
+            <strong>{{ script.name }}</strong>
+            <span class="alp-script-setup__last-edited">Last edited: {{ script.lastEdited }}</span>
+            <span *ngIf="script.isActive" class="alp-script-setup__active-badge">PRIMARY SCRIPT</span>
+          </div>
+
+          <div class="alp-script-setup__script-actions">
+            <button type="button" (click)="openVersionHistory(script)" class="alp-btn alp-btn--secondary">
+              View Version History
+            </button>
+            <button type="button" (click)="selectScript(script.id)" class="alp-btn alp-btn--primary">
+              Select Script
+            </button>
+          </div>
+        </div>
+
+        <div class="alp-script-setup__historic-container"
+             *ngIf="selectedHistoricVersion() && selectedScriptForHistory()?.id === script.id">
+          <div class="alp-script-setup__historic-card">
+            <div class="alp-script-setup__historic-info">
+              <div class="alp-script-setup__historic-header">
+                <span class="alp-script-setup__historic-badge">Historic Version Selected</span>
+                <strong>v{{ selectedHistoricVersion()!.version }}</strong>
+              </div>
+              <div class="alp-script-setup__historic-meta">
+                {{ selectedHistoricVersion()!.date }} • {{ selectedHistoricVersion()!.editedBy }}
+              </div>
+            </div>
+            <button type="button" (click)="cancelHistoricSelection()" class="alp-btn alp-btn--secondary">
+              Cancel Selection
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="alp-script-setup__popover-overlay" *ngIf="showCreateScriptPopover()" (click)="cancelNewScript()">
+    <div class="alp-script-setup__popover" (click)="$event.stopPropagation()">
+      <div class="alp-script-setup__popover-header">
+        <h4>Create New Script</h4>
+        <button type="button" (click)="cancelNewScript()" class="alp-script-setup__close-btn">×</button>
+      </div>
+      <div class="alp-script-setup__popover-content">
+        <div class="alp-script-setup__form-group">
+          <label>Script Name</label>
+          <input
+            type="text"
+            [ngModel]="newScriptName()"
+            (ngModelChange)="newScriptName.set($event)"
+            placeholder="Enter script name"
+            class="alp-script-setup__input">
+        </div>
+
+        <div class="alp-script-setup__form-group">
+          <label>Script Description</label>
+          <textarea
+            [ngModel]="newScriptDescription()"
+            (ngModelChange)="newScriptDescription.set($event)"
+            placeholder="Optional summary for authors"
+            class="alp-script-setup__input alp-script-setup__textarea"
+            rows="3"></textarea>
+        </div>
+
+        <div class="alp-script-setup__confirmation">
+          This script will be associated with
+          <strong>{{ selectedProductLabel() }} — {{ selectedRequestTypeLabel() }}</strong>
+        </div>
+      </div>
+      <div class="alp-script-setup__popover-footer">
+        <button type="button" (click)="cancelNewScript()" class="alp-btn alp-btn--secondary">Cancel</button>
+        <button type="button"
+                (click)="saveNewScript()"
+                class="alp-btn alp-btn--primary"
+                [disabled]="!newScriptName().trim()">
+          Save
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <div class="alp-script-setup__popover-overlay" *ngIf="showVersionHistory()" (click)="closeVersionHistory()">
+    <div class="alp-script-setup__popover" (click)="$event.stopPropagation()">
+      <div class="alp-script-setup__popover-header">
+        <h4>Version History - {{ selectedScriptForHistory()?.name }}</h4>
+        <button type="button" (click)="closeVersionHistory()" class="alp-script-setup__close-btn">×</button>
+      </div>
+      <div class="alp-script-setup__popover-content">
+        <div *ngFor="let version of selectedScriptForHistory()?.versionHistory"
+             class="alp-script-setup__version-item">
+          <div class="alp-script-setup__version-info">
+            <strong>v{{ version.version }}</strong>
+            <span>{{ version.date }} • {{ version.editedBy }}</span>
+          </div>
+          <button type="button" (click)="selectVersion(version)" class="alp-btn alp-btn--primary">
+            Select This Version
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,320 @@
+alpha-menu {
+    /* width: var(--nav-app-exp--standard-width); */
+    overflow: hidden;
+    display: flex;
+    height:calc(100vh - var(--app-header-height));
+}
+
+
+.alpha-app-container.alpha-app-exp-closed nav.alpha-nav-app-explorer.alpha-accordion-container {
+    width: 0;
+}
+
+.alpha-app-subnav {
+    height: var(--nav-sub-height);
+    background-color: var(--nav-sub-bg-color);
+    box-shadow: 0 3px 5px 1px rgba(0, 0, 0, 0.1);
+    position: relative;
+    z-index: 1;
+}
+
+alpha-menu .alpha-nav-app-explorer {
+    /*background-color: var(--nav-app-exp-bg-color);*/
+    overflow-y: scroll;
+    flex: 1;
+    height: calc(100vh - var(--app-header-height));
+    /* width: var(--nav-app-exp--standard-width); */
+    position: relative;
+    left: 0;
+}
+
+
+
+alpha-menu .alpha-nav-app-explorer::-webkit-scrollbar {
+    width: 5px;
+}
+
+alpha-menu .alpha-nav-app-explorer:hover::-webkit-scrollbar {
+    display: block;
+    width: 5px;
+}
+
+alpha-menu .alpha-nav-app-explorer::-webkit-scrollbar-thumb {
+    background-color: rgba(255, 255, 255, 0.2);
+    border-radius: 6px;
+}
+
+alpha-menu .alpha-nav-app-explorer:hover::-webkit-scrollbar-thumb {
+    background-color: rgba(255, 255, 255, 0.5);
+}
+
+.alpha-app-container .alpha-nav-app-explorer-menu-toggle {
+    background-color: rgba(38, 38, 38, 1);
+}
+
+.alpha-app-container.alpha-app-exp-closed .alpha-nav-app-explorer-menu-toggle {
+    background-color: rgba(0, 0, 0, 0);
+}
+
+.alpha-app-container.alpha-app-exp-closed .alpha-nav-app-explorer {
+    left: -100%;
+}
+
+alpha-menu .alpha-nav-app-explorer ul {
+    display: block;
+    width: 100%;
+    overflow: hidden;
+    flex-shrink: 0;
+}
+
+alpha-menu .alpha-nav-app-explorer ul li {
+    width: 100%;
+}
+
+alpha-menu .alpha-nav-app-explorer ul li a,
+alpha-menu .alpha-nav-app-explorer ul li a span {
+    width: 100%;
+    display: block;
+}
+
+alpha-menu .alpha-nav-app-explorer ul li a {
+    position: relative;
+}
+
+alpha-menu .alpha-nav-app-explorer ul li a i {
+    padding-right: 3px;
+}
+
+alpha-menu .alpha-nav-app-explorer ul li a span {
+    padding: 0.5384rem;
+    color: var(--nav-app-exp-item-color);
+    text-shadow: var(--nav-app-exp-item-text-shadow);
+    /*margin: 2px 0;*/
+    border-left: var(--nav-app-exp-item-border);
+}
+
+alpha-menu .alpha-nav-app-explorer ul li a:hover span {
+    background-color: var(--nav-app-exp-item-hover-bg);
+    color: var(--nav-app-exp-item-color-hover);
+}
+
+alpha-menu .alpha-nav-app-explorer ul li.alpha-selected:hover>a>span,
+alpha-menu .alpha-nav-app-explorer ul li.alpha-selected>a>span {
+    background-color: var(--nav-app-exp-item-selected-bg);
+    box-shadow: 0 2px 3px 1px rgba(0, 0, 0, 0.3);
+    /*border-right: 6px double lightblue;*/
+    color: var(--nav-app-exp-item-color-hover);
+}
+
+alpha-menu .alpha-nav-app-explorer>ul li {
+ /*   border-bottom: 2px solid rgba(0, 0, 0, 0.1);
+    border-top: 1px solid rgba(0, 0, 0, 0.2);
+*/
+}
+
+/* Parent Item - Top level (0) Font size / spacing*/
+alpha-menu .alpha-nav-app-explorer>ul > menu-display > li > a > span {
+    /* font-size: 1.1538rem; */
+    margin: 0;
+}
+
+
+
+
+alpha-menu .alpha-nav-app-explorer>ul li>ul li>a>span {
+    margin-left: calc(var(--nav-app-exp-item-nesting-left-space)/2);
+    width: calc(100% - (var(--nav-app-exp-item-nesting-left-space)/2));
+    border-left: var(--nav-app-exp-item-border);
+}
+
+alpha-menu .alpha-nav-app-explorer>ul li>ul li>ul li>a>span {
+    margin-left: calc(var(--nav-app-exp-item-nesting-left-space) * 1.5);
+    width: calc(100% - (var(--nav-app-exp-item-nesting-left-space) * 1.5));
+    border-left: var(--nav-app-exp-item-border);
+}
+
+alpha-menu .alpha-nav-app-explorer>ul li>ul li>ul li>ul li>a>span {
+    margin-left: calc(var(--nav-app-exp-item-nesting-left-space) * 2.5);
+    width: calc(100% - (var(--nav-app-exp-item-nesting-left-space) * 2.5));
+    border-left: var(--nav-app-exp-item-border);
+}
+
+alpha-menu .alpha-nav-app-explorer>ul li>ul li>ul li>ul li>a>span:before {
+    content: " ";
+    position: absolute;
+    background-color: rgba(255, 255, 255, 0);
+    border-left: var(--nav-app-exp-item-tether-border);
+    width: 10px;
+    height: 100%;
+    top: 0;
+    left: 21px;
+}
+
+alpha-menu .alpha-nav-app-explorer .alpha-nav-app-explorer-settings>li {
+    border-top: none;
+    margin-top: 5px;
+    border-bottom: 2px solid rgba(255, 255, 255, 0.3);
+}
+
+alpha-menu .alpha-nav-app-explorer .alpha-nav-app-explorer-settings>li>a {
+    width: 70%;
+    display: block;
+    margin: 0 auto;
+}
+
+alpha-menu .alpha-nav-app-explorer .alpha-nav-app-explorer-settings>li>a>span {
+    display: block;
+    font-size: 1rem;
+    border-radius: 3px 3px 0 0;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-bottom: none;
+    text-align: center;
+}
+
+alpha-menu .alpha-nav-app-explorer .alpha-nav-app-explorer-settings>li>a>span i {
+    color: rgba(var(--selected-element-color), 1);
+}
+
+alpha-menu .alpha-nav-app-explorer .alpha-nav-app-explorer-settings-options {
+    display: block;
+    width: 90%;
+    margin: 0 auto;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    background-color: rgba(0, 0, 0, 0.3);
+    position: relative;
+    top: -1px;
+    border-radius: 3px;
+}
+
+alpha-menu .alpha-nav-app-explorer .alpha-nav-app-explorer-settings-options li:first-child {
+    padding-top: 10px;
+}
+
+alpha-menu .alpha-nav-app-explorer .alpha-nav-app-explorer-settings-options li {
+    margin-bottom: 5px;
+    padding: 5px 10px 5px 10px;
+}
+
+alpha-menu .alpha-nav-app-explorer .alpha-nav-app-explorer-settings-options li label {
+    display: inline-block;
+    font-size: 0.88rem;
+    color: rgba(255, 255, 255, 0.8);
+}
+
+alpha-menu .alpha-nav-app-explorer .alpha-nav-app-explorer-settings-options li label:before {
+    font-family: FontAwesome;
+    content: "\F204";
+    padding-right: 10px;
+    font-size: 1.5rem;
+    position: relative;
+    color: rgb(133, 178, 226);
+    top: 0.15rem;
+}
+
+alpha-menu .alpha-nav-app-explorer .alpha-nav-app-explorer-settings-options li label:hover {
+    color: var(--nav-app-exp-item-color-hover);
+}
+
+alpha-menu .alpha-nav-app-explorer .alpha-nav-app-explorer-settings-options li input[type=checkbox] {
+    background-color: rgba(0, 0, 0, 0);
+    display: none;
+}
+
+alpha-menu .alpha-nav-app-explorer .alpha-nav-app-explorer-settings-options li input[type=checkbox]:checked+label:before {
+    content: "\F205";
+}
+
+alpha-menu .alpha-nav-app-explorer .alpha-branding-logo {
+    padding: 15px 10px;
+    overflow: hidden;
+    width: 100%;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.6);
+    box-shadow: 0 0 6px 1px rgba(255, 255, 255, 0.1);
+}
+
+alpha-menu .alpha-nav-app-explorer .alpha-branding-logo img {
+    width: 6.1538rem;
+    margin-left: calc((var(--nav-app-exp--standard-width)/2) - (6.1538rem/1.5));
+}
+
+alpha-menu .alpha-nav-app-explorer li[alpha-data-inspector="no-data"] >a>span,
+alpha-menu .alpha-nav-app-explorer li[alpha-data-inspector="no-data"]>a>span:hover {
+    border-left: var(--no-data-border);
+    margin-top: 0;
+    margin-bottom: 0;
+    color: var(--nav-app-exp-item-color-disabled);
+}
+
+.alpha-item-closed ul {
+    height: 0;
+}
+
+alpha-menu .alpha-nav-app-explorer.alpha-app-exp-hide-no-data [alpha-data-inspector="no-data"] {
+    display: none;
+}
+
+.alpha-nav-app-explorer.alpha-app-exp-expand-all .alpha-accordion-children {
+    height: auto;
+}
+
+alpha-menu .alpha-nav-app-explorer ul li a .alpha-openclose {
+    position: absolute;
+    font: normal normal normal 17px/1 FontAwesome;
+    width: 32px;
+    border: 1px solid rgba(255, 255, 255, 0) !important;
+    width: 25px;
+    height: 25px;
+    border-radius: 3px;
+    right: 2px;
+    top: 0;
+    background-color: rgba(0, 0, 0, 0) !important;
+    box-shadow: none !important;
+    text-shadow: none;
+    transform: rotate(45deg);
+}
+
+alpha-menu .alpha-nav-app-explorer .alpha-openclose::before {
+    content: "\F107";
+    position: relative;
+    top: -4px;
+}
+
+alpha-menu .alpha-nav-app-explorer .alpha-item-closed .alpha-openclose::after {
+    content: "";
+}
+
+alpha-menu .alpha-nav-app-explorer .alpha-openclose::after {
+    content: "|";
+    position: absolute;
+    top: 0.23rem;
+    left: 0.88rem;
+    font-weight: bold;
+    font-size: 0.8rem;
+}
+
+alpha-menu .alpha-nav-app-explorer .alpha-item-closed .alpha-openclose {
+    transform: rotate(0deg);
+}
+
+alpha-menu .alpha-nav-app-explorer .alpha-item-closed .alpha-openclose::before {
+    content: "\F107";
+}
+
+
+/* Menu Height - Right sidebar */
+
+
+alpha-right-sidebar alpha-menu .alpha-nav-app-explorer,
+alpha-right-sidebar alpha-menu,
+.alpha-right-sidebar alpha-menu .alpha-nav-app-explorer,
+.alpha-right-sidebar alpha-menu,
+.alpha-right-sidebar widget-dock,
+.alpha-right-sidebar .widget-dock  {
+
+height:calc(100vh - var(--app-header-height) - 4.6153rem);
+}
+
+.alpha-right-sidebar alpha-menu .alpha-nav-app-explorer{
+    position:static;
+    padding-top: 57px;
+}

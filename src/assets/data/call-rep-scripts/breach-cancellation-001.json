@@ -1,0 +1,62 @@
+{
+  "scriptId": "breach-cancellation-001",
+  "title": "Breach of Contract & Cancellation",
+  "description": "Handles customer breach concerns and cancellation requests",
+  "category": "Cancellation",
+  "lastUpdated": "2026-06-23",
+  "steps": [
+    {
+      "id": "s1",
+      "type": "question",
+      "question": "Has the customer formally requested to cancel their policy due to a breach?",
+      "scriptedReply": "Thank you for raising this. I want to fully understand the situation so I can support you properly.",
+      "selectionMode": "single",
+      "options": [
+        {
+          "text": "Yes",
+          "nextStep": "s2",
+          "scriptedReply": "I understand this is frustrating. Let me guide you through the cancellation process."
+        },
+        {
+          "text": "No",
+          "nextStep": "s3",
+          "scriptedReply": "Thank you for clarifying."
+        }
+      ],
+      "requiredChecks": [
+        { "text": "Policy number verified on screen", "auto": true },
+        { "text": "Customer identity confirmed", "auto": false },
+        { "text": "Call reason logged in system", "auto": true }
+      ],
+      "actions": ["Log: Breach/Cancellation discussion started"]
+    },
+    {
+      "id": "s2",
+      "type": "question",
+      "question": "What are the main reasons for the cancellation request? (Select all that apply)",
+      "scriptedReply": "Can you tell me more about the reasons behind this decision?",
+      "selectionMode": "multi",
+      "options": [
+        { "text": "Poor claims handling" },
+        { "text": "Premium increase" },
+        { "text": "Poor customer service" },
+        { "text": "Other" }
+      ],
+      "requiredChecks": [
+        { "text": "Customer concerns fully understood", "auto": false }
+      ]
+    },
+    {
+      "id": "s3",
+      "type": "info",
+      "content": "No active cancellation intent. Continuing with standard support flow.",
+      "nextStep": "summary"
+    }
+  ],
+  "finalSummary": {
+    "title": "Breach / Cancellation Call Summary",
+    "includeAnswers": true,
+    "includeActions": true,
+    "includeChecks": true
+  }
+}

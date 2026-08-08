@@ -1,0 +1,437 @@
+
+/* Address Timeline Styles */
+
+
+alpha-address-timeline {
+    float: left;
+    max-width: 400px;
+    width: 400px;
+}
+
+ul.alpha-timeline-structure-container {
+    width: 100%;
+    overflow: hidden;
+}
+
+/* Timeline Period Items */
+
+li.alpha-timeline-period {
+    width: 100%;
+    overflow: hidden;
+    /* margin-bottom: 15px; */
+}
+
+    li.alpha-timeline-period ul {
+        /* margin-top: 10px; */
+    }
+
+        li.alpha-timeline-period ul li {
+        }
+
+span.alpha-data-structure-heading {
+    color: #3c4981;
+    font-weight: bold;
+    font-size: 1rem;
+    display: block;
+    margin-bottom: 10px;
+}
+
+
+.alpha-address-item {
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-orient: vertical;
+    -webkit-box-direction: normal;
+    -ms-flex-direction: column;
+    flex-direction: column;
+    -ms-flex-line-pack: center;
+    align-content: center;
+    border: 0.1rem solid #85b2e2;
+    border: 0.1rem solid #ccc;
+    -webkit-box-pack: center;
+    -ms-flex-pack: center;
+    background-color: #fff;
+    justify-content: center;
+    border-radius: 6px;
+    box-shadow: 0 1px 1px 1px rgba(0, 0, 0, 0.1);
+    color: black;
+    -webkit-transition: all 75ms ease-in-out;
+    transition: all 75ms ease-in-out;
+    max-width: 250px;
+    min-width: 250px;
+    height: 234px;
+    flex-shrink: 0;
+    margin: 0.5rem;
+    float: left;
+    position: relative;
+    padding-bottom:10px;
+}
+
+    .alpha-address-item span[class^="card"] {
+        padding: 0.5rem 0.7rem;
+    }
+
+    .alpha-address-item .alpha-address-details {
+        font-size: 0.9rem;
+        padding-right: 1rem;
+        padding-bottom: 5px;
+        padding-top: 0.2rem;
+        /* font-weight: bold; */
+        /* padding-top: 0.2rem; */
+        /* border-top: 1px solid rgba(0,0,0,0.2); */
+        /* margin-top: 5px; */
+        /* Permalink - use to edit and share this gradient: http://colorzilla.com/gradient-editor/#ebebeb+0,ebebeb+100&0.65+0,0+100 */
+        background: -moz-linear-gradient(top, rgba(235,235,235,0.65) 0%, rgba(235,235,235,0) 100%); /* FF3.6-15 */
+        /* background: -webkit-linear-gradient(top, rgba(235,235,235,0.65) 0%,rgba(235,235,235,0) 100%); */ /* Chrome10-25,Safari5.1-6 */
+        /* background: linear-gradient(to bottom, rgba(235,235,235,0.65) 0%,rgba(235,235,235,0) 100%); */ /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+        font-weight: bold;
+        filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#a6ebebeb', endColorstr='#00ebebeb',GradientType=0 ); /* IE6-9 */
+    }
+
+
+
+.alpha-data-label {
+    font-size: 0.8rem;
+    font-style: italic;
+}
+
+.alpha-address-item .date-info {
+    margin: 2px 0 2px;
+    font-size: 0.9rem;
+    padding-right: 0;
+    font-style: normal;
+    font-weight: bold;
+    padding-bottom: 5px;
+    display: block;
+}
+
+
+.alpha-address-item .alpha-address-status {
+    font-size: 0.9rem;
+    font-weight: bold;
+    /* margin-bottom: 10px; */
+    /* Permalink - use to edit and share this gradient: http://colorzilla.com/gradient-editor/#ebebeb+0,ebebeb+100&0.65+0,0+100 */
+    background: -moz-linear-gradient(top, rgba(235,235,235,0.65) 0%, rgba(235,235,235,0) 100%); /* FF3.6-15 */
+    background: -webkit-linear-gradient(top, rgba(235,235,235,0.65) 0%,rgba(235,235,235,0) 100%); /* Chrome10-25,Safari5.1-6 */
+    background: linear-gradient(to bottom, rgba(235,235,235,0.65) 0%,rgba(235,235,235,0) 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#a6ebebeb', endColorstr='#00ebebeb',GradientType=0 ); /* IE6-9 */
+    
+    border-bottom:2px solid rgba(0,0,0,0.2);
+    padding-bottom:7px;
+
+}
+
+    .alpha-address-item .alpha-address-status:after {
+        font-size: 1rem;
+        top: -1px;
+    }
+
+
+    .alpha-address-item .alpha-address-status:before {
+        font-size: 1.2rem;
+        top: -1px;
+        margin-right: 0.2rem;
+    }
+
+.alpha-address-item.previous-address .alpha-address-status {
+    color: #999;
+}
+
+    .alpha-address-item.previous-address .alpha-address-status:after {
+        content: "";
+    }
+
+    .alpha-address-item.previous-address .alpha-address-status:before {
+        top: -3px;
+    }
+
+
+.alpha-address-item.active {
+    border: 3px solid #49A94F;
+}
+
+.alpha-address-item.gone-away {
+    border: 3px solid #d9534f;
+}
+
+    .alpha-address-item.gone-away .alpha-address-details {
+        /* display: none; */
+        overflow: hidden;
+    }
+
+
+span.alpha-count-capsule {
+    border: 2px solid rgba(255, 255, 255, 0.6);
+    color: #dee0e8;
+    background-color: #fff;
+    background-color: #333333;
+    opacity: 0.9;
+    width: auto;
+    display: block;
+    position: absolute;
+    z-index: 1;
+    top: 1px;
+    right: 1px;
+    font-size: 0.8rem;
+    border-radius: 56px;
+    padding: 0.3rem 0.6rem 0.4rem;
+    line-height: 1;
+    transform: scale(0.9);
+}
+
+.alpha-deck-controls span.alpha-count-capsule{
+
+    display:block;
+    transform: scale(1);
+    padding: 0.3rem 0.8rem 0.5rem;
+    margin-top:0.2rem;
+    margin-left:0.5rem;
+    position:static;
+    overflow:hidden;
+    float:left;
+
+}
+
+.alpha-deck-controls .paging-btns{
+ overflow:hidden;
+    float:left;
+
+}
+
+span.alpha-count-break {
+    font-size: 0.8rem;
+    font-style: italic;
+    padding: 0 5px 0 2px;
+    color: rgb(249, 249, 249);
+    letter-spacing: 1px;
+}
+
+span.alpha-count-current-item {
+    padding: 0;
+    font-size: 1rem;
+    /* line-height:0.5; */
+    font-weight: bold;
+}
+
+span.alpha-count-total-items {
+    padding: 0;
+    color: rgb(255, 255, 255);
+    font-size: 1rem;
+    font-weight: bold;
+}
+
+alpha-client-components .form-group {
+    margin-bottom: 0.5rem;
+}
+
+
+/* Alpha Sliding UI UNIT Deck */
+
+ul.alpha-sliding-deck {
+    /*
+    background-color:#e3e1e1;
+    border-bottom: 1px solid #ccc;
+    */
+    border-radius: 6px;
+    width: 330px;
+    position: relative;
+    height: 285px;
+    border-bottom: 1px solid #ccc;
+}
+
+li.alpha-unit-card {
+    position: absolute;
+    display: block;
+    top: 30px;
+    opacity: 0;
+    left: 0;
+    height: auto;
+    z-index: 1;
+    transition: all 0.55s ease-in-out;
+}
+
+    /* CSS BASED POSITION TO RUN OF CLASSES */
+
+    li.alpha-unit-card.current-card {
+        left: 0;
+        z-index: 5;
+        opacity: 1;
+    }
+
+
+        li.alpha-unit-card.current-card + li {
+            left: 35px;
+            transform: scale(0.9);
+            opacity: 1;
+            z-index: 4;
+        }
+
+            li.alpha-unit-card.current-card + li + li {
+                left: 65px;
+                transform: scale(0.8);
+                opacity: 1;
+                z-index: 3;
+            }
+
+                li.alpha-unit-card.current-card + li + li + li {
+                    left: 93px;
+                    transform: scale(0.7);
+                    opacity: 0.7;
+                    z-index: 2;
+                }
+
+                    li.alpha-unit-card.current-card + li + li + li + li {
+                        transform: scale(0.6);
+                        left: 117px;
+                        opacity: 0.3;
+                        z-index: 1;
+                    }
+
+
+    li.alpha-unit-card.previous-card,
+    li.alpha-unit-card.current-card + li.previous-card
+     {
+        left: -350px;
+        z-index: 6;
+        opacity: 0;
+        transform: scale(1.5);
+    }
+
+
+li.alpha-deck-controls {
+    height: 40px;
+    display: block;
+}
+
+
+/* UPDATED MARKUP */
+
+li.alpha-deck-controls {
+    height: 35px;
+    display: block;
+}
+
+
+.card-detail-block {
+    box-sizing:border-box;
+
+    
+}
+
+.layout-50pc {
+    width:calc(50%);
+    float:left;
+    overflow:hidden;
+
+}
+
+.layout-50pc + .layout-50pc + div:not(.layout-50pc){
+    clear:left;
+
+}
+
+.card-item{
+    display:block;
+    padding:5px;
+}
+
+
+.card-detail-block,
+.card-header-block{
+    padding:5px;
+    position:relative;
+    
+}
+
+.card-header-block{
+    border-bottom:1px solid #ccc;
+    background-color:#e4e5eb;
+    border-radius:4px 4px 0 0;
+    border-bottom:2px solid #cccccc;
+
+}
+
+.card-detail-block .card-detail-label {
+  
+  display:block;
+
+}
+
+.card-detail-block .card-detail-value {
+    display:block;
+}
+
+/* Spacing Enhancements*/
+
+.no-padding{
+    padding:0 ;
+}
+
+.no-padding-top {
+    padding-top: 0;
+}
+
+.no-padding-bottom {
+    padding-bottom: 0;
+}
+
+.no-padding-left {
+    padding-left: 0;
+}
+
+.no-padding-right {
+    padding-right: 0;
+}
+
+.padding-left-10{
+    padding-left:10px !important;
+
+}
+
+.padding-left-15{
+    padding-left:15px !important;
+
+}
+
+.padding-right-10{
+    padding-right:10px !important;
+    
+}
+
+.padding-right-15{
+    padding-right:15px !important;
+    
+}
+
+
+/*Text Enhancements */
+
+.text-weight-bold{
+
+    font-weight:bold;
+}
+
+.text-weight-normal{
+
+    font-weight:normal;
+}
+
+
+.text-style-italic{
+    font-style:italic;
+}
+
+.text-size-l{
+    font-size:1.2rem;
+}
+
+.text-size-m{
+    font-size:0.9rem;
+}
+
+.text-size-s{
+    font-size:0.8rem;
+}
+
+

@@ -1,0 +1,188 @@
+<dialog #dialogRef
+        class="alp-order-popover"
+        (cancel)="onDialogCancel()"
+        aria-labelledby="order-popover-title">
+
+  <div class="alp-builder-modal__header">
+    <div>
+      <h3 class="alp-builder-modal__title" id="order-popover-title">{{ dialogTitle() }}</h3>
+      <p class="alp-order-popover__hint">
+        Choose a new position, then confirm.
+      </p>
+    </div>
+    <button type="button"
+            class="alp-builder-modal__close"
+            (click)="onCancel()"
+            title="Close"
+            aria-label="Close">
+      <i class="fas fa-times"></i>
+    </button>
+  </div>
+
+  <div class="alp-order-popover__body">
+    <div class="alp-order-popover__canvas">
+
+      <!-- Shared mini step-card template -->
+      <ng-template #stepCardTemplate
+                   let-step="step"
+                   let-index="index"
+                   let-showRenumber="showRenumber"
+                   let-suppressSource="suppressSource"
+                   let-renumberTo="renumberTo">
+        <div class="alp-order-card"
+             [class.alp-order-card--source]="isSource(index) && !suppressSource">
+          <div class="alp-order-card__header">
+            <div class="alp-order-card__step-line">
+              @if (showRenumberMapping(index, renumberTo, showRenumber)) {
+                <span class="alp-order-card__renumber-group">
+                  <span class="alp-order-card__step-label alp-order-card__step-label--original">
+                    Step {{ currentNumber(index) }}
+                  </span>
+                  <i class="fas fa-chevron-right alp-order-card__renumber-arrow" aria-hidden="true"></i>
+                  <span class="alp-order-card__step-label">
+                    Step {{ displayNumber(index, renumberTo, showRenumber) }}
+                  </span>
+                </span>
+              } @else {
+                <span class="alp-order-card__step-label">
+                  Step {{ displayNumber(index, renumberTo, showRenumber) }}
+                </span>
+              }
+              @if (showRenumber) {
+                <span class="alp-order-card__tag">Order changed</span>
+              }
+            </div>
+          </div>
+          <div class="alp-order-card__types">
+            @for (info of contentTypeInfos(step); track $index) {
+              <div class="alp-order-card__type-row">
+                <span class="alp-order-card__type" [attr.data-type]="info.type.toLowerCase()">{{ info.type }}</span>
+                <span class="alp-order-card__meta">{{ info.meta }}</span>
+                @if (info.hasDependency) {
+                  <span class="alp-order-card__dependency" aria-label="Has dependency">
+                    <i class="fas fa-link"></i>
+                  </span>
+                }
+              </div>
+            } @empty {
+              <span class="alp-order-card__empty">No content</span>
+            }
+          </div>
+        </div>
+      </ng-template>
+
+      @if (showBeforeFirst()) {
+        <div class="alp-order-connector"
+             [class.alp-order-connector--expanded]="isSelectedBeforeFirst()">
+          <div class="alp-order-connector__line"></div>
+          @if (isSelectedBeforeFirst()) {
+            <div class="alp-order-placeholder alp-order-placeholder--nested">
+              <ng-container *ngTemplateOutlet="stepCardTemplate; context: {
+                step: steps[sourceIndex],
+                index: sourceIndex,
+                showRenumber: true,
+                suppressSource: true,
+                renumberTo: targetStepNumber()
+              }"></ng-container>
+              <button type="button"
+                      class="alp-btn alp-btn--secondary alp-order-undo-btn"
+                      (click)="clearTarget()">
+                <i class="fas fa-undo" aria-hidden="true"></i>
+                {{ undoButtonText() }}
+              </button>
+            </div>
+          } @else {
+            <button type="button"
+                    class="alp-btn alp-btn--outline alp-order-move-btn"
+                    [title]="moveButtonText()"
+                    (click)="toggleBeforeFirst()">
+              <i class="fas fa-arrow-right" aria-hidden="true"></i>
+              {{ moveButtonText() }}
+              <i class="fas fa-arrow-left" aria-hidden="true"></i>
+            </button>
+          }
+          <div class="alp-order-connector__line"></div>
+        </div>
+      }
+
+      @for (step of steps; track step.id; let i = $index; let last = $last) {
+        @if (isMoveMode() && isSource(i) && pendingTarget()) {
+          <!-- Gray placeholder at the original location when moving -->
+          <div class="alp-order-moved-from">
+            You have moved this step.
+          </div>
+        } @else if (isCopyMode() && isSource(i)) {
+          <!-- Gray placeholder around the source when copying -->
+          <div class="alp-order-copy-source">
+            <ng-container *ngTemplateOutlet="stepCardTemplate; context: {
+              step: step,
+              index: i,
+              showRenumber: willRenumber(i),
+              suppressSource: false,
+              renumberTo: null
+            }"></ng-container>
+            <span class="alp-order-copy-source__label">You are copying this step.</span>
+          </div>
+        } @else {
+          <ng-container *ngTemplateOutlet="stepCardTemplate; context: {
+            step: step,
+            index: i,
+            showRenumber: willRenumber(i),
+            suppressSource: false,
+            renumberTo: null
+          }"></ng-container>
+        }
+
+        @if (showAfter(i)) {
+          <div class="alp-order-connector"
+               [class.alp-order-connector--expanded]="isSelectedAfter(i)">
+            <div class="alp-order-connector__line"></div>
+            @if (isSelectedAfter(i)) {
+              <div class="alp-order-placeholder alp-order-placeholder--nested">
+                <ng-container *ngTemplateOutlet="stepCardTemplate; context: {
+                  step: steps[sourceIndex],
+                  index: sourceIndex,
+                  showRenumber: true,
+                  suppressSource: true,
+                  renumberTo: targetStepNumber()
+                }"></ng-container>
+                <button type="button"
+                        class="alp-btn alp-btn--secondary alp-order-undo-btn"
+                        (click)="clearTarget()">
+                  <i class="fas fa-undo" aria-hidden="true"></i>
+                  {{ undoButtonText() }}
+                </button>
+              </div>
+            } @else {
+              <button type="button"
+                      class="alp-btn alp-btn--outline alp-order-move-btn"
+                      [title]="moveButtonText()"
+                      (click)="toggleAfter(i)">
+                <i class="fas fa-arrow-right" aria-hidden="true"></i>
+                {{ moveButtonText() }}
+                <i class="fas fa-arrow-left" aria-hidden="true"></i>
+              </button>
+            }
+            <div class="alp-order-connector__line"></div>
+          </div>
+        } @else if (!last) {
+          <div class="alp-order-connector alp-order-connector--passive">
+            <div class="alp-order-connector__line"></div>
+          </div>
+        }
+      }
+    </div>
+  </div>
+
+  <div class="alp-order-popover__footer">
+    <button type="button" class="alp-btn alp-btn--outline" (click)="onCancel()">
+      Cancel
+    </button>
+    <button type="button"
+            class="alp-btn alp-btn--primary"
+            [disabled]="!canConfirm()"
+            (click)="onConfirmClick()">
+      {{ confirmButtonText() }}
+    </button>
+  </div>
+</dialog>

@@ -1,0 +1,160 @@
+p.info-text {
+
+    font-weight:normal;
+    margin-bottom:3px;
+    color:#222;
+}
+
+/* Notification Blocks */
+
+.notification-block{
+    position:relative;
+    padding:10px;
+    /* box-shadow: 0px 5px 10px -4px rgba(0, 0, 0, 0.3); */
+    border: 1px solid rgb(227, 225, 225);
+    border-left: 6px solid rgb(227, 225, 225);
+    border-radius: 4px;
+    background-color: rgba(236, 234, 234,0);
+    margin-bottom:10px;
+}
+
+.notification-message {
+    padding-right: 35px;
+
+}
+
+.notification-message:after {
+    font-family:"FontAwesome";
+    position:absolute;
+    right:0;
+    top:0;
+    font-size: 1.8rem;
+    display:flex;
+    flex:1;
+    height: 100%;
+    width: 40px;
+    align-items: center;
+    justify-content: center;
+}
+
+.notification-message p {
+    font-weight:bold;
+    color:#222222;
+}
+
+/* Notification Blocks/ Status Styles */
+
+/* Success State */
+
+.notification-block.status-success {
+    border-color:rgb(92, 184, 92);
+    background-color: rgba(92, 184, 92, 0.1);
+    
+}
+
+.notification-block.status-success p{
+    color:#089508;
+}
+
+.notification-block.status-success .notification-message:after {
+    color:#089508;
+    content:"\f00c";
+}
+
+/* Status: Info */
+
+.notification-block.status-info {
+    border-color:rgba(24,110,204,1);
+    background-color: rgba(92, 184, 92, 0);
+}
+
+.notification-block.status-info p{
+    color:#222;
+}
+
+.notification-block.status-info .notification-message:after {
+    color:rgba(24,110,204,1);
+    content:"";
+}
+
+/* Status: Secruity */
+
+.notification-block.status-secruity {
+    border-color:rgb(139, 141, 158);
+    background-color: rgb(236, 234, 234);
+}
+
+.notification-block.status-secruity p{
+    color:#2f2e2e;
+}
+
+.notification-block.status-secruity .notification-message:after {
+    color:rgb(139, 141, 158);
+    content:"\f023 ";
+}
+
+
+/* Status: Error  */
+
+.notification-block.status-error {
+    border-color:rgb(241, 74, 74);
+    background-color: #fff;
+}
+
+
+.notification-block.status-error p{
+    color:rgb(241, 74, 74);
+}
+
+.notification-block.status-error .notification-message:after {
+    color:rgb(241, 74, 74);
+    content:"\f00d";
+}
+
+
+/* Warning State */
+
+.notification-block.status-warning {
+    border-color:rgb(230, 138, 0);
+    background-color: rgb(251, 251, 225);
+}
+
+.notification-block.status-warning p{
+    color:rgb(230, 138, 0);
+}
+
+.notification-block.status-warning .notification-message:after {
+    color:rgb(230, 138, 0);
+    content:"\f071";
+}
+
+
+/* Note Message */
+
+.notification-block.status-note {
+
+    border:1px solid rgb(247, 222, 35);
+    border-top:6px solid rgb(247, 222, 35);
+    background-color:#fefced;
+    position:relative;
+}
+
+.notification-block.status-note p{
+    line-height: 1.3;
+    font-size: 1rem;
+    color: rgba(0,0,0,0.6);
+}
+
+.notification-block.status-note:after{
+    content:" ";
+    border-top:0px solid rgba(0, 0, 0, 0.1);
+    position:absolute;
+    width:100%;
+    height:100%;
+    top:0;
+    left:0;
+}
+
+.notification-block.status-note .notification-message{
+    padding-right:10px
+}

@@ -1,0 +1,43 @@
+/* -----------------------                      --- */
+/* COMPONENT: BUTTONS (ALPHA) DATA SPECIFIC         */
+/* -----------------------                      --- */
+
+
+.alpha-btn {
+    background-color: rgba(60,73,129,1);
+    color: rgba(255,255,255,1);
+    border: 2px solid rgba(255, 255, 255,0.3);
+    display: inline-block;
+    font-weight: normal;
+    line-height: 1.25;
+    text-align: center;
+    white-space: nowrap;
+    vertical-align: middle;
+    cursor: pointer;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    -moz-appearance:button;
+    -webkit-appearance:button;
+    border: 1px solid transparent;
+    padding: 0.5rem 1rem;
+    font-size: 1rem;
+    border-radius: 3px;
+    transition: all 0.5s, ease-in-out;
+    transform: scale(1);
+}
+
+.alpha-btn:hover{
+    background-color: rgba(60,73,129,1);
+    transition: all 0.15s ease-in-out;
+    transform: scale(1.03);
+}
+
+.alpha-btn:disabled,
+.alpha-btn:disabled:hover {
+    background-color: rgba(60,73,129,1);
+    color: rgba(255,255,255,1);
+    border: 2px solid rgba(255, 255, 255,0.3);
+    pointer-events:none;
+}

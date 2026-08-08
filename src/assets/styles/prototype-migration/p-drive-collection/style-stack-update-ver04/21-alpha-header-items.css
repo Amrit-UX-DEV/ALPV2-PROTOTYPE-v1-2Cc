@@ -1,0 +1,277 @@
+
+/* EXTENDED HEADER MENU */
+ul.alpha-user-option-items.has-menu:hover {
+  background-color: #333; }
+
+ul.alpha-user-option-items.has-menu:hover .alpha-header-extended-menu {
+  display: block; }
+
+ul.alpha-header-extended-menu {
+  position: absolute;
+  top: calc(100% - 2px);
+  background-color: var(--nav-app-exp-bg-color);
+  font-size: 1rem;
+  width: 260px;
+  padding: 0.5rem 1rem 0;
+  border-radius: 3px 0 3px 3px;
+  display: none;
+  }
+
+ul.menu-right {
+  right: 0; }
+
+li.menu-option {
+  text-align: left;
+  display: block;
+  overflow: hidden;
+  margin-bottom: 15px; }
+
+li.menu-option:first-child {
+  padding-top: 0.5rem; }
+
+.option-label {
+  font-size: 0.8rem;
+  font-style: italic;
+  display: block; }
+
+.option-data {
+  padding: 0.1rem;
+  font-weight: bold;
+  display: block; }
+
+.menu-button-group {
+  width: 100%;
+  overflow: hidden;
+  float: right; }
+
+button.alpha-btn.btn-icon-logout {
+  float: right; }
+
+button:hover {
+  background-color: var(--branding-button-hover-color); }
+
+.option-group {
+  border-bottom: 1px solid rgba(255, 255, 255, 0.3);
+  width: 100%;
+  overflow: hidden;
+  padding-bottom: 0.4rem; }
+
+.option-group [class*="group"] {
+  float: left; }
+
+.group-1 {
+  width: 100%; }
+
+.group-items-2 .group-1,
+.group-items-2 .group-2 {
+  width: 50%; }
+
+.group-items-3 .group-1,
+.group-items-3 .group-2,
+.group-items-3 .group-3 {
+  width: 33.3%; }
+
+ul.alpha-user-option-items li {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: horizontal;
+  -webkit-box-direction: normal;
+  -ms-flex-direction: row;
+  flex-direction: row;
+  justify-content: center;
+  }
+
+.current-user-name {
+  font-size: 1.1rem;
+  margin-right: 0.7rem;
+  position: relative;
+  margin-top: 7px;
+  font-weight: bold; }
+
+.current-user-name:before {
+  content: "Welcome";
+  position: absolute;
+  font-size: 11.2px;
+  font-size: 0.7rem;
+  font-style: italic;
+  bottom: 100%;
+  width: 100%;
+  text-align: right;
+  font-weight: normal;
+  color: rgba(255, 255, 255, 0.5); }
+
+
+
+.alpha-header {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-flex: 1;
+  -ms-flex: 1;
+  flex: 1; }
+
+.alpha-header-item-group-left {
+  -ms-flex-preferred-size: 33.3%;
+  flex-basis: 33.3%;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex; }
+
+.alpha-header-item-group-center {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -ms-flex-preferred-size: 33.3%;
+  flex-basis: 33.3%;
+  -webkit-box-pack: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  position: relative; }
+
+.alpha-header-item-group-center .alpha-branding-logo {
+  height: 100%;
+  padding: 0.7rem;
+  text-align: center;
+  position: absolute;
+  width: 100%;
+  top: 0;
+  left: 0; }
+
+.alpha-header-item-group-center .alpha-branding-logo img {
+  height: 100%; }
+
+.alpha-header-item-group-right {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -ms-flex-preferred-size: 33.3%;
+  flex-basis: 33.3%;
+  -webkit-box-pack: end;
+  -ms-flex-pack: end;
+  justify-content: flex-end; }
+
+.alpha-header-item {
+  min-width: 4.6153rem;
+  font-size: 1.9230rem;
+  cursor: pointer;
+  padding: 0.9rem 1.2rem;
+  text-align: center;
+  color: var(--nav-app-exp-item-color);
+  position: relative;
+  z-index: 999;
+  display: block;
+  line-height:1.1;
+  }
+
+.alpha-header-item span {
+  display: none;
+  pointer-events: none; }
+
+header input[type="checkbox"] {
+  display: none;
+  }
+
+/* Alpha-toolbar-toggle */
+.alpha-header-item input[type="checkbox"] + i {
+  -webkit-transform-origin: center center;
+  transform-origin: center center;
+  position: absolute; }
+
+i.menu-icon,
+i.menu-close-icon {
+  top: 1.45rem; }
+
+.alpha-header-item input[type="checkbox"] + i.menu-icon {
+  -webkit-animation: scaleOut 230ms ease-in-out forwards;
+  animation: scaleOut 230ms ease-in-out forwards; }
+
+.alpha-header-item input[type="checkbox"] + i.menu-icon + i.menu-close-icon {
+  -webkit-animation: scaleIn 230ms ease-in-out forwards;
+  animation: scaleIn 230ms ease-in-out forwards; }
+
+.alpha-header-item input[type="checkbox"]:checked + i.menu-icon {
+  -webkit-animation: scaleIn 230ms ease-in-out forwards;
+  animation: scaleIn 230ms ease-in-out forwards; }
+
+.alpha-header-item input[type="checkbox"]:checked + i.menu-icon + i.menu-close-icon {
+  -webkit-animation: scaleOut 230ms ease-in-out forwards;
+  animation: scaleOut 230ms ease-in-out forwards; 
+}
+
+.alpha-app-collection {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  position: relative; }
+
+ul.alpha-app-collection-items {
+  position: absolute;
+  background-color: rgba(0, 0, 0, 0.8);
+  top: 100%;
+  right: 0;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -ms-flex-pack: distribute;
+  justify-content: space-around;
+  -ms-flex-line-pack: center;
+  align-content: center;
+  -webkit-box-orient: horizontal;
+  -webkit-box-direction: normal;
+  -ms-flex-flow: row;
+  flex-flow: row;
+  border-radius: 3px;
+  padding: 10px;
+  z-index: 3;
+  display: none;
+  }
+
+li.alpha-app-item {
+  border: 1px solid rgba(255, 255, 255, 0.7);
+  width: 200px;
+  height: 120px;
+  border-radius: 3px;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -ms-flex-line-pack: center;
+  align-content: center;
+  margin: 5px; }
+
+.alpha-selected-app {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -ms-flex-line-pack: center;
+  align-content: center;
+  -webkit-box-pack: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+  -ms-flex-direction: column;
+  flex-direction: column; }
+
+.alpha-selected-app-label {
+  color: var(--nav-app-exp-item-color);
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -ms-flex-line-pack: center;
+  align-content: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center; }
+
+.alpha-selected-app-label:before {
+  font-family: FontAwesome;
+  content: "\F0D9";
+  font-size: 20.8px;
+  font-size: 1.3rem;
+  margin-right: 6.4px;
+  margin-right: 0.4rem; }
+
+.alpha-selected-app-label:after {
+  font-family: FontAwesome; }
+

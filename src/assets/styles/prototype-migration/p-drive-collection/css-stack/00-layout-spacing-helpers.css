@@ -1,0 +1,184 @@
+/* -----------------------                      --- */
+/* LAYOUT SPACING HELPERS                           */
+/* -----------------------                      --- */
+
+/* OVERFLOW */
+.overflow-scroll-y{
+    overflow-y:scroll;
+}
+
+.overflow-scroll-x{
+    overflow-x:scroll;
+}
+
+.overflow-scroll-auto{
+    overflow:auto;
+}
+
+.overflow-hide{
+    overflow:hidden;
+}
+
+/* OPACITY */
+
+.opacity-50pc{
+    opacity:0.5;
+}
+
+.opacity-100pc{
+    opacity:1;
+}
+
+/* FLOATS */
+
+.float-left{
+    float:left;
+}
+
+ .float-left + *:not(.float-left){
+    clear:left;
+}
+
+ .float-right{
+    float:right;
+}
+
+ .float-right + *:not(.float-right){
+    clear:right;
+}
+
+.detail-block{
+    display:block;
+}
+
+
+/* LAYOUT */
+
+.layout-15pc {
+    width:calc(15%);
+}
+
+.layout-25pc {
+    width:calc(25%);
+}
+
+.layout-35pc {
+    width:calc(35%);
+}
+
+.layout-50pc {
+    width:calc(50%);
+}
+
+.layout-65pc {
+    width:calc(65%);
+}
+
+.layout-75pc {
+    width:calc(75%);
+}
+
+.layout-100pc {
+    width:calc(100%);
+}
+
+
+/* PADDING Spacing Enhancements*/
+
+.no-padding{
+    padding:0 ;
+}
+
+.no-padding-top {
+    padding-top: 0;
+}
+
+.no-padding-bottom {
+    padding-bottom: 0;
+}
+
+.no-padding-left {
+    padding-left: 0;
+}
+
+.no-padding-right {
+    padding-right: 0;
+}
+
+.padding-left-10{
+    padding-left:10px !important;
+
+}
+
+.padding-left-15{
+    padding-left:15px !important;
+
+}
+
+.padding-right-10{
+    padding-right:10px !important;
+    
+}
+
+.padding-right-15{
+    padding-right:15px !important;
+}
+
+/* MARGIN Spacing Enhancements*/
+
+.no-margin{
+    margin:0 ;
+}
+
+.no-margin-top {
+    margin-top: 0;
+}
+
+.no-margin-bottom {
+    margin-bottom: 0;
+}
+
+.no-margin-left {
+    margin-left: 0;
+}
+
+.no-margin-right {
+    margin-right: 0;
+}
+
+.margin-left-10{
+    margin-left:10px !important;
+
+}
+
+.margin-left-15{
+    margin-left:15px !important;
+
+}
+
+.margin-top-10{
+    margin-top:10px !important;
+    
+}
+.margin-top-15{
+    margin-top:15px !important;
+    
+}
+
+.margin-bottom-10{
+    margin-bottom:10px !important;
+    
+}
+.margin-bottom-15{
+    margin-bottom:15px !important;
+    
+}
+
+.margin-right-10{
+    margin-right:10px !important;
+    
+}
+.margin-right-15{
+    margin-right:15px !important;
+    
+}

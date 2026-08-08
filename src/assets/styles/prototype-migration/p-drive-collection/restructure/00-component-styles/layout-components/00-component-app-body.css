@@ -1,0 +1,7 @@
+/* -----------------------                      --- */
+/* COMPONENT: APP BODY                              */
+/* -----------------------                      --- */
+.app-body{
+    flex:1;
+    background-color:var(--theme-main--background);
+}

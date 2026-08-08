@@ -1,0 +1,54 @@
+/* -----------------------                      --- */
+/* COMPONENT: LANDMARK BREADCRUMBS                  */
+/* -----------------------                      --- */
+
+.app-navigation--breadcrumbs {
+    padding-bottom: 5px;
+    padding: 5px 15px 0px 10px;
+}
+
+    .app-navigation--breadcrumbs li {
+        display: inline-block;
+        position: relative;
+        padding-left: 5px;
+        color: rgb(24,110,204);
+        color: #b5d0ee;
+    }
+
+        .app-navigation--breadcrumbs li:before {
+            font-family: "FontAwesome";
+            content: "|";
+            font-size: 20px;
+            position: absolute;
+            top: calc(50% - 12.5px);
+            left: 0px;
+            color: rgba(0,0,0,0.7);
+            color: rgba(255,255,255,0.9);
+        }
+
+    .app-navigation--breadcrumbs a {
+        padding: 5px;
+        display: block;
+        font-weight: bold;
+        cursor: pointer;
+        color: inherit;
+        transition: all 0.15s ease-in-out;
+        text-decoration: underline !important;
+        font-size: 11px;
+    }
+
+        .app-navigation--breadcrumbs a:hover,
+        .app-navigation--breadcrumbs a:active {
+            transform: scaleY(1.05);
+            transform: scaleX(1.05);
+            background-color: rgba(255,255,255,0.09);
+            border-radius: 4px;
+        }
+
+    .app-navigation--breadcrumbs li:first-child {
+        padding-left: 0;
+    }
+
+        .app-navigation--breadcrumbs li:first-child:before {
+            display: none;
+        }

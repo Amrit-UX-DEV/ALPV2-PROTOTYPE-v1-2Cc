@@ -1,0 +1,104 @@
+/* Add application styles & imports to this file! */
+@import url('https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css');
+@import 'assets/styles/boostrap-reboot.css';
+@import "assets/styles/legacy-v2-global-repair.css";
+@import "assets/styles/alp-css-refactor/_index.css";
+
+:root {
+  --alpha-toolbar-brand-logo: url(/Images/Reassure-logo-77.png);
+  --alpha-landing-watermark: url(/Images/reassure-wm.png);
+  --alpha-landing-watermark-background-size: contain;
+  --brand-primary: #3c4981;
+  --brand-primary-mild: #3c4981;
+  --brand-secondary: #b5d0ee;
+  --brand-secondary-mild: #3c4981;
+  --brand-border-primary: #ffc100;
+  --brand-border-secondary: #b5d0ee;
+  --brand-border-active: #b5d0ee;
+  --brand-text-primary: #ffffff;
+  --brand-text-secondary: #b5d0ee;
+
+  --brand-border-tertiary: rgb(179, 206, 236);
+  --brand-border-context: rgba(255, 255, 255, 0.2);
+  --brand-aviva-bg-1: rgb(99, 109, 154);
+
+  --brand-gradient: linear-gradient(-45deg, rgb(21, 23, 34) 0%, rgb(72, 79, 112) 71%, rgb(4, 24, 44) 100%);
+}
+
+:root {
+  --alpha-toolbar-brand-logo: url('/Images/Reassure-logo-77.png');
+  --branding-bg-color: rgba(var(--branding-bg-color-value), 1);
+  --alpha-landing-watermark: url('/Images/reassure-wm.png');
+  --brand-primary: #3c4981;
+  --brand-secondary: #b5d0ee;
+  --brand-secondary-mild: #3c4981;
+  --brand-border-primary: #ffc100;
+  --brand-border-secondary: #b5d0ee;
+  --brand-border-active: #b5d0ee;
+  --brand-text-primary: #ffffff;
+  --brand-text-secondary: #b5d0ee;
+  --brand-border-tertiary: rgb(179, 206, 236);
+  --brand-aviva-bg-1: rgb(99, 109, 154);
+  --branding-button-color: #49a94f;
+  --branding-button-hover-color: #377737;
+  --selected-element-color: 133, 178, 226;
+  --main-bg-color: rgba(255, 255, 255, 0.5);
+  --top-rail-height: 0;
+  --app-header-items-height: 4.8rem;
+  --app-header-height: calc(var(--app-header-items-height));
+  --nav-main-bg-color: rgba(0, 0, 0, 1);
+  --nav-sub-height: 4.61531rem;
+  --nav-sub-bg-color: rgba(244, 244, 244, 1);
+  --nav-app-exp-bg-color: rgba(0, 0, 0, 0.8);
+  --nav-app-exp--standard-width: 17.3076rem;
+  --nav-app-exp-item-nesting-left-space: 1.0769rem;
+  --nav-app-exp-item-core-color: 255, 255, 255;
+  --nav-app-exp-item-text-shadow-color: 0, 0, 0, 0.5;
+  --nav-app-exp-item-hover-bg: rgba(var(--nav-app-exp-item-core-color), 0.1);
+  --nav-app-exp-item-selected-bg: rgba(var(--nav-app-exp-item-core-color), 0.3);
+  --nav-app-exp-item-selected-bg: rgba(118, 133, 199, 0.3);
+  --nav-app-exp-item-color: rgba(var(--nav-app-exp-item-core-color), 0.8);
+  --nav-app-exp-item-color-hover: rgba(var(--nav-app-exp-item-core-color), 1);
+  --nav-app-exp-item-text-shadow: 1px 1px 2px rgba(var(--nav-app-exp-item-text-shadow-color));
+  --nav-app-exp-item-color-disabled: rgba(var(--nav-app-exp-item-core-color), 0.4);
+  --nav-app-exp-item-border: 4px solid rgba(var(--selected-element-color), 0.8);
+  --nav-app-exp-item-tether-border: 1px dashed rgba(var(--nav-app-exp-item-core-color), 0.2);
+  --no-data-border: 4px double rgba(var(--nav-app-exp-item-core-color), 0.4);
+  --context-bar-height: 4.6153rem;
+  --context-bar-bg-color: rgba(244, 244, 244, 0.9);
+}
+
+html,
+body {
+  height: 100%;
+  box-sizing: border-box;
+}
+.card {
+  border: none;
+}
+.card-header {
+  border: none;
+  background: none;
+  font-weight: 600;
+  margin-bottom: 0.5rem;
+  font-size: 1.4rem;
+  color: rgba(60, 73, 129, 1);
+}
+.card-block {
+  border: none;
+}
+
+.ag-cell-combo {
+  width: 96%;
+}
+
+.policyGrid,
+.newPolicyNote {
+  height: 300px;
+  min-height: 300px;
+  margin-bottom: 7px;
+}
+
+.cell-wrap-text {
+  white-space: normal !important;
+}

@@ -1,0 +1,155 @@
+<section>
+<div class="card caller-details-card">
+  <div class="card-header">Caller Details</div>
+  <div class="card-block">
+
+    <!-- ==================== BEFORE STATE ==================== -->
+    <div *ngIf="!hasSelectedCaller()">
+      <div class="ui-correspondence-creation-set-up ux-example-01">
+        <div class="ui-work-items caller-selection-row"></div>
+        <div class="ui-work-items" style="width: 100%; display: flex; align-items: center; justify-content: center;">
+          <div class="alp-tile multi-action-tile tile--default tile--size-w-lrg ui-work-item-tile" style="margin-top: 0;">
+            <div class="action-container">
+              <button type="button" class="action--single content--center alp-tile__select-caller"
+                      (click)="openCallerDialog()">
+                <span class="tile--icon-col">
+                  <i class="fas fa-address-book" style="font-size: 32px;"></i>
+                </span>
+                <span class="tile--content-col">
+                  <span class="tile--data tile--spacer" style="margin-top: 7px; margin-left: 5px;">
+                    <strong>Select Who is Calling</strong>
+                  </span>
+                </span>
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <div class="row hide-from-tile" hidden>
+          <div class="col">
+            <div class="form-group form-content-center flex-content">
+              <button class="ui-btn" style="width: 17%;">Bailout <i class="fas fa-exclamation-triangle"></i></button>
+              <button class="ui-btn fill-space" disabled>Done <i class="fas fa-check"></i></button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ==================== AFTER STATE ==================== -->
+    <div *ngIf="hasSelectedCaller()">
+      <div class="ui-correspondence-creation-set-up ux-example-01">
+        <div class="ui-work-items caller-selection-row">
+          <div class="multi-action-tile tile--default tile--size-w-med">
+            <div class="action-container">
+
+              <button type="button" client-id="ux02" policy-client-link="uxMrJoeBloggs" class="action state--ui-active"><span class="tile--data-strong"><i aria-hidden="true" class="fa fa-male"></i><span class="tile--role-type"> Individual</span></span><span class="tile--data tile--spacer"> Mr Joe Bloggs</span><span class="tile--data-heading"> Date of Birth: </span><span class="tile--data-strong tile--spacer"> 13 Nov 1966 (55) </span><span class="tile--data-heading"> National Insurance: </span><span class="tile--data-strong tile--spacer"> RM439286P </span><span class="ui-data-indicator ui-status active" style="display: none;">Active</span><div class="ui-tile-address-block"><span class="tile--address-details correspondence ux-hide"><span class="tile--data-strong tile--spacer"><i aria-hidden="true" class="fa fa-home"></i><span class="tile--address-status"><i aria-hidden="true" class="fa fa-check"></i> Correspondence </span></span><span data-toggle="tooltip" title="4 Tejpl Zgbgw" class="tile--data-strong">84 Greenview Ave</span><span data-toggle="tooltip" title=" Tvdza" class="tile--data-strong">Brooklyn</span><span data-toggle="tooltip" title=" TL67 8RL" class="tile--data-strong"> NY 11225</span><span data-toggle="tooltip" title=" United Kingdom" class="tile--data-strong"> United States</span><span data-toggle="tooltip" title=" Overseas" class="ui-data-indicator overseas"><i class="fas fa-globe"></i>Overseas</span><span class="ui-tile-coa--mail-here"><span class="text"><strong>Documents are posted here.</strong></span><span class="icon"><i aria-hidden="true" class="fa fa-envelope"></i></span></span><span class="ui-tile-coa--pay-here" style="display: none;"><span class="text">Payments are disbursed here.</span><span class="icon"><i aria-hidden="true" class="fa fa-credit-card-alt"></i></span></span></span><span class="tile--address-details margin-bottom-0"><span class="tile--data-strong tile--spacer"><i aria-hidden="true" class="fa fa-home"></i><span class="tile--address-status"><i aria-hidden="true" class="fa fa-check"></i> Permanent </span></span><span data-toggle="tooltip" title="4 Tejpl Zgbgw" class="tile--data-strong">42 Chester Court</span><span data-toggle="tooltip" title=" Tvdza" class="tile--data-strong">Lorum Road</span><span data-toggle="tooltip" title=" Dnjzaw" class="tile--data-strong">Ipsum</span><span data-toggle="tooltip" title=" TL67 8RL" class="tile--data-strong"> TL67 8RL</span><span data-toggle="tooltip" title=" United Kingdom" class="tile--data-strong"> United Kingdom</span><span class="ui-tile-coa--mail-here ux-hide"><span class="text"><strong>Documents are posted here.</strong></span><span class="icon"><i aria-hidden="true" class="fa fa-envelope"></i></span></span><span class="ui-tile-coa--pay-here" style="display: none;"><span class="text">Payments are disbursed here.</span><span class="icon"><i aria-hidden="true" class="fa fa-credit-card-alt"></i></span></span></span></div><div class="ui-tile-address-block ux-hide"><span class="tile--address-details"><span class="tile--data-strong tile--spacer"><i aria-hidden="true" class="fa fa-home"></i><span class="tile--address-status"><i aria-hidden="true" class="fa fa-check"></i> Permanent </span></span><span data-toggle="tooltip" title="4 Tejpl Zgbgw" class="tile--data-strong">42 Chester Court</span><span data-toggle="tooltip" title=" Tvdza" class="tile--data-strong">Lorum Road</span><span data-toggle="tooltip" title=" Dnjzaw" class="tile--data-strong">Ipsum</span><span data-toggle="tooltip" title=" TL67 8RL" class="tile--data-strong"> TL67 8RL</span><span data-toggle="tooltip" title=" United Kingdom" class="tile--data-strong"> United Kingdom</span><span class="ui-tile-coa--mail-here"><span class="text"><strong>Documents are posted here.</strong></span><span class="icon"><i aria-hidden="true" class="fa fa-envelope"></i></span></span><span class="ui-tile-coa--pay-here" style="display: none;"><span class="text">Payments are disbursed here.</span><span class="icon"><i aria-hidden="true" class="fa fa-credit-card-alt"></i></span></span></span></div></button>
+              <button class="action" (click)="clearSelection()">
+                
+                <div class="margin-bottom-10 margin-top-10">
+                  <strong><i class="fas fa-user-edit"></i> Edit Selection</strong>
+                </div>
+              </button>
+            </div>
+          </div>
+
+          <!-- Vulnerability Carousel (your exact markup) -->
+          <div class="vulnerability-carousel">
+            <div class="vulnerability-carousel-header">
+              <div class="ui-alpha-indicators">
+                <span class="indicator vulnerable">Extra Care Client</span>
+              </div>
+              <span class="vulnerability-counter">1 of 3</span>
+            </div>
+            <div class="vulnerability-carousel-content">
+              <button class="prev ui-btn ui-btn--dot" disabled><i class="fas fa-chevron-left"></i></button>
+              <div class="vulnerability-tile">
+                <div class="vulnerability-field"><span class="field-label">Type:</span><span class="field-value">Health- Hearing</span></div>
+                <div class="vulnerability-field"><span class="field-label">Notification:</span><span class="field-value">Phone</span></div>
+                <div class="vulnerability-field"><span class="field-label">Date:</span><span class="field-value">21 Aug 2025</span></div>
+                <div class="vulnerability-field"><span class="field-label">Helping Hand:</span><span class="field-value">Speak Slower / Louder</span></div>
+              </div>
+              <button class="ui-btn ui-btn--dot next"><i class="fas fa-chevron-right"></i></button>
+            </div>
+          </div>
+        </div>
+
+
+
+      </div>
+
+      <div class="form-group form-content-center flex-content" style="margin-top: 1rem;"><button data-cy="caller-details-bailout" class="ui-btn" style="width: 40%;"> Bailout <i aria-hidden="true" class="fas fa-exclamation-triangle"></i></button><button onclick="toggleAppStep('.ui-app-header-caller','.ui-app-header-dpa');" data-cy="caller-details-done" class="ui-btn fill-space"> Continue Call Journey <i aria-hidden="true" class="fas fa-check"></i></button></div>
+    </div>
+
+  </div>
+</div>
+</section>
+
+<!-- ==================== DIALOG (Exact markup you gave) ==================== -->
+<dialog #callerDialog style="width: 90%; max-width: 1100px; border: none; padding: 0;">
+<alpha-select-caller-dialog-v2>
+  <div class="ui-correspondence-creation-set-up ui-local-overlay address-book ux-example-address-book">
+    <div class="ui-local-overlay-header"><strong>Select Who is Calling</strong></div>
+    <div class="ui-local-overlay-body">
+      <!-- Paste your full dialog HTML exactly as you sent it here -->
+      <!-- For quick testing I'm including the Policy Holder tile with click handler -->
+      <div class="caller-section">
+      <div class="alp-crit-warn"><i class="fas fa-exclamation-triangle alp-crit-warn__icon"></i><div class="alp-crit-warn__msg"><strong>Breach Potential:</strong> Different Client Address Locations </div></div> 
+        <h4 class="section-title">Policy Interests</h4>
+
+        
+        <div class="ui-work-items content--flex-eq-tile-grid">
+
+
+          <alpha-caller-tile-v2 hidden (click)="selectPolicyHolder()">
+            <div class="alp-tile multi-action-tile tile--default tile--size-w-med">
+              <div class="action-container">
+                <button class="action state--ui-active">
+                  <span class="tile--data-strong"><span class="tile--role-type">Policy Holder, Life 1, Payer</span></span>
+                  <span class="tile--data tile--spacer">Mr Joe Bloggs</span>
+                </button>
+              </div>
+            </div>
+          </alpha-caller-tile-v2>
+          <!-- ... rest of your dialog tiles can go here exactly as pasted ... -->
+
+
+
+          <div class="policy-members"><div class="multi-action-tile tile--default tile--size-w-med" ><div class="action-container"><button (click)="selectPolicyHolder()" type="button" client-id="ux02" policy-client-link="uxMrJoeBloggs" class="action state--ui-active"><span class="tile--data-strong"><i aria-hidden="true" class="fa fa-male"></i><span class="tile--role-type"> Individual</span></span><span class="tile--data tile--spacer"> Mr Joe Bloggs</span><span class="tile--data-heading"> Date of Birth: </span><span class="tile--data-strong tile--spacer"> 13 Nov 1966 (55) </span><span class="tile--data-heading"> National Insurance: </span><span class="tile--data-strong tile--spacer"> RM439286P </span><span class="ui-data-indicator ui-status active" style="display: none;">Active</span><div class="ui-tile-address-block"><span class="tile--address-details correspondence ux-hide"><span class="tile--data-strong tile--spacer"><i aria-hidden="true" class="fa fa-home"></i><span class="tile--address-status"><i aria-hidden="true" class="fa fa-check"></i> Correspondence </span></span><span data-toggle="tooltip" title="4 Tejpl Zgbgw" class="tile--data-strong">84 Greenview Ave</span><span data-toggle="tooltip" title=" Tvdza" class="tile--data-strong">Brooklyn</span><span data-toggle="tooltip" title=" TL67 8RL" class="tile--data-strong"> NY 11225</span><span data-toggle="tooltip" title=" United Kingdom" class="tile--data-strong"> United States</span><span data-toggle="tooltip" title=" Overseas" class="ui-data-indicator overseas"><i class="fas fa-globe"></i>Overseas</span><span class="ui-tile-coa--mail-here"><span class="text"><strong>Documents are posted here.</strong></span><span class="icon"><i aria-hidden="true" class="fa fa-envelope"></i></span></span><span class="ui-tile-coa--pay-here" style="display: none;"><span class="text">Payments are disbursed here.</span><span class="icon"><i aria-hidden="true" class="fa fa-credit-card-alt"></i></span></span></span><span class="tile--address-details margin-bottom-0"><span class="tile--data-strong tile--spacer"><i aria-hidden="true" class="fa fa-home"></i><span class="tile--address-status"><i aria-hidden="true" class="fa fa-check"></i> Permanent </span></span><span data-toggle="tooltip" title="4 Tejpl Zgbgw" class="tile--data-strong">42 Chester Court</span><span data-toggle="tooltip" title=" Tvdza" class="tile--data-strong">Lorum Road</span><span data-toggle="tooltip" title=" Dnjzaw" class="tile--data-strong">Ipsum</span><span data-toggle="tooltip" title=" TL67 8RL" class="tile--data-strong"> TL67 8RL</span><span data-toggle="tooltip" title=" United Kingdom" class="tile--data-strong"> United Kingdom</span><span class="ui-tile-coa--mail-here ux-hide"><span class="text"><strong>Documents are posted here.</strong></span><span class="icon"><i aria-hidden="true" class="fa fa-envelope"></i></span></span><span class="ui-tile-coa--pay-here" style="display: none;"><span class="text">Payments are disbursed here.</span><span class="icon"><i aria-hidden="true" class="fa fa-credit-card-alt"></i></span></span></span></div><div class="ui-tile-address-block ux-hide"><span class="tile--address-details"><span class="tile--data-strong tile--spacer"><i aria-hidden="true" class="fa fa-home"></i><span class="tile--address-status"><i aria-hidden="true" class="fa fa-check"></i> Permanent </span></span><span data-toggle="tooltip" title="4 Tejpl Zgbgw" class="tile--data-strong">42 Chester Court</span><span data-toggle="tooltip" title=" Tvdza" class="tile--data-strong">Lorum Road</span><span data-toggle="tooltip" title=" Dnjzaw" class="tile--data-strong">Ipsum</span><span data-toggle="tooltip" title=" TL67 8RL" class="tile--data-strong"> TL67 8RL</span><span data-toggle="tooltip" title=" United Kingdom" class="tile--data-strong"> United Kingdom</span><span class="ui-tile-coa--mail-here"><span class="text"><strong>Documents are posted here.</strong></span><span class="icon"><i aria-hidden="true" class="fa fa-envelope"></i></span></span><span class="ui-tile-coa--pay-here" style="display: none;"><span class="text">Payments are disbursed here.</span><span class="icon"><i aria-hidden="true" class="fa fa-credit-card-alt"></i></span></span></span></div></button><app-vulnerable-client-action style="display: contents;"><button title="Click to view Extra Care details" class="action--extra-care secondary-action state--ui-active--no-icon" style="text-align: left;"><div class="ui-alpha-indicators"><span class="indicator vulnerable">Extra Care Client</span></div><ul class="extra-care-types"><li class="extra-care-types__item">Health- Hearing</li><li class="extra-care-types__item"> Capability -Managing Finances</li><li class="extra-care-types__item"> Health- Severe/Long Term Illness</li></ul></button><dialog><div class="ui-correspondence-creation-set-up ui-local-overlay address-book ux-example-address-book" style="right: unset; left: 115px;"><div class="ui-local-overlay-header"><strong>Extra Care Information</strong></div><div class="ui-local-overlay-body"><div class="vulnerability-view"><div class="caller-section"><h4 class="section-title">Client</h4><div class="ui-work-items content--flex-eq-tile-grid"><alpha-caller-tile-v2><div class="alp-tile multi-action-tile tile--default tile--size-w-med"><div class="action-container"><button disabled="" class="action selected-caller state--ui-active"><span class="tile--data-strong"><span class="tile--role-type">Individual</span></span><span class="tile--data tile--spacer">Mr Joe Bloggs</span><div class="ui-tile-address-block tile--spacer"><span class="tile--address-details"><span class="tile--data-strong tile--spacer"><i aria-hidden="true" class="fa fa-home"></i>&nbsp; <span class="tile--address-status"><i aria-hidden="true" class="fa fa-check"></i> Correspondence </span></span><span data-toggle="tooltip" title="Prime Minister" class="tile--data-strong">Prime Minister</span><span data-toggle="tooltip" title="Durham" class="tile--data-strong">Durham</span><span data-toggle="tooltip" title="Fox Road" class="tile--data-strong">Fox Road</span><span data-toggle="tooltip" title="BA3 8SX" class="tile--data-strong">BA3 8SX</span></span></div></button></div></div></alpha-caller-tile-v2></div></div><div class="caller-section vulnerability-details-section"><h4 class="section-title">Extra Care Details</h4><div class="ui-work-items content--flex-eq-tile-grid tile-collection--size-w-lrg"><div class="multi-action-tile tile--default tile--size-w-lrg"><div class="action-container"><button class="action state--ui-active vulnerability-tile"><span class="tile--data-heading">Type:</span><span class="tile--data-strong tile--spacer">Health- Hearing</span><span class="tile--data-heading">Notification Method:</span><span class="tile--data-strong tile--spacer">Phone</span><span class="tile--data-heading">Date Notified:</span><span class="tile--data-strong tile--spacer">21 Aug 2025</span><span class="tile--data-heading">Stop Date:</span><span class="tile--data-strong tile--spacer">Permanent</span><span class="tile--data-heading">Helping Hand:</span><span class="tile--data-strong tile--spacer">Speak Slower / Louder</span></button></div></div><div class="multi-action-tile tile--default tile--size-w-lrg"><div class="action-container"><button class="action state--ui-active vulnerability-tile"><span class="tile--data-heading">Type:</span><span class="tile--data-strong tile--spacer">Capability -Managing Finances</span><span class="tile--data-heading">Notification Method:</span><span class="tile--data-strong tile--spacer">Phone</span><span class="tile--data-heading">Date Notified:</span><span class="tile--data-strong tile--spacer">21 Aug 2025</span><span class="tile--data-heading">Stop Date:</span><span class="tile--data-strong tile--spacer">Permanent</span><span class="tile--data-heading">Helping Hand:</span><span class="tile--data-strong tile--spacer">Extra time allowed</span></button></div></div><div class="multi-action-tile tile--default tile--size-w-lrg"><div class="action-container"><button class="action state--ui-active vulnerability-tile"><span class="tile--data-heading">Type:</span><span class="tile--data-strong tile--spacer">Health- Severe/Long Term Illness</span><span class="tile--data-heading">Notification Method:</span><span class="tile--data-strong tile--spacer">Phone</span><span class="tile--data-heading">Date Notified:</span><span class="tile--data-strong tile--spacer">21 Aug 2025</span><span class="tile--data-heading">Stop Date:</span><span class="tile--data-strong tile--spacer">Permanent</span><span class="tile--data-heading">Helping Hand:</span><span class="tile--data-strong tile--spacer">Extra Care</span></button></div></div></div></div></div></div><div class="ui-local-overlay-footer"><span class="ui-button--multi-state ui-text-nowrap pin-menu ui-dock-collapse display-inline"><button class="ui-button"><span class="ui-button-content"><span class="ui-button-icon-left"><i class="fas fa-arrow-left"></i></span><span class="ui-button-text"><strong>Close</strong></span><span class="ui-button-icon-right"></span></span></button></span></div></div></dialog></app-vulnerable-client-action><button alpha-ui-attr-toggle=".app-overlay--reassure-now-portal-view,app-overlay--open" alpha-ui-event="click" class="action--view secondary-action state--ui-active--no-icon icon--expand-right"><span class="reassure-now-container"><img src="Images/ReAssureNow_Logo_Active.png" title="ReAssure Now" alt="ReAssure Now" class="reassure-now-logo"><span class="reassure-now-logo-caption tile--data-strong reassure-now--active">Active</span></span></button></div></div>
+          
+          
+          
+          <div hidden class="multi-action-tile tile--default tile--size-w-med"><div class="action-container"><button type="button" client-id="ux03" policy-client-link="uxMrsLucyBloggs" class="action state--ui-active"><span class="tile--data-strong"><i aria-hidden="true" class="fa fa-female"></i><span class="tile--role-type">Individual</span></span><span class="tile--data tile--spacer"> Mrs Lucy Bloggs</span><span class="tile--data-heading"> Date of Birth:
+</span><span class="tile--data-strong tile--spacer"> 07 Feb 1985 (34)
+</span><span class="tile--data-heading"> National Insurance:
+</span><span class="tile--data-strong tile--spacer"> JP439286P
+</span><span hidden="" class="ui-data-indicator ui-status terminated">Deceased</span><span class="tile--duplicates"></span><span ng-reflect-klass="tile--address-details" ng-reflect-ng-class="[object Object]" class="tile--address-details"><span class="tile--data-strong tile--spacer"><i aria-hidden="true" class="fa fa-home"></i><span class="tile--address-status"><i aria-hidden="true" class="fa fa-check"></i> Permanent </span></span><span data-toggle="tooltip" title="4 Tejpl Zgbgw" class="tile--data-strong">256 Albert Street</span><span data-toggle="tooltip" title=" Tvdza" class="tile--data-strong">Lorum Ipsum</span><span data-toggle="tooltip" title=" Dnjzaw" class="tile--data-strong">Ipsum</span><span data-toggle="tooltip" title=" TL67 8RL" class="tile--data-strong"> B21 4TL</span><span data-toggle="tooltip" title=" United Kingdom" class="tile--data-strong"> United Kingdom</span></span></button><button alpha-ui-attr-toggle=".app-overlay--reassure-now-portal-view,app-overlay--open" alpha-ui-event="click" class="action--view secondary-action state--ui-active--no-icon icon--expand-right"><span class="reassure-now-container"><img src="Images/ReAssureNow_Logo_Active.png" title="ReAssure Now" alt="ReAssure Now" class="reassure-now-logo"><span class="reassure-now-logo-caption tile--data-strong reassure-now--active">Active</span></span></button></div></div>
+
+
+<div class="multi-action-tile tile--default tile--size-w-med"><div class="action-container"><button type="button" ng-reflect-ng-class="[object Object]" class="state--ui- group-unit state--ui-active" style="max-width: 145px; text-align: left;"><span class="tile--data-strong"><div><i aria-hidden="true" class="fas fa-briefcase inline"></i><span ng-reflect-ng-class="[object Object]"> Servicing Agent</span></div></span><span ng-reflect-ng-class="[object Object]" class="tile--data">Albert Wesker</span></button></div></div>
+
+</div>
+
+
+
+
+
+        </div>
+
+        <h4 class="section-title">Third Party Interests</h4>
+
+        <div class="ui-work-items content--flex-eq-tile-grid">
+
+        <div class="ui-interesed-party-content content--flex-eq-tile-grid"><div class="multi-action-tile tile--default tile--size-w-med"><div class="action-container"><button type="button" ng-reflect-klass="client-unit " ng-reflect-ng-class="[object Object]" class="client-unit state--ui-active"><span class="tile--data-strong">Beneficiary</span><span class="tile--data">Mr Luke Smith</span><span ng-reflect-klass="tile--address-details" ng-reflect-ng-class="[object Object]" class="tile--address-details"><span class="tile--data-strong tile--spacer"><i aria-hidden="true" class="fa fa-home"></i><span class="tile--address-status"><i aria-hidden="true" class="fa fa-check"></i> Permanent </span></span><span data-toggle="tooltip" title="4 Tejpl Zgbgw" class="tile--data-strong">324 Westminister Road</span><span data-toggle="tooltip" title=" Tvdza" class="tile--data-strong"> Tvdza</span><span data-toggle="tooltip" title=" Dnjzaw" class="tile--data-strong"> Dnjzaw</span><span data-toggle="tooltip" title=" Hlbh Dxcnaczdi" class="tile--data-strong"> Hlbh Dxcnaczdi</span><span data-toggle="tooltip" title=" TL67 8RL" class="tile--data-strong"> TL67 8RL</span><span data-toggle="tooltip" title=" United Kingdom" class="tile--data-strong"> United Kingdom</span></span></button></div></div></div>
+
+        </div>
+
+
+      </div>
+    </div>
+    <div class="ui-local-overlay-footer">
+      <button class="ui-button" (click)="closeCallerDialog()"><strong>Cancel</strong></button>
+    </div>
+  </div>
+</alpha-select-caller-dialog-v2>
+</dialog>
