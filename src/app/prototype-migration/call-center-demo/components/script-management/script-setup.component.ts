@@ -41,6 +41,9 @@ interface CreatedScript {
   lastEdited: string;
   productId: string;
   requestTypeId: string;
+  /** When set, this draft is a copy of the referenced script file. */
+  sourceScriptFileId?: string;
+  copy?: boolean;
 }
 
 @Component({
@@ -106,37 +109,43 @@ export class ScriptSetupComponent {
   readonly selectedProduct = signal<string | null>(null);
   readonly selectedRequestType = signal<string | null>(null);
 
-  readonly productSearch = signal('');
-  readonly requestTypeSearch = signal('');
-
   readonly selectedScriptId = signal<string | null>(null);
   readonly isCreateNewSelected = signal(false);
   readonly showCreateTile = signal(true);
 
   readonly createdScripts = signal<CreatedScript[]>([]);
 
-  readonly showCreateScriptPopover = signal(false);
-  readonly newScriptName = signal('');
-  readonly newScriptDescription = signal('');
-
-  readonly showVersionHistory = signal(false);
-  readonly selectedScriptForHistory = signal<ExistingScript | null>(null);
-  readonly selectedHistoricVersion = signal<VersionEntry | null>(null);
-
-  readonly filteredProducts = computed(() => {
-    const term = this.productSearch().toLowerCase().trim();
+  /* Product dialog */
+  readonly showProductDialog = signal(false);
+  readonly productDialogSearch = signal('');
+  readonly filteredProductsForDialog = computed(() => {
+    const term = this.productDialogSearch().toLowerCase().trim();
     if (!term) return this.products;
     return this.products.filter(p => p.label.toLowerCase().includes(term));
   });
 
-  readonly filteredRequestTypes = computed(() => {
-    const term = this.requestTypeSearch().toLowerCase().trim();
+  /* Request type dialog */
+  readonly showRequestTypeDialog = signal(false);
+  readonly requestTypeDialogSearch = signal('');
+  readonly filteredRequestTypesForDialog = computed(() => {
+    const term = this.requestTypeDialogSearch().toLowerCase().trim();
     let list = [...this.requestTypes];
     if (term) {
       list = list.filter(rt => rt.label.toLowerCase().includes(term));
     }
     return list;
   });
+
+  /* Create new / copy dialog */
+  readonly showCreateScriptPopover = signal(false);
+  readonly newScriptName = signal('');
+  readonly newScriptDescription = signal('');
+  readonly isCopyDialog = signal(false);
+  readonly copySourceScript = signal<ExistingScript | null>(null);
+
+  readonly showVersionHistory = signal(false);
+  readonly selectedScriptForHistory = signal<ExistingScript | null>(null);
+  readonly selectedHistoricVersion = signal<VersionEntry | null>(null);
 
   selectedProductLabel(): string {
     const id = this.selectedProduct();
@@ -148,17 +157,17 @@ export class ScriptSetupComponent {
     return this.requestTypes.find(r => r.id === id)?.label || '';
   }
 
-  onProductSearchChange(event: Event) {
-    const value = (event.target as HTMLInputElement).value;
-    this.productSearch.set(value);
+  /* Product selection via dialog */
+  openProductDialog() {
+    this.productDialogSearch.set('');
+    this.showProductDialog.set(true);
   }
 
-  onRequestTypeSearchChange(event: Event) {
-    const value = (event.target as HTMLInputElement).value;
-    this.requestTypeSearch.set(value);
+  closeProductDialog() {
+    this.showProductDialog.set(false);
   }
 
-  toggleProduct(id: string) {
+  selectProduct(id: string) {
     if (this.selectedProduct() === id) {
       this.selectedProduct.set(null);
       this.selectedRequestType.set(null);
@@ -167,15 +176,38 @@ export class ScriptSetupComponent {
       this.selectedRequestType.set(null);
       this.clearScriptSelection();
     }
+    this.closeProductDialog();
   }
 
-  toggleRequestType(id: string) {
+  onProductDialogSearchChange(event: Event) {
+    const value = (event.target as HTMLInputElement).value;
+    this.productDialogSearch.set(value);
+  }
+
+  /* Request type selection via dialog */
+  openRequestTypeDialog() {
+    if (!this.selectedProduct()) return;
+    this.requestTypeDialogSearch.set('');
+    this.showRequestTypeDialog.set(true);
+  }
+
+  closeRequestTypeDialog() {
+    this.showRequestTypeDialog.set(false);
+  }
+
+  selectRequestType(id: string) {
     if (this.selectedRequestType() === id) {
       this.selectedRequestType.set(null);
     } else {
       this.selectedRequestType.set(id);
       this.clearScriptSelection();
     }
+    this.closeRequestTypeDialog();
+  }
+
+  onRequestTypeDialogSearchChange(event: Event) {
+    const value = (event.target as HTMLInputElement).value;
+    this.requestTypeDialogSearch.set(value);
   }
 
   private clearScriptSelection() {
@@ -185,6 +217,7 @@ export class ScriptSetupComponent {
     this.selectedScriptForHistory.set(null);
   }
 
+  /* Create new script */
   toggleCreateNew() {
     this.isCreateNewSelected.set(!this.isCreateNewSelected());
     if (this.isCreateNewSelected()) {
@@ -195,45 +228,67 @@ export class ScriptSetupComponent {
   }
 
   openCreatePopover() {
+    this.isCopyDialog.set(false);
+    this.copySourceScript.set(null);
     this.newScriptName.set('');
     this.newScriptDescription.set('');
+    this.showCreateScriptPopover.set(true);
+  }
+
+  /* Copy existing script */
+  openCopyDialog(script: ExistingScript) {
+    this.isCopyDialog.set(true);
+    this.copySourceScript.set(script);
+    this.newScriptName.set(`${script.name} (Copy)`);
+    this.newScriptDescription.set(script.description || '');
     this.showCreateScriptPopover.set(true);
   }
 
   cancelNewScript() {
     this.showCreateScriptPopover.set(false);
     this.isCreateNewSelected.set(false);
+    this.isCopyDialog.set(false);
+    this.copySourceScript.set(null);
     this.newScriptName.set('');
     this.newScriptDescription.set('');
   }
 
   saveNewScript() {
     const name = this.newScriptName().trim();
-    if (!name || !this.selectedProduct() || !this.selectedRequestType()) return;
-
     const description = this.newScriptDescription().trim();
+    if (!name || !description || !this.selectedProduct() || !this.selectedRequestType()) return;
+
     const productId = this.selectedProduct()!;
     const requestTypeId = this.selectedRequestType()!;
+    const source = this.copySourceScript();
+    const id = 'draft-' + Date.now();
+
+    const sourceScriptFileId = source ? source.scriptFileId : undefined;
 
     const created: CreatedScript = {
-      id: 'draft-' + Date.now(),
+      id,
       name,
       description,
       lastEdited: new Date().toISOString().slice(0, 10),
       productId,
-      requestTypeId
+      requestTypeId,
+      sourceScriptFileId,
+      copy: !!source
     };
 
     this.createdScripts.update(list => [created, ...list]);
     this.showCreateTile.set(false);
-    this.selectedScriptId.set(created.id);
+    this.selectedScriptId.set(id);
     this.isCreateNewSelected.set(false);
+    this.isCopyDialog.set(false);
+    this.copySourceScript.set(null);
     this.showCreateScriptPopover.set(false);
 
     this.continue.emit({
       mode: 'new',
-      scriptId: created.id,
+      scriptId: id,
       scriptFileId: undefined,
+      sourceScriptFileId,
       scriptName: name,
       scriptDescription: description,
       productId,
@@ -276,6 +331,7 @@ export class ScriptSetupComponent {
         mode: 'new',
         scriptId: draft.id,
         scriptFileId: undefined,
+        sourceScriptFileId: draft.sourceScriptFileId,
         scriptName: draft.name,
         scriptDescription: draft.description,
         productId: this.selectedProduct()!,

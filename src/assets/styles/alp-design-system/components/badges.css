@@ -64,6 +64,24 @@
   border-color: var(--alp-color-red-300);
 }
 
+.alp-type-tag[data-type="primary-script"] {
+  background: var(--alp-color-green-100);
+  color: var(--alp-color-green-800);
+  border-color: var(--alp-color-green-300);
+}
+
+.alp-type-tag[data-type="draft"] {
+  background: var(--alp-color-blue-100);
+  color: var(--alp-color-blue-700);
+  border-color: var(--alp-color-blue-300);
+}
+
+.alp-type-tag[data-type="copy-draft"] {
+  background: var(--alp-color-purple-100);
+  color: var(--alp-color-purple-700);
+  border-color: var(--alp-color-purple-300);
+}
+
 /* ---- ID tags (monospace identifier chips) ---- */
 .alp-id-tag {
   display: inline-flex;

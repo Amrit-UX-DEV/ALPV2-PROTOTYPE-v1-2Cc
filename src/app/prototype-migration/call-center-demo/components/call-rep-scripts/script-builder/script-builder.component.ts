@@ -107,16 +107,21 @@ export class ScriptBuilderComponent implements OnChanges, OnInit, OnDestroy {
     this.scriptDescription = setup.scriptDescription || this.scriptDescription;
 
     if (setup.mode === 'new') {
-      this.steps.set([]);
-      this.loadError.set(null);
-      this.isLoadingScript.set(false);
+      const sourceId = setup.sourceScriptFileId?.trim() || null;
+      if (sourceId) {
+        void this.loadScriptById(sourceId, true);
+      } else {
+        this.steps.set([]);
+        this.loadError.set(null);
+        this.isLoadingScript.set(false);
+      }
       return;
     }
 
     const fileId = setup.scriptFileId?.trim() || null;
 
     if (fileId) {
-      void this.loadScriptById(fileId);
+      void this.loadScriptById(fileId, false);
     } else {
       this.steps.set([]);
       this.loadError.set(null);
@@ -124,7 +129,7 @@ export class ScriptBuilderComponent implements OnChanges, OnInit, OnDestroy {
     }
   }
 
-  private async loadScriptById(id: string) {
+  private async loadScriptById(id: string, preserveMetadata = false) {
     this.isLoadingScript.set(true);
     this.loadError.set(null);
 
@@ -141,11 +146,13 @@ export class ScriptBuilderComponent implements OnChanges, OnInit, OnDestroy {
       // actions in this editing session only.
       this.steps.set(result.steps.map(s => ({ ...s, activity: undefined })));
 
-      if (result.title) {
-        this.scriptName = result.title;
-      }
-      if (result.description) {
-        this.scriptDescription = result.description;
+      if (!preserveMetadata) {
+        if (result.title) {
+          this.scriptName = result.title;
+        }
+        if (result.description) {
+          this.scriptDescription = result.description;
+        }
       }
     } catch (err) {
       console.error('Script builder load failed', err);

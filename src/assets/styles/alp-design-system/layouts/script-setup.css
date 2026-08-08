@@ -9,6 +9,11 @@
   padding: var(--alp-space-6);
   border-radius: var(--alp-radius-lg);
   border: 1px solid var(--alp-color-border);
+  font-family: var(--alp-font-family-sans);
+}
+
+.alp-script-setup button {
+  font-family: inherit;
 }
 
 .alp-script-setup__title {
@@ -17,15 +22,77 @@
   color: var(--alp-color-text);
 }
 
-.alp-script-setup__two-column {
-  display: flex;
+.alp-script-setup__placeholder-tiles {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
   gap: var(--alp-space-6);
-  flex-wrap: wrap;
 }
 
-.alp-script-setup__section {
-  flex: 1;
-  min-width: 320px;
+@media (max-width: 640px) {
+  .alp-script-setup__placeholder-tiles {
+    grid-template-columns: 1fr;
+  }
+}
+
+.alp-script-setup__placeholder-tile {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: var(--alp-space-2);
+  padding: var(--alp-space-6) var(--alp-space-4);
+  border: 2px dashed var(--alp-color-border-strong);
+  border-radius: var(--alp-radius-lg);
+  background: var(--alp-color-surface);
+  cursor: pointer;
+  transition: all 0.15s ease;
+  min-height: 120px;
+  text-align: center;
+}
+
+.alp-script-setup__placeholder-tile:hover:not(:disabled) {
+  border-color: var(--alp-color-brand);
+  background: var(--alp-color-brand-50);
+}
+
+.alp-script-setup__placeholder-tile--selected {
+  border-style: solid;
+  border-color: var(--alp-color-brand);
+  background: var(--alp-color-brand-50);
+  box-shadow: 0 0 0 3px oklch(from var(--alp-color-brand) l c h / 0.2);
+}
+
+.alp-script-setup__placeholder-tile--disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.alp-script-setup__placeholder-tile--disabled:hover {
+  border-color: var(--alp-color-border-strong);
+  background: var(--alp-color-surface);
+}
+
+.alp-script-setup__placeholder-tile-icon {
+  font-size: var(--alp-font-size-xl);
+  color: var(--alp-color-brand);
+}
+
+.alp-script-setup__placeholder-tile-label {
+  font-size: var(--alp-font-size-lg);
+  font-weight: var(--alp-font-weight-semibold);
+  color: var(--alp-color-text);
+}
+
+.alp-script-setup__placeholder-tile-hint {
+  font-size: var(--alp-font-size-sm);
+  color: var(--alp-color-text-muted);
+}
+
+.alp-script-setup__placeholder-tile--create {
+  margin-bottom: var(--alp-space-5);
+  max-width: 320px;
+  min-height: auto;
+  padding: var(--alp-space-4) var(--alp-space-5);
 }
 
 .alp-script-setup__section-title {
@@ -39,18 +106,6 @@
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
   gap: var(--alp-space-3);
-}
-
-/* Non-prefixed request-type visibility helpers (legacy) */
-.request-type-section {
-  transition: all 0.2s ease;
-}
-
-.request-type-hidden {
-  visibility: hidden;
-  opacity: 0;
-  pointer-events: none;
-  min-height: 180px;
 }
 
 .alp-script-setup__existing {
@@ -133,6 +188,50 @@
   line-height: 1;
   cursor: pointer;
   color: var(--alp-color-text-muted);
+}
+
+/* ---- Product / request-type selection dialog ---- */
+.alp-script-setup__dialog-overlay {
+  position: fixed;
+  inset: 0;
+  background: oklch(from var(--alp-shadow-color) l c h / 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: var(--alp-z-modal);
+  padding: var(--alp-space-4);
+}
+
+.alp-script-setup__dialog {
+  background: var(--alp-color-surface);
+  width: 520px;
+  max-width: 100%;
+  border-radius: var(--alp-radius-lg);
+  box-shadow: var(--alp-shadow-xl);
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  max-height: 80vh;
+}
+
+.alp-script-setup__dialog-header {
+  padding: var(--alp-space-4) var(--alp-space-5);
+  background: var(--alp-color-slate-50);
+  border-bottom: 1px solid var(--alp-color-border);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-shrink: 0;
+}
+
+.alp-script-setup__dialog-content {
+  padding: var(--alp-space-5);
+  flex: 1;
+  overflow-y: auto;
+}
+
+.alp-script-setup__dialog-content .alp-script-setup__filter-input {
+  margin-bottom: var(--alp-space-4);
 }
 
 /* ---- Create-script popover overlay (tightly coupled to setup layout) ---- */
