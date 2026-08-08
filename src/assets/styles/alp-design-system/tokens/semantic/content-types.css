@@ -1,0 +1,26 @@
+/* =========================================================
+   ALP DESIGN SYSTEM — SEMANTIC CONTENT TYPE TOKENS
+   Colors for call-center script step content types.
+   ========================================================= */
+
+:root {
+  --alp-color-prompt: var(--alp-color-blue-700);
+  --alp-color-prompt-soft: var(--alp-color-blue-100);
+  --alp-color-prompt-text: var(--alp-color-white);
+
+  --alp-color-question: var(--alp-color-purple-700);
+  --alp-color-question-soft: var(--alp-color-purple-100);
+  --alp-color-question-text: var(--alp-color-white);
+
+  --alp-color-required-check: var(--alp-color-green-700);
+  --alp-color-required-check-soft: var(--alp-color-green-100);
+  --alp-color-required-check-text: var(--alp-color-white);
+
+  --alp-color-log-task: var(--alp-color-amber-700);
+  --alp-color-log-task-soft: var(--alp-color-amber-100);
+  --alp-color-log-task-text: var(--alp-color-white);
+
+  --alp-color-end-call: var(--alp-color-red-700);
+  --alp-color-end-call-soft: var(--alp-color-red-100);
+  --alp-color-end-call-text: var(--alp-color-white);
+}

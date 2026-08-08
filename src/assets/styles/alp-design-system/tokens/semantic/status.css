@@ -1,0 +1,35 @@
+/* =========================================================
+   ALP DESIGN SYSTEM — SEMANTIC STATUS TOKENS
+   ========================================================= */
+
+:root {
+  /* Success */
+  --alp-color-success: var(--alp-color-green-700);
+  --alp-color-success-soft: var(--alp-color-green-100);
+  --alp-color-success-text: var(--alp-color-white);
+
+  /* Warning */
+  --alp-color-warning: var(--alp-color-amber-700);
+  --alp-color-warning-soft: var(--alp-color-amber-100);
+  --alp-color-warning-text: var(--alp-color-white);
+
+  /* Danger / error */
+  --alp-color-danger: var(--alp-color-red-700);
+  --alp-color-danger-soft: var(--alp-color-red-100);
+  --alp-color-danger-text: var(--alp-color-white);
+
+  /* Info */
+  --alp-color-info: var(--alp-color-blue-700);
+  --alp-color-info-soft: var(--alp-color-blue-100);
+  --alp-color-info-text: var(--alp-color-white);
+
+  /* Neutral / disabled */
+  --alp-color-neutral: var(--alp-color-slate-500);
+  --alp-color-neutral-soft: var(--alp-color-slate-100);
+  --alp-color-neutral-text: var(--alp-color-slate-900);
+
+  /* Selected / active */
+  --alp-color-selected: var(--alp-color-brand-600);
+  --alp-color-selected-soft: var(--alp-color-brand-100);
+  --alp-color-selected-text: var(--alp-color-white);
+}

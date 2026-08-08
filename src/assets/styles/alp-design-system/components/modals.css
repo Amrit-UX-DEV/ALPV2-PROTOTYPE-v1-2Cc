@@ -1,0 +1,181 @@
+/* =========================================================
+   ALP DESIGN SYSTEM — MODALS & POPOVER SHELLS
+   Script-builder popover overlay, preview modal, and
+   generic <dialog> resets.
+   ========================================================= */
+
+/* ---- Generic dialog reset (used by dialog-based popovers) ---- */
+dialog {
+  border: none;
+  padding: 0;
+  margin: auto;
+}
+
+dialog::backdrop {
+  background: rgba(var(--alp-shadow-color), var(--alp-opacity-backdrop));
+}
+
+/* ---- Script-builder popover overlay ---- */
+.alp-script-builder__popover-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(var(--alp-shadow-color), var(--alp-opacity-backdrop));
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+}
+
+.alp-script-builder__popover {
+  background: var(--alp-color-surface);
+  max-height: 85vh;
+  border-radius: var(--alp-radius-lg);
+  box-shadow: var(--alp-shadow-lg);
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
+.alp-script-builder__popover--wide {
+  width: 860px;
+  max-width: 96vw;
+}
+.alp-script-builder__popover--medium {
+  width: 640px;
+}
+.alp-script-builder__popover--small {
+  width: 520px;
+}
+
+.alp-script-builder__popover-header {
+  padding: var(--alp-space-4) var(--alp-space-5);
+  background: var(--alp-color-background);
+  border-bottom: 1px solid var(--alp-color-border);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.alp-script-builder__popover-header h4 {
+  margin: 0;
+  font-size: var(--alp-font-size-lg);
+  font-weight: var(--alp-font-weight-bold);
+  color: var(--alp-color-text);
+  letter-spacing: var(--alp-letter-spacing-tight);
+  line-height: 1.3;
+}
+
+.alp-script-builder__close-btn {
+  background: none;
+  border: none;
+  font-size: var(--alp-font-size-lg);
+  cursor: pointer;
+  color: var(--alp-color-text-muted);
+}
+
+.alp-script-builder__popover-body {
+  padding: var(--alp-space-6);
+  overflow-y: auto;
+  flex: 1;
+}
+
+.alp-script-builder__popover-footer {
+  padding: var(--alp-space-4) var(--alp-space-5);
+  background: var(--alp-color-background);
+  border-top: 1px solid var(--alp-color-border);
+  display: flex;
+  justify-content: space-between;
+  gap: var(--alp-space-3);
+}
+
+.alp-footer-left,
+.alp-footer-right {
+  display: flex;
+  gap: var(--alp-space-2);
+  flex-wrap: wrap;
+}
+
+.alp-empty-hint {
+  text-align: center;
+  color: var(--alp-color-text-muted);
+  padding: var(--alp-space-8) var(--alp-space-4);
+  font-size: 14px;
+}
+
+/* ---- Preview modal ---- */
+.alp-preview-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(var(--alp-shadow-color), var(--alp-opacity-backdrop));
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1100;
+  padding: var(--alp-space-6);
+}
+
+.alp-preview-shell {
+  position: relative;
+  width: 920px;
+  max-width: 100%;
+  max-height: 92vh;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  border-radius: var(--alp-radius-lg);
+  box-shadow: 0 12px 40px rgba(var(--alp-shadow-color), 0.2);
+  background: var(--alp-color-background);
+}
+
+.alp-preview-modal-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: var(--alp-space-4) var(--alp-space-5);
+  background: var(--alp-color-background);
+  border-bottom: 1px solid var(--alp-color-slate-200);
+  flex-shrink: 0;
+  border-radius: var(--alp-radius-lg) var(--alp-radius-lg) 0 0;
+}
+
+.alp-preview-modal-header__title {
+  margin: 0;
+  font-size: 16px;
+  font-weight: var(--alp-font-weight-semibold);
+  color: var(--alp-color-text);
+}
+
+.alp-preview-modal-header__close {
+  background: none;
+  border: none;
+  font-size: var(--alp-font-size-lg);
+  color: var(--alp-color-slate-500);
+  cursor: pointer;
+  line-height: 1;
+  padding: 4px var(--alp-space-2);
+}
+
+.alp-preview-modal-header__close:hover {
+  color: var(--alp-color-slate-900);
+}
+
+.alp-preview-shell > .alp-script-journey {
+  overflow-y: auto;
+  flex: 1;
+  border-radius: 0 0 var(--alp-radius-lg) var(--alp-radius-lg);
+  box-shadow: none;
+  border: none;
+  max-width: none;
+  margin: 0;
+}
+
+/* ---- Prompt variable highlight (used in preview + builder) ---- */
+.auth-prompt-variable {
+  display: inline;
+  background: var(--alp-color-blue-100);
+  color: var(--alp-color-prompt);
+  font-weight: var(--alp-font-weight-bold);
+  padding: 0 4px;
+  border-radius: 4px;
+  white-space: nowrap;
+}

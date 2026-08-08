@@ -1,0 +1,320 @@
+/* =========================================================
+   ALP DESIGN SYSTEM — BUTTONS
+   ========================================================= */
+
+.alp-btn {
+  padding: 10px 22px;
+  border-radius: var(--alp-radius-full);
+  font-weight: var(--alp-font-weight-medium);
+  font-size: var(--alp-font-size-sm);
+  cursor: pointer;
+  transition: all 0.15s ease;
+  border: none;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--alp-space-2);
+  font-family: inherit;
+}
+
+.alp-btn--primary {
+  background-color: var(--alp-color-brand);
+  color: var(--alp-color-brand-text);
+}
+
+.alp-btn--primary:hover {
+  background-color: var(--alp-color-brand-hover);
+}
+
+.alp-btn--primary:disabled {
+  background: var(--alp-color-slate-400);
+  cursor: not-allowed;
+  opacity: 0.7;
+}
+
+.alp-btn--outline,
+.alp-btn--secondary {
+  background: var(--alp-color-surface);
+  border: 2px solid var(--alp-color-brand);
+  color: var(--alp-color-brand);
+}
+
+.alp-btn--outline:hover,
+.alp-btn--secondary:hover {
+  background: var(--alp-color-brand-soft);
+  color: var(--alp-color-slate-700);
+}
+
+.alp-btn--danger {
+  background: var(--alp-color-danger);
+  color: var(--alp-color-danger-text);
+}
+
+.alp-btn--danger:hover {
+  background: var(--alp-color-red-800);
+}
+
+.alp-btn--danger-outline {
+  background: var(--alp-color-surface);
+  border: 2px solid var(--alp-color-danger);
+  color: var(--alp-color-danger);
+}
+
+.alp-btn--danger-outline:hover {
+  background: var(--alp-color-danger-soft);
+}
+
+.alp-btn--icon {
+  width: 34px;
+  height: 34px;
+  padding: 0;
+  flex-shrink: 0;
+}
+
+.alp-btn--icon-18 {
+  width: 18px;
+  height: 18px;
+  padding: 0;
+  font-size: 10px;
+}
+
+.alp-btn--ghost {
+  background: transparent;
+  border: 2px solid transparent;
+  color: var(--alp-color-brand);
+}
+
+.alp-btn--ghost:hover {
+  background: var(--alp-color-brand-soft);
+  border-color: var(--alp-color-brand);
+  color: var(--alp-color-slate-700);
+}
+
+.alp-btn--ghost:disabled {
+  background: transparent;
+  border-color: transparent;
+  color: var(--alp-color-slate-400);
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.alp-btn--ghost-danger {
+  color: var(--alp-color-danger);
+}
+
+.alp-btn--ghost-danger:hover {
+  background: var(--alp-color-danger-soft);
+  border-color: var(--alp-color-danger);
+}
+
+/* Order / copy dialog specific button layouts */
+.alp-order-move-btn,
+.alp-order-undo-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--alp-space-2);
+}
+
+.alp-order-move-btn:hover,
+.alp-order-undo-btn:hover {
+  color: var(--alp-color-slate-700);
+}
+
+/* =========================================================
+   SCRIPT SETUP BUTTONS (scoped)
+   The .alp-btn block in script-setup differs slightly from
+   the shared .alp-btn (padding, secondary style). Scope it
+   under .alp-script-setup so it only applies inside that panel.
+   ========================================================= */
+
+.alp-script-setup .alp-btn {
+  padding: 10px var(--alp-space-6);
+  border-radius: var(--alp-radius-full);
+  font-weight: var(--alp-font-weight-medium);
+  font-size: var(--alp-font-size-sm);
+  cursor: pointer;
+  transition: all 0.2s ease;
+  border: none;
+}
+
+.alp-script-setup .alp-btn--primary {
+  background-color: var(--alp-color-brand);
+  color: var(--alp-color-white);
+}
+
+.alp-script-setup .alp-btn--secondary {
+  background-color: var(--alp-color-brand-100);
+  color: var(--alp-color-brand);
+}
+
+/* =========================================================
+   TRANSFER POPOVER BUTTONS (legacy non-prefixed)
+   ========================================================= */
+
+.btn-primary,
+.btn-secondary {
+  padding: 10px var(--alp-space-5);
+  border-radius: var(--alp-radius-md);
+  font-weight: var(--alp-font-weight-medium);
+  cursor: pointer;
+}
+
+.btn-primary {
+  background: var(--alp-color-purple-600);
+  color: var(--alp-color-white);
+  border: none;
+}
+
+.btn-primary:disabled {
+  background: var(--alp-color-purple-300);
+  cursor: not-allowed;
+}
+
+.btn-secondary {
+  background: var(--alp-color-surface);
+  border: 1px solid var(--alp-color-border-strong);
+}
+
+/* =========================================================
+   RECENT CALLERS BUTTONS
+   Main clickable tile button, view-details, resume, bailout,
+   and navigation buttons (scoped under .alp-recent-callers).
+   ========================================================= */
+
+.alp-recent-callers__main-btn {
+  display: block;
+  padding: var(--alp-space-4) 18px 60px; /* Extra bottom padding for View Details */
+  text-align: left;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  width: 100%;
+  transition: background-color 0.2s ease;
+}
+
+.alp-recent-callers__main-btn:hover {
+  background-color: var(--alp-color-slate-50);
+}
+
+.alp-recent-callers__view-details-btn {
+  position: absolute;
+  bottom: var(--alp-space-3);
+  right: var(--alp-space-3);
+  padding: 6px 14px;
+  background: var(--alp-color-slate-100);
+  color: var(--alp-color-slate-600);
+  border: 1px solid var(--alp-color-border-strong);
+  border-radius: 50px;
+  font-size: var(--alp-font-size-sm);
+  cursor: pointer;
+  z-index: 2;
+  transition: all 0.2s ease;
+}
+
+.alp-recent-callers__view-details-btn:hover {
+  background: var(--alp-color-brand-100);
+  color: var(--alp-color-blue-700);
+  border-color: var(--alp-color-slate-400);
+}
+
+.alp-recent-callers__nav button {
+  background: var(--alp-color-surface);
+  border: 1px solid var(--alp-color-border-strong);
+  width: var(--alp-space-8);
+  height: var(--alp-space-8);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+}
+
+.alp-recent-callers__nav button:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+.alp-recent-callers__resume-btn {
+  background: var(--alp-color-brand);
+  color: var(--alp-color-white);
+  border: none;
+  padding: 6px 14px;
+  border-radius: 50px;
+  font-size: var(--alp-font-size-sm);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  z-index: 2;
+}
+
+.alp-recent-callers__resume-btn:hover {
+  background: var(--alp-color-green-600);
+}
+
+.alp-recent-callers__bailout-btn {
+  background: var(--alp-color-brand);
+  color: var(--alp-color-white);
+  border: none;
+  padding: 6px var(--alp-space-3);
+  border-radius: 50px;
+  font-size: var(--alp-font-size-sm);
+  cursor: pointer;
+}
+
+.alp-recent-callers__bailout-btn:hover {
+  background: var(--alp-color-red-600);
+}
+
+.alp-recent-callers__full-main-btn {
+  display: flex;
+  flex-direction: column;
+  text-align: left;
+  background: transparent;
+  border: none;
+  margin-bottom: var(--alp-space-2);
+  cursor: pointer;
+  padding: var(--alp-space-3) var(--alp-space-4) 44px var(--alp-space-4);
+}
+
+/* =========================================================
+   TRANSFER CALL BUTTON
+   ========================================================= */
+
+.alp-transfer-call-btn {
+  background: var(--alp-color-brand);
+  color: var(--alp-color-white);
+  border: none;
+  padding: 10px var(--alp-space-5);
+  border-radius: var(--alp-radius-full);
+  font-weight: var(--alp-font-weight-medium);
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: var(--alp-space-2);
+  transition: all 0.2s;
+}
+
+.alp-transfer-call-btn:hover {
+  background: var(--alp-color-brand-700);
+}
+
+.alp-script-status-tile__run-btn {
+  padding: 10px var(--alp-space-5);
+  background: var(--alp-color-blue-600);
+  color: var(--alp-color-white);
+  border: none;
+  border-radius: var(--alp-radius-full);
+  font-size: 14px;
+  font-weight: var(--alp-font-weight-medium);
+  cursor: pointer;
+  white-space: nowrap;
+  transition: background 0.2s;
+  display: flex;
+  align-items: center;
+  gap: var(--alp-space-2);
+}
+
+.alp-script-status-tile__run-btn:hover {
+  background: var(--alp-color-blue-700);
+}

@@ -1,0 +1,29 @@
+/* =========================================================
+   ALP DESIGN SYSTEM — CONNECTORS
+   Vertical lines and controls between step cards.
+   ========================================================= */
+
+.alp-order-connector {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  max-width: 280px;
+  min-height: 28px;
+  padding: var(--alp-space-1) 0;
+}
+
+.alp-order-connector--passive {
+  min-height: 20px;
+}
+
+.alp-order-connector--expanded {
+  max-width: 340px;
+}
+
+.alp-order-connector__line {
+  width: 2px;
+  height: 12px;
+  background: var(--alp-color-text-muted);
+  flex-shrink: 0;
+}

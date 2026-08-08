@@ -1,0 +1,145 @@
+/* =========================================================
+   ALP DESIGN SYSTEM — BADGES & TAGS
+   Small inline labels: status badges, type tags, id tags,
+   journey check badges.
+   ========================================================= */
+
+/* ---- Status badges ---- */
+.alp-badge {
+  font-size: var(--alp-font-size-xs);
+  padding: 2px 7px;
+  border-radius: 4px;
+  font-weight: var(--alp-font-weight-semibold);
+  white-space: nowrap;
+}
+.alp-badge--auto {
+  background: var(--alp-color-success);
+  color: var(--alp-color-white);
+}
+.alp-badge--manual {
+  background: var(--alp-color-question);
+  color: var(--alp-color-white);
+}
+
+/* ---- Type tags (content-card pill labels) ---- */
+.alp-type-tag {
+  display: inline-flex;
+  align-items: center;
+  font-size: var(--alp-font-size-xs);
+  font-weight: var(--alp-font-weight-bold);
+  letter-spacing: var(--alp-letter-spacing-wider);
+  text-transform: uppercase;
+  padding: 4px 10px;
+  border-radius: var(--alp-radius-full);
+  border: 1px solid transparent;
+}
+
+.alp-type-tag[data-type="prompt"] {
+  background: var(--alp-color-blue-100);
+  color: var(--alp-color-prompt);
+  border-color: var(--alp-color-blue-300);
+}
+
+.alp-type-tag[data-type="question"] {
+  background: #ede9fe;
+  color: var(--alp-color-question);
+  border-color: var(--alp-color-purple-300);
+}
+
+.alp-type-tag[data-type="required-check"] {
+  background: var(--alp-color-green-50);
+  color: var(--alp-color-green-800);
+  border-color: var(--alp-color-green-300);
+}
+
+.alp-type-tag[data-type="log-task"] {
+  background: var(--alp-color-amber-50);
+  color: #9a3412;
+  border-color: var(--alp-color-amber-400);
+}
+
+.alp-type-tag[data-type="end-call"] {
+  background: var(--alp-color-red-50);
+  color: var(--alp-color-red-800);
+  border-color: var(--alp-color-red-300);
+}
+
+/* ---- ID tags (monospace identifier chips) ---- */
+.alp-id-tag {
+  display: inline-flex;
+  align-items: center;
+  font-size: 12px;
+  font-weight: var(--alp-font-weight-medium);
+  color: var(--alp-color-slate-700);
+  background: var(--alp-color-surface-raised);
+  border: 1px solid var(--alp-color-border-strong);
+  padding: 4px 10px;
+  border-radius: var(--alp-radius-sm);
+  font-family: var(--alp-font-family-mono);
+  max-width: 100%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* ---- Journey check badges ---- */
+.alp-script-journey__check-badge {
+  background: var(--alp-color-green-800);
+  color: var(--alp-color-white);
+  font-size: var(--alp-font-size-sm);
+  padding: 2px var(--alp-space-2);
+  border-radius: var(--alp-radius-full);
+  margin-left: auto;
+}
+
+.alp-script-journey__check-badge.manual {
+  background-color: #8b5cf6;
+  color: var(--alp-color-white);
+}
+
+/* =========================================================
+   SCRIPT SETUP BADGES
+   Active, new, and historic version badges.
+   ========================================================= */
+
+.alp-script-setup__active-badge {
+  background: var(--alp-color-green-800);
+  color: var(--alp-color-white);
+  font-size: 12px;
+  padding: var(--alp-space-1) var(--alp-space-2) 2px var(--alp-space-2);
+  border-radius: var(--alp-radius-full);
+  margin-top: var(--alp-space-2);
+  display: inline-block;
+}
+
+.alp-script-setup__new-badge {
+  background: var(--alp-color-blue-500);
+  color: var(--alp-color-white);
+  font-size: 12px;
+  padding: var(--alp-space-1) var(--alp-space-2) 2px var(--alp-space-2);
+  border-radius: var(--alp-radius-full);
+  display: inline-block;
+  font-weight: var(--alp-font-weight-semibold);
+  margin-top: var(--alp-space-2);
+}
+
+.alp-script-setup__historic-badge {
+  background: #ca8a04;
+  color: var(--alp-color-white);
+  font-size: 12px;
+  padding: 2px 10px;
+  border-radius: var(--alp-radius-full);
+  font-weight: var(--alp-font-weight-semibold);
+}
+
+/* =========================================================
+   RECENT CALLERS BADGE-LIKE TEXT
+   Reason label displayed inside caller tiles.
+   ========================================================= */
+
+.alp-recent-callers__reason {
+  display: block;
+  font-size: var(--alp-font-size-sm);
+  color: var(--alp-color-legacy-charcoal);
+  margin-top: 14px;
+}

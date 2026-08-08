@@ -1,0 +1,19 @@
+/* =========================================================
+   ALP DESIGN SYSTEM — PRIMITIVE ELEVATION
+   Z-index and overlay opacity primitives.
+   ========================================================= */
+
+:root {
+  --alp-z-base: 0;
+  --alp-z-dropdown: 100;
+  --alp-z-sticky: 200;
+  --alp-z-fixed: 300;
+  --alp-z-popover: 400;
+  --alp-z-modal-backdrop: 500;
+  --alp-z-modal: 600;
+  --alp-z-toast: 700;
+  --alp-z-tooltip: 800;
+
+  --alp-opacity-backdrop: 0.45;
+  --alp-opacity-disabled: 0.5;
+}

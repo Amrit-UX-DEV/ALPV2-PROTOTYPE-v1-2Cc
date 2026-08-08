@@ -1,0 +1,19 @@
+/* =========================================================
+   ALP DESIGN SYSTEM — PRIMITIVE SPACING
+   4px base grid. All spacing tokens are multiples of 4px.
+   ========================================================= */
+
+:root {
+  --alp-space-0: 0px;
+  --alp-space-1: 4px;
+  --alp-space-2: 8px;
+  --alp-space-3: 12px;
+  --alp-space-4: 16px;
+  --alp-space-5: 20px;
+  --alp-space-6: 24px;
+  --alp-space-7: 28px;
+  --alp-space-8: 32px;
+  --alp-space-10: 40px;
+  --alp-space-12: 48px;
+  --alp-space-16: 64px;
+}

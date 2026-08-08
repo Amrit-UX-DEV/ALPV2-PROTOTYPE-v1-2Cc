@@ -1,0 +1,36 @@
+/* =========================================================
+   ALP DESIGN SYSTEM — UTILITIES
+   Small helper classes for layout and text.
+   ========================================================= */
+
+/* Flex */
+.alp-flex { display: flex; }
+.alp-flex-col { display: flex; flex-direction: column; }
+.alp-items-center { align-items: center; }
+.alp-justify-center { justify-content: center; }
+.alp-gap-1 { gap: var(--alp-space-1); }
+.alp-gap-2 { gap: var(--alp-space-2); }
+.alp-gap-3 { gap: var(--alp-space-3); }
+.alp-gap-4 { gap: var(--alp-space-4); }
+
+/* Text */
+.alp-text-sm { font-size: var(--alp-font-size-sm); }
+.alp-text-md { font-size: var(--alp-font-size-md); }
+.alp-text-lg { font-size: var(--alp-font-size-lg); }
+.alp-font-semibold { font-weight: var(--alp-font-weight-semibold); }
+.alp-font-bold { font-weight: var(--alp-font-weight-bold); }
+.alp-text-muted { color: var(--alp-color-text-muted); }
+.alp-text-soft { color: var(--alp-color-text-soft); }
+
+/* Screen reader only */
+.alp-sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}

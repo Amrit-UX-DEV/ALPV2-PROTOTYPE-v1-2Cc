@@ -1,0 +1,105 @@
+/* =========================================================
+   ALP DESIGN SYSTEM — PRIMITIVE COLORS
+   Raw color values only. No semantic meaning here.
+   ========================================================= */
+
+:root {
+  /* Neutral scale (slate) */
+  --alp-color-white: #ffffff;
+  --alp-color-black: #0f172a;
+
+  --alp-color-slate-50: #f8fafc;
+  --alp-color-slate-100: #f1f5f9;
+  --alp-color-slate-200: #e2e8f0;
+  --alp-color-slate-300: #cbd5e1;
+  --alp-color-slate-400: #94a3b8;
+  --alp-color-slate-500: #64748b;
+  --alp-color-slate-600: #475569;
+  --alp-color-slate-700: #334155;
+  --alp-color-slate-800: #1e293b;
+  --alp-color-slate-900: #0f172a;
+
+  /* Brand (indigo/navy) */
+  --alp-color-brand-50: #eef2ff;
+  --alp-color-brand-100: #e0e7ff;
+  --alp-color-brand-200: #c7d2fe;
+  --alp-color-brand-300: #a5b4fc;
+  --alp-color-brand-400: #818cf8;
+  --alp-color-brand-500: #6366f1;
+  --alp-color-brand-600: #444f83;
+  --alp-color-brand-700: #363f6b;
+  --alp-color-brand-800: #2d3559;
+  --alp-color-brand-900: #1e2440;
+
+  /* Blue */
+  --alp-color-blue-50: #eff6ff;
+  --alp-color-blue-100: #dbeafe;
+  --alp-color-blue-200: #bfdbfe;
+  --alp-color-blue-300: #93c5fd;
+  --alp-color-blue-400: #60a5fa;
+  --alp-color-blue-500: #3b82f6;
+  --alp-color-blue-600: #2563eb;
+  --alp-color-blue-700: #1e40af;
+  --alp-color-blue-800: #1e3a8a;
+  --alp-color-blue-900: #172554;
+
+  /* Purple */
+  --alp-color-purple-50: #faf5ff;
+  --alp-color-purple-100: #f3e8ff;
+  --alp-color-purple-200: #e9d5ff;
+  --alp-color-purple-300: #d8b4fe;
+  --alp-color-purple-400: #c084fc;
+  --alp-color-purple-500: #a855f7;
+  --alp-color-purple-600: #7c3aed;
+  --alp-color-purple-700: #5b21b6;
+  --alp-color-purple-800: #5b21b6;
+  --alp-color-purple-900: #4c1d95;
+
+  /* Green */
+  --alp-color-green-50: #ecfdf5;
+  --alp-color-green-100: #d1fae5;
+  --alp-color-green-200: #a7f3d0;
+  --alp-color-green-300: #6ee7b7;
+  --alp-color-green-400: #34d399;
+  --alp-color-green-500: #10b981;
+  --alp-color-green-600: #059669;
+  --alp-color-green-700: #047857;
+  --alp-color-green-800: #065f46;
+  --alp-color-green-900: #064e3b;
+
+  /* Amber / Orange */
+  --alp-color-amber-50: #fffbeb;
+  --alp-color-amber-100: #fef3c7;
+  --alp-color-amber-200: #fde68a;
+  --alp-color-amber-300: #fcd34d;
+  --alp-color-amber-400: #fbbf24;
+  --alp-color-amber-500: #f59e0b;
+  --alp-color-amber-600: #d97706;
+  --alp-color-amber-700: #b45309;
+  --alp-color-amber-800: #92400e;
+  --alp-color-amber-900: #78350f;
+
+  /* Red */
+  --alp-color-red-50: #fef2f2;
+  --alp-color-red-100: #fee2e2;
+  --alp-color-red-200: #fecaca;
+  --alp-color-red-300: #fca5a5;
+  --alp-color-red-400: #f87171;
+  --alp-color-red-500: #ef4444;
+  --alp-color-red-600: #dc2626;
+  --alp-color-red-700: #b91c1c;
+  --alp-color-red-800: #991b1b;
+  --alp-color-red-900: #7f1d1d;
+
+  /* Legacy / one-off raw colors that still appear in the prototype
+     These are preserved as primitives so they can be tokenized or removed later. */
+  --alp-color-legacy-green: #5cb85c;
+  --alp-color-legacy-green-soft: #ebf7eb;
+  --alp-color-legacy-blue: #4c5992;
+  --alp-color-legacy-blue-dark: #3c4981;
+  --alp-color-legacy-gray: #f3f3f3;
+  --alp-color-legacy-gray-medium: #dcdcdc;
+  --alp-color-legacy-gray-text: #888787;
+  --alp-color-legacy-gray-border: #e3e1e1;
+  --alp-color-legacy-charcoal: #222222;
+}
