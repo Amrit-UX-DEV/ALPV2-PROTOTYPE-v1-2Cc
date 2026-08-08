@@ -16,8 +16,7 @@ import { CommonModule } from '@angular/common';
   selector: 'alpha-step-picker',
   standalone: true,
   imports: [CommonModule],
-  templateUrl: './step-picker.component.html',
-  styleUrls: ['./step-picker.component.css']
+  templateUrl: './step-picker.component.html'
 })
 export class StepPickerComponent implements OnChanges, AfterViewInit {
   @ViewChild('dialogRef') dialogRef!: ElementRef<HTMLDialogElement>;

@@ -13,8 +13,7 @@ import { ContentType } from '../../models/script-builder.models';
   selector: 'alpha-type-picker',
   standalone: true,
   imports: [CommonModule],
-  templateUrl: './type-picker.component.html',
-  styleUrls: ['./type-picker.component.css']
+  templateUrl: './type-picker.component.html'
 })
 export class TypePickerComponent implements AfterViewInit {
   @ViewChild('dialogRef') dialogRef!: ElementRef<HTMLDialogElement>;

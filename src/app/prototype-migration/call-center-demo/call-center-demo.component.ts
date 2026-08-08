@@ -33,7 +33,6 @@ import { AlphaWorkPlanComponent } from './components/work-plan/alpha-work-plan.c
     
   ],
   templateUrl: './call-center-demo.component.html',
-  styleUrls: ['./call-center-demo.component.css'],
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
 })
 export class CallCenterDemoComponent implements AfterViewInit {

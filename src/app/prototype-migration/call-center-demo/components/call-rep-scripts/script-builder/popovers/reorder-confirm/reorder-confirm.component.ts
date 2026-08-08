@@ -12,8 +12,7 @@ import { CommonModule } from '@angular/common';
   selector: 'alpha-reorder-confirm',
   standalone: true,
   imports: [CommonModule],
-  templateUrl: './reorder-confirm.component.html',
-  styleUrls: ['./reorder-confirm.component.css']
+  templateUrl: './reorder-confirm.component.html'
 })
 export class ReorderConfirmComponent implements AfterViewInit {
   @ViewChild('dialogRef') dialogRef!: ElementRef<HTMLDialogElement>;

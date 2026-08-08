@@ -80,7 +80,6 @@
 
 
 @import './demo.css';
-@import './script-builder.styles.css';
 
 
 
@@ -88,3 +87,5 @@
 @import './css-stack/css-user-theme--dark.css';
 @import './css-stack/css-user-theme--light.css';
 
+/* ALP Design System */
+@import '../../alp-design-system/_index.css';

@@ -34,8 +34,7 @@ import { ConfirmPopoverComponent } from '../popovers/confirm-popover/confirm-pop
     StepPickerComponent,
     ConfirmPopoverComponent
   ],
-  templateUrl: './script-toolkit.component.html',
-  styleUrls: ['./script-toolkit.component.css']
+  templateUrl: './script-toolkit.component.html'
 })
 export class ScriptToolkitComponent implements OnChanges {
 
@@ -46,7 +45,6 @@ export class ScriptToolkitComponent implements OnChanges {
   @Output() saved = new EventEmitter<ScriptStep>();
   @Output() removed = new EventEmitter<string>();
   @Output() cancelled = new EventEmitter<void>();
-
 
   readonly title = signal('');
   readonly hideTitleInJourney = signal(false);
@@ -351,10 +349,6 @@ export class ScriptToolkitComponent implements OnChanges {
     );
     this.showConfirm.set(true);
   }
-
-  /**
-   * Clone: keep content + conditions; new ids; clear nextStep only.
-   */
 
   private buildStepPayload(): ScriptStep {
     const id = this.editingId() || `step-${Date.now()}`;
