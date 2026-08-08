@@ -12,14 +12,14 @@ dialog {
 }
 
 dialog::backdrop {
-  background: rgba(var(--alp-shadow-color), var(--alp-opacity-backdrop));
+  background: oklch(from var(--alp-shadow-color) l c h / var(--alp-opacity-backdrop));
 }
 
 /* ---- Script-builder popover overlay ---- */
 .alp-script-builder__popover-overlay {
   position: fixed;
   inset: 0;
-  background: rgba(var(--alp-shadow-color), var(--alp-opacity-backdrop));
+  background: oklch(from var(--alp-shadow-color) l c h / var(--alp-opacity-backdrop));
   display: flex;
   align-items: center;
   justify-content: center;
@@ -106,7 +106,7 @@ dialog::backdrop {
 .alp-preview-overlay {
   position: fixed;
   inset: 0;
-  background: rgba(var(--alp-shadow-color), var(--alp-opacity-backdrop));
+  background: oklch(from var(--alp-shadow-color) l c h / var(--alp-opacity-backdrop));
   display: flex;
   align-items: center;
   justify-content: center;
@@ -123,7 +123,7 @@ dialog::backdrop {
   display: flex;
   flex-direction: column;
   border-radius: var(--alp-radius-lg);
-  box-shadow: 0 12px 40px rgba(var(--alp-shadow-color), 0.2);
+  box-shadow: 0 12px 40px oklch(from var(--alp-shadow-color) l c h / 0.2);
   background: var(--alp-color-background);
 }
 

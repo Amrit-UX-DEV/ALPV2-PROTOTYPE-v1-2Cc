@@ -11,7 +11,7 @@
   background: var(--alp-color-background);
   border: 1px solid var(--alp-color-border);
   border-radius: var(--alp-radius-lg);
-  box-shadow: 0 4px 25px rgba(0, 0, 0, 0.08);
+  box-shadow: 0 4px 25px oklch(from var(--alp-shadow-color) l c h / 0.08);
   font-family: var(--alp-font-family-sans);
 }
 

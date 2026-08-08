@@ -130,7 +130,7 @@
 .alp-add-content-tile:hover {
   border-color: var(--alp-color-brand);
   background: var(--alp-color-brand-50);
-  box-shadow: 0 0 0 3px rgba(68, 79, 131, 0.2);
+  box-shadow: 0 0 0 3px oklch(from var(--alp-color-brand) l c h / 0.2);
   color: var(--alp-color-slate-700);
 }
 
@@ -209,7 +209,7 @@
 .alp-script-setup__tile--selected {
   border-color: var(--alp-color-brand);
   background: var(--alp-color-brand-50);
-  box-shadow: 0 0 0 3px rgba(68, 79, 131, 0.2);
+  box-shadow: 0 0 0 3px oklch(from var(--alp-color-brand) l c h / 0.2);
 }
 
 .alp-script-setup__tile-label {

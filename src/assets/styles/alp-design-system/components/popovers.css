@@ -19,7 +19,7 @@
 }
 
 .alp-order-popover::backdrop {
-  background: rgba(var(--alp-shadow-color), var(--alp-opacity-backdrop));
+  background: oklch(from var(--alp-shadow-color) l c h / var(--alp-opacity-backdrop));
 }
 
 /* Generic modal header used inside popovers/dialogs */
@@ -228,7 +228,7 @@
 .alp-transfer-popover-overlay {
   position: fixed;
   inset: 0;
-  background: rgba(0, 0, 0, 0.5);
+  background: oklch(from var(--alp-shadow-color) l c h / 0.5);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -240,7 +240,7 @@
   width: 420px;
   max-width: 95%;
   border-radius: var(--alp-radius-lg);
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+  box-shadow: 0 10px 30px oklch(from var(--alp-shadow-color) l c h / 0.2);
   overflow: hidden;
 }
 
@@ -287,7 +287,7 @@
   left: 0;
   right: 0;
   bottom: 0;
-  background: rgba(0, 0, 0, 0.4);
+  background: oklch(from var(--alp-shadow-color) l c h / 0.4);
   display: flex;
   align-items: flex-start;
   justify-content: flex-end;
