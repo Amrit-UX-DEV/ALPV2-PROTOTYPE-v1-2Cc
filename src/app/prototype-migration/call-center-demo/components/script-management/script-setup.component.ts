@@ -144,11 +144,16 @@ export class ScriptSetupComponent {
   readonly newScriptDescription = signal('');
   readonly isCopyDialog = signal(false);
   readonly copySourceScript = signal<ExistingScript | null>(null);
+  readonly copyHistoricVersion = signal<VersionEntry | null>(null);
   readonly editingDraftId = signal<string | null>(null);
 
   readonly showVersionHistory = signal(false);
   readonly selectedScriptForHistory = signal<ExistingScript | null>(null);
   readonly selectedHistoricVersion = signal<VersionEntry | null>(null);
+
+  /* Draft replacement confirmation */
+  readonly showDraftReplaceConfirm = signal(false);
+  readonly pendingExistingScriptId = signal<string | null>(null);
 
   selectedProductLabel(): string {
     const id = this.selectedProduct();
@@ -257,18 +262,23 @@ export class ScriptSetupComponent {
   openCreatePopover() {
     this.isCopyDialog.set(false);
     this.copySourceScript.set(null);
+    this.copyHistoricVersion.set(null);
     this.newScriptName.set('');
     this.newScriptDescription.set('');
     this.editingDraftId.set(null);
     this.showCreateScriptPopover.set(true);
   }
 
-  /* Copy existing script */
-  openCopyDialog(script: ExistingScript) {
-    this.clearScriptSelection();
+  /* Copy existing or historic script */
+  openCopyDialog(script: ExistingScript, version: VersionEntry | null = null) {
     this.isCopyDialog.set(true);
     this.copySourceScript.set(script);
-    this.newScriptName.set(`${script.name} (Copy)`);
+    this.copyHistoricVersion.set(version);
+    this.newScriptName.set(
+      version
+        ? `${script.name} (Copy of v${version.version})`
+        : `${script.name} (Copy)`
+    );
     this.newScriptDescription.set(script.description || '');
     this.editingDraftId.set(null);
     this.showCreateScriptPopover.set(true);
@@ -281,6 +291,7 @@ export class ScriptSetupComponent {
         ? this.existingScripts.find(s => s.scriptFileId === script.sourceScriptFileId) || null
         : null
     );
+    this.copyHistoricVersion.set(null);
     this.newScriptName.set(script.name);
     this.newScriptDescription.set(script.description);
     this.editingDraftId.set(script.id);
@@ -293,6 +304,7 @@ export class ScriptSetupComponent {
     this.isCreateNewSelected.set(false);
     this.isCopyDialog.set(false);
     this.copySourceScript.set(null);
+    this.copyHistoricVersion.set(null);
     this.editingDraftId.set(null);
     this.newScriptName.set('');
     this.newScriptDescription.set('');
@@ -344,7 +356,10 @@ export class ScriptSetupComponent {
     this.isCreateNewSelected.set(false);
     this.isCopyDialog.set(false);
     this.copySourceScript.set(null);
+    this.copyHistoricVersion.set(null);
     this.editingDraftId.set(null);
+    this.selectedHistoricVersion.set(null);
+    this.selectedScriptForHistory.set(null);
     this.showCreateScriptPopover.set(false);
 
     const draft = this.createdScripts().find(s => s.id === draftId);
@@ -368,7 +383,9 @@ export class ScriptSetupComponent {
     if (this.selectedScriptId() === id) {
       this.selectedScriptId.set(null);
     }
-    this.showCreateTile.set(true);
+    if (this.createdScripts().length === 0) {
+      this.showCreateTile.set(true);
+    }
   }
 
   selectScript(id: string) {
@@ -405,6 +422,32 @@ export class ScriptSetupComponent {
         requestTypeLabel: this.selectedRequestTypeLabel()
       });
     }
+  }
+
+  /* Selecting an existing script while a draft exists needs confirmation */
+  onSelectExistingScript(id: string) {
+    if (this.createdScripts().length > 0) {
+      this.pendingExistingScriptId.set(id);
+      this.showDraftReplaceConfirm.set(true);
+    } else {
+      this.selectScript(id);
+    }
+  }
+
+  confirmReplaceDraft() {
+    const id = this.pendingExistingScriptId();
+    if (id) {
+      this.createdScripts.set([]);
+      this.showCreateTile.set(true);
+      this.selectScript(id);
+    }
+    this.pendingExistingScriptId.set(null);
+    this.showDraftReplaceConfirm.set(false);
+  }
+
+  cancelReplaceDraft() {
+    this.pendingExistingScriptId.set(null);
+    this.showDraftReplaceConfirm.set(false);
   }
 
   openVersionHistory(script: ExistingScript) {
