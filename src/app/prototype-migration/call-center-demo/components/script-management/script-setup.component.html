@@ -97,31 +97,29 @@
               }
             </div>
 
-            @if ((selectedScriptId() === script.id && !selectedHistoricVersion()) || !selectedScriptId()) {
-              <div class="alp-script-setup__script-actions">
-                <button type="button"
-                        (click)="openCopyDialog(script)"
-                        class="alp-btn alp-btn--secondary alp-btn--icon"
-                        title="Copy Script">
-                  <i class="fas fa-clone alp-btn__icon--md"></i>
+            <div class="alp-script-setup__script-actions">
+              <button type="button"
+                      (click)="openCopyDialog(script)"
+                      class="alp-btn alp-btn--secondary alp-btn--icon"
+                      title="Copy Script">
+                <i class="fas fa-clone alp-btn__icon--md"></i>
+              </button>
+              <button type="button"
+                      (click)="openVersionHistory(script)"
+                      class="alp-btn alp-btn--secondary alp-btn--icon"
+                      title="View Version History">
+                <i class="fas fa-history alp-btn__icon--md"></i>
+              </button>
+              @if (selectedScriptId() === script.id && !selectedHistoricVersion()) {
+                <button type="button" (click)="clearScriptSelection()" class="alp-btn alp-btn--secondary">
+                  Cancel Selection
                 </button>
-                <button type="button"
-                        (click)="openVersionHistory(script)"
-                        class="alp-btn alp-btn--secondary alp-btn--icon"
-                        title="View Version History">
-                  <i class="fas fa-history alp-btn__icon--md"></i>
+              } @else {
+                <button type="button" (click)="onSelectExistingScript(script.id)" class="alp-btn alp-btn--primary">
+                  Select Script
                 </button>
-                @if (selectedScriptId() === script.id) {
-                  <button type="button" (click)="clearScriptSelection()" class="alp-btn alp-btn--secondary">
-                    Cancel Selection
-                  </button>
-                } @else {
-                  <button type="button" (click)="selectScript(script.id)" class="alp-btn alp-btn--primary">
-                    Select Script
-                  </button>
-                }
-              </div>
-            }
+              }
+            </div>
           </div>
 
           <div class="alp-script-setup__historic-container"
@@ -138,16 +136,10 @@
               </div>
               <div class="alp-script-setup__historic-actions">
                 <button type="button"
-                        (click)="openCopyDialog(script)"
+                        (click)="openCopyDialog(script, selectedHistoricVersion())"
                         class="alp-btn alp-btn--secondary alp-btn--icon"
                         title="Copy Script">
                   <i class="fas fa-clone alp-btn__icon--md"></i>
-                </button>
-                <button type="button"
-                        (click)="openVersionHistory(script)"
-                        class="alp-btn alp-btn--secondary alp-btn--icon"
-                        title="View Version History">
-                  <i class="fas fa-history alp-btn__icon--md"></i>
                 </button>
                 <button type="button" (click)="clearScriptSelection()" class="alp-btn alp-btn--secondary">
                   Cancel Selection
@@ -251,7 +243,13 @@
         <div class="alp-dialog__content">
           @if (isCopyDialog() && copySourceScript()) {
             <div class="alp-script-setup__copy-hint">
-              You are about to create a copy draft of <strong>{{ copySourceScript()!.name }}</strong>.
+              You are about to create a copy draft of
+              <strong>
+                {{ copySourceScript()!.name }}
+                @if (copyHistoricVersion()) {
+                  (v{{ copyHistoricVersion()!.version }})
+                }
+              </strong>.
               You can edit the name and description below.
             </div>
           }
@@ -315,6 +313,27 @@
               Select Script
             </button>
           </div>
+        </div>
+      </div>
+    </div>
+  }
+
+  <!-- Draft replacement confirmation dialog -->
+  @if (showDraftReplaceConfirm()) {
+    <div class="alp-dialog-overlay" (click)="cancelReplaceDraft()">
+      <div class="alp-dialog alp-dialog--small" (click)="$event.stopPropagation()">
+        <div class="alp-dialog__header">
+          <h4>Replace Draft?</h4>
+          <button type="button" (click)="cancelReplaceDraft()" class="alp-dialog__close-btn" aria-label="Close">
+            <i class="fas fa-times"></i>
+          </button>
+        </div>
+        <div class="alp-dialog__content">
+          Selecting this existing script will remove your current draft. Do you wish to continue?
+        </div>
+        <div class="alp-dialog__footer">
+          <button type="button" (click)="cancelReplaceDraft()" class="alp-btn alp-btn--secondary">No, Keep Draft</button>
+          <button type="button" (click)="confirmReplaceDraft()" class="alp-btn alp-btn--primary">Yes, Continue</button>
         </div>
       </div>
     </div>
