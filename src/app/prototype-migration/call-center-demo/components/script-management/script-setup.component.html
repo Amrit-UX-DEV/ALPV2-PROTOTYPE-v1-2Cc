@@ -47,14 +47,15 @@
         Existing Scripts for {{ selectedProductLabel() }} — {{ selectedRequestTypeLabel() }}
       </h3>
 
-      <button type="button"
-              class="alp-placeholder-tile alp-placeholder-tile--spaced"
-              *ngIf="showCreateTile()"
-              [class.alp-placeholder-tile--selected]="isCreateNewSelected()"
-              (click)="toggleCreateNew()">
-        <i class="fas fa-plus"></i>
-        <span>Create New Script</span>
-      </button>
+      @if (showCreateTile() && !selectedScriptId()) {
+        <button type="button"
+                class="alp-placeholder-tile alp-placeholder-tile--spaced"
+                [class.alp-placeholder-tile--selected]="isCreateNewSelected()"
+                (click)="toggleCreateNew()">
+          <i class="fas fa-plus"></i>
+          <span>Create New Script</span>
+        </button>
+      }
 
       <div class="alp-script-setup__script-list">
         <div *ngFor="let script of createdScripts()" class="alp-script-setup__script-group">
@@ -70,14 +71,16 @@
                 <span class="alp-status-tag alp-status-tag--draft">Draft</span>
               }
             </div>
-            <div class="alp-script-setup__script-actions">
-              <button type="button" (click)="cancelCreatedScript(script.id)" class="alp-btn alp-btn--secondary">
-                Cancel
-              </button>
-              <button type="button" (click)="editCreatedScript(script)" class="alp-btn alp-btn--primary">
-                Edit
-              </button>
-            </div>
+            @if (selectedScriptId() === script.id || !selectedScriptId()) {
+              <div class="alp-script-setup__script-actions">
+                <button type="button" (click)="cancelCreatedScript(script.id)" class="alp-btn alp-btn--secondary">
+                  Cancel
+                </button>
+                <button type="button" (click)="editCreatedScript(script)" class="alp-btn alp-btn--primary">
+                  Edit
+                </button>
+              </div>
+            }
           </div>
         </div>
 
@@ -94,29 +97,31 @@
               }
             </div>
 
-            <div class="alp-script-setup__script-actions">
-              <button type="button"
-                      (click)="openCopyDialog(script)"
-                      class="alp-btn alp-btn--outline alp-btn--icon"
-                      title="Copy Script">
-                <i class="fas fa-clone alp-btn__icon--18"></i>
-              </button>
-              <button type="button"
-                      (click)="openVersionHistory(script)"
-                      class="alp-btn alp-btn--outline alp-btn--icon"
-                      title="View Version History">
-                <i class="fas fa-history alp-btn__icon--18"></i>
-              </button>
-              @if (selectedScriptId() === script.id) {
-                <button type="button" (click)="clearScriptSelection()" class="alp-btn alp-btn--secondary">
-                  Cancel
+            @if (selectedScriptId() === script.id || !selectedScriptId()) {
+              <div class="alp-script-setup__script-actions">
+                <button type="button"
+                        (click)="openCopyDialog(script)"
+                        class="alp-btn alp-btn--secondary alp-btn--icon"
+                        title="Copy Script">
+                  <i class="fas fa-clone alp-btn__icon--md"></i>
                 </button>
-              } @else {
-                <button type="button" (click)="selectScript(script.id)" class="alp-btn alp-btn--primary">
-                  Select Script
+                <button type="button"
+                        (click)="openVersionHistory(script)"
+                        class="alp-btn alp-btn--secondary alp-btn--icon"
+                        title="View Version History">
+                  <i class="fas fa-history alp-btn__icon--md"></i>
                 </button>
-              }
-            </div>
+                @if (selectedScriptId() === script.id) {
+                  <button type="button" (click)="clearScriptSelection()" class="alp-btn alp-btn--secondary">
+                    Cancel Selection
+                  </button>
+                } @else {
+                  <button type="button" (click)="selectScript(script.id)" class="alp-btn alp-btn--primary">
+                    Select Script
+                  </button>
+                }
+              </div>
+            }
           </div>
 
           <div class="alp-script-setup__historic-container"
@@ -293,7 +298,7 @@
               <span>{{ version.date }} • {{ version.editedBy }}</span>
             </div>
             <button type="button" (click)="selectVersion(version)" class="alp-btn alp-btn--primary">
-              Select
+              Select Script
             </button>
           </div>
         </div>

@@ -164,7 +164,4 @@
   cursor: pointer;
 }
 
-/* ---- Icon button icon sizing ---- */
-.alp-btn--icon-18 i {
-  font-size: var(--alp-font-size-lg);
-}
+
