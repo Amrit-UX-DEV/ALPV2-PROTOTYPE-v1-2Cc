@@ -46,6 +46,12 @@ interface CreatedScript {
   copy?: boolean;
 }
 
+type PendingAction =
+  | { type: 'select-existing'; scriptId: string }
+  | { type: 'create-new' }
+  | { type: 'copy'; script: ExistingScript; version: VersionEntry | null }
+  | { type: 'select-historic'; script: ExistingScript; version: VersionEntry };
+
 @Component({
   selector: 'alpha-script-setup',
   standalone: true,
@@ -153,7 +159,7 @@ export class ScriptSetupComponent {
 
   /* Draft replacement confirmation */
   readonly showDraftReplaceConfirm = signal(false);
-  readonly pendingExistingScriptId = signal<string | null>(null);
+  readonly pendingAction = signal<PendingAction | null>(null);
 
   selectedProductLabel(): string {
     const id = this.selectedProduct();
@@ -250,12 +256,18 @@ export class ScriptSetupComponent {
   }
 
   /* Create new script */
-  toggleCreateNew() {
-    this.isCreateNewSelected.set(!this.isCreateNewSelected());
-    if (this.isCreateNewSelected()) {
-      this.clearScriptSelection();
-      this.isCreateNewSelected.set(true);
-      this.openCreatePopover();
+  startCreateNew() {
+    this.clearScriptSelection();
+    this.isCreateNewSelected.set(true);
+    this.openCreatePopover();
+  }
+
+  requestCreateNew() {
+    if (this.createdScripts().length > 0) {
+      this.pendingAction.set({ type: 'create-new' });
+      this.showDraftReplaceConfirm.set(true);
+    } else {
+      this.startCreateNew();
     }
   }
 
@@ -270,6 +282,15 @@ export class ScriptSetupComponent {
   }
 
   /* Copy existing or historic script */
+  requestCopy(script: ExistingScript, version: VersionEntry | null = null) {
+    if (this.createdScripts().length > 0) {
+      this.pendingAction.set({ type: 'copy', script, version });
+      this.showDraftReplaceConfirm.set(true);
+    } else {
+      this.openCopyDialog(script, version);
+    }
+  }
+
   openCopyDialog(script: ExistingScript, version: VersionEntry | null = null) {
     this.isCopyDialog.set(true);
     this.copySourceScript.set(script);
@@ -425,9 +446,9 @@ export class ScriptSetupComponent {
   }
 
   /* Selecting an existing script while a draft exists needs confirmation */
-  onSelectExistingScript(id: string) {
+  requestSelectExisting(id: string) {
     if (this.createdScripts().length > 0) {
-      this.pendingExistingScriptId.set(id);
+      this.pendingAction.set({ type: 'select-existing', scriptId: id });
       this.showDraftReplaceConfirm.set(true);
     } else {
       this.selectScript(id);
@@ -435,18 +456,38 @@ export class ScriptSetupComponent {
   }
 
   confirmReplaceDraft() {
-    const id = this.pendingExistingScriptId();
-    if (id) {
-      this.createdScripts.set([]);
-      this.showCreateTile.set(true);
-      this.selectScript(id);
+    const action = this.pendingAction();
+    if (!action) return;
+
+    this.createdScripts.set([]);
+    this.showCreateTile.set(true);
+    this.selectedScriptId.set(null);
+    this.isCreateNewSelected.set(false);
+    this.selectedHistoricVersion.set(null);
+    this.selectedScriptForHistory.set(null);
+
+    switch (action.type) {
+      case 'select-existing':
+        this.selectScript(action.scriptId);
+        break;
+      case 'create-new':
+        this.startCreateNew();
+        break;
+      case 'copy':
+        this.openCopyDialog(action.script, action.version);
+        break;
+      case 'select-historic':
+        this.selectedScriptForHistory.set(action.script);
+        this.selectVersion(action.script, action.version);
+        break;
     }
-    this.pendingExistingScriptId.set(null);
+
+    this.pendingAction.set(null);
     this.showDraftReplaceConfirm.set(false);
   }
 
   cancelReplaceDraft() {
-    this.pendingExistingScriptId.set(null);
+    this.pendingAction.set(null);
     this.showDraftReplaceConfirm.set(false);
   }
 
@@ -459,9 +500,17 @@ export class ScriptSetupComponent {
     this.showVersionHistory.set(false);
   }
 
-  selectVersion(version: VersionEntry) {
-    const script = this.selectedScriptForHistory();
-    if (!script || !this.selectedProduct() || !this.selectedRequestType()) return;
+  requestSelectHistoric(script: ExistingScript, version: VersionEntry) {
+    if (this.createdScripts().length > 0) {
+      this.pendingAction.set({ type: 'select-historic', script, version });
+      this.showDraftReplaceConfirm.set(true);
+    } else {
+      this.selectVersion(script, version);
+    }
+  }
+
+  selectVersion(script: ExistingScript, version: VersionEntry) {
+    if (!this.selectedProduct() || !this.selectedRequestType()) return;
 
     this.selectedHistoricVersion.set(version);
     this.selectedScriptId.set(script.id);
@@ -480,7 +529,4 @@ export class ScriptSetupComponent {
     });
   }
 
-  cancelHistoricSelection() {
-    this.selectedHistoricVersion.set(null);
-  }
 }
