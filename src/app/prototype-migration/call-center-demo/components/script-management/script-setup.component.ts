@@ -248,8 +248,8 @@ export class ScriptSetupComponent {
   toggleCreateNew() {
     this.isCreateNewSelected.set(!this.isCreateNewSelected());
     if (this.isCreateNewSelected()) {
-      this.selectedScriptId.set(null);
-      this.selectedHistoricVersion.set(null);
+      this.clearScriptSelection();
+      this.isCreateNewSelected.set(true);
       this.openCreatePopover();
     }
   }
@@ -265,6 +265,7 @@ export class ScriptSetupComponent {
 
   /* Copy existing script */
   openCopyDialog(script: ExistingScript) {
+    this.clearScriptSelection();
     this.isCopyDialog.set(true);
     this.copySourceScript.set(script);
     this.newScriptName.set(`${script.name} (Copy)`);

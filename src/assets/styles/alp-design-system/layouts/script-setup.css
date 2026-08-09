@@ -99,6 +99,13 @@
   gap: var(--alp-space-4);
 }
 
+.alp-script-setup__historic-actions {
+  display: flex;
+  gap: var(--alp-space-2);
+  flex-wrap: wrap;
+  flex-shrink: 0;
+}
+
 .alp-script-setup__historic-info {
   flex: 1;
 }
