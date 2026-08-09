@@ -71,8 +71,8 @@
   flex-shrink: 0;
 }
 
-.alp-btn__icon--18 {
-  font-size: 10px;
+.alp-btn__icon--md {
+  font-size: 16px;
 }
 
 .alp-btn--ghost {
@@ -114,39 +114,6 @@
 
 .alp-order-move-btn:hover,
 .alp-order-undo-btn:hover {
-  color: var(--alp-color-slate-700);
-}
-
-/* =========================================================
-   SCRIPT SETUP BUTTONS (scoped)
-   The .alp-btn block in script-setup differs slightly from
-   the shared .alp-btn (padding, secondary style). Scope it
-   under .alp-script-setup so it only applies inside that panel.
-   ========================================================= */
-
-.alp-script-setup .alp-btn {
-  padding: 10px var(--alp-space-6);
-  border-radius: var(--alp-radius-full);
-  font-weight: var(--alp-font-weight-medium);
-  font-size: var(--alp-font-size-sm);
-  cursor: pointer;
-  transition: all 0.2s ease;
-  border: none;
-}
-
-.alp-script-setup .alp-btn--primary {
-  background-color: var(--alp-color-brand);
-  color: var(--alp-color-white);
-}
-
-.alp-script-setup .alp-btn--secondary {
-  background: var(--alp-color-surface);
-  border: 2px solid var(--alp-color-brand);
-  color: var(--alp-color-brand);
-}
-
-.alp-script-setup .alp-btn--secondary:hover {
-  background: var(--alp-color-brand-soft);
   color: var(--alp-color-slate-700);
 }
 
