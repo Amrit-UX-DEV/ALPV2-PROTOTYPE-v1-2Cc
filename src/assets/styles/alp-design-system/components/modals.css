@@ -73,6 +73,93 @@ dialog::backdrop {
   color: var(--alp-color-text-muted);
 }
 
+/* ---- Generic dialog (converged with script-builder popover shell) ---- */
+.alp-dialog-overlay {
+  position: fixed;
+  inset: 0;
+  background: oklch(from var(--alp-shadow-color) l c h / var(--alp-opacity-backdrop));
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: var(--alp-z-modal);
+  padding: var(--alp-space-4);
+}
+
+.alp-dialog {
+  background: var(--alp-color-surface);
+  max-height: 85vh;
+  border-radius: var(--alp-radius-lg);
+  box-shadow: var(--alp-shadow-lg);
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  width: 520px;
+  max-width: 100%;
+}
+
+.alp-dialog--small {
+  width: 520px;
+}
+
+.alp-dialog--medium {
+  width: 640px;
+}
+
+.alp-dialog--wide {
+  width: 860px;
+  max-width: 96vw;
+}
+
+.alp-dialog__header {
+  padding: var(--alp-space-4) var(--alp-space-5);
+  background: var(--alp-color-background);
+  border-bottom: 1px solid var(--alp-color-border);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-shrink: 0;
+}
+
+.alp-dialog__header h4 {
+  margin: 0;
+  font-size: var(--alp-font-size-lg);
+  font-weight: var(--alp-font-weight-bold);
+  color: var(--alp-color-text);
+  letter-spacing: var(--alp-letter-spacing-tight);
+  line-height: 1.3;
+}
+
+.alp-dialog__close-btn {
+  background: none;
+  border: none;
+  font-size: var(--alp-font-size-lg);
+  cursor: pointer;
+  color: var(--alp-color-text-muted);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.alp-dialog__content {
+  padding: var(--alp-space-6);
+  overflow-y: auto;
+  flex: 1;
+}
+
+.alp-dialog__footer {
+  padding: var(--alp-space-4) var(--alp-space-5);
+  background: var(--alp-color-background);
+  border-top: 1px solid var(--alp-color-border);
+  display: flex;
+  justify-content: flex-end;
+  gap: var(--alp-space-3);
+  flex-shrink: 0;
+}
+
+.alp-dialog__footer--split {
+  justify-content: space-between;
+}
+
 .alp-script-builder__popover-body {
   padding: var(--alp-space-6);
   overflow-y: auto;

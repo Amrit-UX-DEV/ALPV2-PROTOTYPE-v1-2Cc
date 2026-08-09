@@ -144,6 +144,7 @@ export class ScriptSetupComponent {
   readonly newScriptDescription = signal('');
   readonly isCopyDialog = signal(false);
   readonly copySourceScript = signal<ExistingScript | null>(null);
+  readonly editingDraftId = signal<string | null>(null);
 
   readonly showVersionHistory = signal(false);
   readonly selectedScriptForHistory = signal<ExistingScript | null>(null);
@@ -236,7 +237,7 @@ export class ScriptSetupComponent {
     this.requestTypeDialogSearch.set(value);
   }
 
-  private clearScriptSelection() {
+  clearScriptSelection() {
     this.selectedScriptId.set(null);
     this.isCreateNewSelected.set(false);
     this.selectedHistoricVersion.set(null);
@@ -258,6 +259,7 @@ export class ScriptSetupComponent {
     this.copySourceScript.set(null);
     this.newScriptName.set('');
     this.newScriptDescription.set('');
+    this.editingDraftId.set(null);
     this.showCreateScriptPopover.set(true);
   }
 
@@ -267,6 +269,21 @@ export class ScriptSetupComponent {
     this.copySourceScript.set(script);
     this.newScriptName.set(`${script.name} (Copy)`);
     this.newScriptDescription.set(script.description || '');
+    this.editingDraftId.set(null);
+    this.showCreateScriptPopover.set(true);
+  }
+
+  editCreatedScript(script: CreatedScript) {
+    this.isCopyDialog.set(!!script.copy);
+    this.copySourceScript.set(
+      script.copy && script.sourceScriptFileId
+        ? this.existingScripts.find(s => s.scriptFileId === script.sourceScriptFileId) || null
+        : null
+    );
+    this.newScriptName.set(script.name);
+    this.newScriptDescription.set(script.description);
+    this.editingDraftId.set(script.id);
+    this.isCreateNewSelected.set(false);
     this.showCreateScriptPopover.set(true);
   }
 
@@ -275,6 +292,7 @@ export class ScriptSetupComponent {
     this.isCreateNewSelected.set(false);
     this.isCopyDialog.set(false);
     this.copySourceScript.set(null);
+    this.editingDraftId.set(null);
     this.newScriptName.set('');
     this.newScriptDescription.set('');
   }
@@ -287,36 +305,56 @@ export class ScriptSetupComponent {
     const productId = this.selectedProduct()!;
     const requestTypeId = this.selectedRequestType()!;
     const source = this.copySourceScript();
-    const id = 'draft-' + Date.now();
-
     const sourceScriptFileId = source ? source.scriptFileId : undefined;
+    const editingId = this.editingDraftId();
 
-    const created: CreatedScript = {
-      id,
-      name,
-      description,
-      lastEdited: new Date().toISOString().slice(0, 10),
-      productId,
-      requestTypeId,
-      sourceScriptFileId,
-      copy: !!source
-    };
+    let draftId: string;
 
-    this.createdScripts.update(list => [created, ...list]);
-    this.showCreateTile.set(false);
-    this.selectedScriptId.set(id);
+    if (editingId) {
+      this.createdScripts.update(list => list.map(s => {
+        if (s.id !== editingId) return s;
+        return {
+          ...s,
+          name,
+          description,
+          sourceScriptFileId,
+          copy: !!source,
+          lastEdited: new Date().toISOString().slice(0, 10)
+        };
+      }));
+      draftId = editingId;
+    } else {
+      draftId = 'draft-' + Date.now();
+      const created: CreatedScript = {
+        id: draftId,
+        name,
+        description,
+        lastEdited: new Date().toISOString().slice(0, 10),
+        productId,
+        requestTypeId,
+        sourceScriptFileId,
+        copy: !!source
+      };
+      this.createdScripts.update(list => [created, ...list]);
+      this.showCreateTile.set(false);
+    }
+
+    this.selectedScriptId.set(draftId);
     this.isCreateNewSelected.set(false);
     this.isCopyDialog.set(false);
     this.copySourceScript.set(null);
+    this.editingDraftId.set(null);
     this.showCreateScriptPopover.set(false);
+
+    const draft = this.createdScripts().find(s => s.id === draftId);
 
     this.continue.emit({
       mode: 'new',
-      scriptId: id,
+      scriptId: draftId,
       scriptFileId: undefined,
       sourceScriptFileId,
-      scriptName: name,
-      scriptDescription: description,
+      scriptName: draft?.name || name,
+      scriptDescription: draft?.description || description,
       productId,
       productLabel: this.selectedProductLabel(),
       requestTypeId,
