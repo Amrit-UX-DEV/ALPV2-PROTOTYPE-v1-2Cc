@@ -272,6 +272,10 @@ export class ScriptSetupComponent {
   }
 
   openCreatePopover() {
+    if (this.createdScripts().length > 0) {
+      this.requestCreateNew();
+      return;
+    }
     this.isCopyDialog.set(false);
     this.copySourceScript.set(null);
     this.copyHistoricVersion.set(null);
@@ -292,6 +296,10 @@ export class ScriptSetupComponent {
   }
 
   openCopyDialog(script: ExistingScript, version: VersionEntry | null = null) {
+    if (this.createdScripts().length > 0) {
+      this.requestCopy(script, version);
+      return;
+    }
     this.isCopyDialog.set(true);
     this.copySourceScript.set(script);
     this.copyHistoricVersion.set(version);
@@ -341,6 +349,11 @@ export class ScriptSetupComponent {
     const source = this.copySourceScript();
     const sourceScriptFileId = source ? source.scriptFileId : undefined;
     const editingId = this.editingDraftId();
+
+    if (!editingId && this.createdScripts().length > 0) {
+      console.warn('Cannot create a new draft while another draft exists.');
+      return;
+    }
 
     let draftId: string;
 
@@ -410,11 +423,16 @@ export class ScriptSetupComponent {
   }
 
   selectScript(id: string) {
+    const existing = this.existingScripts.find(s => s.id === id);
+    if (this.createdScripts().length > 0 && existing) {
+      this.requestSelectExisting(id);
+      return;
+    }
+
     this.selectedScriptId.set(id);
     this.isCreateNewSelected.set(false);
     this.selectedHistoricVersion.set(null);
 
-    const existing = this.existingScripts.find(s => s.id === id);
     const draft = this.createdScripts().find(s => s.id === id);
 
     if (existing) {
@@ -511,6 +529,10 @@ export class ScriptSetupComponent {
 
   selectVersion(script: ExistingScript, version: VersionEntry) {
     if (!this.selectedProduct() || !this.selectedRequestType()) return;
+    if (this.createdScripts().length > 0) {
+      this.requestSelectHistoric(script, version);
+      return;
+    }
 
     this.selectedHistoricVersion.set(version);
     this.selectedScriptId.set(script.id);
