@@ -47,7 +47,7 @@
         Existing Scripts for {{ selectedProductLabel() }} — {{ selectedRequestTypeLabel() }}
       </h3>
 
-      @if (showCreateTile() && !selectedScriptId()) {
+      @if (showCreateTile()) {
         <button type="button"
                 class="alp-placeholder-tile alp-placeholder-tile--spaced"
                 [class.alp-placeholder-tile--selected]="isCreateNewSelected()"
@@ -97,7 +97,7 @@
               }
             </div>
 
-            @if (selectedScriptId() === script.id || !selectedScriptId()) {
+            @if ((selectedScriptId() === script.id && !selectedHistoricVersion()) || !selectedScriptId()) {
               <div class="alp-script-setup__script-actions">
                 <button type="button"
                         (click)="openCopyDialog(script)"
@@ -136,9 +136,23 @@
                   {{ selectedHistoricVersion()!.date }} • {{ selectedHistoricVersion()!.editedBy }}
                 </div>
               </div>
-              <button type="button" (click)="clearScriptSelection()" class="alp-btn alp-btn--secondary">
-                Cancel Selection
-              </button>
+              <div class="alp-script-setup__historic-actions">
+                <button type="button"
+                        (click)="openCopyDialog(script)"
+                        class="alp-btn alp-btn--secondary alp-btn--icon"
+                        title="Copy Script">
+                  <i class="fas fa-clone alp-btn__icon--md"></i>
+                </button>
+                <button type="button"
+                        (click)="openVersionHistory(script)"
+                        class="alp-btn alp-btn--secondary alp-btn--icon"
+                        title="View Version History">
+                  <i class="fas fa-history alp-btn__icon--md"></i>
+                </button>
+                <button type="button" (click)="clearScriptSelection()" class="alp-btn alp-btn--secondary">
+                  Cancel Selection
+                </button>
+              </div>
             </div>
           </div>
         </div>
