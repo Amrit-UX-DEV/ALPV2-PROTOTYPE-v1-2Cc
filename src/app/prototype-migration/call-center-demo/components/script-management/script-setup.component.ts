@@ -198,6 +198,20 @@ export class ScriptSetupComponent {
     return p.copy ? 'Copy draft' : 'Draft';
   }
 
+  isNewDraft(): boolean {
+    const p = this.primaryScript();
+    return p?.kind === 'draft' && !p.copy;
+  }
+
+  isCopyDraft(): boolean {
+    const p = this.primaryScript();
+    return p?.kind === 'draft' && p.copy;
+  }
+
+  isExistingPrimary(): boolean {
+    return this.primaryScript()?.kind === 'existing';
+  }
+
   primaryTitle(): string {
     const p = this.primaryScript();
     if (!p) return '';
