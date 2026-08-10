@@ -34,8 +34,7 @@ interface ExistingScript {
   versionHistory: VersionEntry[];
 }
 
-interface DraftPrimary {
-  kind: 'draft';
+interface TopSlotDraft {
   id: string;
   name: string;
   description: string;
@@ -46,19 +45,6 @@ interface DraftPrimary {
   copy: boolean;
   lastEdited: string;
 }
-
-interface ExistingPrimary {
-  kind: 'existing';
-  id: string;
-  scriptFileId: string;
-  name: string;
-  description: string;
-  productId: string;
-  requestTypeId: string;
-  version?: VersionEntry;
-}
-
-type PrimaryScript = DraftPrimary | ExistingPrimary;
 
 type PendingAction =
   | { type: 'create-new' }
@@ -126,21 +112,54 @@ export class ScriptSetupComponent {
     }
   ];
 
-  /* Primary slot: the single script being taken forward */
-  readonly primaryScript = signal<PrimaryScript | null>(null);
+  /* Top slot: only for new or copy drafts */
+  readonly topSlotDraft = signal<TopSlotDraft | null>(null);
 
-  /* Browse filters */
-  readonly browseProduct = signal<string | null>('all');
-  readonly browseRequestType = signal<string | null>('all');
+  /* Association used for browsing and as default for new drafts */
+  readonly selectedProduct = signal<string | null>('all');
+  readonly selectedRequestType = signal<string | null>('all');
+
+  /* Selected existing script in the browse list */
+  readonly selectedScriptId = signal<string | null>(null);
+  readonly selectedHistoricVersion = signal<VersionEntry | null>(null);
 
   readonly filteredExistingScripts = computed(() => {
-    const product = this.browseProduct();
-    const requestType = this.browseRequestType();
+    const product = this.selectedProduct();
+    const requestType = this.selectedRequestType();
     return this.existingScripts.filter(s => {
       const matchesProduct = !product || product === 'all' || s.productId === product;
       const matchesRequestType = !requestType || requestType === 'all' || s.requestTypeId === requestType;
       return matchesProduct && matchesRequestType;
     });
+  });
+
+  readonly isAssociationMismatch = computed(() => {
+    const d = this.topSlotDraft();
+    if (!d) return false;
+    return d.productId !== this.selectedProduct() || d.requestTypeId !== this.selectedRequestType();
+  });
+
+  /* Product selection dialog */
+  readonly showProductDialog = signal(false);
+  readonly productDialogSearch = signal('');
+  readonly selectedProductInDialog = signal<string | null>(null);
+  readonly filteredProductsForDialog = computed(() => {
+    const term = this.productDialogSearch().toLowerCase().trim();
+    if (!term) return this.products;
+    return this.products.filter(p => p.label.toLowerCase().includes(term));
+  });
+
+  /* Request type selection dialog */
+  readonly showRequestTypeDialog = signal(false);
+  readonly requestTypeDialogSearch = signal('');
+  readonly selectedRequestTypeInDialog = signal<string | null>(null);
+  readonly filteredRequestTypesForDialog = computed(() => {
+    const term = this.requestTypeDialogSearch().toLowerCase().trim();
+    let list = [...this.requestTypes];
+    if (term) {
+      list = list.filter(rt => rt.label.toLowerCase().includes(term));
+    }
+    return list;
   });
 
   /* Create new script dialog */
@@ -162,9 +181,8 @@ export class ScriptSetupComponent {
   /* Version history dialog */
   readonly showVersionHistory = signal(false);
   readonly selectedScriptForHistory = signal<ExistingScript | null>(null);
-  readonly selectedHistoricVersion = signal<VersionEntry | null>(null);
 
-  /* Primary replacement confirmation */
+  /* Draft replacement confirmation when selecting existing while draft is in top slot */
   readonly showReplaceConfirm = signal(false);
   readonly pendingAction = signal<PendingAction | null>(null);
 
@@ -179,84 +197,120 @@ export class ScriptSetupComponent {
     return this.requestTypes.find(rt => rt.id === id)?.label || '';
   }
 
-  primaryAssociationLabel(): string {
-    const p = this.primaryScript();
-    if (!p) return '';
-    return `${this.labelForProduct(p.productId)} · ${this.labelForRequestType(p.requestTypeId)}`;
+  topSlotTitle(): string {
+    const d = this.topSlotDraft();
+    if (!d) return '';
+    return d.copy ? `${d.name} (copy)` : d.name;
   }
 
-  isAssociationMismatch(): boolean {
-    const p = this.primaryScript();
-    if (!p || p.kind !== 'draft') return false;
-    return p.productId !== this.browseProduct() || p.requestTypeId !== this.browseRequestType();
+  topSlotAssociationLabel(): string {
+    const d = this.topSlotDraft();
+    if (!d) return '';
+    return `${this.labelForProduct(d.productId)} · ${this.labelForRequestType(d.requestTypeId)}`;
   }
 
-  primaryTagLabel(): string {
-    const p = this.primaryScript();
-    if (!p) return '';
-    if (p.kind === 'existing') return 'Selected';
-    return p.copy ? 'Copy draft' : 'Draft';
+  /* Product selection via dialog */
+  openProductDialog() {
+    this.selectedProductInDialog.set(this.selectedProduct());
+    this.productDialogSearch.set('');
+    this.showProductDialog.set(true);
   }
 
-  isNewDraft(): boolean {
-    const p = this.primaryScript();
-    return p?.kind === 'draft' && !p.copy;
+  closeProductDialog() {
+    this.showProductDialog.set(false);
+    this.selectedProductInDialog.set(null);
   }
 
-  isCopyDraft(): boolean {
-    const p = this.primaryScript();
-    return p?.kind === 'draft' && p.copy;
-  }
-
-  isExistingPrimary(): boolean {
-    return this.primaryScript()?.kind === 'existing';
-  }
-
-  primaryTitle(): string {
-    const p = this.primaryScript();
-    if (!p) return '';
-    if (p.kind === 'existing' && p.version) {
-      return `${p.name} (v${p.version.version})`;
-    }
-    if (p.kind === 'draft' && p.copy) {
-      return `${p.name} (copy)`;
-    }
-    return p.name;
-  }
-
-  matchFiltersToPrimary() {
-    const p = this.primaryScript();
-    if (!p) return;
-    this.browseProduct.set(p.productId);
-    this.browseRequestType.set(p.requestTypeId);
-  }
-
-  /* Primary slot actions */
-  requestCreateNew() {
-    if (this.primaryScript()) {
-      this.pendingAction.set({ type: 'create-new' });
-      this.showReplaceConfirm.set(true);
+  selectProductInDialog(id: string) {
+    if (this.selectedProductInDialog() === id) {
+      this.selectedProductInDialog.set(null);
     } else {
-      this.openCreateDialog();
+      this.selectedProductInDialog.set(id);
     }
   }
 
+  confirmProductDialog() {
+    const id = this.selectedProductInDialog();
+    if (id && id !== this.selectedProduct()) {
+      this.selectedProduct.set(id);
+    } else if (!id) {
+      this.selectedProduct.set(null);
+    }
+    this.closeProductDialog();
+  }
+
+  onProductDialogSearchChange(event: Event) {
+    this.productDialogSearch.set((event.target as HTMLInputElement).value);
+  }
+
+  /* Request type selection via dialog */
+  openRequestTypeDialog() {
+    if (!this.selectedProduct()) return;
+    this.selectedRequestTypeInDialog.set(this.selectedRequestType());
+    this.requestTypeDialogSearch.set('');
+    this.showRequestTypeDialog.set(true);
+  }
+
+  closeRequestTypeDialog() {
+    this.showRequestTypeDialog.set(false);
+    this.selectedRequestTypeInDialog.set(null);
+  }
+
+  selectRequestTypeInDialog(id: string) {
+    if (this.selectedRequestTypeInDialog() === id) {
+      this.selectedRequestTypeInDialog.set(null);
+    } else {
+      this.selectedRequestTypeInDialog.set(id);
+    }
+  }
+
+  confirmRequestTypeDialog() {
+    const id = this.selectedRequestTypeInDialog();
+    if (id && id !== this.selectedRequestType()) {
+      this.selectedRequestType.set(id);
+    } else if (!id) {
+      this.selectedRequestType.set(null);
+    }
+    this.closeRequestTypeDialog();
+  }
+
+  onRequestTypeDialogSearchChange(event: Event) {
+    this.requestTypeDialogSearch.set((event.target as HTMLInputElement).value);
+  }
+
+  matchFiltersToDraft() {
+    const d = this.topSlotDraft();
+    if (!d) return;
+    this.selectedProduct.set(d.productId);
+    this.selectedRequestType.set(d.requestTypeId);
+  }
+
+  /* Top slot actions */
   openCreateDialog() {
-    if (this.primaryScript()) {
+    if (this.topSlotDraft()) {
       this.requestCreateNew();
       return;
     }
-    const defaultProduct = this.browseProduct() && this.browseProduct() !== 'all'
-      ? this.browseProduct()
+    const defaultProduct = this.selectedProduct() && this.selectedProduct() !== 'all'
+      ? this.selectedProduct()
       : this.products[1]?.id || null;
-    const defaultRequestType = this.browseRequestType() && this.browseRequestType() !== 'all'
-      ? this.browseRequestType()
+    const defaultRequestType = this.selectedRequestType() && this.selectedRequestType() !== 'all'
+      ? this.selectedRequestType()
       : this.requestTypes[1]?.id || null;
     this.createName.set('');
     this.createDescription.set('');
     this.createProductId.set(defaultProduct);
     this.createRequestTypeId.set(defaultRequestType);
     this.showCreateDialog.set(true);
+  }
+
+  requestCreateNew() {
+    if (this.topSlotDraft()) {
+      this.pendingAction.set({ type: 'create-new' });
+      this.showReplaceConfirm.set(true);
+    } else {
+      this.openCreateDialog();
+    }
   }
 
   saveCreateDialog() {
@@ -266,8 +320,9 @@ export class ScriptSetupComponent {
     const requestTypeId = this.createRequestTypeId();
     if (!name || !description || !productId || !requestTypeId) return;
 
-    this.primaryScript.set({
-      kind: 'draft',
+    this.selectedScriptId.set(null);
+    this.selectedHistoricVersion.set(null);
+    this.topSlotDraft.set({
       id: 'draft-' + Date.now(),
       name,
       description,
@@ -276,8 +331,8 @@ export class ScriptSetupComponent {
       copy: false,
       lastEdited: new Date().toISOString().slice(0, 10)
     });
-    this.browseProduct.set(productId);
-    this.browseRequestType.set(requestTypeId);
+    this.selectedProduct.set(productId);
+    this.selectedRequestType.set(requestTypeId);
     this.closeCreateDialog();
     this.emitContinue();
   }
@@ -290,13 +345,13 @@ export class ScriptSetupComponent {
     this.createRequestTypeId.set(null);
   }
 
-  removePrimary() {
-    this.primaryScript.set(null);
+  removeTopSlotDraft() {
+    this.topSlotDraft.set(null);
   }
 
   /* Select existing */
   requestSelectExisting(script: ExistingScript) {
-    if (this.primaryScript()) {
+    if (this.topSlotDraft()) {
       this.pendingAction.set({ type: 'select-existing', script });
       this.showReplaceConfirm.set(true);
     } else {
@@ -305,21 +360,15 @@ export class ScriptSetupComponent {
   }
 
   selectExisting(script: ExistingScript) {
-    this.primaryScript.set({
-      kind: 'existing',
-      id: script.id,
-      scriptFileId: script.scriptFileId,
-      name: script.name,
-      description: script.description,
-      productId: script.productId,
-      requestTypeId: script.requestTypeId
-    });
+    this.topSlotDraft.set(null);
+    this.selectedScriptId.set(script.id);
+    this.selectedHistoricVersion.set(null);
     this.emitContinue();
   }
 
   /* Copy existing or historic */
   requestCopy(script: ExistingScript, version: VersionEntry | null = null) {
-    if (this.primaryScript()) {
+    if (this.topSlotDraft()) {
       this.pendingAction.set({ type: 'copy', script, version });
       this.showReplaceConfirm.set(true);
     } else {
@@ -328,15 +377,15 @@ export class ScriptSetupComponent {
   }
 
   openCopyDialog(script: ExistingScript, version: VersionEntry | null = null) {
-    if (this.primaryScript()) {
+    if (this.topSlotDraft()) {
       this.requestCopy(script, version);
       return;
     }
-    const defaultProduct = this.browseProduct() && this.browseProduct() !== 'all'
-      ? this.browseProduct()
+    const defaultProduct = this.selectedProduct() && this.selectedProduct() !== 'all'
+      ? this.selectedProduct()
       : script.productId;
-    const defaultRequestType = this.browseRequestType() && this.browseRequestType() !== 'all'
-      ? this.browseRequestType()
+    const defaultRequestType = this.selectedRequestType() && this.selectedRequestType() !== 'all'
+      ? this.selectedRequestType()
       : script.requestTypeId;
     this.copySourceScript.set(script);
     this.copyHistoricVersion.set(version);
@@ -359,7 +408,7 @@ export class ScriptSetupComponent {
     const requestTypeId = this.copyRequestTypeId();
     if (!name || !description || !source || !productId || !requestTypeId) return;
 
-    const changedAssociation = productId !== this.browseProduct() || requestTypeId !== this.browseRequestType();
+    const changedAssociation = productId !== this.selectedProduct() || requestTypeId !== this.selectedRequestType();
     if (changedAssociation) {
       this.showCrossAssociationConfirm.set(true);
       return;
@@ -390,8 +439,9 @@ export class ScriptSetupComponent {
     productId: string,
     requestTypeId: string
   ) {
-    this.primaryScript.set({
-      kind: 'draft',
+    this.selectedScriptId.set(null);
+    this.selectedHistoricVersion.set(null);
+    this.topSlotDraft.set({
       id: 'draft-' + Date.now(),
       name,
       description,
@@ -401,8 +451,8 @@ export class ScriptSetupComponent {
       copy: true,
       lastEdited: new Date().toISOString().slice(0, 10)
     });
-    this.browseProduct.set(productId);
-    this.browseRequestType.set(requestTypeId);
+    this.selectedProduct.set(productId);
+    this.selectedRequestType.set(requestTypeId);
     this.closeCopyDialog();
     this.emitContinue();
   }
@@ -428,7 +478,7 @@ export class ScriptSetupComponent {
   }
 
   requestSelectHistoric(script: ExistingScript, version: VersionEntry) {
-    if (this.primaryScript()) {
+    if (this.topSlotDraft()) {
       this.pendingAction.set({ type: 'select-historic', script, version });
       this.showReplaceConfirm.set(true);
     } else {
@@ -437,26 +487,19 @@ export class ScriptSetupComponent {
   }
 
   selectHistoric(script: ExistingScript, version: VersionEntry) {
-    this.primaryScript.set({
-      kind: 'existing',
-      id: script.id,
-      scriptFileId: script.scriptFileId,
-      name: script.name,
-      description: script.description,
-      productId: script.productId,
-      requestTypeId: script.requestTypeId,
-      version
-    });
+    this.topSlotDraft.set(null);
+    this.selectedScriptId.set(script.id);
+    this.selectedHistoricVersion.set(version);
     this.showVersionHistory.set(false);
     this.emitContinue();
   }
 
-  /* Primary replacement confirmation */
+  /* Draft replacement confirmation */
   confirmReplacePrimary() {
     const action = this.pendingAction();
     if (!action) return;
 
-    this.primaryScript.set(null);
+    this.topSlotDraft.set(null);
 
     switch (action.type) {
       case 'create-new':
@@ -483,34 +526,39 @@ export class ScriptSetupComponent {
   }
 
   private emitContinue() {
-    const p = this.primaryScript();
-    if (!p) return;
-
-    if (p.kind === 'existing') {
-      this.continue.emit({
-        mode: 'edit',
-        scriptId: p.id,
-        scriptFileId: p.scriptFileId,
-        scriptName: p.version ? `${p.name} (v${p.version.version})` : p.name,
-        scriptDescription: p.description,
-        productId: p.productId,
-        productLabel: this.labelForProduct(p.productId),
-        requestTypeId: p.requestTypeId,
-        requestTypeLabel: this.labelForRequestType(p.requestTypeId)
-      });
-    } else {
+    const draft = this.topSlotDraft();
+    if (draft) {
       this.continue.emit({
         mode: 'new',
-        scriptId: p.id,
+        scriptId: draft.id,
         scriptFileId: undefined,
-        sourceScriptFileId: p.sourceScriptFileId,
-        scriptName: p.name,
-        scriptDescription: p.description,
-        productId: p.productId,
-        productLabel: this.labelForProduct(p.productId),
-        requestTypeId: p.requestTypeId,
-        requestTypeLabel: this.labelForRequestType(p.requestTypeId)
+        sourceScriptFileId: draft.sourceScriptFileId,
+        scriptName: draft.name,
+        scriptDescription: draft.description,
+        productId: draft.productId,
+        productLabel: this.labelForProduct(draft.productId),
+        requestTypeId: draft.requestTypeId,
+        requestTypeLabel: this.labelForRequestType(draft.requestTypeId)
       });
+      return;
     }
+
+    const id = this.selectedScriptId();
+    if (!id) return;
+    const existing = this.existingScripts.find(s => s.id === id);
+    if (!existing) return;
+
+    const version = this.selectedHistoricVersion();
+    this.continue.emit({
+      mode: 'edit',
+      scriptId: existing.id,
+      scriptFileId: existing.scriptFileId,
+      scriptName: version ? `${existing.name} (v${version.version})` : existing.name,
+      scriptDescription: existing.description,
+      productId: existing.productId,
+      productLabel: this.labelForProduct(existing.productId),
+      requestTypeId: existing.requestTypeId,
+      requestTypeLabel: this.labelForRequestType(existing.requestTypeId)
+    });
   }
 }
