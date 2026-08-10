@@ -34,47 +34,47 @@
     }
   </section>
 
-  <!-- Association selection tiles -->
-  <div class="alp-script-setup__placeholder-tiles">
-    <button type="button"
-            class="alp-placeholder-tile"
-            [class.alp-placeholder-tile--selected]="selectedProduct()"
-            (click)="openProductDialog()">
-      @if (selectedProduct()) {
-        <i class="fas fa-check-circle alp-placeholder-tile__check"></i>
-        <div class="alp-placeholder-tile__content">
-          <span>{{ labelForProduct(selectedProduct()) }}</span>
-          <span class="alp-placeholder-tile__hint">Change Product</span>
-        </div>
-      } @else {
-        <i class="fas fa-plus"></i>
-        <span>Select Product</span>
-      }
-    </button>
-
-    <button type="button"
-            class="alp-placeholder-tile"
-            [class.alp-placeholder-tile--selected]="selectedRequestType()"
-            [class.alp-placeholder-tile--disabled]="!selectedProduct()"
-            [disabled]="!selectedProduct()"
-            (click)="openRequestTypeDialog()">
-      @if (selectedRequestType()) {
-        <i class="fas fa-check-circle alp-placeholder-tile__check"></i>
-        <div class="alp-placeholder-tile__content">
-          <span>{{ labelForRequestType(selectedRequestType()) }}</span>
-          <span class="alp-placeholder-tile__hint">Change Request Type</span>
-        </div>
-      } @else {
-        <i class="fas fa-plus"></i>
-        <span>Select Request Type</span>
-      }
-    </button>
-  </div>
-
   <!-- Browse section -->
   <section class="alp-script-setup__browse">
     <h2 class="alp-script-setup__title alp-script-setup__title--secondary">Browse existing scripts</h2>
     <p class="alp-script-setup__intro">Filter by product and request type</p>
+
+    <!-- Association selection tiles -->
+    <div class="alp-script-setup__placeholder-tiles">
+      <button type="button"
+              class="alp-placeholder-tile"
+              [class.alp-placeholder-tile--selected]="selectedProduct()"
+              (click)="openProductDialog()">
+        @if (selectedProduct()) {
+          <i class="fas fa-check-circle alp-placeholder-tile__check"></i>
+          <div class="alp-placeholder-tile__content">
+            <span>{{ labelForProduct(selectedProduct()) }}</span>
+            <span class="alp-placeholder-tile__hint">Change Product</span>
+          </div>
+        } @else {
+          <i class="fas fa-plus"></i>
+          <span>Select Product</span>
+        }
+      </button>
+
+      <button type="button"
+              class="alp-placeholder-tile"
+              [class.alp-placeholder-tile--selected]="selectedRequestType()"
+              [class.alp-placeholder-tile--disabled]="!selectedProduct()"
+              [disabled]="!selectedProduct()"
+              (click)="openRequestTypeDialog()">
+        @if (selectedRequestType()) {
+          <i class="fas fa-check-circle alp-placeholder-tile__check"></i>
+          <div class="alp-placeholder-tile__content">
+            <span>{{ labelForRequestType(selectedRequestType()) }}</span>
+            <span class="alp-placeholder-tile__hint">Change Request Type</span>
+          </div>
+        } @else {
+          <i class="fas fa-plus"></i>
+          <span>Select Request Type</span>
+        }
+      </button>
+    </div>
 
     @if (isAssociationMismatch()) {
       <div class="alp-script-setup__mismatch-banner">

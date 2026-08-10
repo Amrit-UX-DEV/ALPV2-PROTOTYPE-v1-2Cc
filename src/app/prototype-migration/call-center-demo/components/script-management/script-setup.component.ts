@@ -63,13 +63,13 @@ export class ScriptSetupComponent {
   @Output() continue = new EventEmitter<ScriptSetupSelection>();
 
   readonly products: ProductOption[] = [
-    { id: 'all', label: 'All' },
+    { id: 'all', label: 'Global template' },
     { id: 'life', label: 'Life' },
     { id: 'pension', label: 'Pension' }
   ];
 
   readonly requestTypes: RequestTypeOption[] = [
-    { id: 'all', label: 'All', productId: 'all' },
+    { id: 'all', label: 'Global template', productId: 'all' },
     { id: 'surrender', label: 'Surrender', productId: 'all' },
     { id: 'fund-value', label: 'Fund Value', productId: 'all' },
     { id: 'full-policy-details', label: 'Full Policy Details', productId: 'all' },
@@ -116,8 +116,8 @@ export class ScriptSetupComponent {
   readonly topSlotDraft = signal<TopSlotDraft | null>(null);
 
   /* Association used for browsing and as default for new drafts */
-  readonly selectedProduct = signal<string | null>('all');
-  readonly selectedRequestType = signal<string | null>('all');
+  readonly selectedProduct = signal<string | null>(null);
+  readonly selectedRequestType = signal<string | null>(null);
 
   /* Selected existing script in the browse list */
   readonly selectedScriptId = signal<string | null>(null);
@@ -126,9 +126,10 @@ export class ScriptSetupComponent {
   readonly filteredExistingScripts = computed(() => {
     const product = this.selectedProduct();
     const requestType = this.selectedRequestType();
+    if (!product || !requestType) return [];
     return this.existingScripts.filter(s => {
-      const matchesProduct = !product || product === 'all' || s.productId === product;
-      const matchesRequestType = !requestType || requestType === 'all' || s.requestTypeId === requestType;
+      const matchesProduct = product === 'all' || s.productId === product;
+      const matchesRequestType = requestType === 'all' || s.requestTypeId === requestType;
       return matchesProduct && matchesRequestType;
     });
   });
