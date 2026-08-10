@@ -75,7 +75,7 @@
   align-items: flex-start;
   gap: var(--alp-space-4);
   padding: var(--alp-space-5);
-  background: var(--alp-color-surface);
+  background: var(--alp-color-brand-50);
   border: 2px solid var(--alp-color-brand);
   border-radius: var(--alp-radius-md);
 }
