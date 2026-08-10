@@ -1,8 +1,8 @@
 /* =========================================================
    ALP DESIGN SYSTEM — SCRIPT SETUP LAYOUT
    Layout classes for the call-center script-setup panel:
-   two-column selection, existing scripts, historic versions,
-   and the create-script popover overlay.
+   primary slot, browse filters, existing scripts, historic
+   versions, and the create/copy popover overlays.
    ========================================================= */
 
 .alp-script-setup {
@@ -17,9 +17,15 @@
 }
 
 .alp-script-setup__title {
-  margin: 0 0 var(--alp-space-6) 0;
+  margin: 0 0 var(--alp-space-2) 0;
   font-size: var(--alp-font-size-lg);
   color: var(--alp-color-text);
+}
+
+.alp-script-setup__intro {
+  margin: 0 0 var(--alp-space-6) 0;
+  color: var(--alp-color-text-muted);
+  font-size: var(--alp-font-size-md);
 }
 
 .alp-script-setup__placeholder-tiles {
@@ -42,10 +48,121 @@
   font-weight: var(--alp-font-weight-semibold);
 }
 
+.alp-script-setup__section-hint {
+  margin: 0 0 var(--alp-space-4) 0;
+  color: var(--alp-color-text-muted);
+  font-size: var(--alp-font-size-sm);
+}
+
 .alp-script-setup__tile-grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
   gap: var(--alp-space-3);
+}
+
+/* ---- Primary slot ---- */
+.alp-script-setup__primary {
+  margin-bottom: var(--alp-space-8);
+}
+
+.alp-script-setup__primary-card {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: var(--alp-space-4);
+  padding: var(--alp-space-5);
+  background: var(--alp-color-surface);
+  border: 2px solid var(--alp-color-brand);
+  border-radius: var(--alp-radius-md);
+}
+
+.alp-script-setup__primary-info {
+  flex: 1;
+  min-width: 200px;
+}
+
+.alp-script-setup__primary-header {
+  display: flex;
+  align-items: center;
+  gap: var(--alp-space-3);
+  flex-wrap: wrap;
+  margin-bottom: var(--alp-space-2);
+}
+
+.alp-script-setup__primary-header strong {
+  font-size: var(--alp-font-size-md);
+  color: var(--alp-color-text);
+}
+
+.alp-script-setup__primary-association {
+  display: block;
+  color: var(--alp-color-text-muted);
+  font-size: 14px;
+  margin-bottom: var(--alp-space-2);
+}
+
+.alp-script-setup__primary-description {
+  display: block;
+  color: var(--alp-color-text);
+  font-size: 14px;
+  line-height: var(--alp-line-height-normal);
+}
+
+.alp-script-setup__primary-actions {
+  display: flex;
+  gap: var(--alp-space-2);
+  flex-shrink: 0;
+}
+
+/* ---- Browse section ---- */
+.alp-script-setup__browse {
+  margin-top: var(--alp-space-8);
+  padding-top: var(--alp-space-6);
+  border-top: 1px solid var(--alp-color-border);
+}
+
+.alp-script-setup__filters {
+  display: flex;
+  gap: var(--alp-space-4);
+  flex-wrap: wrap;
+  margin-bottom: var(--alp-space-5);
+}
+
+.alp-script-setup__filter-group {
+  display: flex;
+  flex-direction: column;
+  gap: var(--alp-space-2);
+  min-width: 180px;
+}
+
+.alp-script-setup__filter-group label {
+  font-size: 14px;
+  font-weight: var(--alp-font-weight-medium);
+  color: var(--alp-color-slate-700);
+}
+
+.alp-script-setup__select {
+  padding: var(--alp-space-2) var(--alp-space-3);
+  border: 1px solid var(--alp-color-border);
+  border-radius: var(--alp-radius-md);
+  background: var(--alp-color-surface);
+  color: var(--alp-color-text);
+  font-size: var(--alp-font-size-md);
+}
+
+.alp-script-setup__mismatch-banner {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: var(--alp-space-4);
+  flex-wrap: wrap;
+  padding: var(--alp-space-4);
+  margin-bottom: var(--alp-space-5);
+  background: #fefce8;
+  border: 1px solid #ca8a04;
+  border-radius: var(--alp-radius-md);
+  font-size: 14px;
+  color: var(--alp-color-slate-700);
 }
 
 .alp-script-setup__existing {
@@ -149,6 +266,17 @@
   margin-bottom: var(--alp-space-2);
   font-weight: var(--alp-font-weight-medium);
   color: var(--alp-color-slate-700);
+}
+
+.alp-script-setup__form-row {
+  display: flex;
+  gap: var(--alp-space-4);
+  flex-wrap: wrap;
+}
+
+.alp-script-setup__form-row .alp-script-setup__form-group {
+  flex: 1;
+  min-width: 200px;
 }
 
 .alp-script-setup__copy-hint {
