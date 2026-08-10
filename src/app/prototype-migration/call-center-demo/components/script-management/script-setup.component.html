@@ -2,9 +2,9 @@
   <h2 class="alp-script-setup__title">Choose or create a script</h2>
   <p class="alp-script-setup__intro">Create a new script, or choose an existing one to edit or copy.</p>
 
-  <!-- Primary slot -->
+  <!-- Top slot: only for new or copy drafts -->
   <section class="alp-script-setup__primary">
-    @if (!primaryScript()) {
+    @if (!topSlotDraft()) {
       <button type="button"
               class="alp-placeholder-tile alp-placeholder-tile--spaced"
               (click)="openCreateDialog()">
@@ -15,21 +15,18 @@
       <div class="alp-script-setup__primary-card">
         <div class="alp-script-setup__primary-info">
           <div class="alp-script-setup__primary-header">
-            <strong>{{ primaryTitle() }}</strong>
+            <strong>{{ topSlotTitle() }}</strong>
             <span class="alp-status-tag"
-                  [class.alp-status-tag--draft]="isNewDraft()"
-                  [class.alp-status-tag--copy-draft]="isCopyDraft()"
-                  [class.alp-status-tag--primary]="isExistingPrimary()">
-              {{ primaryTagLabel() }}
+                  [class.alp-status-tag--draft]="!topSlotDraft()?.copy"
+                  [class.alp-status-tag--copy-draft]="topSlotDraft()?.copy">
+              {{ topSlotDraft()?.copy ? 'Copy draft' : 'Draft' }}
             </span>
           </div>
-          <span class="alp-script-setup__primary-association">{{ primaryAssociationLabel() }}</span>
-          <span class="alp-script-setup__primary-description">
-            {{ primaryScript()!.description }}
-          </span>
+          <span class="alp-script-setup__primary-association">{{ topSlotAssociationLabel() }}</span>
+          <span class="alp-script-setup__primary-description">{{ topSlotDraft()!.description }}</span>
         </div>
         <div class="alp-script-setup__primary-actions">
-          <button type="button" (click)="removePrimary()" class="alp-btn alp-btn--secondary">
+          <button type="button" (click)="removeTopSlotDraft()" class="alp-btn alp-btn--secondary">
             Remove
           </button>
         </div>
@@ -37,36 +34,54 @@
     }
   </section>
 
+  <!-- Association selection tiles -->
+  <div class="alp-script-setup__placeholder-tiles">
+    <button type="button"
+            class="alp-placeholder-tile"
+            [class.alp-placeholder-tile--selected]="selectedProduct()"
+            (click)="openProductDialog()">
+      @if (selectedProduct()) {
+        <i class="fas fa-check-circle alp-placeholder-tile__check"></i>
+        <div class="alp-placeholder-tile__content">
+          <span>{{ labelForProduct(selectedProduct()) }}</span>
+          <span class="alp-placeholder-tile__hint">Change Product</span>
+        </div>
+      } @else {
+        <i class="fas fa-plus"></i>
+        <span>Select Product</span>
+      }
+    </button>
+
+    <button type="button"
+            class="alp-placeholder-tile"
+            [class.alp-placeholder-tile--selected]="selectedRequestType()"
+            [class.alp-placeholder-tile--disabled]="!selectedProduct()"
+            [disabled]="!selectedProduct()"
+            (click)="openRequestTypeDialog()">
+      @if (selectedRequestType()) {
+        <i class="fas fa-check-circle alp-placeholder-tile__check"></i>
+        <div class="alp-placeholder-tile__content">
+          <span>{{ labelForRequestType(selectedRequestType()) }}</span>
+          <span class="alp-placeholder-tile__hint">Change Request Type</span>
+        </div>
+      } @else {
+        <i class="fas fa-plus"></i>
+        <span>Select Request Type</span>
+      }
+    </button>
+  </div>
+
   <!-- Browse section -->
   <section class="alp-script-setup__browse">
-    <h3 class="alp-script-setup__section-title">Browse existing scripts</h3>
-    <p class="alp-script-setup__section-hint">Filter by product and request type</p>
-
-    <div class="alp-script-setup__filters">
-      <div class="alp-script-setup__filter-group">
-        <label for="browse-product">Product</label>
-        <select id="browse-product" class="alp-script-setup__select" [ngModel]="browseProduct()" (ngModelChange)="browseProduct.set($event)">
-          @for (product of products; track product.id) {
-            <option [value]="product.id">{{ product.label }}</option>
-          }
-        </select>
-      </div>
-      <div class="alp-script-setup__filter-group">
-        <label for="browse-request-type">Request type</label>
-        <select id="browse-request-type" class="alp-script-setup__select" [ngModel]="browseRequestType()" (ngModelChange)="browseRequestType.set($event)">
-          @for (rt of requestTypes; track rt.id) {
-            <option [value]="rt.id">{{ rt.label }}</option>
-          }
-        </select>
-      </div>
-    </div>
+    <h2 class="alp-script-setup__title alp-script-setup__title--secondary">Browse existing scripts</h2>
+    <p class="alp-script-setup__intro">Filter by product and request type</p>
 
     @if (isAssociationMismatch()) {
       <div class="alp-script-setup__mismatch-banner">
         <span>
-          Your {{ isCopyDraft() ? 'copy draft' : 'draft' }} is filed under {{ primaryAssociationLabel() }}. You're browsing a different association.
+          Your {{ topSlotDraft()?.copy ? 'copy draft' : 'draft' }} is filed under {{ topSlotAssociationLabel() }}. You're browsing a different association.
         </span>
-        <button type="button" (click)="matchFiltersToPrimary()" class="alp-btn alp-btn--secondary">
+        <button type="button" (click)="matchFiltersToDraft()" class="alp-btn alp-btn--secondary">
           View matching association
         </button>
       </div>
@@ -74,7 +89,9 @@
 
     <div class="alp-script-setup__script-list">
       @for (script of filteredExistingScripts(); track script.id) {
-        <div class="alp-script-setup__script-item">
+        <div class="alp-script-setup__script-item"
+             [class.alp-script-setup__script-item--selected]="selectedScriptId() === script.id"
+             [class.alp-script-setup__script-item--historic-selected]="selectedHistoricVersion() && selectedScriptForHistory()?.id === script.id">
           <div class="alp-script-setup__script-info">
             <strong>{{ script.name }}</strong>
             <span class="alp-script-setup__last-edited">Last edited: {{ script.lastEdited }}</span>
@@ -97,7 +114,7 @@
               <i class="fas fa-history alp-btn__icon--md"></i>
             </button>
             <button type="button" (click)="requestSelectExisting(script)" class="alp-btn alp-btn--primary">
-              Select
+              Select Script
             </button>
           </div>
         </div>
@@ -253,7 +270,7 @@
             <button type="button"
                     (click)="requestSelectHistoric(selectedScriptForHistory()!, version)"
                     class="alp-btn alp-btn--primary">
-              Select
+              Select Script
             </button>
           </div>
         </div>
@@ -261,21 +278,95 @@
     </div>
   }
 
-  <!-- Primary replacement confirmation dialog -->
+  <!-- Product selection dialog -->
+  @if (showProductDialog()) {
+    <div class="alp-dialog-overlay" (click)="closeProductDialog()">
+      <div class="alp-dialog alp-dialog--medium" (click)="$event.stopPropagation()">
+        <div class="alp-dialog__header">
+          <h4>Select Product</h4>
+          <button type="button" (click)="closeProductDialog()" class="alp-dialog__close-btn" aria-label="Close">
+            <i class="fas fa-times"></i>
+          </button>
+        </div>
+        <div class="alp-dialog__content">
+          <input type="text"
+                 placeholder="Filter products..."
+                 (input)="onProductDialogSearchChange($event)"
+                 class="alp-script-setup__filter-input">
+          <div class="alp-script-setup__tile-grid">
+            @for (product of filteredProductsForDialog(); track product.id) {
+              <button type="button"
+                      class="alp-script-setup__tile"
+                      [class.alp-script-setup__tile--selected]="selectedProductInDialog() === product.id"
+                      (click)="selectProductInDialog(product.id)">
+                <span class="alp-script-setup__tile-label">{{ product.label }}</span>
+                @if (selectedProductInDialog() === product.id) {
+                  <i class="fas fa-check-circle alp-script-setup__tile-check"></i>
+                }
+              </button>
+            }
+          </div>
+        </div>
+        <div class="alp-dialog__footer">
+          <button type="button" (click)="closeProductDialog()" class="alp-btn alp-btn--secondary">Cancel</button>
+          <button type="button" (click)="confirmProductDialog()" class="alp-btn alp-btn--primary">Confirm</button>
+        </div>
+      </div>
+    </div>
+  }
+
+  <!-- Request type selection dialog -->
+  @if (showRequestTypeDialog()) {
+    <div class="alp-dialog-overlay" (click)="closeRequestTypeDialog()">
+      <div class="alp-dialog alp-dialog--medium" (click)="$event.stopPropagation()">
+        <div class="alp-dialog__header">
+          <h4>Select Request Type</h4>
+          <button type="button" (click)="closeRequestTypeDialog()" class="alp-dialog__close-btn" aria-label="Close">
+            <i class="fas fa-times"></i>
+          </button>
+        </div>
+        <div class="alp-dialog__content">
+          <input type="text"
+                 placeholder="Filter request types..."
+                 (input)="onRequestTypeDialogSearchChange($event)"
+                 class="alp-script-setup__filter-input">
+          <div class="alp-script-setup__tile-grid">
+            @for (request of filteredRequestTypesForDialog(); track request.id) {
+              <button type="button"
+                      class="alp-script-setup__tile"
+                      [class.alp-script-setup__tile--selected]="selectedRequestTypeInDialog() === request.id"
+                      (click)="selectRequestTypeInDialog(request.id)">
+                <span class="alp-script-setup__tile-label">{{ request.label }}</span>
+                @if (selectedRequestTypeInDialog() === request.id) {
+                  <i class="fas fa-check-circle alp-script-setup__tile-check"></i>
+                }
+              </button>
+            }
+          </div>
+        </div>
+        <div class="alp-dialog__footer">
+          <button type="button" (click)="closeRequestTypeDialog()" class="alp-btn alp-btn--secondary">Cancel</button>
+          <button type="button" (click)="confirmRequestTypeDialog()" class="alp-btn alp-btn--primary">Confirm</button>
+        </div>
+      </div>
+    </div>
+  }
+
+  <!-- Draft replacement confirmation dialog -->
   @if (showReplaceConfirm()) {
     <div class="alp-dialog-overlay" (click)="cancelReplacePrimary()">
       <div class="alp-dialog alp-dialog--small" (click)="$event.stopPropagation()">
         <div class="alp-dialog__header">
-          <h4>Replace current script?</h4>
+          <h4>Replace current draft?</h4>
           <button type="button" (click)="cancelReplacePrimary()" class="alp-dialog__close-btn" aria-label="Close">
             <i class="fas fa-times"></i>
           </button>
         </div>
         <div class="alp-dialog__content">
-          This will replace the current script in the primary slot. Do you wish to continue?
+          This will remove your current draft. Do you wish to continue?
         </div>
         <div class="alp-dialog__footer">
-          <button type="button" (click)="cancelReplacePrimary()" class="alp-btn alp-btn--secondary">No, keep current</button>
+          <button type="button" (click)="cancelReplacePrimary()" class="alp-btn alp-btn--secondary">No, keep draft</button>
           <button type="button" (click)="confirmReplacePrimary()" class="alp-btn alp-btn--primary">Yes, continue</button>
         </div>
       </div>

@@ -22,6 +22,10 @@
   color: var(--alp-color-text);
 }
 
+.alp-script-setup__title--secondary {
+  margin-bottom: var(--alp-space-3);
+}
+
 .alp-script-setup__intro {
   margin: 0 0 var(--alp-space-6) 0;
   color: var(--alp-color-text-muted);
