@@ -17,9 +17,9 @@
           <div class="alp-script-setup__primary-header">
             <strong>{{ primaryTitle() }}</strong>
             <span class="alp-status-tag"
-                  [class.alp-status-tag--draft]="primaryScript()?.kind === 'draft' && !primaryScript()?.copy"
-                  [class.alp-status-tag--copy-draft]="primaryScript()?.kind === 'draft' && primaryScript()?.copy"
-                  [class.alp-status-tag--primary]="primaryScript()?.kind === 'existing'">
+                  [class.alp-status-tag--draft]="isNewDraft()"
+                  [class.alp-status-tag--copy-draft]="isCopyDraft()"
+                  [class.alp-status-tag--primary]="isExistingPrimary()">
               {{ primaryTagLabel() }}
             </span>
           </div>
@@ -64,7 +64,7 @@
     @if (isAssociationMismatch()) {
       <div class="alp-script-setup__mismatch-banner">
         <span>
-          Your {{ primaryScript()?.copy ? 'copy draft' : 'draft' }} is filed under {{ primaryAssociationLabel() }}. You're browsing a different association.
+          Your {{ isCopyDraft() ? 'copy draft' : 'draft' }} is filed under {{ primaryAssociationLabel() }}. You're browsing a different association.
         </span>
         <button type="button" (click)="matchFiltersToPrimary()" class="alp-btn alp-btn--secondary">
           View matching association
