@@ -265,29 +265,31 @@
         </div>
         <div class="alp-dialog__content">
           <div *ngFor="let version of selectedScriptForHistory()?.versionHistory"
-               class="alp-script-setup__version-item"
-               [class.alp-script-setup__version-item--selected]="dialogSelectedHistoricVersion()?.version === version.version"
-               (click)="selectDialogHistoricVersion(version)">
+               class="alp-script-setup__version-item">
             <div class="alp-script-setup__version-info">
               <strong>v{{ version.version }}</strong>
               <span>{{ version.date }} • {{ version.editedBy }}</span>
             </div>
             <div class="alp-script-setup__version-actions">
               <button type="button"
-                      (click)="requestCopy(selectedScriptForHistory()!, version); $event.stopPropagation()"
+                      (click)="requestCopy(selectedScriptForHistory()!, version)"
                       class="alp-btn alp-btn--secondary alp-btn--icon"
                       title="Copy this version">
                 <i class="fas fa-clone alp-btn__icon--md"></i>
               </button>
-              <button type="button"
-                      (click)="selectDialogHistoricVersion(version); $event.stopPropagation()"
-                      class="alp-btn alp-btn--primary">
-                @if (dialogSelectedHistoricVersion()?.version === version.version) {
-                  Selected
-                } @else {
-                  Select
-                }
-              </button>
+              @if (dialogSelectedHistoricVersion()?.version === version.version) {
+                <button type="button"
+                        (click)="selectDialogHistoricVersion(version)"
+                        class="alp-btn alp-btn--secondary">
+                  Cancel Selection
+                </button>
+              } @else {
+                <button type="button"
+                        (click)="selectDialogHistoricVersion(version)"
+                        class="alp-btn alp-btn--primary">
+                  Select Script
+                </button>
+              }
             </div>
           </div>
         </div>
