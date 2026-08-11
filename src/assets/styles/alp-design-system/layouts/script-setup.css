@@ -52,6 +52,17 @@
   font-weight: var(--alp-font-weight-semibold);
 }
 
+.alp-script-setup__section-title strong {
+  color: var(--alp-color-text);
+  font-weight: var(--alp-font-weight-bold);
+}
+
+.alp-script-setup__section-title-chevron {
+  margin: 0 6px;
+  color: var(--alp-color-slate-400);
+  font-size: var(--alp-font-size-sm);
+}
+
 .alp-script-setup__section-hint {
   margin: 0 0 var(--alp-space-4) 0;
   color: var(--alp-color-text-muted);
