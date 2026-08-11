@@ -527,10 +527,10 @@ export class ScriptSetupComponent {
   }
 
   private associationMatches(a: ScriptAssociation, b: ScriptAssociation | null): boolean {
-    if (!b || a.kind !== b.kind) return false;
-    if (a.kind === 'global-template') return true;
-    if (a.kind === 'product') return a.productId === b.productId;
-    return a.productId === b.productId && a.requestTypeId === b.requestTypeId;
+    if (!b) return false;
+    if (a.kind === 'global-template') return b.kind === 'global-template';
+    if (a.kind === 'product') return b.kind === 'product' && a.productId === b.productId;
+    return b.kind === 'request-type' && a.productId === b.productId && a.requestTypeId === b.requestTypeId;
   }
 
   /* Version history */
