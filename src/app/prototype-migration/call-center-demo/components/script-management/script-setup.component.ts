@@ -27,8 +27,10 @@ interface ExistingScript {
   version: string;
   lastEdited: string;
   isActive: boolean;
-  productId: string;
-  requestTypeId: string;
+  /** Global templates are not tied to a product or request type. */
+  isGlobalTemplate?: boolean;
+  productId?: string;
+  requestTypeId?: string;
   /** Shared journey JSON file id (no .json) */
   scriptFileId: string;
   versionHistory: VersionEntry[];
@@ -45,6 +47,13 @@ interface TopSlotDraft {
   copy: boolean;
   lastEdited: string;
 }
+
+type ScriptAssociation =
+  | { kind: 'global-template' }
+  | { kind: 'product'; productId: string }
+  | { kind: 'request-type'; productId: string; requestTypeId: string };
+
+type PickerTarget = 'browse' | 'create' | 'copy';
 
 type PendingAction =
   | { type: 'create-new' }
@@ -63,13 +72,11 @@ export class ScriptSetupComponent {
   @Output() continue = new EventEmitter<ScriptSetupSelection>();
 
   readonly products: ProductOption[] = [
-    { id: 'all', label: 'Global template' },
     { id: 'life', label: 'Life' },
     { id: 'pension', label: 'Pension' }
   ];
 
   readonly requestTypes: RequestTypeOption[] = [
-    { id: 'all', label: 'Global template', productId: 'all' },
     { id: 'surrender', label: 'Surrender', productId: 'all' },
     { id: 'fund-value', label: 'Fund Value', productId: 'all' },
     { id: 'full-policy-details', label: 'Full Policy Details', productId: 'all' },
@@ -79,6 +86,19 @@ export class ScriptSetupComponent {
   ];
 
   readonly existingScripts: ExistingScript[] = [
+    {
+      id: 'g1',
+      name: 'Generic Welcome Script',
+      description: 'Global template available across all products and request types',
+      version: '1.0',
+      lastEdited: '2026-07-01',
+      isActive: false,
+      isGlobalTemplate: true,
+      scriptFileId: 'generic-welcome',
+      versionHistory: [
+        { version: '1.0', date: '2026-07-01', editedBy: 'A. Smith' }
+      ]
+    },
     {
       id: 's1',
       name: 'Surrender Script v1',
@@ -115,47 +135,60 @@ export class ScriptSetupComponent {
   /* Top slot: only for new or copy drafts */
   readonly topSlotDraft = signal<TopSlotDraft | null>(null);
 
-  /* Association used for browsing and as default for new drafts */
-  readonly selectedProduct = signal<string | null>(null);
-  readonly selectedRequestType = signal<string | null>(null);
+  /* Browse association */
+  readonly currentAssociation = signal<ScriptAssociation | null>(null);
+
+  /* Association for create/copy dialogs */
+  readonly createAssociation = signal<ScriptAssociation | null>(null);
+  readonly copyAssociation = signal<ScriptAssociation | null>(null);
 
   /* Selected existing script in the browse list */
   readonly selectedScriptId = signal<string | null>(null);
   readonly selectedHistoricVersion = signal<VersionEntry | null>(null);
 
   readonly filteredExistingScripts = computed(() => {
-    const product = this.selectedProduct();
-    const requestType = this.selectedRequestType();
-    if (!product || !requestType) return [];
-    return this.existingScripts.filter(s => {
-      const matchesProduct = product === 'all' || s.productId === product;
-      const matchesRequestType = requestType === 'all' || s.requestTypeId === requestType;
-      return matchesProduct && matchesRequestType;
-    });
+    const assoc = this.currentAssociation();
+    if (!assoc) return [];
+    if (assoc.kind === 'global-template') {
+      return this.existingScripts.filter(s => s.isGlobalTemplate);
+    }
+    if (assoc.kind === 'product') {
+      return this.existingScripts.filter(s => !s.isGlobalTemplate && s.productId === assoc.productId);
+    }
+    return this.existingScripts.filter(s =>
+      !s.isGlobalTemplate && s.productId === assoc.productId && s.requestTypeId === assoc.requestTypeId
+    );
   });
 
   readonly isAssociationMismatch = computed(() => {
     const d = this.topSlotDraft();
-    if (!d) return false;
-    return d.productId !== this.selectedProduct() || d.requestTypeId !== this.selectedRequestType();
+    const assoc = this.currentAssociation();
+    if (!d || !assoc) return false;
+    if (assoc.kind === 'global-template') return false;
+    return d.productId !== assoc.productId || (assoc.kind === 'request-type' && d.requestTypeId !== assoc.requestTypeId);
   });
 
-  /* Product selection dialog */
-  readonly showProductDialog = signal(false);
-  readonly productDialogSearch = signal('');
-  readonly selectedProductInDialog = signal<string | null>(null);
-  readonly filteredProductsForDialog = computed(() => {
-    const term = this.productDialogSearch().toLowerCase().trim();
+  /* Association picker dialog */
+  readonly showAssociationPicker = signal(false);
+  readonly pickerTarget = signal<PickerTarget>('browse');
+  readonly pickerDraftAssociation = signal<ScriptAssociation | null>(null);
+  readonly pickerSearch = signal('');
+
+  readonly pickerGlobalScripts = computed(() => {
+    const term = this.pickerSearch().toLowerCase().trim();
+    const list = this.existingScripts.filter(s => s.isGlobalTemplate);
+    if (!term) return list;
+    return list.filter(s => s.name.toLowerCase().includes(term));
+  });
+
+  readonly filteredPickerProducts = computed(() => {
+    const term = this.pickerSearch().toLowerCase().trim();
     if (!term) return this.products;
     return this.products.filter(p => p.label.toLowerCase().includes(term));
   });
 
-  /* Request type selection dialog */
-  readonly showRequestTypeDialog = signal(false);
-  readonly requestTypeDialogSearch = signal('');
-  readonly selectedRequestTypeInDialog = signal<string | null>(null);
-  readonly filteredRequestTypesForDialog = computed(() => {
-    const term = this.requestTypeDialogSearch().toLowerCase().trim();
+  readonly filteredPickerRequestTypes = computed(() => {
+    const term = this.pickerSearch().toLowerCase().trim();
     let list = [...this.requestTypes];
     if (term) {
       list = list.filter(rt => rt.label.toLowerCase().includes(term));
@@ -167,8 +200,6 @@ export class ScriptSetupComponent {
   readonly showCreateDialog = signal(false);
   readonly createName = signal('');
   readonly createDescription = signal('');
-  readonly createProductId = signal<string | null>(null);
-  readonly createRequestTypeId = signal<string | null>(null);
 
   /* Copy script dialog */
   readonly showCopyDialog = signal(false);
@@ -176,8 +207,6 @@ export class ScriptSetupComponent {
   readonly copyDescription = signal('');
   readonly copySourceScript = signal<ExistingScript | null>(null);
   readonly copyHistoricVersion = signal<VersionEntry | null>(null);
-  readonly copyProductId = signal<string | null>(null);
-  readonly copyRequestTypeId = signal<string | null>(null);
 
   /* Version history dialog */
   readonly showVersionHistory = signal(false);
@@ -191,11 +220,20 @@ export class ScriptSetupComponent {
   readonly showCrossAssociationConfirm = signal(false);
 
   labelForProduct(id: string | null): string {
+    if (id === 'all') return 'Global Template';
     return this.products.find(p => p.id === id)?.label || '';
   }
 
   labelForRequestType(id: string | null): string {
+    if (id === 'all') return 'Global Template';
     return this.requestTypes.find(rt => rt.id === id)?.label || '';
+  }
+
+  associationLabel(assoc: ScriptAssociation | null): string {
+    if (!assoc) return 'Select Association';
+    if (assoc.kind === 'global-template') return 'Global Template';
+    if (assoc.kind === 'product') return this.labelForProduct(assoc.productId);
+    return `${this.labelForProduct(assoc.productId)} · ${this.labelForRequestType(assoc.requestTypeId)}`;
   }
 
   topSlotTitle(): string {
@@ -210,80 +248,101 @@ export class ScriptSetupComponent {
     return `${this.labelForProduct(d.productId)} · ${this.labelForRequestType(d.requestTypeId)}`;
   }
 
-  /* Product selection via dialog */
-  openProductDialog() {
-    this.selectedProductInDialog.set(this.selectedProduct());
-    this.productDialogSearch.set('');
-    this.showProductDialog.set(true);
+  private defaultAssociation(): ScriptAssociation {
+    return {
+      kind: 'request-type',
+      productId: this.products[0]?.id || 'all',
+      requestTypeId: this.requestTypes[0]?.id || 'all'
+    };
   }
 
-  closeProductDialog() {
-    this.showProductDialog.set(false);
-    this.selectedProductInDialog.set(null);
+  /* Association picker */
+  openAssociationPicker(target: PickerTarget) {
+    this.pickerTarget.set(target);
+    const assoc = target === 'browse'
+      ? this.currentAssociation()
+      : target === 'create'
+        ? this.createAssociation()
+        : this.copyAssociation();
+    this.pickerDraftAssociation.set(assoc ? { ...assoc } : null);
+    this.pickerSearch.set('');
+    this.showAssociationPicker.set(true);
   }
 
-  selectProductInDialog(id: string) {
-    if (this.selectedProductInDialog() === id) {
-      this.selectedProductInDialog.set(null);
+  closeAssociationPicker() {
+    this.showAssociationPicker.set(false);
+    this.pickerDraftAssociation.set(null);
+    this.pickerSearch.set('');
+  }
+
+  selectPickerTab(tab: 'global' | 'product') {
+    if (tab === 'global') {
+      this.pickerDraftAssociation.set({ kind: 'global-template' });
     } else {
-      this.selectedProductInDialog.set(id);
+      const current = this.pickerDraftAssociation();
+      if (!current || current.kind === 'global-template') {
+        this.pickerDraftAssociation.set({ kind: 'product', productId: this.products[0]?.id || 'all' });
+      }
     }
   }
 
-  confirmProductDialog() {
-    const id = this.selectedProductInDialog();
-    if (id && id !== this.selectedProduct()) {
-      this.selectedProduct.set(id);
-    } else if (!id) {
-      this.selectedProduct.set(null);
+  selectPickerProduct(id: string) {
+    const current = this.pickerDraftAssociation();
+    if (current && current.kind === 'product' && current.productId === id) {
+      this.pickerDraftAssociation.set({ kind: 'product', productId: id });
+      return;
     }
-    this.closeProductDialog();
+    this.pickerDraftAssociation.set({ kind: 'product', productId: id });
   }
 
-  onProductDialogSearchChange(event: Event) {
-    this.productDialogSearch.set((event.target as HTMLInputElement).value);
+  selectPickerRequestType(id: string) {
+    const current = this.pickerDraftAssociation();
+    const productId = current?.kind === 'product' || current?.kind === 'request-type'
+      ? current.productId
+      : this.products[0]?.id || 'all';
+    this.pickerDraftAssociation.set({ kind: 'request-type', productId, requestTypeId: id });
   }
 
-  /* Request type selection via dialog */
-  openRequestTypeDialog() {
-    if (!this.selectedProduct()) return;
-    this.selectedRequestTypeInDialog.set(this.selectedRequestType());
-    this.requestTypeDialogSearch.set('');
-    this.showRequestTypeDialog.set(true);
-  }
-
-  closeRequestTypeDialog() {
-    this.showRequestTypeDialog.set(false);
-    this.selectedRequestTypeInDialog.set(null);
-  }
-
-  selectRequestTypeInDialog(id: string) {
-    if (this.selectedRequestTypeInDialog() === id) {
-      this.selectedRequestTypeInDialog.set(null);
+  confirmAssociationPicker() {
+    const assoc = this.pickerDraftAssociation();
+    if (!assoc) return;
+    const target = this.pickerTarget();
+    if (target === 'browse') {
+      this.currentAssociation.set(assoc);
+    } else if (target === 'create') {
+      this.createAssociation.set(assoc);
     } else {
-      this.selectedRequestTypeInDialog.set(id);
+      this.copyAssociation.set(assoc);
     }
+    this.closeAssociationPicker();
   }
 
-  confirmRequestTypeDialog() {
-    const id = this.selectedRequestTypeInDialog();
-    if (id && id !== this.selectedRequestType()) {
-      this.selectedRequestType.set(id);
-    } else if (!id) {
-      this.selectedRequestType.set(null);
-    }
-    this.closeRequestTypeDialog();
+  onPickerSearchChange(event: Event) {
+    this.pickerSearch.set((event.target as HTMLInputElement).value);
   }
 
-  onRequestTypeDialogSearchChange(event: Event) {
-    this.requestTypeDialogSearch.set((event.target as HTMLInputElement).value);
+  pickerIsGlobalScope(): boolean {
+    return this.pickerDraftAssociation()?.kind === 'global-template';
+  }
+
+  pickerSelectedProductId(): string | null {
+    const a = this.pickerDraftAssociation();
+    return a && a.kind !== 'global-template' ? a.productId : null;
+  }
+
+  pickerSelectedRequestTypeId(): string | null {
+    const a = this.pickerDraftAssociation();
+    return a?.kind === 'request-type' ? a.requestTypeId : null;
   }
 
   matchFiltersToDraft() {
     const d = this.topSlotDraft();
     if (!d) return;
-    this.selectedProduct.set(d.productId);
-    this.selectedRequestType.set(d.requestTypeId);
+    this.currentAssociation.set({
+      kind: 'request-type',
+      productId: d.productId,
+      requestTypeId: d.requestTypeId
+    });
   }
 
   /* Top slot actions */
@@ -292,16 +351,10 @@ export class ScriptSetupComponent {
       this.requestCreateNew();
       return;
     }
-    const defaultProduct = this.selectedProduct() && this.selectedProduct() !== 'all'
-      ? this.selectedProduct()
-      : this.products[1]?.id || null;
-    const defaultRequestType = this.selectedRequestType() && this.selectedRequestType() !== 'all'
-      ? this.selectedRequestType()
-      : this.requestTypes[1]?.id || null;
+    const assoc = this.currentAssociation() || this.defaultAssociation();
+    this.createAssociation.set(assoc);
     this.createName.set('');
     this.createDescription.set('');
-    this.createProductId.set(defaultProduct);
-    this.createRequestTypeId.set(defaultRequestType);
     this.showCreateDialog.set(true);
   }
 
@@ -317,10 +370,10 @@ export class ScriptSetupComponent {
   saveCreateDialog() {
     const name = this.createName().trim();
     const description = this.createDescription().trim();
-    const productId = this.createProductId();
-    const requestTypeId = this.createRequestTypeId();
-    if (!name || !description || !productId || !requestTypeId) return;
+    const assoc = this.createAssociation();
+    if (!name || !description || !assoc) return;
 
+    const { productId, requestTypeId } = this.associationToIds(assoc);
     this.selectedScriptId.set(null);
     this.selectedHistoricVersion.set(null);
     this.topSlotDraft.set({
@@ -332,8 +385,7 @@ export class ScriptSetupComponent {
       copy: false,
       lastEdited: new Date().toISOString().slice(0, 10)
     });
-    this.selectedProduct.set(productId);
-    this.selectedRequestType.set(requestTypeId);
+    this.currentAssociation.set(assoc);
     this.closeCreateDialog();
     this.emitContinue();
   }
@@ -342,8 +394,7 @@ export class ScriptSetupComponent {
     this.showCreateDialog.set(false);
     this.createName.set('');
     this.createDescription.set('');
-    this.createProductId.set(null);
-    this.createRequestTypeId.set(null);
+    this.createAssociation.set(null);
   }
 
   removeTopSlotDraft() {
@@ -382,12 +433,8 @@ export class ScriptSetupComponent {
       this.requestCopy(script, version);
       return;
     }
-    const defaultProduct = this.selectedProduct() && this.selectedProduct() !== 'all'
-      ? this.selectedProduct()
-      : script.productId;
-    const defaultRequestType = this.selectedRequestType() && this.selectedRequestType() !== 'all'
-      ? this.selectedRequestType()
-      : script.requestTypeId;
+    const assoc = this.currentAssociation() || this.scriptAssociation(script) || this.defaultAssociation();
+    this.copyAssociation.set(assoc);
     this.copySourceScript.set(script);
     this.copyHistoricVersion.set(version);
     this.copyName.set(
@@ -396,8 +443,6 @@ export class ScriptSetupComponent {
         : `${script.name} (copy)`
     );
     this.copyDescription.set(script.description || '');
-    this.copyProductId.set(defaultProduct);
-    this.copyRequestTypeId.set(defaultRequestType);
     this.showCopyDialog.set(true);
   }
 
@@ -405,27 +450,25 @@ export class ScriptSetupComponent {
     const name = this.copyName().trim();
     const description = this.copyDescription().trim();
     const source = this.copySourceScript();
-    const productId = this.copyProductId();
-    const requestTypeId = this.copyRequestTypeId();
-    if (!name || !description || !source || !productId || !requestTypeId) return;
+    const assoc = this.copyAssociation();
+    if (!name || !description || !source || !assoc) return;
 
-    const changedAssociation = productId !== this.selectedProduct() || requestTypeId !== this.selectedRequestType();
+    const changedAssociation = !this.associationMatches(assoc, this.currentAssociation());
     if (changedAssociation) {
       this.showCrossAssociationConfirm.set(true);
       return;
     }
 
-    this.createCopyDraft(name, description, source, productId, requestTypeId);
+    this.createCopyDraft(name, description, source, assoc);
   }
 
   confirmCrossAssociationCopy() {
     const name = this.copyName().trim();
     const description = this.copyDescription().trim();
     const source = this.copySourceScript();
-    const productId = this.copyProductId();
-    const requestTypeId = this.copyRequestTypeId();
-    if (!name || !description || !source || !productId || !requestTypeId) return;
-    this.createCopyDraft(name, description, source, productId, requestTypeId);
+    const assoc = this.copyAssociation();
+    if (!name || !description || !source || !assoc) return;
+    this.createCopyDraft(name, description, source, assoc);
     this.showCrossAssociationConfirm.set(false);
   }
 
@@ -437,9 +480,9 @@ export class ScriptSetupComponent {
     name: string,
     description: string,
     source: ExistingScript,
-    productId: string,
-    requestTypeId: string
+    assoc: ScriptAssociation
   ) {
+    const { productId, requestTypeId } = this.associationToIds(assoc);
     this.selectedScriptId.set(null);
     this.selectedHistoricVersion.set(null);
     this.topSlotDraft.set({
@@ -452,8 +495,7 @@ export class ScriptSetupComponent {
       copy: true,
       lastEdited: new Date().toISOString().slice(0, 10)
     });
-    this.selectedProduct.set(productId);
-    this.selectedRequestType.set(requestTypeId);
+    this.currentAssociation.set(assoc);
     this.closeCopyDialog();
     this.emitContinue();
   }
@@ -464,8 +506,31 @@ export class ScriptSetupComponent {
     this.copyDescription.set('');
     this.copySourceScript.set(null);
     this.copyHistoricVersion.set(null);
-    this.copyProductId.set(null);
-    this.copyRequestTypeId.set(null);
+    this.copyAssociation.set(null);
+  }
+
+  private scriptAssociation(script: ExistingScript): ScriptAssociation | null {
+    if (script.isGlobalTemplate) return { kind: 'global-template' };
+    if (script.productId && script.requestTypeId) {
+      return { kind: 'request-type', productId: script.productId, requestTypeId: script.requestTypeId };
+    }
+    if (script.productId) {
+      return { kind: 'product', productId: script.productId };
+    }
+    return null;
+  }
+
+  private associationToIds(assoc: ScriptAssociation): { productId: string; requestTypeId: string } {
+    if (assoc.kind === 'global-template') return { productId: 'all', requestTypeId: 'all' };
+    if (assoc.kind === 'product') return { productId: assoc.productId, requestTypeId: 'all' };
+    return { productId: assoc.productId, requestTypeId: assoc.requestTypeId };
+  }
+
+  private associationMatches(a: ScriptAssociation, b: ScriptAssociation | null): boolean {
+    if (!b) return false;
+    if (a.kind === 'global-template') return b.kind === 'global-template';
+    if (a.kind === 'product') return b.kind === 'product' && a.productId === b.productId;
+    return b.kind === 'request-type' && a.productId === b.productId && a.requestTypeId === b.requestTypeId;
   }
 
   /* Version history */
@@ -550,16 +615,18 @@ export class ScriptSetupComponent {
     if (!existing) return;
 
     const version = this.selectedHistoricVersion();
+    const productId = existing.productId || 'all';
+    const requestTypeId = existing.requestTypeId || 'all';
     this.continue.emit({
       mode: 'edit',
       scriptId: existing.id,
       scriptFileId: existing.scriptFileId,
       scriptName: version ? `${existing.name} (v${version.version})` : existing.name,
       scriptDescription: existing.description,
-      productId: existing.productId,
-      productLabel: this.labelForProduct(existing.productId),
-      requestTypeId: existing.requestTypeId,
-      requestTypeLabel: this.labelForRequestType(existing.requestTypeId)
+      productId,
+      productLabel: this.labelForProduct(productId),
+      requestTypeId,
+      requestTypeLabel: this.labelForRequestType(requestTypeId)
     });
   }
 }

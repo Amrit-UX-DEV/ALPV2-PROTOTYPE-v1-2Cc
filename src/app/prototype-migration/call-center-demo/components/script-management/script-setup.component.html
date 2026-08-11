@@ -39,42 +39,22 @@
     <h2 class="alp-script-setup__title alp-script-setup__title--secondary">Browse existing scripts</h2>
     <p class="alp-script-setup__intro">Filter by product and request type</p>
 
-    <!-- Association selection tiles -->
-    <div class="alp-script-setup__placeholder-tiles">
-      <button type="button"
-              class="alp-placeholder-tile"
-              [class.alp-placeholder-tile--selected]="selectedProduct()"
-              (click)="openProductDialog()">
-        @if (selectedProduct()) {
-          <i class="fas fa-check-circle alp-placeholder-tile__check"></i>
-          <div class="alp-placeholder-tile__content">
-            <span>{{ labelForProduct(selectedProduct()) }}</span>
-            <span class="alp-placeholder-tile__hint">Change Product</span>
-          </div>
-        } @else {
-          <i class="fas fa-plus"></i>
-          <span>Select Product</span>
-        }
-      </button>
-
-      <button type="button"
-              class="alp-placeholder-tile"
-              [class.alp-placeholder-tile--selected]="selectedRequestType()"
-              [class.alp-placeholder-tile--disabled]="!selectedProduct()"
-              [disabled]="!selectedProduct()"
-              (click)="openRequestTypeDialog()">
-        @if (selectedRequestType()) {
-          <i class="fas fa-check-circle alp-placeholder-tile__check"></i>
-          <div class="alp-placeholder-tile__content">
-            <span>{{ labelForRequestType(selectedRequestType()) }}</span>
-            <span class="alp-placeholder-tile__hint">Change Request Type</span>
-          </div>
-        } @else {
-          <i class="fas fa-plus"></i>
-          <span>Select Request Type</span>
-        }
-      </button>
-    </div>
+    <!-- Association selection tile -->
+    <button type="button"
+            class="alp-placeholder-tile alp-placeholder-tile--spaced"
+            [class.alp-placeholder-tile--selected]="currentAssociation()"
+            (click)="openAssociationPicker('browse')">
+      @if (currentAssociation()) {
+        <i class="fas fa-check-circle alp-placeholder-tile__check"></i>
+        <div class="alp-placeholder-tile__content">
+          <span>{{ associationLabel(currentAssociation()) }}</span>
+          <span class="alp-placeholder-tile__hint">Change Association</span>
+        </div>
+      } @else {
+        <i class="fas fa-plus"></i>
+        <span>Select Association</span>
+      }
+    </button>
 
     @if (isAssociationMismatch()) {
       <div class="alp-script-setup__mismatch-banner">
@@ -149,23 +129,11 @@
                       class="alp-script-setup__input alp-script-setup__textarea"
                       rows="3"></textarea>
           </div>
-          <div class="alp-script-setup__form-row">
-            <div class="alp-script-setup__form-group">
-              <label>Product</label>
-              <select class="alp-script-setup__select" [ngModel]="createProductId()" (ngModelChange)="createProductId.set($event)">
-                @for (product of products; track product.id) {
-                  <option [value]="product.id">{{ product.label }}</option>
-                }
-              </select>
-            </div>
-            <div class="alp-script-setup__form-group">
-              <label>Request type</label>
-              <select class="alp-script-setup__select" [ngModel]="createRequestTypeId()" (ngModelChange)="createRequestTypeId.set($event)">
-                @for (rt of requestTypes; track rt.id) {
-                  <option [value]="rt.id">{{ rt.label }}</option>
-                }
-              </select>
-            </div>
+          <div class="alp-script-setup__association-line">
+            <span class="alp-script-setup__association-label">Association</span>
+            <button type="button" (click)="openAssociationPicker('create')" class="alp-btn alp-btn--secondary">
+              {{ associationLabel(createAssociation()) }}
+            </button>
           </div>
         </div>
         <div class="alp-dialog__footer">
@@ -173,7 +141,7 @@
           <button type="button"
                   (click)="saveCreateDialog()"
                   class="alp-btn alp-btn--primary"
-                  [disabled]="!createName().trim() || !createDescription().trim() || !createProductId() || !createRequestTypeId()">
+                  [disabled]="!createName().trim() || !createDescription().trim() || !createAssociation()">
             Save
           </button>
         </div>
@@ -218,23 +186,11 @@
                       class="alp-script-setup__input alp-script-setup__textarea"
                       rows="3"></textarea>
           </div>
-          <div class="alp-script-setup__form-row">
-            <div class="alp-script-setup__form-group">
-              <label>Product</label>
-              <select class="alp-script-setup__select" [ngModel]="copyProductId()" (ngModelChange)="copyProductId.set($event)">
-                @for (product of products; track product.id) {
-                  <option [value]="product.id">{{ product.label }}</option>
-                }
-              </select>
-            </div>
-            <div class="alp-script-setup__form-group">
-              <label>Request type</label>
-              <select class="alp-script-setup__select" [ngModel]="copyRequestTypeId()" (ngModelChange)="copyRequestTypeId.set($event)">
-                @for (rt of requestTypes; track rt.id) {
-                  <option [value]="rt.id">{{ rt.label }}</option>
-                }
-              </select>
-            </div>
+          <div class="alp-script-setup__association-line">
+            <span class="alp-script-setup__association-label">Association</span>
+            <button type="button" (click)="openAssociationPicker('copy')" class="alp-btn alp-btn--secondary">
+              {{ associationLabel(copyAssociation()) }}
+            </button>
           </div>
         </div>
         <div class="alp-dialog__footer">
@@ -242,7 +198,7 @@
           <button type="button"
                   (click)="saveCopyDialog()"
                   class="alp-btn alp-btn--primary"
-                  [disabled]="!copyName().trim() || !copyDescription().trim() || !copyProductId() || !copyRequestTypeId()">
+                  [disabled]="!copyName().trim() || !copyDescription().trim() || !copyAssociation()">
             Save
           </button>
         </div>
@@ -278,75 +234,84 @@
     </div>
   }
 
-  <!-- Product selection dialog -->
-  @if (showProductDialog()) {
-    <div class="alp-dialog-overlay" (click)="closeProductDialog()">
-      <div class="alp-dialog alp-dialog--medium" (click)="$event.stopPropagation()">
+  <!-- Association picker dialog -->
+  @if (showAssociationPicker()) {
+    <div class="alp-dialog-overlay" (click)="closeAssociationPicker()">
+      <div class="alp-dialog alp-dialog--wide" (click)="$event.stopPropagation()">
         <div class="alp-dialog__header">
-          <h4>Select Product</h4>
-          <button type="button" (click)="closeProductDialog()" class="alp-dialog__close-btn" aria-label="Close">
+          <h4>Select Association</h4>
+          <button type="button" (click)="closeAssociationPicker()" class="alp-dialog__close-btn" aria-label="Close">
             <i class="fas fa-times"></i>
           </button>
         </div>
         <div class="alp-dialog__content">
-          <input type="text"
-                 placeholder="Filter products..."
-                 (input)="onProductDialogSearchChange($event)"
-                 class="alp-script-setup__filter-input">
-          <div class="alp-script-setup__tile-grid">
-            @for (product of filteredProductsForDialog(); track product.id) {
-              <button type="button"
-                      class="alp-script-setup__tile"
-                      [class.alp-script-setup__tile--selected]="selectedProductInDialog() === product.id"
-                      (click)="selectProductInDialog(product.id)">
-                <span class="alp-script-setup__tile-label">{{ product.label }}</span>
-                @if (selectedProductInDialog() === product.id) {
-                  <i class="fas fa-check-circle alp-script-setup__tile-check"></i>
-                }
-              </button>
-            }
+          <div class="alp-association-picker__tabs">
+            <button type="button"
+                    class="alp-association-picker__tab"
+                    [class.alp-association-picker__tab--active]="pickerIsGlobalScope()"
+                    (click)="selectPickerTab('global')">
+              Global Template
+            </button>
+            <button type="button"
+                    class="alp-association-picker__tab"
+                    [class.alp-association-picker__tab--active]="!pickerIsGlobalScope()"
+                    (click)="selectPickerTab('product')">
+              Product & Request Type
+            </button>
           </div>
-        </div>
-        <div class="alp-dialog__footer">
-          <button type="button" (click)="closeProductDialog()" class="alp-btn alp-btn--secondary">Cancel</button>
-          <button type="button" (click)="confirmProductDialog()" class="alp-btn alp-btn--primary">Confirm</button>
-        </div>
-      </div>
-    </div>
-  }
 
-  <!-- Request type selection dialog -->
-  @if (showRequestTypeDialog()) {
-    <div class="alp-dialog-overlay" (click)="closeRequestTypeDialog()">
-      <div class="alp-dialog alp-dialog--medium" (click)="$event.stopPropagation()">
-        <div class="alp-dialog__header">
-          <h4>Select Request Type</h4>
-          <button type="button" (click)="closeRequestTypeDialog()" class="alp-dialog__close-btn" aria-label="Close">
-            <i class="fas fa-times"></i>
-          </button>
-        </div>
-        <div class="alp-dialog__content">
-          <input type="text"
-                 placeholder="Filter request types..."
-                 (input)="onRequestTypeDialogSearchChange($event)"
-                 class="alp-script-setup__filter-input">
-          <div class="alp-script-setup__tile-grid">
-            @for (request of filteredRequestTypesForDialog(); track request.id) {
-              <button type="button"
-                      class="alp-script-setup__tile"
-                      [class.alp-script-setup__tile--selected]="selectedRequestTypeInDialog() === request.id"
-                      (click)="selectRequestTypeInDialog(request.id)">
-                <span class="alp-script-setup__tile-label">{{ request.label }}</span>
-                @if (selectedRequestTypeInDialog() === request.id) {
-                  <i class="fas fa-check-circle alp-script-setup__tile-check"></i>
-                }
+          @if (pickerIsGlobalScope()) {
+            <div class="alp-association-picker__scope">
+              <button type="button" class="alp-script-setup__tile alp-script-setup__tile--selected">
+                <span class="alp-script-setup__tile-label">Global Template</span>
               </button>
+            </div>
+            <div class="alp-association-picker__preview">
+              <p class="alp-script-setup__section-hint">Global templates available</p>
+              @for (script of pickerGlobalScripts(); track script.id) {
+                <div class="alp-script-setup__script-item">
+                  <div class="alp-script-setup__script-info">
+                    <strong>{{ script.name }}</strong>
+                    <span class="alp-script-setup__script-description">{{ script.description }}</span>
+                  </div>
+                </div>
+              }
+            </div>
+          } @else {
+            <div class="alp-association-picker__scope">
+              <p class="alp-association-picker__scope-label">Select a product</p>
+              <div class="alp-script-setup__tile-grid">
+                @for (product of filteredPickerProducts(); track product.id) {
+                  <button type="button"
+                          class="alp-script-setup__tile"
+                          [class.alp-script-setup__tile--selected]="pickerSelectedProductId() === product.id"
+                          (click)="selectPickerProduct(product.id)">
+                    <span class="alp-script-setup__tile-label">{{ product.label }}</span>
+                  </button>
+                }
+              </div>
+            </div>
+
+            @if (pickerSelectedProductId()) {
+              <div class="alp-association-picker__scope">
+                <p class="alp-association-picker__scope-label">Select a request type</p>
+                <div class="alp-script-setup__tile-grid">
+                  @for (rt of filteredPickerRequestTypes(); track rt.id) {
+                    <button type="button"
+                            class="alp-script-setup__tile"
+                            [class.alp-script-setup__tile--selected]="pickerSelectedRequestTypeId() === rt.id"
+                            (click)="selectPickerRequestType(rt.id)">
+                      <span class="alp-script-setup__tile-label">{{ rt.label }}</span>
+                    </button>
+                  }
+                </div>
+              </div>
             }
-          </div>
+          }
         </div>
         <div class="alp-dialog__footer">
-          <button type="button" (click)="closeRequestTypeDialog()" class="alp-btn alp-btn--secondary">Cancel</button>
-          <button type="button" (click)="confirmRequestTypeDialog()" class="alp-btn alp-btn--primary">Confirm</button>
+          <button type="button" (click)="closeAssociationPicker()" class="alp-btn alp-btn--secondary">Cancel</button>
+          <button type="button" (click)="confirmAssociationPicker()" class="alp-btn alp-btn--primary">Confirm</button>
         </div>
       </div>
     </div>
@@ -384,7 +349,7 @@
           </button>
         </div>
         <div class="alp-dialog__content">
-          This copy will be filed under {{ labelForProduct(copyProductId()) }} · {{ labelForRequestType(copyRequestTypeId()) }}. The list will switch to that association so you can see your draft and other scripts there.
+          This copy will be filed under {{ associationLabel(copyAssociation()) }}. The list will switch to that association so you can see your draft and other scripts there.
         </div>
         <div class="alp-dialog__footer">
           <button type="button" (click)="cancelCrossAssociationCopy()" class="alp-btn alp-btn--secondary">Cancel</button>
