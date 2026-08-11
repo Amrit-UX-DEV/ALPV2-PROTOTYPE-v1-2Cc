@@ -181,10 +181,32 @@
   line-height: 1.3;
 }
 
+.alp-placeholder-tile__filter {
+  font-size: 16px;
+  font-weight: var(--alp-font-weight-medium);
+  color: var(--alp-color-slate-700);
+}
+
+.alp-placeholder-tile__filter strong {
+  color: var(--alp-color-text);
+  font-weight: var(--alp-font-weight-bold);
+}
+
+.alp-placeholder-tile__chevron {
+  margin: 0 6px;
+  color: var(--alp-color-slate-400);
+  font-size: var(--alp-font-size-sm);
+}
+
 .alp-placeholder-tile__hint {
   font-size: var(--alp-font-size-sm);
   color: var(--alp-color-text-muted);
   font-weight: var(--alp-font-weight-normal);
+}
+
+.alp-placeholder-tile__hint--interactive {
+  color: var(--alp-color-brand);
+  font-weight: var(--alp-font-weight-medium);
 }
 
 /* ---- Variable tiles (used in content-card variable selection) ---- */

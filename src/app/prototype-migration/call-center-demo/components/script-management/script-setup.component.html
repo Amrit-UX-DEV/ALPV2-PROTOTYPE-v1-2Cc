@@ -42,13 +42,16 @@
     <!-- Association placeholder tile -->
     <button type="button"
             class="alp-placeholder-tile alp-placeholder-tile--spaced"
-            [class.alp-placeholder-tile--selected]="currentAssociation()"
             (click)="openAssociationWizard('browse')">
       @if (currentAssociation()) {
-        <i class="fas fa-check-circle alp-placeholder-tile__check"></i>
         <div class="alp-placeholder-tile__content">
-          <span>{{ associationLabel(currentAssociation()) }}</span>
-          <span class="alp-placeholder-tile__hint">Change</span>
+          <span class="alp-placeholder-tile__filter">
+            You are viewing existing scripts for
+            <strong>{{ labelForProduct(currentAssociation()!.productId) }}</strong>
+            <i class="fas fa-chevron-right alp-placeholder-tile__chevron"></i>
+            <strong>{{ labelForRequestType(currentAssociation()!.requestTypeId) }}</strong>
+          </span>
+          <span class="alp-placeholder-tile__hint alp-placeholder-tile__hint--interactive">Click to change</span>
         </div>
       } @else {
         <i class="fas fa-plus"></i>
@@ -93,9 +96,15 @@
                     title="View Version History">
               <i class="fas fa-history alp-btn__icon--md"></i>
             </button>
-            <button type="button" (click)="requestSelectExisting(script)" class="alp-btn alp-btn--primary">
-              Select Script
-            </button>
+            @if (selectedScriptId() === script.id) {
+              <button type="button" (click)="deselectScript()" class="alp-btn alp-btn--secondary">
+                Cancel Selection
+              </button>
+            } @else {
+              <button type="button" (click)="requestSelectExisting(script)" class="alp-btn alp-btn--primary">
+                Select Script
+              </button>
+            }
           </div>
         </div>
       }
@@ -218,17 +227,39 @@
         </div>
         <div class="alp-dialog__content">
           <div *ngFor="let version of selectedScriptForHistory()?.versionHistory"
-               class="alp-script-setup__version-item">
+               class="alp-script-setup__version-item"
+               [class.alp-script-setup__version-item--selected]="previewedHistoricVersion()?.version === version.version">
             <div class="alp-script-setup__version-info">
               <strong>v{{ version.version }}</strong>
               <span>{{ version.date }} • {{ version.editedBy }}</span>
             </div>
             <button type="button"
-                    (click)="requestSelectHistoric(selectedScriptForHistory()!, version)"
+                    (click)="previewHistoricVersion(version)"
                     class="alp-btn alp-btn--primary">
-              Select Script
+              Preview
             </button>
           </div>
+
+          @if (previewedHistoricVersion()) {
+            <div class="alp-script-setup__historic-container">
+              <div class="alp-script-setup__historic-card">
+                <div class="alp-script-setup__historic-info">
+                  <div class="alp-script-setup__historic-header">
+                    <strong>{{ selectedScriptForHistory()?.name }} (v{{ previewedHistoricVersion()!.version }})</strong>
+                    <span class="alp-status-tag alp-status-tag--historic">Historic Version</span>
+                  </div>
+                  <span class="alp-script-setup__historic-meta">
+                    {{ previewedHistoricVersion()!.date }} • {{ previewedHistoricVersion()!.editedBy }}
+                  </span>
+                  <span class="alp-script-setup__script-description">{{ selectedScriptForHistory()?.description }}</span>
+                </div>
+                <div class="alp-script-setup__historic-actions">
+                  <button type="button" (click)="closeVersionHistory()" class="alp-btn alp-btn--secondary">Cancel</button>
+                  <button type="button" (click)="confirmPreviewedHistoricVersion()" class="alp-btn alp-btn--primary">Select Script</button>
+                </div>
+              </div>
+            </div>
+          }
         </div>
       </div>
     </div>
@@ -252,6 +283,9 @@
                  [class.alp-script-setup__wizard-step--complete]="wizardStep() === 'requestType'">
               <span class="alp-script-setup__wizard-step-number">1</span>
               <span class="alp-script-setup__wizard-step-label">Product</span>
+              @if (wizardStep() === 'requestType') {
+                <i class="fas fa-check-circle alp-script-setup__wizard-step-check"></i>
+              }
             </div>
             <div class="alp-script-setup__wizard-step-connector"></div>
             <div class="alp-script-setup__wizard-step"
@@ -336,7 +370,8 @@
             </div>
           }
         </div>
-        <div class="alp-dialog__footer">
+        <div class="alp-dialog__footer"
+             [class.alp-dialog__footer--split]="wizardStep() === 'requestType'">
           @if (wizardStep() === 'product') {
             <button type="button" (click)="closeAssociationWizard()" class="alp-btn alp-btn--secondary">Cancel</button>
             <button type="button"
@@ -346,16 +381,18 @@
               Next
             </button>
           } @else {
-            <button type="button" (click)="closeAssociationWizard()" class="alp-btn alp-btn--secondary">Cancel</button>
             <button type="button" (click)="goBackToProductStep()" class="alp-btn alp-btn--secondary">
               <i class="fas fa-arrow-left"></i> Back
             </button>
-            <button type="button"
-                    (click)="confirmAssociationWizard()"
-                    class="alp-btn alp-btn--primary"
-                    [disabled]="!wizardRequestTypeId()">
-              Confirm
-            </button>
+            <div class="alp-footer-right">
+              <button type="button" (click)="closeAssociationWizard()" class="alp-btn alp-btn--secondary">Cancel</button>
+              <button type="button"
+                      (click)="confirmAssociationWizard()"
+                      class="alp-btn alp-btn--primary"
+                      [disabled]="!wizardRequestTypeId()">
+                Confirm
+              </button>
+            </div>
           }
         </div>
       </div>

@@ -91,6 +91,10 @@
   background: var(--alp-color-purple-600);
 }
 
+.alp-status-tag--historic {
+  background: var(--alp-color-amber-600);
+}
+
 /* ---- ID tags (monospace identifier chips) ---- */
 .alp-id-tag {
   display: inline-flex;

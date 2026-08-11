@@ -374,10 +374,21 @@
   border-bottom: 1px solid var(--alp-color-slate-100);
 }
 
+.alp-script-setup__version-item--selected {
+  background: var(--alp-color-brand-50);
+  border-bottom: 1px solid var(--alp-color-brand);
+}
+
 .alp-script-setup__version-info {
   display: flex;
   flex-direction: column;
   gap: 2px;
+}
+
+.alp-script-setup__wizard-step-check {
+  font-size: var(--alp-font-size-md);
+  color: var(--alp-color-success);
+  margin-left: var(--alp-space-1);
 }
 
 .alp-script-setup__filter-input {
