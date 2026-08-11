@@ -499,7 +499,9 @@ export class ScriptSetupComponent {
   }
 
   selectDialogHistoricVersion(version: VersionEntry) {
-    this.dialogSelectedHistoricVersion.set(version);
+    this.dialogSelectedHistoricVersion.update(current =>
+      current?.version === version.version ? null : version
+    );
   }
 
   confirmDialogHistoricVersion() {

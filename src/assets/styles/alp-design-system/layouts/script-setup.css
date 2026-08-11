@@ -396,20 +396,6 @@
   align-items: center;
   padding: 14px;
   border-bottom: 1px solid var(--alp-color-slate-100);
-  cursor: pointer;
-}
-
-.alp-script-setup__version-item:hover {
-  background: var(--alp-color-slate-50);
-}
-
-.alp-script-setup__version-item--selected {
-  background: var(--alp-color-brand-50);
-  border-bottom: 1px solid var(--alp-color-brand);
-}
-
-.alp-script-setup__version-item--selected:hover {
-  background: var(--alp-color-brand-50);
 }
 
 .alp-script-setup__version-info {
