@@ -81,68 +81,67 @@
 
     <div class="alp-script-setup__script-list">
       @for (script of filteredExistingScripts(); track script.id) {
-        <div class="alp-script-setup__script-item"
-             [class.alp-script-setup__script-item--selected]="selectedScriptId() === script.id && !selectedHistoricVersion()"
-             [class.alp-script-setup__script-item--historic-selected]="selectedScriptId() === script.id && selectedHistoricVersion() && selectedScriptForHistory()?.id === script.id">
-          <div class="alp-script-setup__script-info">
-            <div class="alp-script-setup__script-header">
-              <strong>{{ script.name }}</strong>
-              @if (script.isActive) {
-                <span class="alp-status-tag alp-status-tag--primary">Primary Script</span>
-              }
+        @if (selectedHistoricVersion() && selectedScriptForHistory()?.id === script.id) {
+          <!-- Historic version replaces the original script item -->
+          <div class="alp-script-setup__script-item alp-script-setup__script-item--historic-selected">
+            <div class="alp-script-setup__script-info">
+              <div class="alp-script-setup__script-header">
+                <strong>{{ script.name }} (v{{ selectedHistoricVersion()!.version }})</strong>
+                @if (script.isActive) {
+                  <span class="alp-status-tag alp-status-tag--primary">Primary Script</span>
+                }
+                <span class="alp-status-tag alp-status-tag--historic">Historic Version</span>
+              </div>
+              <span class="alp-script-setup__last-edited">Last edited: {{ selectedHistoricVersion()!.date }}</span>
+              <span class="alp-script-setup__script-description">{{ script.description }}</span>
             </div>
-            <span class="alp-script-setup__last-edited">Last edited: {{ script.lastEdited }}</span>
-            <span class="alp-script-setup__script-description">{{ script.description }}</span>
-          </div>
-          <div class="alp-script-setup__script-actions">
-            <button type="button"
-                    (click)="requestCopy(script)"
-                    class="alp-btn alp-btn--secondary alp-btn--icon"
-                    title="Copy Script">
-              <i class="fas fa-clone alp-btn__icon--md"></i>
-            </button>
-            <button type="button"
-                    (click)="openVersionHistory(script)"
-                    class="alp-btn alp-btn--secondary alp-btn--icon"
-                    title="View Version History">
-              <i class="fas fa-history alp-btn__icon--md"></i>
-            </button>
-            @if (selectedScriptId() === script.id && !selectedHistoricVersion()) {
+            <div class="alp-script-setup__script-actions">
+              <button type="button"
+                      (click)="requestCopy(script, selectedHistoricVersion())"
+                      class="alp-btn alp-btn--secondary alp-btn--icon"
+                      title="Copy this historic version">
+                <i class="fas fa-clone alp-btn__icon--md"></i>
+              </button>
               <button type="button" (click)="deselectScript()" class="alp-btn alp-btn--secondary">
                 Cancel Selection
               </button>
-            } @else {
-              <button type="button" (click)="requestSelectExisting(script)" class="alp-btn alp-btn--primary">
-                Select Script
-              </button>
-            }
+            </div>
           </div>
-        </div>
-
-        @if (selectedHistoricVersion() && selectedScriptForHistory()?.id === script.id) {
-          <div class="alp-script-setup__historic-container">
-            <div class="alp-script-setup__historic-card">
-              <div class="alp-script-setup__historic-info">
-                <div class="alp-script-setup__historic-header">
-                  <strong>{{ script.name }} (v{{ selectedHistoricVersion()!.version }})</strong>
-                  <span class="alp-status-tag alp-status-tag--historic">Historic Version</span>
-                </div>
-                <span class="alp-script-setup__historic-meta">
-                  {{ selectedHistoricVersion()!.date }} • {{ selectedHistoricVersion()!.editedBy }}
-                </span>
-                <span class="alp-script-setup__script-description">{{ script.description }}</span>
+        } @else {
+          <div class="alp-script-setup__script-item"
+               [class.alp-script-setup__script-item--selected]="selectedScriptId() === script.id">
+            <div class="alp-script-setup__script-info">
+              <div class="alp-script-setup__script-header">
+                <strong>{{ script.name }}</strong>
+                @if (script.isActive) {
+                  <span class="alp-status-tag alp-status-tag--primary">Primary Script</span>
+                }
               </div>
-              <div class="alp-script-setup__historic-actions">
-                <button type="button"
-                        (click)="requestCopy(script, selectedHistoricVersion())"
-                        class="alp-btn alp-btn--secondary alp-btn--icon"
-                        title="Copy this historic version">
-                  <i class="fas fa-clone alp-btn__icon--md"></i>
-                </button>
+              <span class="alp-script-setup__last-edited">Last edited: {{ script.lastEdited }}</span>
+              <span class="alp-script-setup__script-description">{{ script.description }}</span>
+            </div>
+            <div class="alp-script-setup__script-actions">
+              <button type="button"
+                      (click)="requestCopy(script)"
+                      class="alp-btn alp-btn--secondary alp-btn--icon"
+                      title="Copy Script">
+                <i class="fas fa-clone alp-btn__icon--md"></i>
+              </button>
+              <button type="button"
+                      (click)="openVersionHistory(script)"
+                      class="alp-btn alp-btn--secondary alp-btn--icon"
+                      title="View Version History">
+                <i class="fas fa-history alp-btn__icon--md"></i>
+              </button>
+              @if (selectedScriptId() === script.id) {
                 <button type="button" (click)="deselectScript()" class="alp-btn alp-btn--secondary">
                   Cancel Selection
                 </button>
-              </div>
+              } @else {
+                <button type="button" (click)="requestSelectExisting(script)" class="alp-btn alp-btn--primary">
+                  Select Script
+                </button>
+              }
             </div>
           </div>
         }
@@ -266,17 +265,40 @@
         </div>
         <div class="alp-dialog__content">
           <div *ngFor="let version of selectedScriptForHistory()?.versionHistory"
-               class="alp-script-setup__version-item">
+               class="alp-script-setup__version-item"
+               [class.alp-script-setup__version-item--selected]="dialogSelectedHistoricVersion()?.version === version.version"
+               (click)="selectDialogHistoricVersion(version)">
             <div class="alp-script-setup__version-info">
               <strong>v{{ version.version }}</strong>
               <span>{{ version.date }} • {{ version.editedBy }}</span>
             </div>
-            <button type="button"
-                    (click)="requestSelectHistoric(selectedScriptForHistory()!, version)"
-                    class="alp-btn alp-btn--primary">
-              Select Script
-            </button>
+            <div class="alp-script-setup__version-actions">
+              <button type="button"
+                      (click)="requestCopy(selectedScriptForHistory()!, version); $event.stopPropagation()"
+                      class="alp-btn alp-btn--secondary alp-btn--icon"
+                      title="Copy this version">
+                <i class="fas fa-clone alp-btn__icon--md"></i>
+              </button>
+              <button type="button"
+                      (click)="selectDialogHistoricVersion(version); $event.stopPropagation()"
+                      class="alp-btn alp-btn--primary">
+                @if (dialogSelectedHistoricVersion()?.version === version.version) {
+                  Selected
+                } @else {
+                  Select
+                }
+              </button>
+            </div>
           </div>
+        </div>
+        <div class="alp-dialog__footer">
+          <button type="button" (click)="closeVersionHistory()" class="alp-btn alp-btn--secondary">Cancel</button>
+          <button type="button"
+                  (click)="confirmDialogHistoricVersion()"
+                  class="alp-btn alp-btn--primary"
+                  [disabled]="!dialogSelectedHistoricVersion()">
+            Confirm
+          </button>
         </div>
       </div>
     </div>
