@@ -136,11 +136,12 @@ export class ScriptSetupComponent {
 
   readonly filteredExistingScripts = computed(() => {
     const assoc = this.currentAssociation();
-    if (!assoc) return this.existingScripts;
+    if (!assoc) return [];
+    if (assoc.productId === 'all' && assoc.requestTypeId === 'all') {
+      return this.existingScripts.filter(s => s.isGlobalTemplate);
+    }
     return this.existingScripts.filter(s => {
-      if (s.isGlobalTemplate) {
-        return assoc.productId === 'all' && assoc.requestTypeId === 'all';
-      }
+      if (s.isGlobalTemplate) return false;
       const productMatch = assoc.productId === 'all' || s.productId === assoc.productId;
       const requestTypeMatch = assoc.requestTypeId === 'all' || s.requestTypeId === assoc.requestTypeId;
       return productMatch && requestTypeMatch;
@@ -160,7 +161,19 @@ export class ScriptSetupComponent {
   readonly wizardStep = signal<WizardStep>('product');
   readonly wizardProductId = signal<string | null>(null);
   readonly wizardRequestTypeId = signal<string | null>(null);
+  readonly wizardSearch = signal('');
 
+  readonly filteredWizardProducts = computed(() => {
+    const term = this.wizardSearch().toLowerCase().trim();
+    if (!term) return this.products;
+    return this.products.filter(p => p.label.toLowerCase().includes(term));
+  });
+
+  readonly filteredWizardRequestTypes = computed(() => {
+    const term = this.wizardSearch().toLowerCase().trim();
+    if (!term) return this.requestTypes;
+    return this.requestTypes.filter(rt => rt.label.toLowerCase().includes(term));
+  });
 
   /* Create new script dialog */
   readonly showCreateDialog = signal(false);
@@ -186,12 +199,12 @@ export class ScriptSetupComponent {
   readonly showCrossAssociationConfirm = signal(false);
 
   labelForProduct(id: string | null): string {
-    if (id === 'all') return 'All Products';
+    if (id === 'all') return 'Global Template';
     return this.products.find(p => p.id === id)?.label || '';
   }
 
   labelForRequestType(id: string | null): string {
-    if (id === 'all') return 'All Request Types';
+    if (id === 'all') return 'Template';
     return this.requestTypes.find(rt => rt.id === id)?.label || '';
   }
 
@@ -217,10 +230,6 @@ export class ScriptSetupComponent {
     return this.associationLabel(d);
   }
 
-  private defaultAssociation(): ScriptAssociation {
-    return { productId: 'all', requestTypeId: 'all' };
-  }
-
   /* Association wizard */
   openAssociationWizard(target: WizardTarget) {
     this.wizardTarget.set(target);
@@ -229,10 +238,10 @@ export class ScriptSetupComponent {
       : target === 'create'
         ? this.createAssociation()
         : this.copyAssociation();
-    const effective = assoc || this.defaultAssociation();
-    this.wizardProductId.set(effective.productId);
-    this.wizardRequestTypeId.set(effective.requestTypeId);
+    this.wizardProductId.set(assoc?.productId ?? null);
+    this.wizardRequestTypeId.set(assoc?.requestTypeId ?? null);
     this.wizardStep.set('product');
+    this.wizardSearch.set('');
     this.showAssociationWizard.set(true);
   }
 
@@ -241,24 +250,31 @@ export class ScriptSetupComponent {
     this.wizardProductId.set(null);
     this.wizardRequestTypeId.set(null);
     this.wizardStep.set('product');
+    this.wizardSearch.set('');
   }
 
   selectWizardProduct(id: string) {
-    this.wizardProductId.set(id);
+    this.wizardProductId.update(current => current === id ? null : id);
   }
 
   selectWizardRequestType(id: string) {
-    this.wizardRequestTypeId.set(id);
+    this.wizardRequestTypeId.update(current => current === id ? null : id);
+  }
+
+  onWizardSearchChange(event: Event) {
+    this.wizardSearch.set((event.target as HTMLInputElement).value);
   }
 
   goToRequestTypeStep() {
     if (this.wizardProductId()) {
       this.wizardStep.set('requestType');
+      this.wizardSearch.set('');
     }
   }
 
   goBackToProductStep() {
     this.wizardStep.set('product');
+    this.wizardSearch.set('');
   }
 
   confirmAssociationWizard() {
@@ -293,8 +309,7 @@ export class ScriptSetupComponent {
       this.requestCreateNew();
       return;
     }
-    const assoc = this.currentAssociation() || this.defaultAssociation();
-    this.createAssociation.set(assoc);
+    this.createAssociation.set(this.currentAssociation());
     this.createName.set('');
     this.createDescription.set('');
     this.showCreateDialog.set(true);
@@ -374,8 +389,7 @@ export class ScriptSetupComponent {
       this.requestCopy(script, version);
       return;
     }
-    const assoc = this.currentAssociation() || this.scriptAssociation(script) || this.defaultAssociation();
-    this.copyAssociation.set(assoc);
+    this.copyAssociation.set(this.currentAssociation());
     this.copySourceScript.set(script);
     this.copyHistoricVersion.set(version);
     this.copyName.set(
