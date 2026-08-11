@@ -73,15 +73,17 @@
     <div class="alp-script-setup__script-list">
       @for (script of filteredExistingScripts(); track script.id) {
         <div class="alp-script-setup__script-item"
-             [class.alp-script-setup__script-item--selected]="selectedScriptId() === script.id"
-             [class.alp-script-setup__script-item--historic-selected]="selectedHistoricVersion() && selectedScriptForHistory()?.id === script.id">
+             [class.alp-script-setup__script-item--selected]="selectedScriptId() === script.id && !selectedHistoricVersion()"
+             [class.alp-script-setup__script-item--historic-selected]="selectedScriptId() === script.id && selectedHistoricVersion() && selectedScriptForHistory()?.id === script.id">
           <div class="alp-script-setup__script-info">
-            <strong>{{ script.name }}</strong>
+            <div class="alp-script-setup__script-header">
+              <strong>{{ script.name }}</strong>
+              @if (script.isActive) {
+                <span class="alp-status-tag alp-status-tag--primary">Primary Script</span>
+              }
+            </div>
             <span class="alp-script-setup__last-edited">Last edited: {{ script.lastEdited }}</span>
             <span class="alp-script-setup__script-description">{{ script.description }}</span>
-            @if (script.isActive) {
-              <span class="alp-status-tag alp-status-tag--primary">Primary Script</span>
-            }
           </div>
           <div class="alp-script-setup__script-actions">
             <button type="button"
@@ -107,6 +109,31 @@
             }
           </div>
         </div>
+
+        @if (selectedHistoricVersion() && selectedScriptForHistory()?.id === script.id) {
+          <div class="alp-script-setup__historic-container">
+            <div class="alp-script-setup__historic-card">
+              <div class="alp-script-setup__historic-info">
+                <div class="alp-script-setup__historic-header">
+                  <strong>{{ script.name }} (v{{ selectedHistoricVersion()!.version }})</strong>
+                  <span class="alp-status-tag alp-status-tag--historic">Historic Version</span>
+                </div>
+                <span class="alp-script-setup__historic-meta">
+                  {{ selectedHistoricVersion()!.date }} • {{ selectedHistoricVersion()!.editedBy }}
+                </span>
+                <span class="alp-script-setup__script-description">{{ script.description }}</span>
+              </div>
+              <div class="alp-script-setup__historic-actions">
+                <button type="button"
+                        (click)="requestCopy(script, selectedHistoricVersion())"
+                        class="alp-btn alp-btn--secondary"
+                        title="Copy this historic version">
+                  Copy
+                </button>
+              </div>
+            </div>
+          </div>
+        }
       }
     </div>
   </section>
@@ -227,39 +254,17 @@
         </div>
         <div class="alp-dialog__content">
           <div *ngFor="let version of selectedScriptForHistory()?.versionHistory"
-               class="alp-script-setup__version-item"
-               [class.alp-script-setup__version-item--selected]="previewedHistoricVersion()?.version === version.version">
+               class="alp-script-setup__version-item">
             <div class="alp-script-setup__version-info">
               <strong>v{{ version.version }}</strong>
               <span>{{ version.date }} • {{ version.editedBy }}</span>
             </div>
             <button type="button"
-                    (click)="previewHistoricVersion(version)"
+                    (click)="requestSelectHistoric(selectedScriptForHistory()!, version)"
                     class="alp-btn alp-btn--primary">
-              Preview
+              Select Script
             </button>
           </div>
-
-          @if (previewedHistoricVersion()) {
-            <div class="alp-script-setup__historic-container">
-              <div class="alp-script-setup__historic-card">
-                <div class="alp-script-setup__historic-info">
-                  <div class="alp-script-setup__historic-header">
-                    <strong>{{ selectedScriptForHistory()?.name }} (v{{ previewedHistoricVersion()!.version }})</strong>
-                    <span class="alp-status-tag alp-status-tag--historic">Historic Version</span>
-                  </div>
-                  <span class="alp-script-setup__historic-meta">
-                    {{ previewedHistoricVersion()!.date }} • {{ previewedHistoricVersion()!.editedBy }}
-                  </span>
-                  <span class="alp-script-setup__script-description">{{ selectedScriptForHistory()?.description }}</span>
-                </div>
-                <div class="alp-script-setup__historic-actions">
-                  <button type="button" (click)="closeVersionHistory()" class="alp-btn alp-btn--secondary">Cancel</button>
-                  <button type="button" (click)="confirmPreviewedHistoricVersion()" class="alp-btn alp-btn--primary">Select Script</button>
-                </div>
-              </div>
-            </div>
-          }
         </div>
       </div>
     </div>

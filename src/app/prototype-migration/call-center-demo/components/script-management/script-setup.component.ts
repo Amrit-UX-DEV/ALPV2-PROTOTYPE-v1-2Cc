@@ -190,7 +190,6 @@ export class ScriptSetupComponent {
   /* Version history dialog */
   readonly showVersionHistory = signal(false);
   readonly selectedScriptForHistory = signal<ExistingScript | null>(null);
-  readonly previewedHistoricVersion = signal<VersionEntry | null>(null);
 
   /* Draft replacement confirmation when selecting existing while draft is in top slot */
   readonly showReplaceConfirm = signal(false);
@@ -489,24 +488,11 @@ export class ScriptSetupComponent {
   /* Version history */
   openVersionHistory(script: ExistingScript) {
     this.selectedScriptForHistory.set(script);
-    this.previewedHistoricVersion.set(null);
     this.showVersionHistory.set(true);
   }
 
   closeVersionHistory() {
     this.showVersionHistory.set(false);
-    this.previewedHistoricVersion.set(null);
-  }
-
-  previewHistoricVersion(version: VersionEntry) {
-    this.previewedHistoricVersion.set(version);
-  }
-
-  confirmPreviewedHistoricVersion() {
-    const script = this.selectedScriptForHistory();
-    const version = this.previewedHistoricVersion();
-    if (!script || !version) return;
-    this.requestSelectHistoric(script, version);
   }
 
   requestSelectHistoric(script: ExistingScript, version: VersionEntry) {
@@ -522,7 +508,6 @@ export class ScriptSetupComponent {
     this.topSlotDraft.set(null);
     this.selectedScriptId.set(script.id);
     this.selectedHistoricVersion.set(version);
-    this.previewedHistoricVersion.set(null);
     this.showVersionHistory.set(false);
     this.emitContinue();
   }
