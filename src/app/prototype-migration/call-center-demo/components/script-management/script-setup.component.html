@@ -264,20 +264,25 @@
           @if (wizardStep() === 'product') {
             <div class="alp-script-setup__wizard-scope">
               <p class="alp-script-setup__wizard-description">
-                Pick the scope for this script. <strong>All Products</strong> is ideal for templates that need to be reused everywhere.
+                Pick the scope for this script. <strong>Global Template</strong> is a category of its own, available across every product.
               </p>
+              <input type="text"
+                     [ngModel]="wizardSearch()"
+                     (ngModelChange)="wizardSearch.set($event)"
+                     placeholder="Search products"
+                     class="alp-script-setup__input alp-script-setup__filter-input">
               <div class="alp-script-setup__tile-grid">
                 <button type="button"
                         class="alp-script-setup__tile"
                         [class.alp-script-setup__tile--selected]="wizardProductId() === 'all'"
                         (click)="selectWizardProduct('all')">
-                  <span class="alp-script-setup__tile-label">All Products</span>
-                  <span class="alp-script-setup__tile-hint">Useful for templates</span>
+                  <span class="alp-script-setup__tile-label">Global Template</span>
+                  <span class="alp-script-setup__tile-hint">Available across all products</span>
                   @if (wizardProductId() === 'all') {
                     <i class="fas fa-check-circle alp-script-setup__tile-check"></i>
                   }
                 </button>
-                @for (product of products; track product.id) {
+                @for (product of filteredWizardProducts(); track product.id) {
                   <button type="button"
                           class="alp-script-setup__tile"
                           [class.alp-script-setup__tile--selected]="wizardProductId() === product.id"
@@ -292,14 +297,8 @@
             </div>
           } @else {
             <div class="alp-script-setup__wizard-scope">
-              <button type="button"
-                      class="alp-script-setup__wizard-back"
-                      (click)="goBackToProductStep()">
-                <i class="fas fa-arrow-left"></i> Back to product
-              </button>
-
               <p class="alp-script-setup__wizard-description">
-                Pick how specific the script should be. <strong>All Request Types</strong> creates a template that applies across every request type for the selected product.
+                Pick how specific the script should be. <strong>Template</strong> applies across every request type for the selected product.
               </p>
 
               <div class="alp-script-setup__wizard-selection">
@@ -307,18 +306,22 @@
                 <span class="alp-script-setup__wizard-selection-value">{{ labelForProduct(wizardProductId()) }}</span>
               </div>
 
+              <input type="text"
+                     [ngModel]="wizardSearch()"
+                     (ngModelChange)="wizardSearch.set($event)"
+                     placeholder="Search request types"
+                     class="alp-script-setup__input alp-script-setup__filter-input">
               <div class="alp-script-setup__tile-grid">
                 <button type="button"
                         class="alp-script-setup__tile"
                         [class.alp-script-setup__tile--selected]="wizardRequestTypeId() === 'all'"
                         (click)="selectWizardRequestType('all')">
-                  <span class="alp-script-setup__tile-label">All Request Types</span>
-                  <span class="alp-script-setup__tile-hint">Useful for templates</span>
+                  <span class="alp-script-setup__tile-label">Template</span>
                   @if (wizardRequestTypeId() === 'all') {
                     <i class="fas fa-check-circle alp-script-setup__tile-check"></i>
                   }
                 </button>
-                @for (rt of requestTypes; track rt.id) {
+                @for (rt of filteredWizardRequestTypes(); track rt.id) {
                   <button type="button"
                           class="alp-script-setup__tile"
                           [class.alp-script-setup__tile--selected]="wizardRequestTypeId() === rt.id"
@@ -334,8 +337,8 @@
           }
         </div>
         <div class="alp-dialog__footer">
-          <button type="button" (click)="closeAssociationWizard()" class="alp-btn alp-btn--secondary">Cancel</button>
           @if (wizardStep() === 'product') {
+            <button type="button" (click)="closeAssociationWizard()" class="alp-btn alp-btn--secondary">Cancel</button>
             <button type="button"
                     (click)="goToRequestTypeStep()"
                     class="alp-btn alp-btn--primary"
@@ -343,6 +346,10 @@
               Next
             </button>
           } @else {
+            <button type="button" (click)="closeAssociationWizard()" class="alp-btn alp-btn--secondary">Cancel</button>
+            <button type="button" (click)="goBackToProductStep()" class="alp-btn alp-btn--secondary">
+              <i class="fas fa-arrow-left"></i> Back
+            </button>
             <button type="button"
                     (click)="confirmAssociationWizard()"
                     class="alp-btn alp-btn--primary"
