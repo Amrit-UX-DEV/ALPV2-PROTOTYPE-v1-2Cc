@@ -307,6 +307,19 @@
   min-width: 200px;
 }
 
+.alp-script-setup__script-header {
+  display: flex;
+  align-items: center;
+  gap: var(--alp-space-3);
+  flex-wrap: wrap;
+  margin-bottom: var(--alp-space-2);
+}
+
+.alp-script-setup__script-header strong {
+  font-size: var(--alp-font-size-md);
+  color: var(--alp-color-text);
+}
+
 .alp-script-setup__last-edited {
   display: block;
   color: var(--alp-color-text-muted);
