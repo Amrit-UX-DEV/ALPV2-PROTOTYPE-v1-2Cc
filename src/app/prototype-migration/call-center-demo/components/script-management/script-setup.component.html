@@ -39,61 +39,22 @@
     <h2 class="alp-script-setup__title alp-script-setup__title--secondary">Browse existing scripts</h2>
     <p class="alp-script-setup__intro">Filter by product and request type to find the script you need.</p>
 
-    <!-- Product filter -->
-    <div class="alp-script-setup__filter-group">
-      <p class="alp-script-setup__filter-label">Product</p>
-      <div class="alp-script-setup__tile-grid">
-        <button type="button"
-                class="alp-script-setup__tile"
-                [class.alp-script-setup__tile--selected]="currentAssociation().productId === 'all'"
-                (click)="selectBrowseProduct('all')">
-          <span class="alp-script-setup__tile-label">All Products</span>
-          <span class="alp-script-setup__tile-hint">Useful for templates</span>
-          @if (currentAssociation().productId === 'all') {
-            <i class="fas fa-check alp-script-setup__tile-check"></i>
-          }
-        </button>
-        @for (product of products; track product.id) {
-          <button type="button"
-                  class="alp-script-setup__tile"
-                  [class.alp-script-setup__tile--selected]="currentAssociation().productId === product.id"
-                  (click)="selectBrowseProduct(product.id)">
-            <span class="alp-script-setup__tile-label">{{ product.label }}</span>
-            @if (currentAssociation().productId === product.id) {
-              <i class="fas fa-check alp-script-setup__tile-check"></i>
-            }
-          </button>
-        }
-      </div>
-    </div>
-
-    <!-- Request type filter -->
-    <div class="alp-script-setup__filter-group">
-      <p class="alp-script-setup__filter-label">Request Type</p>
-      <div class="alp-script-setup__tile-grid">
-        <button type="button"
-                class="alp-script-setup__tile"
-                [class.alp-script-setup__tile--selected]="currentAssociation().requestTypeId === 'all'"
-                (click)="selectBrowseRequestType('all')">
-          <span class="alp-script-setup__tile-label">All Request Types</span>
-          <span class="alp-script-setup__tile-hint">Useful for templates</span>
-          @if (currentAssociation().requestTypeId === 'all') {
-            <i class="fas fa-check alp-script-setup__tile-check"></i>
-          }
-        </button>
-        @for (rt of requestTypes; track rt.id) {
-          <button type="button"
-                  class="alp-script-setup__tile"
-                  [class.alp-script-setup__tile--selected]="currentAssociation().requestTypeId === rt.id"
-                  (click)="selectBrowseRequestType(rt.id)">
-            <span class="alp-script-setup__tile-label">{{ rt.label }}</span>
-            @if (currentAssociation().requestTypeId === rt.id) {
-              <i class="fas fa-check alp-script-setup__tile-check"></i>
-            }
-          </button>
-        }
-      </div>
-    </div>
+    <!-- Association placeholder tile -->
+    <button type="button"
+            class="alp-placeholder-tile alp-placeholder-tile--spaced"
+            [class.alp-placeholder-tile--selected]="currentAssociation()"
+            (click)="openAssociationWizard('browse')">
+      @if (currentAssociation()) {
+        <i class="fas fa-check-circle alp-placeholder-tile__check"></i>
+        <div class="alp-placeholder-tile__content">
+          <span>{{ associationLabel(currentAssociation()) }}</span>
+          <span class="alp-placeholder-tile__hint">Change</span>
+        </div>
+      } @else {
+        <i class="fas fa-plus"></i>
+        <span>Select Product & Request Type</span>
+      }
+    </button>
 
     @if (isAssociationMismatch()) {
       <div class="alp-script-setup__mismatch-banner">
@@ -305,11 +266,6 @@
               <p class="alp-script-setup__wizard-description">
                 Pick the scope for this script. <strong>All Products</strong> is ideal for templates that need to be reused everywhere.
               </p>
-              <input type="text"
-                     [ngModel]="wizardSearch()"
-                     (ngModelChange)="wizardSearch.set($event)"
-                     placeholder="Search products"
-                     class="alp-script-setup__input alp-script-setup__filter-input">
               <div class="alp-script-setup__tile-grid">
                 <button type="button"
                         class="alp-script-setup__tile"
@@ -318,21 +274,19 @@
                   <span class="alp-script-setup__tile-label">All Products</span>
                   <span class="alp-script-setup__tile-hint">Useful for templates</span>
                   @if (wizardProductId() === 'all') {
-                    <i class="fas fa-check alp-script-setup__tile-check"></i>
+                    <i class="fas fa-check-circle alp-script-setup__tile-check"></i>
                   }
                 </button>
-                @for (product of filteredWizardProducts(); track product.id) {
-                  @if (product.id !== 'all') {
-                    <button type="button"
-                            class="alp-script-setup__tile"
-                            [class.alp-script-setup__tile--selected]="wizardProductId() === product.id"
-                            (click)="selectWizardProduct(product.id)">
-                      <span class="alp-script-setup__tile-label">{{ product.label }}</span>
-                      @if (wizardProductId() === product.id) {
-                        <i class="fas fa-check alp-script-setup__tile-check"></i>
-                      }
-                    </button>
-                  }
+                @for (product of products; track product.id) {
+                  <button type="button"
+                          class="alp-script-setup__tile"
+                          [class.alp-script-setup__tile--selected]="wizardProductId() === product.id"
+                          (click)="selectWizardProduct(product.id)">
+                    <span class="alp-script-setup__tile-label">{{ product.label }}</span>
+                    @if (wizardProductId() === product.id) {
+                      <i class="fas fa-check-circle alp-script-setup__tile-check"></i>
+                    }
+                  </button>
                 }
               </div>
             </div>
@@ -353,11 +307,6 @@
                 <span class="alp-script-setup__wizard-selection-value">{{ labelForProduct(wizardProductId()) }}</span>
               </div>
 
-              <input type="text"
-                     [ngModel]="wizardSearch()"
-                     (ngModelChange)="wizardSearch.set($event)"
-                     placeholder="Search request types"
-                     class="alp-script-setup__input alp-script-setup__filter-input">
               <div class="alp-script-setup__tile-grid">
                 <button type="button"
                         class="alp-script-setup__tile"
@@ -366,21 +315,19 @@
                   <span class="alp-script-setup__tile-label">All Request Types</span>
                   <span class="alp-script-setup__tile-hint">Useful for templates</span>
                   @if (wizardRequestTypeId() === 'all') {
-                    <i class="fas fa-check alp-script-setup__tile-check"></i>
+                    <i class="fas fa-check-circle alp-script-setup__tile-check"></i>
                   }
                 </button>
-                @for (rt of filteredWizardRequestTypes(); track rt.id) {
-                  @if (rt.id !== 'all') {
-                    <button type="button"
-                            class="alp-script-setup__tile"
-                            [class.alp-script-setup__tile--selected]="wizardRequestTypeId() === rt.id"
-                            (click)="selectWizardRequestType(rt.id)">
-                      <span class="alp-script-setup__tile-label">{{ rt.label }}</span>
-                      @if (wizardRequestTypeId() === rt.id) {
-                        <i class="fas fa-check alp-script-setup__tile-check"></i>
-                      }
-                    </button>
-                  }
+                @for (rt of requestTypes; track rt.id) {
+                  <button type="button"
+                          class="alp-script-setup__tile"
+                          [class.alp-script-setup__tile--selected]="wizardRequestTypeId() === rt.id"
+                          (click)="selectWizardRequestType(rt.id)">
+                    <span class="alp-script-setup__tile-label">{{ rt.label }}</span>
+                    @if (wizardRequestTypeId() === rt.id) {
+                      <i class="fas fa-check-circle alp-script-setup__tile-check"></i>
+                    }
+                  </button>
                 }
               </div>
             </div>

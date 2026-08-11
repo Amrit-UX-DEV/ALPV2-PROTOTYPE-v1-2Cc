@@ -88,19 +88,6 @@ export class ScriptSetupComponent {
 
   readonly existingScripts: ExistingScript[] = [
     {
-      id: 'g1',
-      name: 'Generic Welcome Script',
-      description: 'Global template available across all products and request types',
-      version: '1.0',
-      lastEdited: '2026-07-01',
-      isActive: false,
-      isGlobalTemplate: true,
-      scriptFileId: 'generic-welcome',
-      versionHistory: [
-        { version: '1.0', date: '2026-07-01', editedBy: 'A. Smith' }
-      ]
-    },
-    {
       id: 's1',
       name: 'Surrender Script v1',
       description: 'Primary surrender journey',
@@ -136,8 +123,8 @@ export class ScriptSetupComponent {
   /* Top slot: only for new or copy drafts */
   readonly topSlotDraft = signal<TopSlotDraft | null>(null);
 
-  /* Browse association: defaults to global so templates are visible immediately */
-  readonly currentAssociation = signal<ScriptAssociation>({ productId: 'all', requestTypeId: 'all' });
+  /* Browse association: null until the user selects via the wizard */
+  readonly currentAssociation = signal<ScriptAssociation | null>(null);
 
   /* Association for create/copy dialogs */
   readonly createAssociation = signal<ScriptAssociation | null>(null);
@@ -149,6 +136,7 @@ export class ScriptSetupComponent {
 
   readonly filteredExistingScripts = computed(() => {
     const assoc = this.currentAssociation();
+    if (!assoc) return this.existingScripts;
     return this.existingScripts.filter(s => {
       if (s.isGlobalTemplate) {
         return assoc.productId === 'all' && assoc.requestTypeId === 'all';
@@ -162,7 +150,7 @@ export class ScriptSetupComponent {
   readonly isAssociationMismatch = computed(() => {
     const d = this.topSlotDraft();
     const assoc = this.currentAssociation();
-    if (!d) return false;
+    if (!d || !assoc) return false;
     return d.productId !== assoc.productId || d.requestTypeId !== assoc.requestTypeId;
   });
 
@@ -172,21 +160,7 @@ export class ScriptSetupComponent {
   readonly wizardStep = signal<WizardStep>('product');
   readonly wizardProductId = signal<string | null>(null);
   readonly wizardRequestTypeId = signal<string | null>(null);
-  readonly wizardSearch = signal('');
 
-  readonly filteredWizardProducts = computed(() => {
-    const term = this.wizardSearch().toLowerCase().trim();
-    const allProducts = [{ id: 'all', label: 'All Products' }, ...this.products];
-    if (!term) return allProducts;
-    return allProducts.filter(p => p.label.toLowerCase().includes(term));
-  });
-
-  readonly filteredWizardRequestTypes = computed(() => {
-    const term = this.wizardSearch().toLowerCase().trim();
-    const allTypes = [{ id: 'all', label: 'All Request Types' }, ...this.requestTypes];
-    if (!term) return allTypes;
-    return allTypes.filter(rt => rt.label.toLowerCase().includes(term));
-  });
 
   /* Create new script dialog */
   readonly showCreateDialog = signal(false);
@@ -222,7 +196,7 @@ export class ScriptSetupComponent {
   }
 
   associationLabel(assoc: ScriptAssociation | null): string {
-    if (!assoc) return 'Select Association';
+    if (!assoc) return 'Select Product & Request Type';
     const productAll = assoc.productId === 'all';
     const requestAll = assoc.requestTypeId === 'all';
     if (productAll && requestAll) return 'Global Template';
@@ -247,15 +221,6 @@ export class ScriptSetupComponent {
     return { productId: 'all', requestTypeId: 'all' };
   }
 
-  /* Browse filter actions */
-  selectBrowseProduct(id: string) {
-    this.currentAssociation.update(a => ({ ...a, productId: id }));
-  }
-
-  selectBrowseRequestType(id: string) {
-    this.currentAssociation.update(a => ({ ...a, requestTypeId: id }));
-  }
-
   /* Association wizard */
   openAssociationWizard(target: WizardTarget) {
     this.wizardTarget.set(target);
@@ -268,7 +233,6 @@ export class ScriptSetupComponent {
     this.wizardProductId.set(effective.productId);
     this.wizardRequestTypeId.set(effective.requestTypeId);
     this.wizardStep.set('product');
-    this.wizardSearch.set('');
     this.showAssociationWizard.set(true);
   }
 
@@ -277,7 +241,6 @@ export class ScriptSetupComponent {
     this.wizardProductId.set(null);
     this.wizardRequestTypeId.set(null);
     this.wizardStep.set('product');
-    this.wizardSearch.set('');
   }
 
   selectWizardProduct(id: string) {
@@ -291,13 +254,11 @@ export class ScriptSetupComponent {
   goToRequestTypeStep() {
     if (this.wizardProductId()) {
       this.wizardStep.set('requestType');
-      this.wizardSearch.set('');
     }
   }
 
   goBackToProductStep() {
     this.wizardStep.set('product');
-    this.wizardSearch.set('');
   }
 
   confirmAssociationWizard() {
@@ -315,10 +276,6 @@ export class ScriptSetupComponent {
       this.copyAssociation.set(assoc);
     }
     this.closeAssociationWizard();
-  }
-
-  onWizardSearchChange(event: Event) {
-    this.wizardSearch.set((event.target as HTMLInputElement).value);
   }
 
   matchFiltersToDraft() {
