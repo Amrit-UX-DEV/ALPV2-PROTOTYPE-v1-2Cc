@@ -98,18 +98,6 @@
   color: var(--alp-color-slate-700);
 }
 
-/* ---- Browse filters ---- */
-.alp-script-setup__filter-group {
-  margin-bottom: var(--alp-space-5);
-}
-
-.alp-script-setup__filter-label {
-  display: block;
-  margin-bottom: var(--alp-space-3);
-  font-weight: var(--alp-font-weight-medium);
-  color: var(--alp-color-slate-700);
-}
-
 /* ---- Association wizard ---- */
 .alp-script-setup__wizard-steps {
   display: flex;
