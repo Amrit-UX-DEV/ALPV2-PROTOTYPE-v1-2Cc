@@ -240,8 +240,10 @@
   text-align: center;
   min-height: 70px;
   display: flex;
+  flex-direction: column;
   align-items: center;
   justify-content: center;
+  gap: 4px;
   position: relative;
 }
 
@@ -253,13 +255,20 @@
 .alp-script-setup__tile--selected {
   border-color: var(--alp-color-brand);
   background: var(--alp-color-brand-50);
-  box-shadow: 0 0 0 3px oklch(from var(--alp-color-brand) l c h / 0.2);
 }
 
 .alp-script-setup__tile-label {
   font-size: 16px;
   font-weight: var(--alp-font-weight-medium);
   color: var(--alp-color-slate-700);
+}
+
+.alp-script-setup__tile-hint {
+  display: block;
+  font-size: var(--alp-font-size-sm);
+  color: var(--alp-color-text-muted);
+  margin-top: 4px;
+  font-weight: var(--alp-font-weight-normal);
 }
 
 .alp-script-setup__tile-check {

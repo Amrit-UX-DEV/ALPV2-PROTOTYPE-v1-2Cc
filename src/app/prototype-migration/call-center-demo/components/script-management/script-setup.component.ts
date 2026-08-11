@@ -27,7 +27,7 @@ interface ExistingScript {
   version: string;
   lastEdited: string;
   isActive: boolean;
-  /** Global templates are not tied to a product or request type. */
+  /** Global templates are available across all products and request types. */
   isGlobalTemplate?: boolean;
   productId?: string;
   requestTypeId?: string;
@@ -48,12 +48,13 @@ interface TopSlotDraft {
   lastEdited: string;
 }
 
-type ScriptAssociation =
-  | { kind: 'global-template' }
-  | { kind: 'product'; productId: string }
-  | { kind: 'request-type'; productId: string; requestTypeId: string };
+interface ScriptAssociation {
+  productId: string;
+  requestTypeId: string;
+}
 
-type PickerTarget = 'browse' | 'create' | 'copy';
+type WizardTarget = 'browse' | 'create' | 'copy';
+type WizardStep = 'product' | 'requestType';
 
 type PendingAction =
   | { type: 'create-new' }
@@ -135,8 +136,8 @@ export class ScriptSetupComponent {
   /* Top slot: only for new or copy drafts */
   readonly topSlotDraft = signal<TopSlotDraft | null>(null);
 
-  /* Browse association */
-  readonly currentAssociation = signal<ScriptAssociation | null>(null);
+  /* Browse association: defaults to global so templates are visible immediately */
+  readonly currentAssociation = signal<ScriptAssociation>({ productId: 'all', requestTypeId: 'all' });
 
   /* Association for create/copy dialogs */
   readonly createAssociation = signal<ScriptAssociation | null>(null);
@@ -148,52 +149,43 @@ export class ScriptSetupComponent {
 
   readonly filteredExistingScripts = computed(() => {
     const assoc = this.currentAssociation();
-    if (!assoc) return [];
-    if (assoc.kind === 'global-template') {
-      return this.existingScripts.filter(s => s.isGlobalTemplate);
-    }
-    if (assoc.kind === 'product') {
-      return this.existingScripts.filter(s => !s.isGlobalTemplate && s.productId === assoc.productId);
-    }
-    return this.existingScripts.filter(s =>
-      !s.isGlobalTemplate && s.productId === assoc.productId && s.requestTypeId === assoc.requestTypeId
-    );
+    return this.existingScripts.filter(s => {
+      if (s.isGlobalTemplate) {
+        return assoc.productId === 'all' && assoc.requestTypeId === 'all';
+      }
+      const productMatch = assoc.productId === 'all' || s.productId === assoc.productId;
+      const requestTypeMatch = assoc.requestTypeId === 'all' || s.requestTypeId === assoc.requestTypeId;
+      return productMatch && requestTypeMatch;
+    });
   });
 
   readonly isAssociationMismatch = computed(() => {
     const d = this.topSlotDraft();
     const assoc = this.currentAssociation();
-    if (!d || !assoc) return false;
-    if (assoc.kind === 'global-template') return false;
-    return d.productId !== assoc.productId || (assoc.kind === 'request-type' && d.requestTypeId !== assoc.requestTypeId);
+    if (!d) return false;
+    return d.productId !== assoc.productId || d.requestTypeId !== assoc.requestTypeId;
   });
 
-  /* Association picker dialog */
-  readonly showAssociationPicker = signal(false);
-  readonly pickerTarget = signal<PickerTarget>('browse');
-  readonly pickerDraftAssociation = signal<ScriptAssociation | null>(null);
-  readonly pickerSearch = signal('');
+  /* Two-step association wizard */
+  readonly showAssociationWizard = signal(false);
+  readonly wizardTarget = signal<WizardTarget>('browse');
+  readonly wizardStep = signal<WizardStep>('product');
+  readonly wizardProductId = signal<string | null>(null);
+  readonly wizardRequestTypeId = signal<string | null>(null);
+  readonly wizardSearch = signal('');
 
-  readonly pickerGlobalScripts = computed(() => {
-    const term = this.pickerSearch().toLowerCase().trim();
-    const list = this.existingScripts.filter(s => s.isGlobalTemplate);
-    if (!term) return list;
-    return list.filter(s => s.name.toLowerCase().includes(term));
+  readonly filteredWizardProducts = computed(() => {
+    const term = this.wizardSearch().toLowerCase().trim();
+    const allProducts = [{ id: 'all', label: 'All Products' }, ...this.products];
+    if (!term) return allProducts;
+    return allProducts.filter(p => p.label.toLowerCase().includes(term));
   });
 
-  readonly filteredPickerProducts = computed(() => {
-    const term = this.pickerSearch().toLowerCase().trim();
-    if (!term) return this.products;
-    return this.products.filter(p => p.label.toLowerCase().includes(term));
-  });
-
-  readonly filteredPickerRequestTypes = computed(() => {
-    const term = this.pickerSearch().toLowerCase().trim();
-    let list = [...this.requestTypes];
-    if (term) {
-      list = list.filter(rt => rt.label.toLowerCase().includes(term));
-    }
-    return list;
+  readonly filteredWizardRequestTypes = computed(() => {
+    const term = this.wizardSearch().toLowerCase().trim();
+    const allTypes = [{ id: 'all', label: 'All Request Types' }, ...this.requestTypes];
+    if (!term) return allTypes;
+    return allTypes.filter(rt => rt.label.toLowerCase().includes(term));
   });
 
   /* Create new script dialog */
@@ -220,19 +212,22 @@ export class ScriptSetupComponent {
   readonly showCrossAssociationConfirm = signal(false);
 
   labelForProduct(id: string | null): string {
-    if (id === 'all') return 'Global Template';
+    if (id === 'all') return 'All Products';
     return this.products.find(p => p.id === id)?.label || '';
   }
 
   labelForRequestType(id: string | null): string {
-    if (id === 'all') return 'Global Template';
+    if (id === 'all') return 'All Request Types';
     return this.requestTypes.find(rt => rt.id === id)?.label || '';
   }
 
   associationLabel(assoc: ScriptAssociation | null): string {
     if (!assoc) return 'Select Association';
-    if (assoc.kind === 'global-template') return 'Global Template';
-    if (assoc.kind === 'product') return this.labelForProduct(assoc.productId);
+    const productAll = assoc.productId === 'all';
+    const requestAll = assoc.requestTypeId === 'all';
+    if (productAll && requestAll) return 'Global Template';
+    if (productAll) return `All Products · ${this.labelForRequestType(assoc.requestTypeId)}`;
+    if (requestAll) return `${this.labelForProduct(assoc.productId)} · All Request Types`;
     return `${this.labelForProduct(assoc.productId)} · ${this.labelForRequestType(assoc.requestTypeId)}`;
   }
 
@@ -245,68 +240,73 @@ export class ScriptSetupComponent {
   topSlotAssociationLabel(): string {
     const d = this.topSlotDraft();
     if (!d) return '';
-    return `${this.labelForProduct(d.productId)} · ${this.labelForRequestType(d.requestTypeId)}`;
+    return this.associationLabel(d);
   }
 
   private defaultAssociation(): ScriptAssociation {
-    return {
-      kind: 'request-type',
-      productId: this.products[0]?.id || 'all',
-      requestTypeId: this.requestTypes[0]?.id || 'all'
-    };
+    return { productId: 'all', requestTypeId: 'all' };
   }
 
-  /* Association picker */
-  openAssociationPicker(target: PickerTarget) {
-    this.pickerTarget.set(target);
+  /* Browse filter actions */
+  selectBrowseProduct(id: string) {
+    this.currentAssociation.update(a => ({ ...a, productId: id }));
+  }
+
+  selectBrowseRequestType(id: string) {
+    this.currentAssociation.update(a => ({ ...a, requestTypeId: id }));
+  }
+
+  /* Association wizard */
+  openAssociationWizard(target: WizardTarget) {
+    this.wizardTarget.set(target);
     const assoc = target === 'browse'
       ? this.currentAssociation()
       : target === 'create'
         ? this.createAssociation()
         : this.copyAssociation();
-    this.pickerDraftAssociation.set(assoc ? { ...assoc } : null);
-    this.pickerSearch.set('');
-    this.showAssociationPicker.set(true);
+    const effective = assoc || this.defaultAssociation();
+    this.wizardProductId.set(effective.productId);
+    this.wizardRequestTypeId.set(effective.requestTypeId);
+    this.wizardStep.set('product');
+    this.wizardSearch.set('');
+    this.showAssociationWizard.set(true);
   }
 
-  closeAssociationPicker() {
-    this.showAssociationPicker.set(false);
-    this.pickerDraftAssociation.set(null);
-    this.pickerSearch.set('');
+  closeAssociationWizard() {
+    this.showAssociationWizard.set(false);
+    this.wizardProductId.set(null);
+    this.wizardRequestTypeId.set(null);
+    this.wizardStep.set('product');
+    this.wizardSearch.set('');
   }
 
-  selectPickerTab(tab: 'global' | 'product') {
-    if (tab === 'global') {
-      this.pickerDraftAssociation.set({ kind: 'global-template' });
-    } else {
-      const current = this.pickerDraftAssociation();
-      if (!current || current.kind === 'global-template') {
-        this.pickerDraftAssociation.set({ kind: 'product', productId: this.products[0]?.id || 'all' });
-      }
+  selectWizardProduct(id: string) {
+    this.wizardProductId.set(id);
+  }
+
+  selectWizardRequestType(id: string) {
+    this.wizardRequestTypeId.set(id);
+  }
+
+  goToRequestTypeStep() {
+    if (this.wizardProductId()) {
+      this.wizardStep.set('requestType');
+      this.wizardSearch.set('');
     }
   }
 
-  selectPickerProduct(id: string) {
-    const current = this.pickerDraftAssociation();
-    if (current && current.kind === 'product' && current.productId === id) {
-      this.pickerDraftAssociation.set({ kind: 'product', productId: id });
-      return;
-    }
-    this.pickerDraftAssociation.set({ kind: 'product', productId: id });
+  goBackToProductStep() {
+    this.wizardStep.set('product');
+    this.wizardSearch.set('');
   }
 
-  selectPickerRequestType(id: string) {
-    const current = this.pickerDraftAssociation();
-    const productId = current?.kind === 'product' || current?.kind === 'request-type'
-      ? current.productId
-      : this.products[0]?.id || 'all';
-    this.pickerDraftAssociation.set({ kind: 'request-type', productId, requestTypeId: id });
-  }
+  confirmAssociationWizard() {
+    const productId = this.wizardProductId();
+    const requestTypeId = this.wizardRequestTypeId();
+    if (!productId || !requestTypeId) return;
 
-  confirmAssociationPicker() {
-    const assoc = this.pickerDraftAssociation();
-    if (!assoc) return;
-    const target = this.pickerTarget();
+    const assoc: ScriptAssociation = { productId, requestTypeId };
+    const target = this.wizardTarget();
     if (target === 'browse') {
       this.currentAssociation.set(assoc);
     } else if (target === 'create') {
@@ -314,32 +314,17 @@ export class ScriptSetupComponent {
     } else {
       this.copyAssociation.set(assoc);
     }
-    this.closeAssociationPicker();
+    this.closeAssociationWizard();
   }
 
-  onPickerSearchChange(event: Event) {
-    this.pickerSearch.set((event.target as HTMLInputElement).value);
-  }
-
-  pickerIsGlobalScope(): boolean {
-    return this.pickerDraftAssociation()?.kind === 'global-template';
-  }
-
-  pickerSelectedProductId(): string | null {
-    const a = this.pickerDraftAssociation();
-    return a && a.kind !== 'global-template' ? a.productId : null;
-  }
-
-  pickerSelectedRequestTypeId(): string | null {
-    const a = this.pickerDraftAssociation();
-    return a?.kind === 'request-type' ? a.requestTypeId : null;
+  onWizardSearchChange(event: Event) {
+    this.wizardSearch.set((event.target as HTMLInputElement).value);
   }
 
   matchFiltersToDraft() {
     const d = this.topSlotDraft();
     if (!d) return;
     this.currentAssociation.set({
-      kind: 'request-type',
       productId: d.productId,
       requestTypeId: d.requestTypeId
     });
@@ -373,15 +358,14 @@ export class ScriptSetupComponent {
     const assoc = this.createAssociation();
     if (!name || !description || !assoc) return;
 
-    const { productId, requestTypeId } = this.associationToIds(assoc);
     this.selectedScriptId.set(null);
     this.selectedHistoricVersion.set(null);
     this.topSlotDraft.set({
       id: 'draft-' + Date.now(),
       name,
       description,
-      productId,
-      requestTypeId,
+      productId: assoc.productId,
+      requestTypeId: assoc.requestTypeId,
       copy: false,
       lastEdited: new Date().toISOString().slice(0, 10)
     });
@@ -482,15 +466,14 @@ export class ScriptSetupComponent {
     source: ExistingScript,
     assoc: ScriptAssociation
   ) {
-    const { productId, requestTypeId } = this.associationToIds(assoc);
     this.selectedScriptId.set(null);
     this.selectedHistoricVersion.set(null);
     this.topSlotDraft.set({
       id: 'draft-' + Date.now(),
       name,
       description,
-      productId,
-      requestTypeId,
+      productId: assoc.productId,
+      requestTypeId: assoc.requestTypeId,
       sourceScriptFileId: source.scriptFileId,
       copy: true,
       lastEdited: new Date().toISOString().slice(0, 10)
@@ -510,27 +493,19 @@ export class ScriptSetupComponent {
   }
 
   private scriptAssociation(script: ExistingScript): ScriptAssociation | null {
-    if (script.isGlobalTemplate) return { kind: 'global-template' };
+    if (script.isGlobalTemplate) return { productId: 'all', requestTypeId: 'all' };
     if (script.productId && script.requestTypeId) {
-      return { kind: 'request-type', productId: script.productId, requestTypeId: script.requestTypeId };
+      return { productId: script.productId, requestTypeId: script.requestTypeId };
     }
     if (script.productId) {
-      return { kind: 'product', productId: script.productId };
+      return { productId: script.productId, requestTypeId: 'all' };
     }
     return null;
   }
 
-  private associationToIds(assoc: ScriptAssociation): { productId: string; requestTypeId: string } {
-    if (assoc.kind === 'global-template') return { productId: 'all', requestTypeId: 'all' };
-    if (assoc.kind === 'product') return { productId: assoc.productId, requestTypeId: 'all' };
-    return { productId: assoc.productId, requestTypeId: assoc.requestTypeId };
-  }
-
   private associationMatches(a: ScriptAssociation, b: ScriptAssociation | null): boolean {
     if (!b) return false;
-    if (a.kind === 'global-template') return b.kind === 'global-template';
-    if (a.kind === 'product') return b.kind === 'product' && a.productId === b.productId;
-    return b.kind === 'request-type' && a.productId === b.productId && a.requestTypeId === b.requestTypeId;
+    return a.productId === b.productId && a.requestTypeId === b.requestTypeId;
   }
 
   /* Version history */

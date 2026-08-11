@@ -37,24 +37,63 @@
   <!-- Browse section -->
   <section class="alp-script-setup__browse">
     <h2 class="alp-script-setup__title alp-script-setup__title--secondary">Browse existing scripts</h2>
-    <p class="alp-script-setup__intro">Filter by product and request type</p>
+    <p class="alp-script-setup__intro">Filter by product and request type to find the script you need.</p>
 
-    <!-- Association selection tile -->
-    <button type="button"
-            class="alp-placeholder-tile alp-placeholder-tile--spaced"
-            [class.alp-placeholder-tile--selected]="currentAssociation()"
-            (click)="openAssociationPicker('browse')">
-      @if (currentAssociation()) {
-        <i class="fas fa-check-circle alp-placeholder-tile__check"></i>
-        <div class="alp-placeholder-tile__content">
-          <span>{{ associationLabel(currentAssociation()) }}</span>
-          <span class="alp-placeholder-tile__hint">Change Association</span>
-        </div>
-      } @else {
-        <i class="fas fa-plus"></i>
-        <span>Select Association</span>
-      }
-    </button>
+    <!-- Product filter -->
+    <div class="alp-script-setup__filter-group">
+      <p class="alp-script-setup__filter-label">Product</p>
+      <div class="alp-script-setup__tile-grid">
+        <button type="button"
+                class="alp-script-setup__tile"
+                [class.alp-script-setup__tile--selected]="currentAssociation().productId === 'all'"
+                (click)="selectBrowseProduct('all')">
+          <span class="alp-script-setup__tile-label">All Products</span>
+          <span class="alp-script-setup__tile-hint">Useful for templates</span>
+          @if (currentAssociation().productId === 'all') {
+            <i class="fas fa-check alp-script-setup__tile-check"></i>
+          }
+        </button>
+        @for (product of products; track product.id) {
+          <button type="button"
+                  class="alp-script-setup__tile"
+                  [class.alp-script-setup__tile--selected]="currentAssociation().productId === product.id"
+                  (click)="selectBrowseProduct(product.id)">
+            <span class="alp-script-setup__tile-label">{{ product.label }}</span>
+            @if (currentAssociation().productId === product.id) {
+              <i class="fas fa-check alp-script-setup__tile-check"></i>
+            }
+          </button>
+        }
+      </div>
+    </div>
+
+    <!-- Request type filter -->
+    <div class="alp-script-setup__filter-group">
+      <p class="alp-script-setup__filter-label">Request Type</p>
+      <div class="alp-script-setup__tile-grid">
+        <button type="button"
+                class="alp-script-setup__tile"
+                [class.alp-script-setup__tile--selected]="currentAssociation().requestTypeId === 'all'"
+                (click)="selectBrowseRequestType('all')">
+          <span class="alp-script-setup__tile-label">All Request Types</span>
+          <span class="alp-script-setup__tile-hint">Useful for templates</span>
+          @if (currentAssociation().requestTypeId === 'all') {
+            <i class="fas fa-check alp-script-setup__tile-check"></i>
+          }
+        </button>
+        @for (rt of requestTypes; track rt.id) {
+          <button type="button"
+                  class="alp-script-setup__tile"
+                  [class.alp-script-setup__tile--selected]="currentAssociation().requestTypeId === rt.id"
+                  (click)="selectBrowseRequestType(rt.id)">
+            <span class="alp-script-setup__tile-label">{{ rt.label }}</span>
+            @if (currentAssociation().requestTypeId === rt.id) {
+              <i class="fas fa-check alp-script-setup__tile-check"></i>
+            }
+          </button>
+        }
+      </div>
+    </div>
 
     @if (isAssociationMismatch()) {
       <div class="alp-script-setup__mismatch-banner">
@@ -131,7 +170,7 @@
           </div>
           <div class="alp-script-setup__association-line">
             <span class="alp-script-setup__association-label">Association</span>
-            <button type="button" (click)="openAssociationPicker('create')" class="alp-btn alp-btn--secondary">
+            <button type="button" (click)="openAssociationWizard('create')" class="alp-btn alp-btn--secondary">
               {{ associationLabel(createAssociation()) }}
             </button>
           </div>
@@ -188,7 +227,7 @@
           </div>
           <div class="alp-script-setup__association-line">
             <span class="alp-script-setup__association-label">Association</span>
-            <button type="button" (click)="openAssociationPicker('copy')" class="alp-btn alp-btn--secondary">
+            <button type="button" (click)="openAssociationWizard('copy')" class="alp-btn alp-btn--secondary">
               {{ associationLabel(copyAssociation()) }}
             </button>
           </div>
@@ -234,84 +273,136 @@
     </div>
   }
 
-  <!-- Association picker dialog -->
-  @if (showAssociationPicker()) {
-    <div class="alp-dialog-overlay" (click)="closeAssociationPicker()">
+  <!-- Association wizard dialog -->
+  @if (showAssociationWizard()) {
+    <div class="alp-dialog-overlay" (click)="closeAssociationWizard()">
       <div class="alp-dialog alp-dialog--wide" (click)="$event.stopPropagation()">
         <div class="alp-dialog__header">
           <h4>Select Association</h4>
-          <button type="button" (click)="closeAssociationPicker()" class="alp-dialog__close-btn" aria-label="Close">
+          <button type="button" (click)="closeAssociationWizard()" class="alp-dialog__close-btn" aria-label="Close">
             <i class="fas fa-times"></i>
           </button>
         </div>
         <div class="alp-dialog__content">
-          <div class="alp-association-picker__tabs">
-            <button type="button"
-                    class="alp-association-picker__tab"
-                    [class.alp-association-picker__tab--active]="pickerIsGlobalScope()"
-                    (click)="selectPickerTab('global')">
-              Global Template
-            </button>
-            <button type="button"
-                    class="alp-association-picker__tab"
-                    [class.alp-association-picker__tab--active]="!pickerIsGlobalScope()"
-                    (click)="selectPickerTab('product')">
-              Product & Request Type
-            </button>
+          <!-- Step indicator -->
+          <div class="alp-script-setup__wizard-steps">
+            <div class="alp-script-setup__wizard-step"
+                 [class.alp-script-setup__wizard-step--active]="wizardStep() === 'product'"
+                 [class.alp-script-setup__wizard-step--complete]="wizardStep() === 'requestType'">
+              <span class="alp-script-setup__wizard-step-number">1</span>
+              <span class="alp-script-setup__wizard-step-label">Product</span>
+            </div>
+            <div class="alp-script-setup__wizard-step-connector"></div>
+            <div class="alp-script-setup__wizard-step"
+                 [class.alp-script-setup__wizard-step--active]="wizardStep() === 'requestType'">
+              <span class="alp-script-setup__wizard-step-number">2</span>
+              <span class="alp-script-setup__wizard-step-label">Request Type</span>
+            </div>
           </div>
 
-          @if (pickerIsGlobalScope()) {
-            <div class="alp-association-picker__scope">
-              <button type="button" class="alp-script-setup__tile alp-script-setup__tile--selected">
-                <span class="alp-script-setup__tile-label">Global Template</span>
-              </button>
-            </div>
-            <div class="alp-association-picker__preview">
-              <p class="alp-script-setup__section-hint">Global templates available</p>
-              @for (script of pickerGlobalScripts(); track script.id) {
-                <div class="alp-script-setup__script-item">
-                  <div class="alp-script-setup__script-info">
-                    <strong>{{ script.name }}</strong>
-                    <span class="alp-script-setup__script-description">{{ script.description }}</span>
-                  </div>
-                </div>
-              }
-            </div>
-          } @else {
-            <div class="alp-association-picker__scope">
-              <p class="alp-association-picker__scope-label">Select a product</p>
+          @if (wizardStep() === 'product') {
+            <div class="alp-script-setup__wizard-scope">
+              <p class="alp-script-setup__wizard-description">
+                Pick the scope for this script. <strong>All Products</strong> is ideal for templates that need to be reused everywhere.
+              </p>
+              <input type="text"
+                     [ngModel]="wizardSearch()"
+                     (ngModelChange)="wizardSearch.set($event)"
+                     placeholder="Search products"
+                     class="alp-script-setup__input alp-script-setup__filter-input">
               <div class="alp-script-setup__tile-grid">
-                @for (product of filteredPickerProducts(); track product.id) {
-                  <button type="button"
-                          class="alp-script-setup__tile"
-                          [class.alp-script-setup__tile--selected]="pickerSelectedProductId() === product.id"
-                          (click)="selectPickerProduct(product.id)">
-                    <span class="alp-script-setup__tile-label">{{ product.label }}</span>
-                  </button>
+                <button type="button"
+                        class="alp-script-setup__tile"
+                        [class.alp-script-setup__tile--selected]="wizardProductId() === 'all'"
+                        (click)="selectWizardProduct('all')">
+                  <span class="alp-script-setup__tile-label">All Products</span>
+                  <span class="alp-script-setup__tile-hint">Useful for templates</span>
+                  @if (wizardProductId() === 'all') {
+                    <i class="fas fa-check alp-script-setup__tile-check"></i>
+                  }
+                </button>
+                @for (product of filteredWizardProducts(); track product.id) {
+                  @if (product.id !== 'all') {
+                    <button type="button"
+                            class="alp-script-setup__tile"
+                            [class.alp-script-setup__tile--selected]="wizardProductId() === product.id"
+                            (click)="selectWizardProduct(product.id)">
+                      <span class="alp-script-setup__tile-label">{{ product.label }}</span>
+                      @if (wizardProductId() === product.id) {
+                        <i class="fas fa-check alp-script-setup__tile-check"></i>
+                      }
+                    </button>
+                  }
                 }
               </div>
             </div>
+          } @else {
+            <div class="alp-script-setup__wizard-scope">
+              <button type="button"
+                      class="alp-script-setup__wizard-back"
+                      (click)="goBackToProductStep()">
+                <i class="fas fa-arrow-left"></i> Back to product
+              </button>
 
-            @if (pickerSelectedProductId()) {
-              <div class="alp-association-picker__scope">
-                <p class="alp-association-picker__scope-label">Select a request type</p>
-                <div class="alp-script-setup__tile-grid">
-                  @for (rt of filteredPickerRequestTypes(); track rt.id) {
+              <p class="alp-script-setup__wizard-description">
+                Pick how specific the script should be. <strong>All Request Types</strong> creates a template that applies across every request type for the selected product.
+              </p>
+
+              <div class="alp-script-setup__wizard-selection">
+                <span class="alp-script-setup__wizard-selection-label">Selected product</span>
+                <span class="alp-script-setup__wizard-selection-value">{{ labelForProduct(wizardProductId()) }}</span>
+              </div>
+
+              <input type="text"
+                     [ngModel]="wizardSearch()"
+                     (ngModelChange)="wizardSearch.set($event)"
+                     placeholder="Search request types"
+                     class="alp-script-setup__input alp-script-setup__filter-input">
+              <div class="alp-script-setup__tile-grid">
+                <button type="button"
+                        class="alp-script-setup__tile"
+                        [class.alp-script-setup__tile--selected]="wizardRequestTypeId() === 'all'"
+                        (click)="selectWizardRequestType('all')">
+                  <span class="alp-script-setup__tile-label">All Request Types</span>
+                  <span class="alp-script-setup__tile-hint">Useful for templates</span>
+                  @if (wizardRequestTypeId() === 'all') {
+                    <i class="fas fa-check alp-script-setup__tile-check"></i>
+                  }
+                </button>
+                @for (rt of filteredWizardRequestTypes(); track rt.id) {
+                  @if (rt.id !== 'all') {
                     <button type="button"
                             class="alp-script-setup__tile"
-                            [class.alp-script-setup__tile--selected]="pickerSelectedRequestTypeId() === rt.id"
-                            (click)="selectPickerRequestType(rt.id)">
+                            [class.alp-script-setup__tile--selected]="wizardRequestTypeId() === rt.id"
+                            (click)="selectWizardRequestType(rt.id)">
                       <span class="alp-script-setup__tile-label">{{ rt.label }}</span>
+                      @if (wizardRequestTypeId() === rt.id) {
+                        <i class="fas fa-check alp-script-setup__tile-check"></i>
+                      }
                     </button>
                   }
-                </div>
+                }
               </div>
-            }
+            </div>
           }
         </div>
         <div class="alp-dialog__footer">
-          <button type="button" (click)="closeAssociationPicker()" class="alp-btn alp-btn--secondary">Cancel</button>
-          <button type="button" (click)="confirmAssociationPicker()" class="alp-btn alp-btn--primary">Confirm</button>
+          <button type="button" (click)="closeAssociationWizard()" class="alp-btn alp-btn--secondary">Cancel</button>
+          @if (wizardStep() === 'product') {
+            <button type="button"
+                    (click)="goToRequestTypeStep()"
+                    class="alp-btn alp-btn--primary"
+                    [disabled]="!wizardProductId()">
+              Next
+            </button>
+          } @else {
+            <button type="button"
+                    (click)="confirmAssociationWizard()"
+                    class="alp-btn alp-btn--primary"
+                    [disabled]="!wizardRequestTypeId()">
+              Confirm
+            </button>
+          }
         </div>
       </div>
     </div>

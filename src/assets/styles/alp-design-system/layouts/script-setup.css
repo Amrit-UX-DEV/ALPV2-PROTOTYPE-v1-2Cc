@@ -98,52 +98,121 @@
   color: var(--alp-color-slate-700);
 }
 
-/* ---- Association picker tabs ---- */
-.alp-association-picker__tabs {
-  display: flex;
-  gap: var(--alp-space-2);
-  border-bottom: 1px solid var(--alp-color-border);
+/* ---- Browse filters ---- */
+.alp-script-setup__filter-group {
   margin-bottom: var(--alp-space-5);
 }
 
-.alp-association-picker__tab {
-  padding: var(--alp-space-3) var(--alp-space-4);
-  background: none;
-  border: none;
-  border-bottom: 3px solid transparent;
-  font-size: var(--alp-font-size-md);
-  font-weight: var(--alp-font-weight-medium);
-  color: var(--alp-color-text-muted);
-  cursor: pointer;
-  transition: all 0.15s ease;
-}
-
-.alp-association-picker__tab:hover {
-  color: var(--alp-color-text);
-  background: var(--alp-color-slate-50);
-}
-
-.alp-association-picker__tab--active {
-  color: var(--alp-color-brand);
-  border-bottom-color: var(--alp-color-brand);
-  font-weight: var(--alp-font-weight-semibold);
-}
-
-.alp-association-picker__scope {
-  margin-bottom: var(--alp-space-5);
-}
-
-.alp-association-picker__scope-label {
+.alp-script-setup__filter-label {
   display: block;
   margin-bottom: var(--alp-space-3);
   font-weight: var(--alp-font-weight-medium);
   color: var(--alp-color-slate-700);
 }
 
-.alp-association-picker__preview {
-  margin-top: var(--alp-space-4);
-  padding-top: var(--alp-space-4);
-  border-top: 1px solid var(--alp-color-border);
+/* ---- Association wizard ---- */
+.alp-script-setup__wizard-steps {
+  display: flex;
+  align-items: center;
+  gap: var(--alp-space-2);
+  margin-bottom: var(--alp-space-5);
+}
+
+.alp-script-setup__wizard-step {
+  display: flex;
+  align-items: center;
+  gap: var(--alp-space-2);
+  padding: var(--alp-space-2) var(--alp-space-3);
+  border-radius: var(--alp-radius-md);
+  font-size: var(--alp-font-size-sm);
+  font-weight: var(--alp-font-weight-medium);
+  color: var(--alp-color-text-muted);
+}
+
+.alp-script-setup__wizard-step--active {
+  color: var(--alp-color-brand);
+  background: var(--alp-color-brand-50);
+  font-weight: var(--alp-font-weight-semibold);
+}
+
+.alp-script-setup__wizard-step--complete {
+  color: var(--alp-color-success);
+}
+
+.alp-script-setup__wizard-step-number {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  background: var(--alp-color-slate-200);
+  color: var(--alp-color-slate-700);
+  font-size: 12px;
+  font-weight: var(--alp-font-weight-bold);
+}
+
+.alp-script-setup__wizard-step--active .alp-script-setup__wizard-step-number {
+  background: var(--alp-color-brand);
+  color: var(--alp-color-white);
+}
+
+.alp-script-setup__wizard-step--complete .alp-script-setup__wizard-step-number {
+  background: var(--alp-color-success);
+  color: var(--alp-color-white);
+}
+
+.alp-script-setup__wizard-step-connector {
+  flex: 1;
+  height: 1px;
+  background: var(--alp-color-border);
+  max-width: 80px;
+}
+
+.alp-script-setup__wizard-description {
+  margin: 0 0 var(--alp-space-4) 0;
+  color: var(--alp-color-slate-700);
+  font-size: var(--alp-font-size-md);
+  line-height: var(--alp-line-height-normal);
+}
+
+.alp-script-setup__wizard-back {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--alp-space-2);
+  margin-bottom: var(--alp-space-4);
+  padding: var(--alp-space-2) 0;
+  background: none;
+  border: none;
+  color: var(--alp-color-brand);
+  font-size: var(--alp-font-size-md);
+  font-weight: var(--alp-font-weight-medium);
+  cursor: pointer;
+}
+
+.alp-script-setup__wizard-back:hover {
+  color: var(--alp-color-text);
+}
+
+.alp-script-setup__wizard-selection {
+  display: flex;
+  align-items: center;
+  gap: var(--alp-space-2);
+  margin-bottom: var(--alp-space-4);
+  padding: var(--alp-space-3) var(--alp-space-4);
+  background: var(--alp-color-slate-50);
+  border: 1px solid var(--alp-color-border);
+  border-radius: var(--alp-radius-md);
+}
+
+.alp-script-setup__wizard-selection-label {
+  font-size: var(--alp-font-size-sm);
+  color: var(--alp-color-text-muted);
+}
+
+.alp-script-setup__wizard-selection-value {
+  font-weight: var(--alp-font-weight-semibold);
+  color: var(--alp-color-text);
 }
 
 .alp-script-setup__primary-info {
