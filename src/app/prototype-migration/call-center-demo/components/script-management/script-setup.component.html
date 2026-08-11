@@ -42,11 +42,11 @@
     <!-- Association placeholder tile -->
     <button type="button"
             class="alp-placeholder-tile alp-placeholder-tile--spaced"
+            [class.alp-placeholder-tile--selected]="currentAssociation()"
             (click)="openAssociationWizard('browse')">
       @if (currentAssociation()) {
         <div class="alp-placeholder-tile__content">
           <span class="alp-placeholder-tile__filter">
-            You are viewing existing scripts for
             <strong>{{ labelForProduct(currentAssociation()!.productId) }}</strong>
             <i class="fas fa-chevron-right alp-placeholder-tile__chevron"></i>
             <strong>{{ labelForRequestType(currentAssociation()!.requestTypeId) }}</strong>
@@ -58,6 +58,15 @@
         <span>Select Product & Request Type</span>
       }
     </button>
+
+    @if (currentAssociation()) {
+      <h3 class="alp-script-setup__section-title">
+        Existing scripts for
+        <strong>{{ labelForProduct(currentAssociation()!.productId) }}</strong>
+        <i class="fas fa-chevron-right alp-script-setup__section-title-chevron"></i>
+        <strong>{{ labelForRequestType(currentAssociation()!.requestTypeId) }}</strong>
+      </h3>
+    }
 
     @if (isAssociationMismatch()) {
       <div class="alp-script-setup__mismatch-banner">
@@ -98,7 +107,7 @@
                     title="View Version History">
               <i class="fas fa-history alp-btn__icon--md"></i>
             </button>
-            @if (selectedScriptId() === script.id) {
+            @if (selectedScriptId() === script.id && !selectedHistoricVersion()) {
               <button type="button" (click)="deselectScript()" class="alp-btn alp-btn--secondary">
                 Cancel Selection
               </button>
@@ -126,9 +135,12 @@
               <div class="alp-script-setup__historic-actions">
                 <button type="button"
                         (click)="requestCopy(script, selectedHistoricVersion())"
-                        class="alp-btn alp-btn--secondary"
+                        class="alp-btn alp-btn--secondary alp-btn--icon"
                         title="Copy this historic version">
-                  Copy
+                  <i class="fas fa-clone alp-btn__icon--md"></i>
+                </button>
+                <button type="button" (click)="deselectScript()" class="alp-btn alp-btn--secondary">
+                  Cancel Selection
                 </button>
               </div>
             </div>
@@ -316,7 +328,6 @@
                         [class.alp-script-setup__tile--selected]="wizardProductId() === 'all'"
                         (click)="selectWizardProduct('all')">
                   <span class="alp-script-setup__tile-label">Global Template</span>
-                  <span class="alp-script-setup__tile-hint">Available across all products</span>
                   @if (wizardProductId() === 'all') {
                     <i class="fas fa-check-circle alp-script-setup__tile-check"></i>
                   }
@@ -387,7 +398,7 @@
             </button>
           } @else {
             <button type="button" (click)="goBackToProductStep()" class="alp-btn alp-btn--secondary">
-              <i class="fas fa-arrow-left"></i> Back
+              <i class="fas fa-chevron-left"></i> Back
             </button>
             <div class="alp-footer-right">
               <button type="button" (click)="closeAssociationWizard()" class="alp-btn alp-btn--secondary">Cancel</button>
