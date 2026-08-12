@@ -509,4 +509,25 @@
       </div>
     </div>
   }
+
+  <!-- Remove copy draft confirmation dialog -->
+  @if (showRemoveCopyDraftConfirm()) {
+    <div class="alp-dialog-overlay" (click)="cancelRemoveTopSlotDraft()">
+      <div class="alp-dialog alp-dialog--small" (click)="$event.stopPropagation()">
+        <div class="alp-dialog__header">
+          <h4>Remove copy draft?</h4>
+          <button type="button" (click)="cancelRemoveTopSlotDraft()" class="alp-dialog__close-btn" aria-label="Close">
+            <i class="fas fa-times"></i>
+          </button>
+        </div>
+        <div class="alp-dialog__content">
+          Are you sure you want to remove this copy draft? This action cannot be undone.
+        </div>
+        <div class="alp-dialog__footer">
+          <button type="button" (click)="cancelRemoveTopSlotDraft()" class="alp-btn alp-btn--secondary">Cancel</button>
+          <button type="button" (click)="confirmRemoveTopSlotDraft()" class="alp-btn alp-btn--primary">Remove</button>
+        </div>
+      </div>
+    </div>
+  }
 </div>
