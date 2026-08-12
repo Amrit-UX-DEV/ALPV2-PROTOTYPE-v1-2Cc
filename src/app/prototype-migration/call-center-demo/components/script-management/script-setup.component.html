@@ -1,35 +1,10 @@
 <div class="alp-script-setup">
-  <h2 class="alp-script-setup__title">Choose or create a script</h2>
-  <p class="alp-script-setup__intro">Create a new script, or choose an existing one to edit or copy.</p>
+  <h2 class="alp-script-setup__title">Choose an association</h2>
+  <p class="alp-script-setup__intro">Select a product and request type to see associated scripts. You can then create a new script or select an existing one to edit or copy.</p>
 
-  <!-- Top slot: create new script and choose existing scripts -->
-  <section class="alp-script-setup__primary">
-    @if (!topSlotDraft()) {
-      <button type="button"
-              class="alp-placeholder-tile alp-placeholder-tile--spaced"
-              (click)="openCreateDialog()">
-        <i class="fas fa-plus"></i>
-        <span>Create new script</span>
-      </button>
-      <button type="button"
-              class="alp-placeholder-tile alp-placeholder-tile--spaced"
-              [class.alp-placeholder-tile--selected]="currentAssociation()"
-              (click)="openAssociationWizard('browse')">
-        @if (currentAssociation()) {
-          <div class="alp-placeholder-tile__content">
-            <span class="alp-placeholder-tile__filter">
-              <strong>{{ labelForProduct(currentAssociation()!.productId) }}</strong>
-              <i class="fas fa-chevron-right alp-placeholder-tile__chevron"></i>
-              <strong>{{ labelForRequestType(currentAssociation()!.requestTypeId) }}</strong>
-            </span>
-            <span class="alp-placeholder-tile__hint alp-placeholder-tile__hint--interactive">Click to change</span>
-          </div>
-        } @else {
-          <i class="fas fa-plus"></i>
-          <span>Choose existing scripts</span>
-        }
-      </button>
-    } @else {
+  <!-- Top slot: only for new or copy drafts -->
+  @if (topSlotDraft()) {
+    <section class="alp-script-setup__primary">
       <div class="alp-script-setup__primary-card">
         <div class="alp-script-setup__primary-info">
           <div class="alp-script-setup__primary-header">
@@ -47,31 +22,36 @@
           <button type="button" (click)="removeTopSlotDraft()" class="alp-btn alp-btn--secondary">
             Remove
           </button>
+          <button type="button" (click)="editTopSlotDraft()" class="alp-btn alp-btn--secondary">
+            Edit
+          </button>
         </div>
       </div>
-      <button type="button"
-              class="alp-placeholder-tile alp-placeholder-tile--spaced"
-              [class.alp-placeholder-tile--selected]="currentAssociation()"
-              (click)="openAssociationWizard('browse')">
-        @if (currentAssociation()) {
-          <div class="alp-placeholder-tile__content">
-            <span class="alp-placeholder-tile__filter">
-              <strong>{{ labelForProduct(currentAssociation()!.productId) }}</strong>
-              <i class="fas fa-chevron-right alp-placeholder-tile__chevron"></i>
-              <strong>{{ labelForRequestType(currentAssociation()!.requestTypeId) }}</strong>
-            </span>
-            <span class="alp-placeholder-tile__hint alp-placeholder-tile__hint--interactive">Click to change</span>
-          </div>
-        } @else {
-          <i class="fas fa-plus"></i>
-          <span>Choose existing scripts</span>
-        }
-      </button>
-    }
-  </section>
+    </section>
+  }
 
   <!-- Browse section -->
   <section class="alp-script-setup__browse">
+    <!-- Association placeholder tile -->
+    <button type="button"
+            class="alp-placeholder-tile alp-placeholder-tile--spaced"
+            [class.alp-placeholder-tile--selected]="currentAssociation()"
+            (click)="openAssociationWizard('browse')">
+      @if (currentAssociation()) {
+        <div class="alp-placeholder-tile__content">
+          <span class="alp-placeholder-tile__filter">
+            <strong>{{ labelForProduct(currentAssociation()!.productId) }}</strong>
+            <i class="fas fa-chevron-right alp-placeholder-tile__chevron"></i>
+            <strong>{{ labelForRequestType(currentAssociation()!.requestTypeId) }}</strong>
+          </span>
+          <span class="alp-placeholder-tile__hint alp-placeholder-tile__hint--interactive">Click to change</span>
+        </div>
+      } @else {
+        <i class="fas fa-plus"></i>
+        <span>Choose existing scripts</span>
+      }
+    </button>
+
     @if (currentAssociation()) {
       <h3 class="alp-script-setup__section-title">
         Existing scripts for
@@ -93,6 +73,15 @@
     }
 
     <div class="alp-script-setup__script-list">
+      @if (currentAssociation()) {
+        <button type="button"
+                class="alp-placeholder-tile alp-placeholder-tile--spaced"
+                (click)="openCreateDialog()">
+          <i class="fas fa-plus"></i>
+          <span>Create new script</span>
+        </button>
+      }
+
       @for (script of filteredExistingScripts(); track script.id) {
         @if (selectedHistoricVersion() && selectedScriptForHistory()?.id === script.id) {
           <!-- Historic version replaces the original script item -->
@@ -221,13 +210,17 @@
         </div>
         <div class="alp-dialog__content">
           <div class="alp-script-setup__copy-hint">
-            You are about to create a copy draft of
-            <strong>
-              {{ copySourceScript()!.name }}
-              @if (copyHistoricVersion()) {
-                (v{{ copyHistoricVersion()!.version }})
-              }
-            </strong>.
+            @if (copySourceScript()) {
+              You are about to create a copy draft of
+              <strong>
+                {{ copySourceScript()?.name }}
+                @if (copyHistoricVersion()) {
+                  (v{{ copyHistoricVersion()!.version }})
+                }
+              </strong>.
+            } @else {
+              Source script is no longer available. Save is disabled.
+            }
           </div>
 
           <div class="alp-script-setup__form-group">
@@ -258,7 +251,7 @@
           <button type="button"
                   (click)="saveCopyDialog()"
                   class="alp-btn alp-btn--primary"
-                  [disabled]="!copyName().trim() || !copyDescription().trim() || !copyAssociation()">
+                  [disabled]="!copyName().trim() || !copyDescription().trim() || !copyAssociation() || !copySourceScript()">
             Save
           </button>
         </div>
