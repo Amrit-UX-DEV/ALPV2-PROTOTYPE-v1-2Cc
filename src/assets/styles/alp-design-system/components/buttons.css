@@ -75,6 +75,12 @@
   font-size: 16px;
 }
 
+.alp-btn--height-icon {
+  height: 34px;
+  padding: 0 22px;
+  box-sizing: border-box;
+}
+
 .alp-btn--ghost {
   background: transparent;
   border: 2px solid transparent;

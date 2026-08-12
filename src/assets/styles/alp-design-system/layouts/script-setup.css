@@ -75,24 +75,17 @@
   gap: var(--alp-space-3);
 }
 
-/* ---- Primary slot ---- */
-.alp-script-setup__primary {
-  margin-bottom: var(--alp-space-8);
-}
-
-.alp-script-setup__primary-card {
+/* ---- Draft item (new/copy script) ---- */
+.alp-script-setup__draft-item {
   display: flex;
   justify-content: space-between;
   align-items: flex-start;
   gap: var(--alp-space-4);
   padding: var(--alp-space-5);
+  margin-bottom: var(--alp-space-4);
   background: var(--alp-color-brand-50);
   border: 2px solid var(--alp-color-brand);
   border-radius: var(--alp-radius-md);
-}
-
-.alp-script-setup__primary-card + .alp-placeholder-tile {
-  margin-top: var(--alp-space-4);
 }
 
 /* ---- Association line in create/copy dialogs ---- */
@@ -218,12 +211,12 @@
   color: var(--alp-color-text);
 }
 
-.alp-script-setup__primary-info {
+.alp-script-setup__draft-info {
   flex: 1;
   min-width: 200px;
 }
 
-.alp-script-setup__primary-header {
+.alp-script-setup__draft-header {
   display: flex;
   align-items: center;
   gap: var(--alp-space-3);
@@ -231,26 +224,26 @@
   margin-bottom: var(--alp-space-2);
 }
 
-.alp-script-setup__primary-header strong {
+.alp-script-setup__draft-header strong {
   font-size: var(--alp-font-size-md);
   color: var(--alp-color-text);
 }
 
-.alp-script-setup__primary-association {
+.alp-script-setup__draft-association {
   display: block;
   color: var(--alp-color-text-muted);
   font-size: 14px;
   margin-bottom: var(--alp-space-2);
 }
 
-.alp-script-setup__primary-description {
+.alp-script-setup__draft-description {
   display: block;
   color: var(--alp-color-text);
   font-size: 14px;
   line-height: var(--alp-line-height-normal);
 }
 
-.alp-script-setup__primary-actions {
+.alp-script-setup__draft-actions {
   display: flex;
   gap: var(--alp-space-2);
   flex-shrink: 0;
