@@ -199,12 +199,12 @@ export class ScriptSetupComponent {
   /* Cross-association copy confirmation */
   readonly showCrossAssociationConfirm = signal(false);
 
-  labelForProduct(id: string | null): string {
+  labelForProduct(id: string | null | undefined): string {
     if (id === 'all') return 'Global Template';
     return this.products.find(p => p.id === id)?.label || '';
   }
 
-  labelForRequestType(id: string | null): string {
+  labelForRequestType(id: string | null | undefined): string {
     if (id === 'all') return 'Template';
     return this.requestTypes.find(rt => rt.id === id)?.label || '';
   }

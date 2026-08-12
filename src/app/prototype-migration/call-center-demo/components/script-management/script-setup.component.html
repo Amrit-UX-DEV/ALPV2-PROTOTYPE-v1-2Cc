@@ -1,6 +1,6 @@
 <div class="alp-script-setup">
   <h2 class="alp-h2 alp-script-setup__title">Product and Request Type Association</h2>
-  <p class="alp-script-setup__intro">You can create a new script or select an existing one to edit or copy by selecting a product and request type association.</p>
+  <p class="alp-script-setup__intro">Choose an association to view matching scripts or to create, edit, or copy one.</p>
 
   <!-- Browse section -->
   <section class="alp-script-setup__browse">
@@ -36,7 +36,7 @@
     @if (isAssociationMismatch()) {
       <div class="alp-script-setup__mismatch-banner">
         <span>
-          Your {{ topSlotDraft()?.copy ? 'copy draft' : 'draft' }} is filed under {{ topSlotAssociationLabel() }}. You're browsing a different association.
+          Your {{ topSlotDraft()?.copy ? 'copy draft' : 'draft' }} is filed under <strong>{{ topSlotAssociationLabel() }}</strong>. You're browsing a different association.
         </span>
         <button type="button" (click)="matchFiltersToDraft()" class="alp-btn alp-btn--secondary">
           View matching association
@@ -51,21 +51,24 @@
             <div class="alp-script-setup__draft-info">
               <div class="alp-script-setup__draft-header">
                 <strong>{{ topSlotTitle() }}</strong>
+              </div>
+              <div class="alp-script-setup__script-tags">
+                <span class="alp-status-tag alp-status-tag--neutral">{{ labelForProduct(topSlotDraft()!.productId) }}</span>
+                <span class="alp-status-tag alp-status-tag--neutral">{{ labelForRequestType(topSlotDraft()!.requestTypeId) }}</span>
                 <span class="alp-status-tag"
                       [class.alp-status-tag--draft]="!topSlotDraft()?.copy"
                       [class.alp-status-tag--copy-draft]="topSlotDraft()?.copy">
                   {{ topSlotDraft()?.copy ? 'Copy draft' : 'Draft' }}
                 </span>
               </div>
-              <span class="alp-script-setup__draft-association">{{ topSlotAssociationLabel() }}</span>
               <span class="alp-script-setup__draft-description">{{ topSlotDraft()!.description }}</span>
             </div>
             <div class="alp-script-setup__draft-actions">
-              <button type="button" (click)="editTopSlotDraft()" class="alp-btn alp-btn--secondary alp-btn--height-icon">
-                Edit
+              <button type="button" (click)="editTopSlotDraft()" class="alp-btn alp-btn--secondary alp-btn--icon" title="Edit" aria-label="Edit">
+                <i class="fas fa-pencil-alt alp-btn__icon--md"></i>
               </button>
-              <button type="button" (click)="removeTopSlotDraft()" class="alp-btn alp-btn--ghost-danger alp-btn--icon" title="Remove">
-                <i class="fas fa-trash alp-btn__icon--md"></i>
+              <button type="button" (click)="removeTopSlotDraft()" class="alp-btn alp-btn--secondary alp-btn--icon" title="Remove" aria-label="Remove">
+                <i class="fas fa-trash alp-btn__icon--md alp-text-danger"></i>
               </button>
             </div>
           </div>
@@ -86,6 +89,10 @@
             <div class="alp-script-setup__script-info">
               <div class="alp-script-setup__script-header">
                 <strong>{{ script.name }} (v{{ selectedHistoricVersion()!.version }})</strong>
+              </div>
+              <div class="alp-script-setup__script-tags">
+                <span class="alp-status-tag alp-status-tag--neutral">{{ labelForProduct(script.productId) }}</span>
+                <span class="alp-status-tag alp-status-tag--neutral">{{ labelForRequestType(script.requestTypeId) }}</span>
                 @if (script.isActive) {
                   <span class="alp-status-tag alp-status-tag--primary">Primary Script</span>
                 }
@@ -112,6 +119,10 @@
             <div class="alp-script-setup__script-info">
               <div class="alp-script-setup__script-header">
                 <strong>{{ script.name }}</strong>
+              </div>
+              <div class="alp-script-setup__script-tags">
+                <span class="alp-status-tag alp-status-tag--neutral">{{ labelForProduct(script.productId) }}</span>
+                <span class="alp-status-tag alp-status-tag--neutral">{{ labelForRequestType(script.requestTypeId) }}</span>
                 @if (script.isActive) {
                   <span class="alp-status-tag alp-status-tag--primary">Primary Script</span>
                 }
@@ -150,7 +161,7 @@
 
   <!-- Create new script dialog -->
   @if (showCreateDialog()) {
-    <div class="alp-dialog-overlay" (click)="closeCreateDialog()">
+    <div class="alp-dialog-overlay alp-dialog-overlay--nested" (click)="closeCreateDialog()">
       <div class="alp-dialog alp-dialog--medium" (click)="$event.stopPropagation()">
         <div class="alp-dialog__header">
           <h4>Create new script</h4>
@@ -197,7 +208,7 @@
 
   <!-- Copy script dialog -->
   @if (showCopyDialog()) {
-    <div class="alp-dialog-overlay" (click)="closeCopyDialog()">
+    <div class="alp-dialog-overlay alp-dialog-overlay--nested" (click)="closeCopyDialog()">
       <div class="alp-dialog alp-dialog--medium" (click)="$event.stopPropagation()">
         <div class="alp-dialog__header">
           <h4>Copy script</h4>
