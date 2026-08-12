@@ -199,6 +199,9 @@ export class ScriptSetupComponent {
   /* Cross-association copy confirmation */
   readonly showCrossAssociationConfirm = signal(false);
 
+  /* Remove copy draft confirmation */
+  readonly showRemoveCopyDraftConfirm = signal(false);
+
   labelForProduct(id: string | null | undefined): string {
     if (id === 'all') return 'Global Template';
     return this.products.find(p => p.id === id)?.label || '';
@@ -367,7 +370,20 @@ export class ScriptSetupComponent {
   }
 
   removeTopSlotDraft() {
+    if (this.topSlotDraft()?.copy) {
+      this.showRemoveCopyDraftConfirm.set(true);
+      return;
+    }
     this.topSlotDraft.set(null);
+  }
+
+  confirmRemoveTopSlotDraft() {
+    this.topSlotDraft.set(null);
+    this.showRemoveCopyDraftConfirm.set(false);
+  }
+
+  cancelRemoveTopSlotDraft() {
+    this.showRemoveCopyDraftConfirm.set(false);
   }
 
   editTopSlotDraft() {

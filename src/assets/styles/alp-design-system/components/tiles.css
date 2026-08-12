@@ -212,7 +212,7 @@
 }
 
 .alp-placeholder-tile__tags-label {
-  font-size: var(--alp-font-size-sm);
+  font-size: var(--alp-font-size-md);
   font-weight: var(--alp-font-weight-bold);
   color: var(--alp-color-text);
   line-height: 1;
