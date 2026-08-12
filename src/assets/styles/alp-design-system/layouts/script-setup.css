@@ -91,6 +91,10 @@
   border-radius: var(--alp-radius-md);
 }
 
+.alp-script-setup__primary-card + .alp-placeholder-tile {
+  margin-top: var(--alp-space-4);
+}
+
 /* ---- Association line in create/copy dialogs ---- */
 .alp-script-setup__association-line {
   display: flex;
