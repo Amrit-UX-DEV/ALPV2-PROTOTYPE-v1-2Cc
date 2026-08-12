@@ -21,6 +21,7 @@
 .alp-font-bold { font-weight: var(--alp-font-weight-bold); }
 .alp-text-muted { color: var(--alp-color-text-muted); }
 .alp-text-soft { color: var(--alp-color-text-soft); }
+.alp-text-danger { color: var(--alp-color-danger); }
 
 /* Screen reader only */
 .alp-sr-only {

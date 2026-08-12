@@ -85,6 +85,10 @@ dialog::backdrop {
   padding: var(--alp-space-4);
 }
 
+.alp-dialog-overlay--nested {
+  z-index: var(--alp-z-toast);
+}
+
 .alp-dialog {
   background: var(--alp-color-surface);
   max-height: 85vh;
