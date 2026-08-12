@@ -101,13 +101,13 @@
 }
 
 .alp-status-tag--product {
-  background: #0f766e;
-  color: var(--alp-color-white);
+  background: #222222;
+  color: #fbea02;
 }
 
 .alp-status-tag--request-type {
-  background: #115e59;
-  color: var(--alp-color-white);
+  background: #222222;
+  color: #defcfd;
 }
 
 .alp-status-tag--lg {

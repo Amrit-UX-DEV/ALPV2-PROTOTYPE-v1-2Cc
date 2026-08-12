@@ -11,6 +11,7 @@
             (click)="openAssociationWizard('browse')">
       @if (currentAssociation()) {
         <div class="alp-placeholder-tile__content">
+          <span class="alp-placeholder-tile__label">Selected Script Association</span>
           <span class="alp-placeholder-tile__tags">
             <span class="alp-status-tag alp-status-tag--product alp-status-tag--lg">{{ labelForProduct(currentAssociation()!.productId) }}</span>
             <span class="alp-status-tag alp-status-tag--request-type alp-status-tag--lg">{{ labelForRequestType(currentAssociation()!.requestTypeId) }}</span>
