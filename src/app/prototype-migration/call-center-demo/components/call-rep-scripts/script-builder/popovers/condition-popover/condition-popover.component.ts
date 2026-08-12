@@ -115,7 +115,7 @@ export class ConditionPopoverComponent implements AfterViewInit {
   }
 
   private prepopulateCondition() {
-    const targetId = this.targetId();
+    const targetId = this.targetId;
     if (!targetId) return;
     const existing = this.contentList.find(c => c.id === targetId)?.condition;
     if (!existing) return;
