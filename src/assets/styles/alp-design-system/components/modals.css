@@ -89,6 +89,10 @@ dialog::backdrop {
   z-index: var(--alp-z-toast);
 }
 
+.alp-dialog-overlay--wizard {
+  z-index: var(--alp-z-tooltip);
+}
+
 .alp-dialog {
   background: var(--alp-color-surface);
   max-height: 85vh;

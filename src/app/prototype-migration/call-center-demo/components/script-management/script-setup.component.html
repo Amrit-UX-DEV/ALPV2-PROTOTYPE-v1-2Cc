@@ -11,10 +11,9 @@
             (click)="openAssociationWizard('browse')">
       @if (currentAssociation()) {
         <div class="alp-placeholder-tile__content">
-          <span class="alp-placeholder-tile__filter">
-            <strong>{{ labelForProduct(currentAssociation()!.productId) }}</strong>
-            <i class="fas fa-chevron-right alp-placeholder-tile__chevron"></i>
-            <strong>{{ labelForRequestType(currentAssociation()!.requestTypeId) }}</strong>
+          <span class="alp-placeholder-tile__tags">
+            <span class="alp-status-tag alp-status-tag--product alp-status-tag--lg">{{ labelForProduct(currentAssociation()!.productId) }}</span>
+            <span class="alp-status-tag alp-status-tag--request-type alp-status-tag--lg">{{ labelForRequestType(currentAssociation()!.requestTypeId) }}</span>
           </span>
           <span class="alp-placeholder-tile__hint alp-placeholder-tile__hint--interactive">Click to change</span>
         </div>
@@ -53,8 +52,8 @@
                 <strong>{{ topSlotTitle() }}</strong>
               </div>
               <div class="alp-script-setup__script-tags">
-                <span class="alp-status-tag alp-status-tag--neutral">{{ labelForProduct(topSlotDraft()!.productId) }}</span>
-                <span class="alp-status-tag alp-status-tag--neutral">{{ labelForRequestType(topSlotDraft()!.requestTypeId) }}</span>
+                <span class="alp-status-tag alp-status-tag--product">{{ labelForProduct(topSlotDraft()!.productId) }}</span>
+                <span class="alp-status-tag alp-status-tag--request-type">{{ labelForRequestType(topSlotDraft()!.requestTypeId) }}</span>
                 <span class="alp-status-tag"
                       [class.alp-status-tag--draft]="!topSlotDraft()?.copy"
                       [class.alp-status-tag--copy-draft]="topSlotDraft()?.copy">
@@ -91,8 +90,8 @@
                 <strong>{{ script.name }} (v{{ selectedHistoricVersion()!.version }})</strong>
               </div>
               <div class="alp-script-setup__script-tags">
-                <span class="alp-status-tag alp-status-tag--neutral">{{ labelForProduct(script.productId) }}</span>
-                <span class="alp-status-tag alp-status-tag--neutral">{{ labelForRequestType(script.requestTypeId) }}</span>
+                <span class="alp-status-tag alp-status-tag--product">{{ labelForProduct(script.productId) }}</span>
+                <span class="alp-status-tag alp-status-tag--request-type">{{ labelForRequestType(script.requestTypeId) }}</span>
                 @if (script.isActive) {
                   <span class="alp-status-tag alp-status-tag--primary">Primary Script</span>
                 }
@@ -121,8 +120,8 @@
                 <strong>{{ script.name }}</strong>
               </div>
               <div class="alp-script-setup__script-tags">
-                <span class="alp-status-tag alp-status-tag--neutral">{{ labelForProduct(script.productId) }}</span>
-                <span class="alp-status-tag alp-status-tag--neutral">{{ labelForRequestType(script.requestTypeId) }}</span>
+                <span class="alp-status-tag alp-status-tag--product">{{ labelForProduct(script.productId) }}</span>
+                <span class="alp-status-tag alp-status-tag--request-type">{{ labelForRequestType(script.requestTypeId) }}</span>
                 @if (script.isActive) {
                   <span class="alp-status-tag alp-status-tag--primary">Primary Script</span>
                 }
@@ -324,10 +323,10 @@
 
   <!-- Association wizard dialog -->
   @if (showAssociationWizard()) {
-    <div class="alp-dialog-overlay" (click)="closeAssociationWizard()">
+    <div class="alp-dialog-overlay alp-dialog-overlay--wizard" (click)="closeAssociationWizard()">
       <div class="alp-dialog alp-dialog--wide" (click)="$event.stopPropagation()">
         <div class="alp-dialog__header">
-          <h4>{{ wizardTarget() === 'browse' ? 'Choose existing scripts via association' : 'Select Association' }}</h4>
+          <h4>{{ wizardTarget() === 'browse' ? 'Choose association' : 'Select Association' }}</h4>
           <button type="button" (click)="closeAssociationWizard()" class="alp-dialog__close-btn" aria-label="Close">
             <i class="fas fa-times"></i>
           </button>
@@ -356,9 +355,9 @@
             <div class="alp-script-setup__wizard-scope">
               <p class="alp-script-setup__wizard-description">
                 @if (wizardTarget() === 'browse') {
-                  Pick a product to see its scripts. <strong>Global Template</strong> is a category of its own, available across every product.
+                  Select a product to view matching scripts.
                 } @else {
-                  Pick the scope for this script. <strong>Global Template</strong> is a category of its own, available across every product.
+                  Select a product for this script.
                 }
               </p>
               <input type="text"
@@ -393,15 +392,15 @@
             <div class="alp-script-setup__wizard-scope">
               <p class="alp-script-setup__wizard-description">
                 @if (wizardTarget() === 'browse') {
-                  Pick a request type to filter the scripts. <strong>Template</strong> applies across every request type for the selected product.
+                  Select a request type to filter the scripts. <strong>Template</strong> applies across every request type for the selected product.
                 } @else {
-                  Pick how specific the script should be. <strong>Template</strong> applies across every request type for the selected product.
+                  Select how specific the script should be. <strong>Template</strong> applies across every request type for the selected product.
                 }
               </p>
 
               <div class="alp-script-setup__wizard-selection">
                 <span class="alp-script-setup__wizard-selection-label">Selected product</span>
-                <span class="alp-script-setup__wizard-selection-value">{{ labelForProduct(wizardProductId()) }}</span>
+                <span class="alp-status-tag alp-status-tag--product">{{ labelForProduct(wizardProductId()) }}</span>
               </div>
 
               <input type="text"

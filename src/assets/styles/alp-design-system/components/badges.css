@@ -100,6 +100,21 @@
   color: var(--alp-color-slate-700);
 }
 
+.alp-status-tag--product {
+  background: #ccfbf1;
+  color: #134e4a;
+}
+
+.alp-status-tag--request-type {
+  background: #ffe4e6;
+  color: #881337;
+}
+
+.alp-status-tag--lg {
+  font-size: var(--alp-font-size-sm);
+  padding: 5px 12px;
+}
+
 /* ---- ID tags (monospace identifier chips) ---- */
 .alp-id-tag {
   display: inline-flex;
