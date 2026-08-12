@@ -331,17 +331,29 @@ export class ScriptSetupComponent {
     const assoc = this.createAssociation();
     if (!name || !description || !assoc) return;
 
-    this.selectedScriptId.set(null);
-    this.selectedHistoricVersion.set(null);
-    this.topSlotDraft.set({
-      id: 'draft-' + Date.now(),
-      name,
-      description,
-      productId: assoc.productId,
-      requestTypeId: assoc.requestTypeId,
-      copy: false,
-      lastEdited: new Date().toISOString().slice(0, 10)
-    });
+    const existing = this.topSlotDraft();
+    if (existing && !existing.copy) {
+      this.topSlotDraft.set({
+        ...existing,
+        name,
+        description,
+        productId: assoc.productId,
+        requestTypeId: assoc.requestTypeId,
+        lastEdited: new Date().toISOString().slice(0, 10)
+      });
+    } else {
+      this.selectedScriptId.set(null);
+      this.selectedHistoricVersion.set(null);
+      this.topSlotDraft.set({
+        id: 'draft-' + Date.now(),
+        name,
+        description,
+        productId: assoc.productId,
+        requestTypeId: assoc.requestTypeId,
+        copy: false,
+        lastEdited: new Date().toISOString().slice(0, 10)
+      });
+    }
     this.currentAssociation.set(assoc);
     this.closeCreateDialog();
     this.emitContinue();
@@ -356,6 +368,25 @@ export class ScriptSetupComponent {
 
   removeTopSlotDraft() {
     this.topSlotDraft.set(null);
+  }
+
+  editTopSlotDraft() {
+    const d = this.topSlotDraft();
+    if (!d) return;
+    if (d.copy) {
+      this.copyAssociation.set({ productId: d.productId, requestTypeId: d.requestTypeId });
+      this.copyName.set(d.name);
+      this.copyDescription.set(d.description);
+      const source = this.existingScripts.find(s => s.scriptFileId === d.sourceScriptFileId);
+      this.copySourceScript.set(source || null);
+      this.copyHistoricVersion.set(null);
+      this.showCopyDialog.set(true);
+    } else {
+      this.createAssociation.set({ productId: d.productId, requestTypeId: d.requestTypeId });
+      this.createName.set(d.name);
+      this.createDescription.set(d.description);
+      this.showCreateDialog.set(true);
+    }
   }
 
   /* Select existing */
@@ -414,6 +445,22 @@ export class ScriptSetupComponent {
     const source = this.copySourceScript();
     const assoc = this.copyAssociation();
     if (!name || !description || !source || !assoc) return;
+
+    const existing = this.topSlotDraft();
+    if (existing && existing.copy) {
+      this.topSlotDraft.set({
+        ...existing,
+        name,
+        description,
+        productId: assoc.productId,
+        requestTypeId: assoc.requestTypeId,
+        lastEdited: new Date().toISOString().slice(0, 10)
+      });
+      this.currentAssociation.set(assoc);
+      this.closeCopyDialog();
+      this.emitContinue();
+      return;
+    }
 
     const changedAssociation = !this.associationMatches(assoc, this.currentAssociation());
     if (changedAssociation) {
