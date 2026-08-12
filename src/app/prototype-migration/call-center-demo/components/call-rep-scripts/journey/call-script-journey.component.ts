@@ -196,6 +196,11 @@ export class CallScriptJourneyComponent implements OnInit {
       const target = `${condition.checkQuestion}: ${condition.answer}`;
       if (this.completedChecks().has(target)) return true;
 
+      const manualAnswer = this.userAnswers().get(condition.checkQuestion);
+      if (Array.isArray(manualAnswer) && manualAnswer.includes(condition.answer)) {
+        return true;
+      }
+
       // Auto checks are considered completed even if completedChecks hasn't been updated yet
       return this.script()?.steps.some((step: any) =>
         step.content?.some((item: any) =>
@@ -210,8 +215,18 @@ export class CallScriptJourneyComponent implements OnInit {
       ) ?? false;
     }
 
-    const answers = this.userAnswers().get(dependsOn);
-    return Array.isArray(answers) && answers.length > 0;
+    const selectedAnswers = this.userAnswers().get(dependsOn) || [];
+    if (!Array.isArray(selectedAnswers) || selectedAnswers.length === 0) {
+      return false;
+    }
+
+    const requiredAnswers = (condition.answers || []).map((a: string) => String(a).trim());
+    if (requiredAnswers.length === 0) {
+      // No specific answers required → any answer satisfies the condition
+      return true;
+    }
+
+    return requiredAnswers.some((answer: string) => selectedAnswers.includes(answer));
   }
 
   hasEndCallAction(): boolean {
