@@ -25,7 +25,7 @@
 
   /* Text */
   --alp-color-text: var(--alp-color-slate-900);
-  --alp-color-text-muted: var(--alp-color-slate-500);
+  --alp-color-text-muted: #5e7080;
   --alp-color-text-soft: var(--alp-color-slate-400);
   --alp-color-text-on-brand: var(--alp-color-white);
   --alp-color-text-on-dark: var(--alp-color-white);

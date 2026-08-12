@@ -16,3 +16,7 @@
   border: 1px solid var(--alp-color-border);
   border-radius: var(--alp-radius-lg);
 }
+
+.alp-surface h2 {
+  font-weight: var(--alp-font-weight-bold);
+}
