@@ -17,6 +17,9 @@
   border-radius: var(--alp-radius-lg);
 }
 
-.alp-surface h2 {
+/* Reusable heading weights */
+.alp-h1,
+.alp-h2,
+.alp-h3 {
   font-weight: var(--alp-font-weight-bold);
 }

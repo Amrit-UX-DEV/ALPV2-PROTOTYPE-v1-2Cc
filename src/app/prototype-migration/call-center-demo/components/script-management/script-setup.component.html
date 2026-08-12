@@ -1,5 +1,6 @@
 <div class="alp-script-setup">
-  <h2 class="alp-script-setup__title">Select a product and request type to see associated scripts</h2>
+  <h2 class="alp-h2 alp-script-setup__title">Product and Request Type Association</h2>
+  <p class="alp-script-setup__intro">Select a product and request type to see associated scripts.</p>
   <p class="alp-script-setup__intro">You can then create a new script or select an existing one to edit or copy.</p>
 
   <!-- Top slot: only for new or copy drafts -->
@@ -19,11 +20,11 @@
           <span class="alp-script-setup__primary-description">{{ topSlotDraft()!.description }}</span>
         </div>
         <div class="alp-script-setup__primary-actions">
-          <button type="button" (click)="removeTopSlotDraft()" class="alp-btn alp-btn--secondary">
-            Remove
-          </button>
           <button type="button" (click)="editTopSlotDraft()" class="alp-btn alp-btn--secondary">
             Edit
+          </button>
+          <button type="button" (click)="removeTopSlotDraft()" class="alp-btn alp-btn--secondary alp-btn--icon" title="Remove">
+            <i class="fas fa-trash alp-btn__icon--md"></i>
           </button>
         </div>
       </div>
@@ -48,7 +49,7 @@
         </div>
       } @else {
         <i class="fas fa-plus"></i>
-        <span>Select product and request type</span>
+        <span>Select Product and Request Type</span>
       }
     </button>
 
@@ -73,12 +74,12 @@
     }
 
     <div class="alp-script-setup__script-list">
-      @if (currentAssociation()) {
+      @if (currentAssociation() && !topSlotDraft()) {
         <button type="button"
                 class="alp-placeholder-tile alp-placeholder-tile--spaced"
                 (click)="openCreateDialog()">
           <i class="fas fa-plus"></i>
-          <span>Create new script</span>
+          <span>Create New Script</span>
         </button>
       }
 
