@@ -296,8 +296,10 @@
 }
 
 .alp-script-setup__mismatch-banner--nested {
-  flex-basis: 100%;
-  margin: 0 calc(-1 * var(--alp-space-5)) calc(-1 * var(--alp-space-5));
+  width: calc(100% + 2 * var(--alp-space-5));
+  margin-left: calc(-1 * var(--alp-space-5));
+  margin-right: calc(-1 * var(--alp-space-5));
+  margin-bottom: calc(-1 * var(--alp-space-5));
   border-radius: 0;
   border-left: none;
   border-right: none;

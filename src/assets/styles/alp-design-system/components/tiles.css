@@ -211,11 +211,11 @@
   margin-top: 0;
 }
 
-.alp-placeholder-tile__label {
-  font-size: var(--alp-font-size-xs);
-  font-weight: var(--alp-font-weight-semibold);
-  color: var(--alp-color-text-muted);
-  margin-bottom: var(--alp-space-2);
+.alp-placeholder-tile__tags-label {
+  font-size: var(--alp-font-size-sm);
+  font-weight: var(--alp-font-weight-bold);
+  color: var(--alp-color-text);
+  line-height: 1;
 }
 
 .alp-placeholder-tile__hint {
