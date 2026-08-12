@@ -1,80 +1,83 @@
-<div class="alp-script-builder__popover-overlay" (click)="close()">
-  <div class="alp-script-builder__popover alp-script-builder__popover--medium"
-       (click)="$event.stopPropagation()">
+<dialog #dialogRef
+        class="alp-script-builder__popover alp-script-builder__popover--medium"
+        (cancel)="onDialogCancel()"
+        aria-labelledby="condition-popover-title">
 
-    <div class="alp-script-builder__popover-header">
-      <h4>Set Condition</h4>
-      <button (click)="close()" class="alp-script-builder__close-btn">
-        <i class="fas fa-times"></i>
-      </button>
+  <div class="alp-script-builder__popover-header">
+    <h4 id="condition-popover-title">Set Condition</h4>
+    <button type="button"
+            (click)="close()"
+            class="alp-script-builder__close-btn"
+            aria-label="Close">
+      <i class="fas fa-times"></i>
+    </button>
+  </div>
+
+  <div class="alp-condition-rail">
+    <div class="alp-condition-rail__step" [class.active]="step() === 1">
+      1. Choose source
     </div>
-
-    <div class="alp-condition-rail">
-      <div class="alp-condition-rail__step" [class.active]="step() === 1">
-        1. Choose source
-      </div>
-      <div class="alp-condition-rail__step" [class.active]="step() === 2">
-        2. Configure outcome
-      </div>
-    </div>
-
-    <div class="alp-script-builder__popover-body">
-
-      @if (step() === 1) {
-        @if (possibleSources().length === 0) {
-          <p class="alp-empty-hint">
-            No questions or required checks available in this step yet.
-          </p>
-        } @else {
-          <div class="alp-type-grid">
-            @for (src of possibleSources(); track src.id) {
-              <button class="alp-type-tile" [attr.data-type]="src.type"
-                      (click)="selectSource(src.id)">
-                <span class="alp-type-tile__label">{{ src.type | uppercase }}</span>
-                <span class="alp-type-tile__desc">{{ src.content || '(no text)' }}</span>
-                <span class="alp-type-tile__id">{{ src.id }}</span>
-              </button>
-            }
-          </div>
-        }
-      }
-
-      @if (step() === 2) {
-        <p class="alp-condition-intro">
-          Select which answers should trigger this content:
-        </p>
-
-        @if (currentSource()?.options?.length) {
-          <div class="alp-answer-tiles">
-            @for (opt of currentSource()!.options; track opt.text) {
-              <button class="alp-answer-tile"
-                      [class.selected]="isAnswerSelected(opt.text)"
-                      (click)="toggleAnswer(opt.text)">
-                {{ opt.text }}
-                @if (isAnswerSelected(opt.text)) {
-                  <i class="fas fa-check"></i>
-                }
-              </button>
-            }
-          </div>
-
-          <div class="alp-btn-row" style="margin-top:12px">
-            <button class="alp-btn alp-btn--outline" (click)="selectAll()">Select all</button>
-            <button class="alp-btn alp-btn--outline" (click)="clearAll()">Clear all</button>
-          </div>
-        } @else {
-          <p class="alp-empty-hint">This source has no selectable options.</p>
-        }
-
-        <div class="alp-condition-footer">
-          <button class="alp-btn alp-btn--outline" (click)="back()">
-            <i class="fas fa-arrow-left"></i> Back
-          </button>
-          <button class="alp-btn alp-btn--primary" (click)="save()">
-            Save Condition
-          </button>
-        </div>
-      }
+    <div class="alp-condition-rail__step" [class.active]="step() === 2">
+      2. Configure outcome
     </div>
   </div>
-</div>
+
+  <div class="alp-script-builder__popover-body">
+
+    @if (step() === 1) {
+      @if (possibleSources().length === 0) {
+        <p class="alp-empty-hint">
+          No questions or required checks available in this step yet.
+        </p>
+      } @else {
+        <div class="alp-type-grid">
+          @for (src of possibleSources(); track src.id) {
+            <button class="alp-type-tile" [attr.data-type]="src.type"
+                    (click)="selectSource(src.id)">
+              <span class="alp-type-tile__label">{{ src.type | uppercase }}</span>
+              <span class="alp-type-tile__desc">{{ src.content || '(no text)' }}</span>
+              <span class="alp-type-tile__id">{{ src.id }}</span>
+            </button>
+          }
+        </div>
+      }
+    }
+
+    @if (step() === 2) {
+      <p class="alp-condition-intro">
+        Select which answers should trigger this content:
+      </p>
+
+      @if (currentSource()?.options?.length) {
+        <div class="alp-answer-tiles">
+          @for (opt of currentSource()!.options; track opt.text) {
+            <button class="alp-answer-tile"
+                    [class.selected]="isAnswerSelected(opt.text)"
+                    (click)="toggleAnswer(opt.text)">
+              {{ opt.text }}
+              @if (isAnswerSelected(opt.text)) {
+                <i class="fas fa-check"></i>
+              }
+            </button>
+          }
+        </div>
+
+        <div class="alp-btn-row" style="margin-top:12px">
+          <button class="alp-btn alp-btn--outline" (click)="selectAll()">Select all</button>
+          <button class="alp-btn alp-btn--outline" (click)="clearAll()">Clear all</button>
+        </div>
+      } @else {
+        <p class="alp-empty-hint">This source has no selectable options.</p>
+      }
+
+      <div class="alp-condition-footer">
+        <button class="alp-btn alp-btn--outline" (click)="back()">
+          <i class="fas fa-arrow-left"></i> Back
+        </button>
+        <button class="alp-btn alp-btn--primary" (click)="save()">
+          Save Condition
+        </button>
+      </div>
+    }
+  </div>
+</dialog>

@@ -12,8 +12,7 @@ export interface RecentCaller {
   selector: 'alpha-recent-callers',
   standalone: true,
   imports: [CommonModule],
-  templateUrl: './recent-callers.component.html',
-  styleUrls: ['./recent-callers.component.css']
+  templateUrl: './recent-callers.component.html'
 })
 export class RecentCallersComponent implements OnInit {
 

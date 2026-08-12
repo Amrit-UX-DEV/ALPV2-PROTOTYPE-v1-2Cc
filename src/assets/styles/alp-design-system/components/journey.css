@@ -1,0 +1,328 @@
+/* =========================================================
+   ALP DESIGN SYSTEM — JOURNEY
+   Call-script journey rendering: prompts, questions, options,
+   checks, actions, footer buttons, and summary.
+   ========================================================= */
+
+.alp-script-journey {
+  max-width: 860px;
+  margin: 0 auto;
+  padding: var(--alp-space-7);
+  background: var(--alp-color-background);
+  border: 1px solid var(--alp-color-border);
+  border-radius: var(--alp-radius-lg);
+  box-shadow: 0 4px 25px oklch(from var(--alp-shadow-color) l c h / 0.08);
+  font-family: var(--alp-font-family-sans);
+}
+
+/* ---- Header ---- */
+.alp-script-journey__header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: var(--alp-space-8);
+  padding-bottom: var(--alp-space-5);
+  border-bottom: 2px solid var(--alp-color-border);
+}
+
+.alp-script-journey__title {
+  margin: 0;
+  font-size: var(--alp-font-size-lg);
+  font-weight: var(--alp-font-weight-semibold);
+  color: var(--alp-color-slate-900);
+}
+
+.alp-script-journey__progress {
+  font-size: var(--alp-font-size-md);
+  color: var(--alp-color-slate-500);
+  background: var(--alp-color-surface-raised);
+  padding: 6px 16px;
+  border-radius: var(--alp-radius-full);
+}
+
+/* ---- Read prompt ---- */
+.alp-script-journey__read-prompt {
+  background: var(--alp-color-background);
+  border-left: 6px solid var(--alp-color-blue-500);
+  padding: 22px 26px;
+  margin-bottom: var(--alp-space-8);
+  border-radius: var(--alp-radius-md);
+}
+
+.alp-script-journey__read-prompt-label {
+  display: block;
+  font-size: 14px;
+  font-weight: var(--alp-font-weight-semibold);
+  color: var(--alp-color-prompt);
+  margin-bottom: var(--alp-space-2);
+}
+
+.alp-script-journey__read-prompt-text {
+  margin: 0;
+  line-height: var(--alp-line-height-normal);
+  color: var(--alp-color-slate-800);
+  font-size: 16px;
+}
+
+/* ---- Question ---- */
+.alp-script-journey__question-text {
+  font-size: 16px;
+  font-weight: var(--alp-font-weight-semibold);
+  color: var(--alp-color-slate-900);
+  margin-bottom: var(--alp-space-7);
+}
+
+/* ---- Notification blocks (legacy) ---- */
+.notification-block.status-prompt {
+  margin-bottom: 40px;
+  position: relative;
+  padding-left: 50px;
+  border-left: 0;
+  border-bottom: 1px solid var(--alp-color-white);
+  border-top: 0;
+  border-right: 1px solid var(--alp-color-white);
+  overflow: hidden;
+  background-color: #e9e9e9;
+}
+
+.notification-block.status-prompt .notification-message {
+  padding-right: 0;
+}
+
+.notification-block.status-prompt::before {
+  font-family: 'Font Awesome 5 Free';
+  content: '\f075';
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 35px;
+  height: 100%;
+  align-items: center;
+  justify-content: center;
+  color: var(--alp-color-white);
+  display: flex;
+  background-color: rgba(24, 110, 204, 1);
+  font-size: var(--alp-font-size-lg);
+  font-weight: var(--alp-font-weight-bold);
+}
+
+.notification-block {
+  position: relative;
+  padding: 10px;
+  padding-bottom: 16px;
+  border: 1px solid rgb(227, 225, 225);
+  border-left: 6px solid rgb(227, 225, 225);
+  border-radius: 4px;
+  background-color: rgba(236, 234, 234, 0);
+  margin-bottom: 25px;
+}
+
+.notification-block.status-prompt p {
+  color: #222;
+  text-align: left;
+}
+
+.notification-message p {
+  font-weight: bold;
+  color: #222222;
+}
+
+/* ---- Question-sets navigation (legacy) ---- */
+.question-sets--navigation {
+  display: flex;
+  background-color: #eff2f7;
+  padding: 5px 0 0 5px;
+  border-radius: 60px;
+  margin: 0 auto;
+  justify-content: space-between;
+}
+
+button.declaration-btn.declared::after {
+  top: 0;
+  font-family: 'Font Awesome 5 Free';
+  content: '\f00c';
+  color: #58ae68;
+  position: absolute;
+  right: 0;
+  padding: 10px;
+  font-size: 2rem;
+}
+
+/* ---- Options ---- */
+.alp-script-journey__options {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  margin-bottom: 36px;
+}
+
+.alp-script-journey__option-label {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--alp-space-3);
+  padding: 16px var(--alp-space-5);
+  background: var(--alp-color-white);
+  border: 2px solid var(--alp-color-border);
+  border-radius: 10px;
+  cursor: pointer;
+  font-weight: var(--alp-font-weight-semibold);
+}
+
+.alp-script-journey__option-label:hover {
+  border-color: var(--alp-color-blue-400);
+  background: #f0f9ff;
+}
+
+.alp-script-journey__option-text {
+  flex: 1;
+  font-size: 17px;
+}
+
+.alp-script-journey__option-label:has(input:checked) {
+  border-color: var(--alp-color-blue-600);
+  background-color: var(--alp-color-blue-50);
+}
+
+/* ---- Required checks ---- */
+.alp-script-journey__checks {
+  margin-bottom: var(--alp-space-8);
+}
+
+.alp-script-journey__section-title {
+  margin-bottom: 15px;
+}
+
+.alp-script-journey__check-list {
+  display: flex;
+  flex-direction: column;
+  gap: var(--alp-space-3);
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  font-size: 14px;
+}
+
+.alp-script-journey__check-list strong {
+  display: block;
+  margin-top: 4px;
+}
+
+.alp-script-journey__check-item {
+  display: flex;
+  align-items: center;
+  gap: var(--alp-space-3);
+  padding: 14px 18px;
+  background: var(--alp-color-white);
+  border: 2px solid var(--alp-color-border);
+  border-radius: 10px;
+  cursor: pointer;
+}
+
+.alp-script-journey__check-item:hover {
+  border-color: var(--alp-color-blue-400);
+}
+
+.alp-script-journey__check-item--auto {
+  background-color: var(--alp-color-green-50);
+  border-color: var(--alp-color-green-200);
+}
+
+.alp-script-journey__check-item--manual {
+  background-color: var(--alp-color-purple-100);
+  border-left: 4px solid #8b5cf6;
+}
+
+/* ---- Actions ---- */
+.alp-script-journey__actions {
+  margin-bottom: var(--alp-space-8);
+}
+
+.alp-script-journey__action-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+/* ---- Footer ---- */
+.alp-script-journey__footer {
+  display: flex;
+  justify-content: space-between;
+  padding-top: var(--alp-space-7);
+  border-top: 1px solid var(--alp-color-border);
+}
+
+/* ---- Footer buttons ---- */
+.alp-script-journey__btn {
+  font-weight: var(--alp-font-weight-medium);
+  cursor: pointer;
+  transition: all 0.2s ease;
+  border-radius: 50px;
+  padding: 5px 16px;
+  background-color: #5da4e0;
+  text-align: center;
+  border: 2px solid rgba(255, 255, 255, 0.3);
+  color: var(--alp-color-white);
+  min-width: 30px;
+  min-height: 30px;
+  line-height: 1.5;
+  margin: 3px;
+  font-size: 16px;
+  box-sizing: border-box;
+  letter-spacing: 1px;
+}
+
+.alp-script-journey__btn:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+}
+
+.alp-script-journey__btn--primary {
+  background-color: var(--alp-color-legacy-blue);
+  color: var(--alp-color-white);
+  border: none;
+}
+
+.alp-script-journey__btn--secondary {
+  background-color: var(--alp-color-surface-raised);
+  color: var(--alp-color-slate-700);
+  border: 1px solid var(--alp-color-border-strong);
+}
+
+.alp-script-journey__btn--danger {
+  background-color: var(--alp-color-red-600);
+  color: var(--alp-color-white);
+}
+
+/* ---- Summary ---- */
+.alp-script-journey__summary {
+  padding: 40px var(--alp-space-5);
+  text-align: center;
+}
+
+.alp-script-journey__summary-title {
+  font-size: var(--alp-font-size-2xl);
+  margin-bottom: var(--alp-space-8);
+}
+
+.alp-script-journey__summary-item {
+  padding: var(--alp-space-3) 0;
+  border-bottom: 1px solid var(--alp-color-border);
+  text-align: left;
+}
+
+.alp-script-journey__manual-question {
+  width: 100%;
+}
+
+.alp-script-journey__manual-question strong {
+  display: block;
+  margin-bottom: var(--alp-space-2);
+}
+
+/* ---- States ---- */
+.alp-script-journey__loading,
+.alp-script-journey__error {
+  padding: 60px var(--alp-space-5);
+  text-align: center;
+  color: var(--alp-color-slate-500);
+}

@@ -2,6 +2,8 @@ import {
   Component,
   Input,
   OnChanges,
+  OnInit,
+  OnDestroy,
   SimpleChanges,
   signal,
   inject
@@ -9,7 +11,8 @@ import {
 import { CommonModule } from '@angular/common';
 import {
   ScriptStep,
-  ContentBlock
+  ContentBlock,
+  ScriptSetupSelection
 } from './models/script-builder.models';
 import { ScriptToolkitComponent } from './toolkit/script-toolkit.component';
 import { ScriptPreviewComponent } from './preview/script-preview.component';
@@ -37,27 +40,15 @@ const PROMPT_VARIABLE_LABELS: Record<string, string> = {
     ConfirmPopoverComponent,
     OrderStepsPopoverComponent
   ],
-  templateUrl: './script-builder.component.html',
-  styleUrls: ['./script-builder.component.css']
+  templateUrl: './script-builder.component.html'
 })
-export class ScriptBuilderComponent implements OnChanges {
+export class ScriptBuilderComponent implements OnChanges, OnInit, OnDestroy {
+  private readonly now = signal(Date.now());
+  private timer?: ReturnType<typeof setInterval>;
 
   private readonly scriptDefinition = inject(ScriptDefinitionService);
 
-  /**
-   * Accept work-plan ScriptSetupSelection as-is (no extra index signature).
-   * Property names resolved at runtime in resolveScriptFileId().
-   */
-  @Input() setup: {
-    product?: string;
-    requestType?: string;
-    scriptName?: string;
-    scriptDescription?: string;
-    scriptId?: string | null;
-    scriptFileId?: string | null;
-    filename?: string | null;
-    mode?: string;
-  } | null = null;
+  @Input() setup: ScriptSetupSelection | null = null;
 
   product = 'Policy Surrender';
   requestType = 'Full Surrender';
@@ -77,13 +68,25 @@ export class ScriptBuilderComponent implements OnChanges {
   readonly showConfirm = signal(false);
   readonly confirmTitle = signal('');
   readonly confirmMessage = signal('');
-  readonly pendingAction = signal<'move-step' | 'order-jump' | null>(null);
+  readonly pendingAction = signal<'move-step' | 'order-jump' | 'copy-step' | null>(null);
   readonly pendingMove = signal<{ index: number; direction: 'up' | 'down' } | null>(null);
-  readonly pendingOrderJump = signal<{ fromIndex: number; toIndex: number } | null>(null);
+  readonly pendingOrderJump = signal<{ sourceIndex: number; targetIndex: number } | null>(null);
+  readonly pendingCopy = signal<{ sourceIndex: number; targetIndex: number } | null>(null);
   readonly skipMoveConfirm = signal(false);
 
   readonly showOrderPopover = signal(false);
+  readonly orderMode = signal<'move' | 'copy'>('move');
   readonly orderSourceIndex = signal(0);
+
+  ngOnInit() {
+    this.timer = setInterval(() => this.now.set(Date.now()), 1000);
+  }
+
+  ngOnDestroy() {
+    if (this.timer) {
+      clearInterval(this.timer);
+    }
+  }
 
   ngOnChanges(changes: SimpleChanges) {
     if (changes['setup']) {
@@ -91,30 +94,34 @@ export class ScriptBuilderComponent implements OnChanges {
     }
   }
 
-  private applySetup(setup: ScriptBuilderComponent['setup']) {
+  private applySetup(setup: ScriptSetupSelection | null) {
     if (!setup) {
       this.steps.set([]);
       this.loadError.set(null);
       return;
     }
 
-    if (setup.product) {
-      this.product = String(setup.product);
-    }
-    if (setup.requestType) {
-      this.requestType = String(setup.requestType);
-    }
-    if (setup.scriptName) {
-      this.scriptName = String(setup.scriptName);
-    }
-    if (setup.scriptDescription) {
-      this.scriptDescription = String(setup.scriptDescription);
+    this.product = setup.productLabel || setup.productId || this.product;
+    this.requestType = setup.requestTypeLabel || setup.requestTypeId || this.requestType;
+    this.scriptName = setup.scriptName || this.scriptName;
+    this.scriptDescription = setup.scriptDescription || this.scriptDescription;
+
+    if (setup.mode === 'new') {
+      const sourceId = setup.sourceScriptFileId?.trim() || null;
+      if (sourceId) {
+        void this.loadScriptById(sourceId, true);
+      } else {
+        this.steps.set([]);
+        this.loadError.set(null);
+        this.isLoadingScript.set(false);
+      }
+      return;
     }
 
-    const fileId = this.resolveScriptFileId(setup);
+    const fileId = setup.scriptFileId?.trim() || null;
 
     if (fileId) {
-      void this.loadScriptById(fileId);
+      void this.loadScriptById(fileId, false);
     } else {
       this.steps.set([]);
       this.loadError.set(null);
@@ -122,26 +129,7 @@ export class ScriptBuilderComponent implements OnChanges {
     }
   }
 
-  private resolveScriptFileId(setup: NonNullable<ScriptBuilderComponent['setup']>): string | null {
-    const anySetup = setup as Record<string, unknown>;
-    const raw =
-      anySetup['scriptFileId'] ??
-      anySetup['scriptId'] ??
-      anySetup['filename'] ??
-      anySetup['fileId'] ??
-      anySetup['id'] ??
-      null;
-
-    if (raw == null || raw === '') return null;
-
-    let id = String(raw).trim();
-    if (id.endsWith('.json')) {
-      id = id.slice(0, -5);
-    }
-    return id || null;
-  }
-
-  private async loadScriptById(id: string) {
+  private async loadScriptById(id: string, preserveMetadata = false) {
     this.isLoadingScript.set(true);
     this.loadError.set(null);
 
@@ -154,13 +142,17 @@ export class ScriptBuilderComponent implements OnChanges {
         return;
       }
 
-      this.steps.set(result.steps);
+      // Loaded scripts start with no activity tags; tags are generated by user
+      // actions in this editing session only.
+      this.steps.set(result.steps.map(s => ({ ...s, activity: undefined })));
 
-      if (result.title) {
-        this.scriptName = result.title;
-      }
-      if (result.description) {
-        this.scriptDescription = result.description;
+      if (!preserveMetadata) {
+        if (result.title) {
+          this.scriptName = result.title;
+        }
+        if (result.description) {
+          this.scriptDescription = result.description;
+        }
       }
     } catch (err) {
       console.error('Script builder load failed', err);
@@ -180,20 +172,64 @@ export class ScriptBuilderComponent implements OnChanges {
     return idx >= 0 ? `Step ${idx + 1}` : stepId;
   }
 
-  getActivityBadge(
+  getActivityTags(
     step: ScriptStep
-  ): { label: string; variant: 'created' | 'edited' } | null {
-    const a = step.activity as
-      | { createdAt?: number; editedAt?: number; updatedAt?: number }
-      | undefined;
-    if (!a) return null;
-    if (a.updatedAt || a.editedAt) {
-      return { label: 'Edited', variant: 'edited' };
+  ): { label: string; variant: 'created' | 'edited' | 'order-edited' }[] {
+    const a = step.activity;
+    if (!a) return [];
+
+    const tags: { label: string; variant: 'created' | 'edited' | 'order-edited' }[] = [];
+
+    if (a.contentEditedAt) {
+      tags.push({
+        label: this.formatRelativeTime('Content edited', a.contentEditedAt),
+        variant: 'edited'
+      });
+    } else if (a.createdAt) {
+      tags.push({
+        label: this.formatRelativeTime('Created', a.createdAt, true),
+        variant: 'created'
+      });
     }
-    if (a.createdAt) {
-      return { label: 'New', variant: 'created' };
+
+    if (a.orderChangedAt) {
+      tags.push({
+        label: this.formatRelativeTime('Order changed', a.orderChangedAt),
+        variant: 'order-edited'
+      });
     }
-    return null;
+
+    return tags;
+  }
+
+  private formatRelativeTime(
+    verb: string,
+    timestamp: number,
+    isCreated = false
+  ): string {
+    const diffSec = Math.floor((this.now() - timestamp) / 1000);
+
+    if (diffSec < 30) {
+      return isCreated ? `Just ${verb.toLowerCase()}` : verb;
+    }
+
+    if (diffSec < 60) {
+      // Hold at 30 seconds until the one-minute threshold, rather than
+      // counting every second upward.
+      return `${verb} 30 seconds ago`;
+    }
+
+    const diffMin = Math.floor(diffSec / 60);
+    if (diffMin < 60) {
+      return `${verb} ${diffMin} minute${diffMin === 1 ? '' : 's'} ago`;
+    }
+
+    const diffHour = Math.floor(diffMin / 60);
+    const remMin = diffMin % 60;
+    if (remMin === 0) {
+      return `${verb} ${diffHour} hour${diffHour === 1 ? '' : 's'} ago`;
+    }
+    return `${verb} ${diffHour} hour${diffHour === 1 ? '' : 's'} ${remMin} minute${remMin === 1 ? '' : 's'} ago`;
   }
 
   formatPromptHtml(text: string | null | undefined): string {
@@ -228,10 +264,13 @@ export class ScriptBuilderComponent implements OnChanges {
       const idx = list.findIndex(s => s.id === step.id);
       if (idx >= 0) {
         const copy = [...list];
+        const existingActivity = list[idx].activity;
         copy[idx] = {
           ...step,
           activity: {
-            createdAt: list[idx].activity?.createdAt ?? Date.now()
+            ...existingActivity,
+            createdAt: existingActivity?.createdAt,
+            contentEditedAt: Date.now()
           }
         };
         return copy.map((s, i) => ({ ...s, order: i + 1 }));
@@ -260,14 +299,6 @@ export class ScriptBuilderComponent implements OnChanges {
     this.closeToolkit();
   }
 
-  onStepCloned(step: ScriptStep) {
-    this.steps.update(list => {
-      const copy = [...list, { ...step, activity: { createdAt: Date.now() } }];
-      return copy.map((s, i) => ({ ...s, order: i + 1 }));
-    });
-    this.closeToolkit();
-  }
-
   requestMoveStep(index: number, direction: 'up' | 'down') {
     if (this.skipMoveConfirm()) {
       this.performMoveStep(index, direction);
@@ -288,11 +319,21 @@ export class ScriptBuilderComponent implements OnChanges {
       if (target < 0 || target >= list.length) return list;
       const copy = [...list];
       [copy[index], copy[target]] = [copy[target], copy[index]];
+      const now = Date.now();
+      copy[index] = { ...copy[index], activity: { ...copy[index].activity, orderChangedAt: now } };
+      copy[target] = { ...copy[target], activity: { ...copy[target].activity, orderChangedAt: now } };
       return copy.map((s, i) => ({ ...s, order: i + 1 }));
     });
   }
 
   openOrderPopover(sourceIndex: number) {
+    this.orderMode.set('move');
+    this.orderSourceIndex.set(sourceIndex);
+    this.showOrderPopover.set(true);
+  }
+
+  openCopyPopover(sourceIndex: number) {
+    this.orderMode.set('copy');
     this.orderSourceIndex.set(sourceIndex);
     this.showOrderPopover.set(true);
   }
@@ -301,12 +342,25 @@ export class ScriptBuilderComponent implements OnChanges {
     this.showOrderPopover.set(false);
   }
 
-  onOrderPopoverConfirmed(event: { fromIndex: number; toIndex: number }) {
-    this.closeOrderPopover();
-    if (event.fromIndex === event.toIndex) return;
+  onOrderPopoverConfirmed(event: { sourceIndex: number; targetIndex: number }) {
+    const mode = this.orderMode();
+
+    if (mode === 'copy') {
+      this.pendingAction.set('copy-step');
+      this.pendingCopy.set(event);
+      this.confirmTitle.set('Copy Step?');
+      this.confirmMessage.set(
+        'You are about to create a copy of this step in the selected position.'
+      );
+      this.showConfirm.set(true);
+      return;
+    }
+
+    if (event.sourceIndex === event.targetIndex) return;
 
     if (this.skipMoveConfirm()) {
-      this.performOrderJump(event.fromIndex, event.toIndex);
+      this.closeOrderPopover();
+      this.performOrderJump(event.sourceIndex, event.targetIndex);
       return;
     }
 
@@ -333,8 +387,90 @@ export class ScriptBuilderComponent implements OnChanges {
       const copy = [...list];
       const [item] = copy.splice(fromIndex, 1);
       copy.splice(toIndex, 0, item);
+      const now = Date.now();
+      const start = Math.min(fromIndex, toIndex);
+      const end = Math.max(fromIndex, toIndex);
+      for (let i = start; i <= end; i++) {
+        copy[i] = { ...copy[i], activity: { ...copy[i].activity, orderChangedAt: now } };
+      }
       return copy.map((s, i) => ({ ...s, order: i + 1 }));
     });
+  }
+
+  private performCopyStep(sourceIndex: number, targetIndex: number) {
+    this.steps.update(list => {
+      if (
+        sourceIndex < 0 ||
+        targetIndex < 0 ||
+        sourceIndex >= list.length ||
+        targetIndex > list.length
+      ) {
+        return list;
+      }
+      const clone = this.cloneStepFrom(list[sourceIndex]);
+      const copy = [...list];
+      copy.splice(targetIndex, 0, clone);
+      const now = Date.now();
+      for (let i = targetIndex; i < copy.length; i++) {
+        copy[i] = { ...copy[i], activity: { ...copy[i].activity, orderChangedAt: now } };
+      }
+      return copy.map((s, i) => ({ ...s, order: i + 1 }));
+    });
+  }
+
+  private cloneStepFrom(source: ScriptStep): ScriptStep {
+    const stamp = Date.now();
+    const newStepId = `step-${stamp}`;
+    const idMap = new Map<string, string>();
+
+    const content = (source.content || []).map((block, i) => {
+      const newBlockId = `${newStepId}-block-${i + 1}-${stamp}`;
+      idMap.set(block.id, newBlockId);
+
+      const cloned = structuredClone(block) as ContentBlock;
+      cloned.id = newBlockId;
+      cloned.order = i + 1;
+
+      if (cloned.options?.length) {
+        cloned.options = cloned.options.map(o => ({
+          text: o.text,
+          nextStep: undefined
+        }));
+      }
+
+      if (cloned.requiredChecks?.length) {
+        cloned.requiredChecks = cloned.requiredChecks.map(c => ({
+          ...c,
+          options: c.options?.map(o => ({
+            text: o.text,
+            nextStep: undefined
+          }))
+        }));
+      }
+
+      return cloned;
+    });
+
+    for (const block of content) {
+      if (block.condition?.dependsOn) {
+        const mapped = idMap.get(block.condition.dependsOn);
+        if (mapped) {
+          block.condition = {
+            ...block.condition,
+            dependsOn: mapped
+          };
+        }
+      }
+    }
+
+    return {
+      id: newStepId,
+      order: 0,
+      title: source.title,
+      hideTitleInJourney: source.hideTitleInJourney,
+      content,
+      activity: { createdAt: stamp }
+    };
   }
 
   onConfirm(dontShowAgain: boolean) {
@@ -350,8 +486,15 @@ export class ScriptBuilderComponent implements OnChanges {
     }
 
     if (action === 'order-jump' && this.pendingOrderJump()) {
-      const { fromIndex, toIndex } = this.pendingOrderJump()!;
-      this.performOrderJump(fromIndex, toIndex);
+      const { sourceIndex, targetIndex } = this.pendingOrderJump()!;
+      this.performOrderJump(sourceIndex, targetIndex);
+      this.closeOrderPopover();
+    }
+
+    if (action === 'copy-step' && this.pendingCopy()) {
+      const { sourceIndex, targetIndex } = this.pendingCopy()!;
+      this.performCopyStep(sourceIndex, targetIndex);
+      this.closeOrderPopover();
     }
 
     this.closeConfirm();
@@ -362,6 +505,7 @@ export class ScriptBuilderComponent implements OnChanges {
     this.pendingAction.set(null);
     this.pendingMove.set(null);
     this.pendingOrderJump.set(null);
+    this.pendingCopy.set(null);
   }
 
   openPreview() {

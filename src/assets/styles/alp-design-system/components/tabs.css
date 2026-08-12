@@ -1,0 +1,54 @@
+/* =========================================================
+   ALP DESIGN SYSTEM — TABS
+   Reusable tabbed navigation component.
+
+   Markup:
+   <div class="alp-tabs">
+     <div class="alp-tabs__list" role="tablist">
+       <button class="alp-tabs__tab alp-tabs__tab--active" role="tab" aria-selected="true">Tab 1</button>
+       <button class="alp-tabs__tab" role="tab" aria-selected="false">Tab 2</button>
+     </div>
+     <div class="alp-tabs__panel" role="tabpanel">...</div>
+   </div>
+   ========================================================= */
+
+.alp-tabs {
+  display: flex;
+  flex-direction: column;
+}
+
+.alp-tabs__list {
+  display: flex;
+  gap: var(--alp-space-2);
+  border-bottom: 1px solid var(--alp-color-border);
+  margin-bottom: var(--alp-space-5);
+}
+
+.alp-tabs__tab {
+  padding: var(--alp-space-3) var(--alp-space-4);
+  background: none;
+  border: none;
+  border-bottom: 3px solid transparent;
+  font-size: var(--alp-font-size-md);
+  font-weight: var(--alp-font-weight-medium);
+  color: var(--alp-color-text-muted);
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.alp-tabs__tab:hover {
+  color: var(--alp-color-text);
+  background: var(--alp-color-slate-50);
+}
+
+.alp-tabs__tab--active {
+  color: var(--alp-color-brand);
+  border-bottom-color: var(--alp-color-brand);
+  font-weight: var(--alp-font-weight-semibold);
+}
+
+.alp-tabs__panel {
+  display: flex;
+  flex-direction: column;
+  gap: var(--alp-space-4);
+}

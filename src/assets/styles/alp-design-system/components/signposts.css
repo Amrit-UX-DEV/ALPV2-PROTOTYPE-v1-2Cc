@@ -1,0 +1,29 @@
+/* =========================================================
+   ALP DESIGN SYSTEM — SIGNPOSTS
+   Step status pills shown in the builder flow.
+   ========================================================= */
+
+.alp-step-signpost {
+  position: static;
+  font-size: var(--alp-font-size-xs);
+  font-weight: var(--alp-font-weight-semibold);
+  padding: 3px 10px;
+  border-radius: var(--alp-radius-full);
+  letter-spacing: 0;
+  text-transform: none;
+}
+
+.alp-step-signpost--created {
+  background: var(--alp-color-blue-100);
+  color: var(--alp-color-prompt);
+}
+
+.alp-step-signpost--edited {
+  background: #ede9fe;
+  color: var(--alp-color-question);
+}
+
+.alp-step-signpost--order-edited {
+  background: var(--alp-color-amber-100);
+  color: var(--alp-color-amber-800);
+}

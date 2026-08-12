@@ -1,4 +1,14 @@
-import { Component, Input, Output, EventEmitter, signal, computed } from '@angular/core';
+import {
+  Component,
+  Input,
+  Output,
+  EventEmitter,
+  signal,
+  computed,
+  ElementRef,
+  ViewChild,
+  AfterViewInit
+} from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ContentBlock, ContentCondition } from '../../models/script-builder.models';
 
@@ -6,10 +16,10 @@ import { ContentBlock, ContentCondition } from '../../models/script-builder.mode
   selector: 'alpha-condition-popover',
   standalone: true,
   imports: [CommonModule],
-  templateUrl: './condition-popover.component.html',
-  styleUrls: ['./condition-popover.component.css']
+  templateUrl: './condition-popover.component.html'
 })
-export class ConditionPopoverComponent {
+export class ConditionPopoverComponent implements AfterViewInit {
+  @ViewChild('dialogRef') dialogRef!: ElementRef<HTMLDialogElement>;
 
   @Input() contentList: ContentBlock[] = [];
   @Input() targetId: string | null = null;
@@ -62,11 +72,16 @@ export class ConditionPopoverComponent {
     this.selectedAnswers.set(new Set());
   }
 
+  ngAfterViewInit() {
+    this.dialogRef.nativeElement.showModal();
+  }
+
   save() {
     const sourceId = this.selectedSourceId();
     if (!sourceId) return;
 
     const answers = Array.from(this.selectedAnswers());
+    this.dialogRef.nativeElement.close();
     this.saved.emit({
       dependsOn: sourceId,
       answers: answers.length ? answers : undefined
@@ -74,6 +89,11 @@ export class ConditionPopoverComponent {
   }
 
   close() {
+    this.dialogRef.nativeElement.close();
+    this.closed.emit();
+  }
+
+  onDialogCancel() {
     this.closed.emit();
   }
 

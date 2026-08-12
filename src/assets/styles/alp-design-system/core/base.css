@@ -1,0 +1,18 @@
+/* =========================================================
+   ALP DESIGN SYSTEM — BASE
+   Base styles for ALP design system consumers.
+   ========================================================= */
+
+.alp-surface {
+  font-family: var(--alp-font-family-sans);
+  color: var(--alp-color-text);
+  background-color: var(--alp-color-surface);
+}
+
+.alp-canvas {
+  background-color: var(--alp-color-background);
+  background-image: radial-gradient(var(--alp-dot-color) var(--alp-dot-size), transparent var(--alp-dot-size));
+  background-size: var(--alp-dot-spacing) var(--alp-dot-spacing);
+  border: 1px solid var(--alp-color-border);
+  border-radius: var(--alp-radius-lg);
+}

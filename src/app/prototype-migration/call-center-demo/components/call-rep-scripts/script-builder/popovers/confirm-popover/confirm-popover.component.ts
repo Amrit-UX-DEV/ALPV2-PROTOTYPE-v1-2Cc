@@ -1,14 +1,24 @@
-import { Component, Input, Output, EventEmitter, signal } from '@angular/core';
+import {
+  Component,
+  Input,
+  Output,
+  EventEmitter,
+  signal,
+  ElementRef,
+  ViewChild,
+  AfterViewInit
+} from '@angular/core';
 import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'alpha-confirm-popover',
   standalone: true,
   imports: [CommonModule],
-  templateUrl: './confirm-popover.component.html',
-  styleUrls: ['./confirm-popover.component.css']
+  templateUrl: './confirm-popover.component.html'
 })
-export class ConfirmPopoverComponent {
+export class ConfirmPopoverComponent implements AfterViewInit {
+  @ViewChild('dialogRef') dialogRef!: ElementRef<HTMLDialogElement>;
+
   @Input() title = 'Are you sure?';
   @Input() message = 'This action cannot be undone.';
   @Input() confirmLabel = 'Yes, continue';
@@ -20,16 +30,26 @@ export class ConfirmPopoverComponent {
 
   readonly dontShowAgain = signal(false);
 
+  ngAfterViewInit() {
+    this.dialogRef.nativeElement.showModal();
+  }
+
   onDontShowChange(event: Event) {
     const checked = (event.target as HTMLInputElement).checked;
     this.dontShowAgain.set(checked);
   }
 
   confirm() {
+    this.dialogRef.nativeElement.close();
     this.confirmed.emit(this.showDontShowAgain ? this.dontShowAgain() : false);
   }
 
   cancel() {
+    this.dialogRef.nativeElement.close();
+    this.cancelled.emit();
+  }
+
+  onDialogCancel() {
     this.cancelled.emit();
   }
 }

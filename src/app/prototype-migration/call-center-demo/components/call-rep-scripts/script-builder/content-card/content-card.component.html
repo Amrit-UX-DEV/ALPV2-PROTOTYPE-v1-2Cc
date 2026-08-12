@@ -14,22 +14,22 @@
     </div>
 
     <div class="alp-content-card__actions">
-      <button class="alp-btn alp-btn--outline alp-btn--icon"
+      <button class="alp-btn alp-btn--ghost alp-btn--icon"
               (click)="moveUp.emit()"
               [disabled]="index === 0"
               title="Move up">
-        <i class="fas fa-chevron-up"></i>
+        <i class="fas fa-chevron-up alp-btn__icon--md"></i>
       </button>
-      <button class="alp-btn alp-btn--outline alp-btn--icon"
+      <button class="alp-btn alp-btn--ghost alp-btn--icon"
               (click)="moveDown.emit()"
               [disabled]="index === total - 1"
               title="Move down">
-        <i class="fas fa-chevron-down"></i>
+        <i class="fas fa-chevron-down alp-btn__icon--md"></i>
       </button>
-      <button class="alp-btn alp-btn--outline alp-btn--icon alp-btn--danger-outline"
+      <button class="alp-btn alp-btn--ghost alp-btn--ghost-danger alp-btn--icon"
               (click)="requestRemove()"
               title="Remove">
-        <i class="fas fa-trash"></i>
+        <i class="fas fa-trash alp-btn__icon--md"></i>
       </button>
     </div>
   </div>
@@ -122,7 +122,7 @@
               <button class="alp-btn alp-btn--outline alp-btn--icon"
                       (click)="requestStepPicker(oi)"
                       title="Edit next step">
-                <i class="fas fa-pen"></i>
+                <i class="fas fa-pen alp-btn__icon--md"></i>
               </button>
             </div>
           } @else {
@@ -135,7 +135,7 @@
           <button class="alp-btn alp-btn--outline alp-btn--icon alp-btn--danger-outline"
                   (click)="removeOption(oi)"
                   title="Remove option">
-            <i class="fas fa-trash"></i>
+            <i class="fas fa-trash alp-btn__icon--md"></i>
           </button>
         </div>
       }
@@ -173,7 +173,7 @@
             <button class="alp-btn alp-btn--outline alp-btn--icon alp-btn--danger-outline"
                     (click)="removeCheckItem(ci)"
                     title="Remove check">
-              <i class="fas fa-trash"></i>
+              <i class="fas fa-trash alp-btn__icon--md"></i>
             </button>
           </div>
 
@@ -200,7 +200,7 @@
                       <button class="alp-btn alp-btn--outline alp-btn--icon"
                               (click)="requestStepPicker(oi, ci)"
                               title="Edit next step">
-                        <i class="fas fa-pen"></i>
+                        <i class="fas fa-pen alp-btn__icon--md"></i>
                       </button>
                     </div>
                   } @else {
@@ -213,7 +213,7 @@
                   <button class="alp-btn alp-btn--outline alp-btn--icon alp-btn--danger-outline"
                           (click)="removeCheckOption(ci, oi)"
                           title="Remove option">
-                    <i class="fas fa-trash"></i>
+                    <i class="fas fa-trash alp-btn__icon--md"></i>
                   </button>
                 </div>
               }

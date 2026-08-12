@@ -6,8 +6,7 @@ import { CallRepScriptService, CallRepScript } from '../call-rep-script.service'
   selector: 'alpha-call-script-journey',
   standalone: true,
   imports: [CommonModule],
-  templateUrl: './call-script-journey.component.html',
-  styleUrls: ['./call-script-journey.component.css']
+  templateUrl: './call-script-journey.component.html'
 })
 export class CallScriptJourneyComponent implements OnInit {
 

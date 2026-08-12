@@ -38,36 +38,18 @@
 
         <div class="alp-script-builder__step-shell">
           <div class="alp-script-builder__step-move">
-            <div class="alp-script-builder__step-move-slot">
-              @if (!first) {
-                <button type="button"
-                        class="alp-btn alp-btn--outline alp-btn--icon"
-                        (click)="requestMoveStep(i, 'up')"
-                        title="Move step up">
-                  <i class="fas fa-chevron-up"></i>
-                </button>
-              }
-            </div>
-
-            <div class="alp-script-builder__step-move-slot">
-              <button type="button"
-                      class="alp-btn alp-btn--outline alp-btn--icon"
-                      (click)="openOrderPopover(i)"
-                      title="Change order">
-                <i class="fas fa-sort"></i>
-              </button>
-            </div>
-
-            <div class="alp-script-builder__step-move-slot">
-              @if (!last) {
-                <button type="button"
-                        class="alp-btn alp-btn--outline alp-btn--icon"
-                        (click)="requestMoveStep(i, 'down')"
-                        title="Move step down">
-                  <i class="fas fa-chevron-down"></i>
-                </button>
-              }
-            </div>
+            <button type="button"
+                    class="alp-btn alp-btn--outline alp-btn--icon"
+                    (click)="openOrderPopover(i)"
+                    title="Change Order">
+              <i class="fas fa-sort alp-btn__icon--md"></i>
+            </button>
+            <button type="button"
+                    class="alp-btn alp-btn--outline alp-btn--icon"
+                    (click)="openCopyPopover(i)"
+                    title="Copy Step">
+              <i class="fas fa-clone alp-btn__icon--md"></i>
+            </button>
           </div>
 
           <div class="alp-script-builder__step-card" (click)="openToolkit(step.id)">
@@ -77,11 +59,12 @@
                 <span class="alp-script-builder__step-title-text">{{ step.title }}</span>
               }
               <div class="alp-script-builder__step-badges">
-                @if (getActivityBadge(step); as badge) {
+                @for (tag of getActivityTags(step); track $index) {
                   <span class="alp-step-signpost"
-                        [class.alp-step-signpost--created]="badge.variant === 'created'"
-                        [class.alp-step-signpost--edited]="badge.variant === 'edited'">
-                    {{ badge.label }}
+                        [class.alp-step-signpost--created]="tag.variant === 'created'"
+                        [class.alp-step-signpost--edited]="tag.variant === 'edited'"
+                        [class.alp-step-signpost--order-edited]="tag.variant === 'order-edited'">
+                    {{ tag.label }}
                   </span>
                 }
               </div>
@@ -184,10 +167,10 @@
 
     @if (!isLoadingScript() && steps().length === 0 && !loadError()) {
       <button type="button"
-              class="alp-add-content-tile alp-add-first-step"
+              class="alp-placeholder-tile alp-placeholder-tile--first-step"
               (click)="openToolkit(undefined, 0)">
         <i class="fas fa-plus"></i>
-        <span>Add first step</span>
+        <span>Create Step</span>
       </button>
     }
   </div>
@@ -195,10 +178,10 @@
   @if (showToolkit()) {
     <alpha-script-toolkit
       [stepId]="editingStepId()"
+      [insertAtIndex]="insertAtIndex()"
       [existingSteps]="steps()"
       (saved)="onStepSaved($event)"
       (removed)="onStepRemoved($event)"
-      (cloned)="onStepCloned($event)"
       (cancelled)="closeToolkit()">
     </alpha-script-toolkit>
   }
@@ -213,6 +196,7 @@
 
   @if (showOrderPopover()) {
     <alpha-order-steps-popover
+      [mode]="orderMode()"
       [steps]="steps()"
       [sourceIndex]="orderSourceIndex()"
       (confirmed)="onOrderPopoverConfirmed($event)"

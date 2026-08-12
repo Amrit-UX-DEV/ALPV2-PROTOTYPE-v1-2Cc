@@ -29,9 +29,9 @@
         </alpha-content-card>
       }
 
-      <button class="alp-add-content-tile" (click)="openTypePicker()">
+      <button class="alp-placeholder-tile" (click)="openTypePicker()">
         <i class="fas fa-plus"></i>
-        <span>Add content to step</span>
+        <span>Add Content</span>
       </button>
     </div>
 
@@ -46,11 +46,6 @@
       </div>
       <div class="alp-footer-right">
         <button class="alp-btn alp-btn--outline" (click)="cancel()">Cancel</button>
-        @if (stepId) {
-          <button class="alp-btn alp-btn--outline" (click)="requestClone()">
-            <i class="fas fa-copy"></i> Copy Step
-          </button>
-        }
         <button class="alp-btn alp-btn--primary" (click)="save()">Save Step</button>
       </div>
     </div>

@@ -1,0 +1,12 @@
+/* =========================================================
+   ALP DESIGN SYSTEM — PRIMITIVE RADIUS
+   ========================================================= */
+
+:root {
+  --alp-radius-none: 0px;
+  --alp-radius-sm: 6px;
+  --alp-radius-md: 8px;
+  --alp-radius-lg: 12px;
+  --alp-radius-xl: 16px;
+  --alp-radius-full: 9999px;
+}

@@ -1,0 +1,14 @@
+/* =========================================================
+   ALP DESIGN SYSTEM — PRIMITIVE SHADOWS
+   Raw shadow values. Use via semantic elevation tokens.
+   ========================================================= */
+
+:root {
+  --alp-shadow-color: var(--alp-color-black);
+
+  --alp-shadow-xs: 0 1px 2px oklch(from var(--alp-shadow-color) l c h / 0.04);
+  --alp-shadow-sm: 0 2px 8px oklch(from var(--alp-shadow-color) l c h / 0.06);
+  --alp-shadow-md: 0 4px 18px oklch(from var(--alp-shadow-color) l c h / 0.08);
+  --alp-shadow-lg: 0 8px 28px oklch(from var(--alp-shadow-color) l c h / 0.12);
+  --alp-shadow-xl: 0 20px 50px oklch(from var(--alp-shadow-color) l c h / 0.25);
+}

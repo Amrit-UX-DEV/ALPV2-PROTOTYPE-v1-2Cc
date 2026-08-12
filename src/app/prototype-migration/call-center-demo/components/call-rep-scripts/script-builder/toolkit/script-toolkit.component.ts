@@ -34,17 +34,16 @@ import { ConfirmPopoverComponent } from '../popovers/confirm-popover/confirm-pop
     StepPickerComponent,
     ConfirmPopoverComponent
   ],
-  templateUrl: './script-toolkit.component.html',
-  styleUrls: ['./script-toolkit.component.css']
+  templateUrl: './script-toolkit.component.html'
 })
 export class ScriptToolkitComponent implements OnChanges {
 
   @Input() stepId: string | null = null;
+  @Input() insertAtIndex: number | null = null;
   @Input() existingSteps: ScriptStep[] = [];
 
   @Output() saved = new EventEmitter<ScriptStep>();
   @Output() removed = new EventEmitter<string>();
-  @Output() cloned = new EventEmitter<ScriptStep>();
   @Output() cancelled = new EventEmitter<void>();
 
   readonly title = signal('');
@@ -74,9 +73,19 @@ export class ScriptToolkitComponent implements OnChanges {
 
   readonly isEditMode = computed(() => !!this.stepId);
 
-  readonly headerTitle = computed(() =>
-    this.isEditMode() ? 'Edit step' : 'Add step'
-  );
+  readonly stepNumber = computed(() => {
+    if (this.isEditMode()) {
+      const idx = (this.existingSteps || []).findIndex(s => s.id === this.stepId);
+      return idx >= 0 ? idx + 1 : null;
+    }
+    return this.insertAtIndex != null ? this.insertAtIndex + 1 : null;
+  });
+
+  readonly headerTitle = computed(() => {
+    const n = this.stepNumber();
+    const suffix = n != null ? ` ${n}` : '';
+    return this.isEditMode() ? `Edit Step${suffix}` : `Add Step${suffix}`;
+  });
 
   readonly availableStepIds = computed(() =>
     (this.existingSteps || []).map(s => s.id)
@@ -339,70 +348,6 @@ export class ScriptToolkitComponent implements OnChanges {
       'This will permanently delete the step and all of its content.'
     );
     this.showConfirm.set(true);
-  }
-
-  /**
-   * Clone: keep content + conditions; new ids; clear nextStep only.
-   */
-  requestClone() {
-    const source = this.buildStepPayload();
-    const clone = this.cloneStepFrom(source);
-    this.cloned.emit(clone);
-  }
-
-  private cloneStepFrom(source: ScriptStep): ScriptStep {
-    const stamp = Date.now();
-    const newStepId = `step-${stamp}`;
-    const idMap = new Map<string, string>();
-
-    const content = (source.content || []).map((block, i) => {
-      const newBlockId = `${newStepId}-block-${i + 1}-${stamp}`;
-      idMap.set(block.id, newBlockId);
-
-      const cloned = structuredClone(block) as ContentBlock;
-      cloned.id = newBlockId;
-      cloned.order = i + 1;
-
-      if (cloned.options?.length) {
-        cloned.options = cloned.options.map(o => ({
-          text: o.text,
-          nextStep: undefined
-        }));
-      }
-
-      if (cloned.requiredChecks?.length) {
-        cloned.requiredChecks = cloned.requiredChecks.map(c => ({
-          ...c,
-          options: c.options?.map(o => ({
-            text: o.text,
-            nextStep: undefined
-          }))
-        }));
-      }
-
-      return cloned;
-    });
-
-    for (const block of content) {
-      if (block.condition?.dependsOn) {
-        const mapped = idMap.get(block.condition.dependsOn);
-        if (mapped) {
-          block.condition = {
-            ...block.condition,
-            dependsOn: mapped
-          };
-        }
-      }
-    }
-
-    return {
-      id: newStepId,
-      order: 0,
-      title: source.title,
-      hideTitleInJourney: source.hideTitleInJourney,
-      content,
-      activity: { createdAt: stamp }
-    };
   }
 
   private buildStepPayload(): ScriptStep {

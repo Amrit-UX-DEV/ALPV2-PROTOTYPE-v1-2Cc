@@ -1,14 +1,25 @@
-import { Component, Input, Output, EventEmitter, signal, OnChanges, SimpleChanges } from '@angular/core';
+import {
+  Component,
+  Input,
+  Output,
+  EventEmitter,
+  signal,
+  OnChanges,
+  SimpleChanges,
+  ElementRef,
+  ViewChild,
+  AfterViewInit
+} from '@angular/core';
 import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'alpha-step-picker',
   standalone: true,
   imports: [CommonModule],
-  templateUrl: './step-picker.component.html',
-  styleUrls: ['./step-picker.component.css']
+  templateUrl: './step-picker.component.html'
 })
-export class StepPickerComponent implements OnChanges {
+export class StepPickerComponent implements OnChanges, AfterViewInit {
+  @ViewChild('dialogRef') dialogRef!: ElementRef<HTMLDialogElement>;
 
   @Input() stepIds: string[] = [];
   @Input() currentStepId: string | null = null;
@@ -24,6 +35,10 @@ export class StepPickerComponent implements OnChanges {
     }
   }
 
+  ngAfterViewInit() {
+    this.dialogRef.nativeElement.showModal();
+  }
+
   selectTile(id: string) {
     // Toggle: click again to deselect
     if (this.selectedId() === id) {
@@ -34,10 +49,16 @@ export class StepPickerComponent implements OnChanges {
   }
 
   save() {
+    this.dialogRef.nativeElement.close();
     this.saved.emit(this.selectedId());
   }
 
   close() {
+    this.dialogRef.nativeElement.close();
+    this.closed.emit();
+  }
+
+  onDialogCancel() {
     this.closed.emit();
   }
 }
