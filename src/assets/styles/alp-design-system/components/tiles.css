@@ -198,6 +198,19 @@
   font-size: var(--alp-font-size-sm);
 }
 
+.alp-placeholder-tile__tags {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: var(--alp-space-2);
+  margin-bottom: var(--alp-space-2);
+}
+
+.alp-placeholder-tile__tags .alp-status-tag {
+  margin-top: 0;
+}
+
 .alp-placeholder-tile__hint {
   font-size: var(--alp-font-size-sm);
   color: var(--alp-color-text-muted);
