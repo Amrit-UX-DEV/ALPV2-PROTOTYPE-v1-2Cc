@@ -14,6 +14,7 @@
           <span class="alp-placeholder-tile__tags">
             <span class="alp-placeholder-tile__tags-label">Selected Script Association</span>
             <span class="alp-status-tag alp-status-tag--product alp-status-tag--lg">{{ labelForProduct(currentAssociation()!.productId) }}</span>
+            <i class="fas fa-caret-right alp-status-tag__separator alp-status-tag__separator--lg"></i>
             <span class="alp-status-tag alp-status-tag--request-type alp-status-tag--lg">{{ labelForRequestType(currentAssociation()!.requestTypeId) }}</span>
           </span>
           <span class="alp-placeholder-tile__hint alp-placeholder-tile__hint--interactive">Click to change</span>
@@ -43,6 +44,7 @@
               </div>
               <div class="alp-script-setup__script-tags">
                 <span class="alp-status-tag alp-status-tag--product">{{ labelForProduct(topSlotDraft()!.productId) }}</span>
+                <i class="fas fa-caret-right alp-status-tag__separator"></i>
                 <span class="alp-status-tag alp-status-tag--request-type">{{ labelForRequestType(topSlotDraft()!.requestTypeId) }}</span>
                 <span class="alp-status-tag"
                       [class.alp-status-tag--draft]="!topSlotDraft()?.copy"
@@ -91,6 +93,7 @@
               </div>
               <div class="alp-script-setup__script-tags">
                 <span class="alp-status-tag alp-status-tag--product">{{ labelForProduct(script.productId) }}</span>
+                <i class="fas fa-caret-right alp-status-tag__separator"></i>
                 <span class="alp-status-tag alp-status-tag--request-type">{{ labelForRequestType(script.requestTypeId) }}</span>
                 @if (script.isActive) {
                   <span class="alp-status-tag alp-status-tag--primary">Primary Script</span>
@@ -121,6 +124,7 @@
               </div>
               <div class="alp-script-setup__script-tags">
                 <span class="alp-status-tag alp-status-tag--product">{{ labelForProduct(script.productId) }}</span>
+                <i class="fas fa-caret-right alp-status-tag__separator"></i>
                 <span class="alp-status-tag alp-status-tag--request-type">{{ labelForRequestType(script.requestTypeId) }}</span>
                 @if (script.isActive) {
                   <span class="alp-status-tag alp-status-tag--primary">Primary Script</span>
@@ -192,14 +196,15 @@
                       rows="3"></textarea>
           </div>
           <div class="alp-script-setup__association-line">
-            <span class="alp-script-setup__association-label">Default Association</span>
-            <div class="alp-script-setup__association-value">
+            <div class="alp-script-setup__association-group">
+              <span class="alp-script-setup__association-label">Default Association</span>
               <span class="alp-status-tag alp-status-tag--product">{{ labelForProduct(createAssociation()?.productId) }}</span>
+              <i class="fas fa-caret-right alp-status-tag__separator"></i>
               <span class="alp-status-tag alp-status-tag--request-type">{{ labelForRequestType(createAssociation()?.requestTypeId) }}</span>
-              <button type="button" (click)="openAssociationWizard('create')" class="alp-btn alp-btn--secondary">
-                Change
-              </button>
             </div>
+            <button type="button" (click)="openAssociationWizard('create')" class="alp-btn alp-btn--secondary">
+              Change
+            </button>
           </div>
         </div>
         <div class="alp-dialog__footer">
@@ -257,14 +262,15 @@
                       rows="3"></textarea>
           </div>
           <div class="alp-script-setup__association-line">
-            <span class="alp-script-setup__association-label">Default Association</span>
-            <div class="alp-script-setup__association-value">
+            <div class="alp-script-setup__association-group">
+              <span class="alp-script-setup__association-label">Default Association</span>
               <span class="alp-status-tag alp-status-tag--product">{{ labelForProduct(copyAssociation()?.productId) }}</span>
+              <i class="fas fa-caret-right alp-status-tag__separator"></i>
               <span class="alp-status-tag alp-status-tag--request-type">{{ labelForRequestType(copyAssociation()?.requestTypeId) }}</span>
-              <button type="button" (click)="openAssociationWizard('copy')" class="alp-btn alp-btn--secondary">
-                Change
-              </button>
             </div>
+            <button type="button" (click)="openAssociationWizard('copy')" class="alp-btn alp-btn--secondary">
+              Change
+            </button>
           </div>
         </div>
         <div class="alp-dialog__footer">
@@ -340,7 +346,7 @@
     <div class="alp-dialog-overlay alp-dialog-overlay--wizard" (click)="closeAssociationWizard()">
       <div class="alp-dialog alp-dialog--wide" (click)="$event.stopPropagation()">
         <div class="alp-dialog__header">
-          <h4>{{ wizardTarget() === 'browse' ? 'Choose association' : 'Select Association' }}</h4>
+          <h4>{{ wizardTarget() === 'browse' ? 'Choose Association' : 'Select Association' }}</h4>
           <button type="button" (click)="closeAssociationWizard()" class="alp-dialog__close-btn" aria-label="Close">
             <i class="fas fa-times"></i>
           </button>

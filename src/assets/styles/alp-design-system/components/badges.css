@@ -115,6 +115,18 @@
   padding: 5px 12px;
 }
 
+.alp-status-tag__separator {
+  display: inline-flex;
+  align-items: center;
+  color: var(--alp-color-text-muted);
+  font-size: var(--alp-font-size-xs);
+  margin: 0 2px;
+}
+
+.alp-status-tag__separator--lg {
+  font-size: var(--alp-font-size-sm);
+}
+
 /* ---- ID tags (monospace identifier chips) ---- */
 .alp-id-tag {
   display: inline-flex;
