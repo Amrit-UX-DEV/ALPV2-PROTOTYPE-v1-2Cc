@@ -112,6 +112,7 @@ export class ScriptPreviewComponent {
    * Conditional content:
    * - No condition → always visible
    * - Has condition.checkQuestion + answer → visible only if that required check is completed
+   *   (auto checks are considered completed; manual checks must be in completedChecks)
    * - Has condition.answers → visible only if a CURRENT STEP selected answer matches
    * - Has condition but no answers/check → hidden until we have a clear rule
    */
@@ -120,7 +121,20 @@ export class ScriptPreviewComponent {
 
     if (block.condition.checkQuestion && block.condition.answer) {
       const target = `${block.condition.checkQuestion}: ${block.condition.answer}`;
-      return this.completedChecks().has(target);
+      if (this.completedChecks().has(target)) return true;
+
+      const steps = this.stepsList();
+      return steps.some(step =>
+        step.content?.some(item =>
+          item.type === 'required-check' &&
+          item.id === block.condition?.dependsOn &&
+          item.requiredChecks?.some(check =>
+            check.auto &&
+            check.question === block.condition?.checkQuestion &&
+            String(check.answer) === String(block.condition?.answer)
+          )
+        )
+      );
     }
 
     const required = (block.condition.answers || [])
