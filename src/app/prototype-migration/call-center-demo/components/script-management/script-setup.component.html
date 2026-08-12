@@ -1,35 +1,6 @@
 <div class="alp-script-setup">
   <h2 class="alp-h2 alp-script-setup__title">Product and Request Type Association</h2>
-  <p class="alp-script-setup__intro">Select a product and request type to see associated scripts.</p>
-  <p class="alp-script-setup__intro">You can then create a new script or select an existing one to edit or copy.</p>
-
-  <!-- Top slot: only for new or copy drafts -->
-  @if (topSlotDraft()) {
-    <section class="alp-script-setup__primary">
-      <div class="alp-script-setup__primary-card">
-        <div class="alp-script-setup__primary-info">
-          <div class="alp-script-setup__primary-header">
-            <strong>{{ topSlotTitle() }}</strong>
-            <span class="alp-status-tag"
-                  [class.alp-status-tag--draft]="!topSlotDraft()?.copy"
-                  [class.alp-status-tag--copy-draft]="topSlotDraft()?.copy">
-              {{ topSlotDraft()?.copy ? 'Copy draft' : 'Draft' }}
-            </span>
-          </div>
-          <span class="alp-script-setup__primary-association">{{ topSlotAssociationLabel() }}</span>
-          <span class="alp-script-setup__primary-description">{{ topSlotDraft()!.description }}</span>
-        </div>
-        <div class="alp-script-setup__primary-actions">
-          <button type="button" (click)="editTopSlotDraft()" class="alp-btn alp-btn--secondary">
-            Edit
-          </button>
-          <button type="button" (click)="removeTopSlotDraft()" class="alp-btn alp-btn--secondary alp-btn--icon" title="Remove">
-            <i class="fas fa-trash alp-btn__icon--md"></i>
-          </button>
-        </div>
-      </div>
-    </section>
-  }
+  <p class="alp-script-setup__intro">You can create a new script or select an existing one to edit or copy by selecting a product and request type association.</p>
 
   <!-- Browse section -->
   <section class="alp-script-setup__browse">
@@ -74,13 +45,38 @@
     }
 
     <div class="alp-script-setup__script-list">
-      @if (currentAssociation() && !topSlotDraft()) {
-        <button type="button"
-                class="alp-placeholder-tile alp-placeholder-tile--spaced"
-                (click)="openCreateDialog()">
-          <i class="fas fa-plus"></i>
-          <span>Create New Script</span>
-        </button>
+      @if (currentAssociation()) {
+        @if (topSlotDraft()) {
+          <div class="alp-script-setup__draft-item">
+            <div class="alp-script-setup__draft-info">
+              <div class="alp-script-setup__draft-header">
+                <strong>{{ topSlotTitle() }}</strong>
+                <span class="alp-status-tag"
+                      [class.alp-status-tag--draft]="!topSlotDraft()?.copy"
+                      [class.alp-status-tag--copy-draft]="topSlotDraft()?.copy">
+                  {{ topSlotDraft()?.copy ? 'Copy draft' : 'Draft' }}
+                </span>
+              </div>
+              <span class="alp-script-setup__draft-association">{{ topSlotAssociationLabel() }}</span>
+              <span class="alp-script-setup__draft-description">{{ topSlotDraft()!.description }}</span>
+            </div>
+            <div class="alp-script-setup__draft-actions">
+              <button type="button" (click)="editTopSlotDraft()" class="alp-btn alp-btn--secondary alp-btn--height-icon">
+                Edit
+              </button>
+              <button type="button" (click)="removeTopSlotDraft()" class="alp-btn alp-btn--ghost-danger alp-btn--icon" title="Remove">
+                <i class="fas fa-trash alp-btn__icon--md"></i>
+              </button>
+            </div>
+          </div>
+        } @else {
+          <button type="button"
+                  class="alp-placeholder-tile alp-placeholder-tile--spaced"
+                  (click)="openCreateDialog()">
+            <i class="fas fa-plus"></i>
+            <span>Create New Script</span>
+          </button>
+        }
       }
 
       @for (script of filteredExistingScripts(); track script.id) {
@@ -105,8 +101,8 @@
                       title="Copy this historic version">
                 <i class="fas fa-clone alp-btn__icon--md"></i>
               </button>
-              <button type="button" (click)="deselectScript()" class="alp-btn alp-btn--secondary">
-                Cancel Selection
+              <button type="button" (click)="deselectScript()" class="alp-btn alp-btn--secondary" aria-label="Cancel Selection">
+                Cancel
               </button>
             </div>
           </div>
@@ -137,12 +133,12 @@
                 <i class="fas fa-history alp-btn__icon--md"></i>
               </button>
               @if (selectedScriptId() === script.id) {
-                <button type="button" (click)="deselectScript()" class="alp-btn alp-btn--secondary">
-                  Cancel Selection
+                <button type="button" (click)="deselectScript()" class="alp-btn alp-btn--secondary" aria-label="Cancel Selection">
+                  Cancel
                 </button>
               } @else {
-                <button type="button" (click)="requestSelectExisting(script)" class="alp-btn alp-btn--primary">
-                  Select Script
+                <button type="button" (click)="requestSelectExisting(script)" class="alp-btn alp-btn--primary" aria-label="Select Script">
+                  Select
                 </button>
               }
             </div>
@@ -287,14 +283,16 @@
               @if (dialogSelectedHistoricVersion()?.version === version.version) {
                 <button type="button"
                         (click)="selectDialogHistoricVersion(version)"
-                        class="alp-btn alp-btn--secondary">
-                  Cancel Selection
+                        class="alp-btn alp-btn--secondary"
+                        aria-label="Cancel Selection">
+                  Cancel
                 </button>
               } @else {
                 <button type="button"
                         (click)="selectDialogHistoricVersion(version)"
-                        class="alp-btn alp-btn--primary">
-                  Select Script
+                        class="alp-btn alp-btn--primary"
+                        aria-label="Select Script">
+                  Select
                 </button>
               }
             </div>
