@@ -13,16 +13,24 @@
     </button>
   </div>
 
-  <div class="alp-condition-rail">
-    <div class="alp-condition-rail__step" [class.active]="step() === 1">
-      1. Choose source
-    </div>
-    <div class="alp-condition-rail__step" [class.active]="step() === 2">
-      2. Configure outcome
-    </div>
-  </div>
-
   <div class="alp-script-builder__popover-body">
+    <div class="alp-script-setup__wizard-steps">
+      <div class="alp-script-setup__wizard-step"
+           [class.alp-script-setup__wizard-step--active]="step() === 1"
+           [class.alp-script-setup__wizard-step--complete]="step() === 2">
+        <span class="alp-script-setup__wizard-step-number">1</span>
+        <span class="alp-script-setup__wizard-step-label">Choose source</span>
+        @if (step() === 2) {
+          <i class="fas fa-check-circle alp-script-setup__wizard-step-check"></i>
+        }
+      </div>
+      <div class="alp-script-setup__wizard-step-connector"></div>
+      <div class="alp-script-setup__wizard-step"
+           [class.alp-script-setup__wizard-step--active]="step() === 2">
+        <span class="alp-script-setup__wizard-step-number">2</span>
+        <span class="alp-script-setup__wizard-step-label">Configure outcome</span>
+      </div>
+    </div>
 
     @if (step() === 1) {
       @if (possibleSources().length === 0) {
@@ -44,37 +52,80 @@
     }
 
     @if (step() === 2) {
-      <p class="alp-condition-intro">
-        Select which answers should trigger this content:
-      </p>
-
-      @if (currentSource()?.options?.length) {
-        <div class="alp-answer-tiles">
-          @for (opt of currentSource()!.options; track opt.text) {
-            <button class="alp-answer-tile"
-                    [class.selected]="isAnswerSelected(opt.text)"
-                    (click)="toggleAnswer(opt.text)">
-              {{ opt.text }}
-              @if (isAnswerSelected(opt.text)) {
-                <i class="fas fa-check"></i>
+      @if (isCheckSource()) {
+        @if (!selectedCheckQuestion()) {
+          <p class="alp-condition-intro">
+            Select which check should trigger this content:
+          </p>
+          @if (checkQuestions().length) {
+            <div class="alp-answer-tiles">
+              @for (question of checkQuestions(); track question) {
+                <button class="alp-answer-tile"
+                        (click)="selectCheckQuestion(question)">
+                  {{ question }}
+                </button>
               }
-            </button>
+            </div>
+          } @else {
+            <p class="alp-empty-hint">This required check has no questions.</p>
           }
-        </div>
+        } @else {
+          <p class="alp-condition-intro">
+            Select the answer for <strong>{{ selectedCheckQuestion() }}</strong> that should trigger this content:
+          </p>
+          @if (answerOptions().length) {
+            <div class="alp-answer-tiles">
+              @for (answer of answerOptions(); track answer) {
+                <button class="alp-answer-tile"
+                        [class.selected]="selectedAnswer() === answer"
+                        (click)="selectAnswer(answer)">
+                  {{ answer }}
+                  @if (selectedAnswer() === answer) {
+                    <i class="fas fa-check"></i>
+                  }
+                </button>
+              }
+            </div>
+          } @else {
+            <p class="alp-empty-hint">This check has no predefined answer.</p>
+          }
+        }
+      }
 
-        <div class="alp-btn-row" style="margin-top:12px">
-          <button class="alp-btn alp-btn--outline" (click)="selectAll()">Select all</button>
-          <button class="alp-btn alp-btn--outline" (click)="clearAll()">Clear all</button>
-        </div>
-      } @else {
-        <p class="alp-empty-hint">This source has no selectable options.</p>
+      @if (isQuestionSource()) {
+        <p class="alp-condition-intro">
+          Select which answers should trigger this content:
+        </p>
+
+        @if (currentSource()?.options?.length) {
+          <div class="alp-answer-tiles">
+            @for (opt of currentSource()!.options; track opt.text) {
+              <button class="alp-answer-tile"
+                      [class.selected]="isAnswerSelected(opt.text)"
+                      (click)="toggleAnswer(opt.text)">
+                {{ opt.text }}
+                @if (isAnswerSelected(opt.text)) {
+                  <i class="fas fa-check"></i>
+                }
+              </button>
+            }
+          </div>
+
+          <div class="alp-btn-row" style="margin-top:12px">
+            <button class="alp-btn alp-btn--outline" (click)="selectAll()">Select all</button>
+            <button class="alp-btn alp-btn--outline" (click)="clearAll()">Clear all</button>
+          </div>
+        } @else {
+          <p class="alp-empty-hint">This question has no selectable options.</p>
+        }
       }
 
       <div class="alp-condition-footer">
         <button class="alp-btn alp-btn--outline" (click)="back()">
           <i class="fas fa-arrow-left"></i> Back
         </button>
-        <button class="alp-btn alp-btn--primary" (click)="save()">
+        <button class="alp-btn alp-btn--primary" (click)="save()"
+                [disabled]="isCheckSource() && (!selectedCheckQuestion() || !selectedAnswer())">
           Save Condition
         </button>
       </div>

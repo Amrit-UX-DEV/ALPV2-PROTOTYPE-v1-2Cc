@@ -70,6 +70,11 @@
                 }
                 <span class="alp-content-card__id">{{ dep.id }}</span>
               }
+              @if (item.condition.checkQuestion && item.condition.answer) {
+                <span class="alp-dependency-answers">
+                  ({{ item.condition.checkQuestion }}: {{ item.condition.answer }})
+                </span>
+              }
               @if (item.condition.answers?.length) {
                 <span class="alp-dependency-answers">
                   ({{ item.condition.answers!.join(', ') }})

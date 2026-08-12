@@ -109,14 +109,19 @@ export class ScriptPreviewComponent {
   }
 
   /**
-   * Conditional content (e.g. prompt on Yes):
+   * Conditional content:
    * - No condition → always visible
+   * - Has condition.checkQuestion + answer → visible only if that required check is completed
    * - Has condition.answers → visible only if a CURRENT STEP selected answer matches
-   *   (clone-safe; does not rely on dependsOn block ids)
-   * - Has condition but no answers listed → hidden until we have a clear rule
+   * - Has condition but no answers/check → hidden until we have a clear rule
    */
   isBlockVisible(block: ContentBlock): boolean {
     if (!block.condition) return true;
+
+    if (block.condition.checkQuestion && block.condition.answer) {
+      const target = `${block.condition.checkQuestion}: ${block.condition.answer}`;
+      return this.completedChecks().has(target);
+    }
 
     const required = (block.condition.answers || [])
       .map(a => String(a).trim().toLowerCase())
