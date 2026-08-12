@@ -154,6 +154,12 @@
             </div>
           </div>
         }
+      } @empty {
+        @if (currentAssociation()) {
+          <div class="alp-script-setup__empty-item">
+            <span>No existing scripts for the selected association.</span>
+          </div>
+        }
       }
     </div>
   </section>
