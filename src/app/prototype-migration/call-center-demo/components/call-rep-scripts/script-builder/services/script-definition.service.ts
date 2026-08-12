@@ -233,6 +233,13 @@ export class ScriptDefinitionService {
       const c = raw.condition;
       const dependsOn = c.dependsOn || c.check || c.question || c.field || c.id;
       if (!dependsOn) return undefined;
+      if (c.checkQuestion || c.check_question) {
+        return {
+          dependsOn: String(dependsOn),
+          checkQuestion: String(c.checkQuestion || c.check_question),
+          answer: c.answer != null ? String(c.answer) : undefined
+        };
+      }
       return {
         dependsOn: String(dependsOn),
         answers: this.normalizeAnswerList(c.answers ?? c.answer ?? c.equals ?? c.value)
@@ -243,6 +250,13 @@ export class ScriptDefinitionService {
       const s = raw.showWhen;
       const dependsOn = s.dependsOn || s.check || s.question || s.field || s.id;
       if (!dependsOn) return undefined;
+      if (s.checkQuestion || s.check_question) {
+        return {
+          dependsOn: String(dependsOn),
+          checkQuestion: String(s.checkQuestion || s.check_question),
+          answer: s.answer != null ? String(s.answer) : undefined
+        };
+      }
       return {
         dependsOn: String(dependsOn),
         answers: this.normalizeAnswerList(s.answers ?? s.answer ?? s.equals ?? s.value)
@@ -250,8 +264,16 @@ export class ScriptDefinitionService {
     }
 
     if (raw.dependsOn || raw.depends_on) {
+      const dependsOn = raw.dependsOn || raw.depends_on;
+      if (raw.checkQuestion || raw.check_question) {
+        return {
+          dependsOn: String(dependsOn),
+          checkQuestion: String(raw.checkQuestion || raw.check_question),
+          answer: raw.answer != null ? String(raw.answer) : undefined
+        };
+      }
       return {
-        dependsOn: String(raw.dependsOn || raw.depends_on),
+        dependsOn: String(dependsOn),
         answers: this.normalizeAnswerList(
           raw.answers ?? raw.answer ?? raw.equals ?? raw.value
         )
