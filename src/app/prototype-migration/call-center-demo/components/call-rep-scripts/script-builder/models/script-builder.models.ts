@@ -18,6 +18,8 @@ export interface RequiredCheckItem {
 export interface ContentCondition {
   dependsOn: string;
   answers?: string[];
+  checkQuestion?: string;
+  answer?: string;
 }
 
 export interface ContentBlock {
