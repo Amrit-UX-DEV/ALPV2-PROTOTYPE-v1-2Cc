@@ -44,7 +44,7 @@
               </div>
               <div class="alp-script-setup__script-tags">
                 <span class="alp-status-tag alp-status-tag--product">{{ labelForProduct(topSlotDraft()!.productId) }}</span>
-                <i class="fas fa-caret-right alp-status-tag__separator"></i>
+                <i class="fas fa-caret-right alp-status-tag__separator alp-status-tag__separator--tile"></i>
                 <span class="alp-status-tag alp-status-tag--request-type">{{ labelForRequestType(topSlotDraft()!.requestTypeId) }}</span>
                 <span class="alp-status-tag"
                       [class.alp-status-tag--draft]="!topSlotDraft()?.copy"
@@ -93,7 +93,7 @@
               </div>
               <div class="alp-script-setup__script-tags">
                 <span class="alp-status-tag alp-status-tag--product">{{ labelForProduct(script.productId) }}</span>
-                <i class="fas fa-caret-right alp-status-tag__separator"></i>
+                <i class="fas fa-caret-right alp-status-tag__separator alp-status-tag__separator--tile"></i>
                 <span class="alp-status-tag alp-status-tag--request-type">{{ labelForRequestType(script.requestTypeId) }}</span>
                 @if (script.isActive) {
                   <span class="alp-status-tag alp-status-tag--primary">Primary Script</span>
@@ -124,7 +124,7 @@
               </div>
               <div class="alp-script-setup__script-tags">
                 <span class="alp-status-tag alp-status-tag--product">{{ labelForProduct(script.productId) }}</span>
-                <i class="fas fa-caret-right alp-status-tag__separator"></i>
+                <i class="fas fa-caret-right alp-status-tag__separator alp-status-tag__separator--tile"></i>
                 <span class="alp-status-tag alp-status-tag--request-type">{{ labelForRequestType(script.requestTypeId) }}</span>
                 @if (script.isActive) {
                   <span class="alp-status-tag alp-status-tag--primary">Primary Script</span>

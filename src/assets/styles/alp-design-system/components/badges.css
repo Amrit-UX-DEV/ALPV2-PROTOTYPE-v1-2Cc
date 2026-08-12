@@ -127,6 +127,10 @@
   font-size: var(--alp-font-size-sm);
 }
 
+.alp-status-tag__separator--tile {
+  font-size: var(--alp-font-size-lg);
+}
+
 /* ---- ID tags (monospace identifier chips) ---- */
 .alp-id-tag {
   display: inline-flex;
