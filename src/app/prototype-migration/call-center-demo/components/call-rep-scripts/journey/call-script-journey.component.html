@@ -79,7 +79,7 @@
                               <input type="radio" 
                                      [name]="'manual-' + check.question" 
                                      [checked]="isOptionSelected(option.text, check.question!)" 
-                                     (change)="selectOption(option, check.question!)">
+                                     (change)="selectManualCheck(option, check.question!)">
                               <span>{{ option.text }}</span>
                             </label>
                           }

@@ -42,6 +42,13 @@ export class CallScriptJourneyComponent implements OnInit {
         this.loadScript();
       }
     });
+
+    effect(() => {
+      const step = this.currentStep();
+      if (step) {
+        this.markAutoChecksAsCompleted(step);
+      }
+    });
   }
 
   async ngOnInit() {
@@ -98,6 +105,22 @@ export class CallScriptJourneyComponent implements OnInit {
     this.userAnswers.update(map => {
       map.set(stepId, [option.text]);
       return new Map(map);
+    });
+  }
+
+  selectManualCheck(option: any, question: string) {
+    this.userAnswers.update(map => {
+      map.set(question, [option.text]);
+      return new Map(map);
+    });
+
+    this.completedChecks.update(set => {
+      const prefix = `${question}: `;
+      Array.from(set)
+        .filter(text => text.startsWith(prefix))
+        .forEach(text => set.delete(text));
+      set.add(`${question}: ${option.text}`);
+      return new Set(set);
     });
   }
 
