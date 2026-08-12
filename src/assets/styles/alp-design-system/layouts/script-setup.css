@@ -108,6 +108,17 @@
   color: var(--alp-color-slate-700);
 }
 
+.alp-script-setup__association-value {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: var(--alp-space-3);
+}
+
+.alp-script-setup__association-value .alp-status-tag {
+  margin-top: 0;
+}
+
 /* ---- Association wizard ---- */
 .alp-script-setup__wizard-steps {
   display: flex;

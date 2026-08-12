@@ -169,7 +169,7 @@
     <div class="alp-dialog-overlay alp-dialog-overlay--nested" (click)="closeCreateDialog()">
       <div class="alp-dialog alp-dialog--medium" (click)="$event.stopPropagation()">
         <div class="alp-dialog__header">
-          <h4>Create new script</h4>
+          <h4>Create New Script</h4>
           <button type="button" (click)="closeCreateDialog()" class="alp-dialog__close-btn" aria-label="Close">
             <i class="fas fa-times"></i>
           </button>
@@ -192,10 +192,14 @@
                       rows="3"></textarea>
           </div>
           <div class="alp-script-setup__association-line">
-            <span class="alp-script-setup__association-label">Association</span>
-            <button type="button" (click)="openAssociationWizard('create')" class="alp-btn alp-btn--secondary">
-              {{ associationLabel(createAssociation()) }}
-            </button>
+            <span class="alp-script-setup__association-label">Default Association</span>
+            <div class="alp-script-setup__association-value">
+              <span class="alp-status-tag alp-status-tag--product">{{ labelForProduct(createAssociation()?.productId) }}</span>
+              <span class="alp-status-tag alp-status-tag--request-type">{{ labelForRequestType(createAssociation()?.requestTypeId) }}</span>
+              <button type="button" (click)="openAssociationWizard('create')" class="alp-btn alp-btn--secondary">
+                Change
+              </button>
+            </div>
           </div>
         </div>
         <div class="alp-dialog__footer">
@@ -216,7 +220,7 @@
     <div class="alp-dialog-overlay alp-dialog-overlay--nested" (click)="closeCopyDialog()">
       <div class="alp-dialog alp-dialog--medium" (click)="$event.stopPropagation()">
         <div class="alp-dialog__header">
-          <h4>Copy script</h4>
+          <h4>Copy Script</h4>
           <button type="button" (click)="closeCopyDialog()" class="alp-dialog__close-btn" aria-label="Close">
             <i class="fas fa-times"></i>
           </button>
@@ -253,10 +257,14 @@
                       rows="3"></textarea>
           </div>
           <div class="alp-script-setup__association-line">
-            <span class="alp-script-setup__association-label">Association</span>
-            <button type="button" (click)="openAssociationWizard('copy')" class="alp-btn alp-btn--secondary">
-              {{ associationLabel(copyAssociation()) }}
-            </button>
+            <span class="alp-script-setup__association-label">Default Association</span>
+            <div class="alp-script-setup__association-value">
+              <span class="alp-status-tag alp-status-tag--product">{{ labelForProduct(copyAssociation()?.productId) }}</span>
+              <span class="alp-status-tag alp-status-tag--request-type">{{ labelForRequestType(copyAssociation()?.requestTypeId) }}</span>
+              <button type="button" (click)="openAssociationWizard('copy')" class="alp-btn alp-btn--secondary">
+                Change
+              </button>
+            </div>
           </div>
         </div>
         <div class="alp-dialog__footer">
