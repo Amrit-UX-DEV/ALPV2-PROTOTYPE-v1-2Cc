@@ -3,7 +3,7 @@
   "title": "Surrender Request",
   "description": "Call script for handling customer surrender requests",
   "category": "Surrenders",
-  "lastUpdated": "2026-07-22",
+  "lastUpdated": "2026-08-12",
   "isPrimaryScript": true,
   "steps": [
     {
@@ -14,39 +14,16 @@
           "id": "c1",
           "order": 1,
           "type": "required-check",
-          "content": "Auto-verified checks",
+          "content": "Initial checks",
           "requiredChecks": [
-            { "question": "Policy number", "answer": "80007", "auto": true },
-            { "question": "Surrender value", "answer": "£71,000", "auto": true },
-            { "question": "Telephone", "answer": "0745678999", "auto": true },
-            { "question": "Email", "answer": "joe.b@lauramipsum.com", "auto": true },
-            { "question": "Policy invested in suspended fund", "answer": "No", "auto": true }
-          ]
-        },
-        {
-          "id": "c2",
-          "order": 2,
-          "type": "prompt",
-          "content": "Before we get started, I’d like to let you know, that the value of your policy today is £71,000. This amount changes daily and isn’t guaranteed. It’s important to remember that fully cashing in your policy may not be your only option. Many policies have the ability to cash in some of the value and leave the remainder in your policy. If you’re struggling to pay the premiums you may also have the ability to stop payments now and leave your money invested. Hello Jit",
-          "condition": { 
-            "dependsOn": "c1", 
-            "checkQuestion": "Policy invested in suspended fund", 
-            "answer": "No" 
-          }
-        },
-        {
-          "id": "c3",
-          "order": 3,
-          "type": "question",
-          "content": "Are you interested in any of these options?",
-          "selectionMode": "single",
-          "options": [
-            { 
-              "text": "Yes, interested in part surrender / PUP / premium holiday"
-            },
-            { 
-              "text": "No, continue full surrender process",
-              "nextStep": "step-2" 
+            {
+              "question": "Is the policy invested in a suspended fund?",
+              "manual": true,
+              "selectionMode": "single",
+              "options": [
+                { "text": "Yes", "nextStep": "step-suspended-fund" },
+                { "text": "No", "nextStep": "step-2" }
+              ]
             }
           ]
         }
@@ -57,29 +34,21 @@
       "order": 2,
       "content": [
         {
-          "id": "c4",
+          "id": "c2",
           "order": 1,
-          "type": "prompt",
-          "content": "There's a few different ways you can request this. Over the phone, on our website, or we can send you the forms to fill in."
-        },
-        {
-          "id": "c5",
-          "order": 2,
-          "type": "question",
-          "content": "Which would you prefer?",
-          "selectionMode": "single",
-          "options": [
-            { "text": "Over the phone" },
-            { "text": "On our website" },
-            { "text": "Send forms to fill in" }
+          "type": "required-check",
+          "content": "Surrender options checks",
+          "requiredChecks": [
+            {
+              "question": "Does the policy allow partial surrender, PUP, premium holiday?",
+              "manual": true,
+              "selectionMode": "single",
+              "options": [
+                { "text": "Yes", "nextStep": "step-3" },
+                { "text": "No", "nextStep": "step-4" }
+              ]
+            }
           ]
-        },
-        {
-          "id": "c6",
-          "order": 3,
-          "type": "prompt",
-          "content": "Great thanks for confirming, I’m just going to check some details on your policy. I’m going to pop you on hold for a minute or so while I do that.",
-          "condition": { "dependsOn": "c5" }
         }
       ]
     },
@@ -88,32 +57,70 @@
       "order": 3,
       "content": [
         {
+          "id": "c3",
+          "order": 1,
+          "type": "prompt",
+          "content": "It's important to remember that fully cashing in your policy may not be your only option. You also have the option to part surrender, paid-up, premium holiday."
+        },
+        {
+          "id": "c4",
+          "order": 2,
+          "type": "question",
+          "content": "Are you interested in these options?",
+          "selectionMode": "single",
+          "options": [
+            { "text": "Interested in part surrender", "nextStep": "step-part-surrender" },
+            { "text": "Interested in paid up / premium holiday", "nextStep": "step-paid-up-premium-holiday" },
+            { "text": "No, continue full surrender process", "nextStep": "step-4" }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "step-4",
+      "order": 4,
+      "content": [
+        {
+          "id": "c5",
+          "order": 1,
+          "type": "prompt",
+          "content": "Before we get started, I'd like to let you know that the value of your policy today is {{policyValue}}. This amount changes daily and isn't guaranteed."
+        }
+      ]
+    },
+    {
+      "id": "step-suspended-fund",
+      "order": 5,
+      "content": [
+        {
+          "id": "c6",
+          "order": 1,
+          "type": "prompt",
+          "content": "[Daisy chain] Policy is invested in a suspended fund. Handle via suspended-fund process."
+        }
+      ]
+    },
+    {
+      "id": "step-part-surrender",
+      "order": 6,
+      "content": [
+        {
           "id": "c7",
           "order": 1,
-          "type": "required-check",
-          "content": "Auto-verified checks",
-          "requiredChecks": [
-            { "question": "Policy changes within last 6 months?", "answer": "No", "auto": true },
-            { "question": "In arrears?", "answer": "No", "auto": true },
-            { "question": "Value under £100k", "answer": "Yes", "auto": true },
-            { "question": "Joint or Single ownership?", "answer": "Single", "auto": true },
-            { "question": "FMISA? (Flexible Mortgage Individual Savings Account)", "answer": "No", "auto": true },
-            { "question": "OUK? (Outside of UK)", "answer": "No", "auto": true },
-            { "question": "Manual calculation or policy in debt?", "answer": "No", "auto": true },
-            { "question": "Policy on hold?", "answer": "No", "auto": true },
-            { "question": "FA calling? (Financial Adviser)", "answer": "No", "auto": true },
-            { "question": "POA calling? (Power of Attorney)", "answer": "No", "auto": true },
-            { "question": "Open bill?", "answer": "No", "auto": true },
-            { 
-              "question": "Is this policy in trust or assigned?", 
-              "manual": true,
-              "selectionMode": "single",
-              "options": [
-                { "text": "Trust" },
-                { "text": "Assigned" }
-              ]
-            }
-          ]
+          "type": "prompt",
+          "content": "[Daisy chain] Interested in part surrender. Handle via part-surrender process."
+        }
+      ]
+    },
+    {
+      "id": "step-paid-up-premium-holiday",
+      "order": 7,
+      "content": [
+        {
+          "id": "c8",
+          "order": 1,
+          "type": "prompt",
+          "content": "[Daisy chain] Interested in paid-up / premium holiday. Handle via paid-up or premium-holiday process."
         }
       ]
     }
