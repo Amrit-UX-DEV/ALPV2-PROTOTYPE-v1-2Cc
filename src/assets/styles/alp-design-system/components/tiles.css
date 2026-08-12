@@ -337,6 +337,19 @@
   background: #fefce8;
 }
 
+.alp-script-setup__empty-item {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: var(--alp-space-4);
+  background: var(--alp-color-surface-raised);
+  border: 1px solid var(--alp-color-border);
+  border-radius: var(--alp-radius-md);
+  color: var(--alp-color-text-muted);
+  font-size: var(--alp-font-size-sm);
+  min-height: 72px;
+}
+
 /* =========================================================
    TRANSFER REASON TILES
    Grid tiles for selecting a transfer reason.
