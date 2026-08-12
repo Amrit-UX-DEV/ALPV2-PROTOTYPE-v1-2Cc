@@ -123,6 +123,11 @@ export class ScriptPreviewComponent {
       const target = `${block.condition.checkQuestion}: ${block.condition.answer}`;
       if (this.completedChecks().has(target)) return true;
 
+      const manualAnswer = this.userAnswers().get(block.condition.checkQuestion);
+      if (Array.isArray(manualAnswer) && manualAnswer.includes(block.condition.answer)) {
+        return true;
+      }
+
       const steps = this.stepsList();
       return steps.some(step =>
         step.content?.some(item =>

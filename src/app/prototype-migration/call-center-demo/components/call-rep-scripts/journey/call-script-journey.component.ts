@@ -151,18 +151,38 @@ export class CallScriptJourneyComponent implements OnInit {
     const step = this.currentStep();
     if (!step) return this.currentStepIndex() + 1;
 
-    const selectedAnswer = this.userAnswers().get(step.id)?.[0];
-    if (!selectedAnswer) return this.currentStepIndex() + 1;
+    const userAnswers = this.userAnswers();
 
-    const questionItem = step.content.find((item: any) => 
+    // Question options
+    const questionItems = step.content.filter((item: any) =>
       item.type === 'question' && Array.isArray(item.options)
     );
-
-    if (questionItem && Array.isArray(questionItem.options)) {
-      const selectedOption = questionItem.options.find((opt: any) => opt.text === selectedAnswer);
+    for (const item of questionItems) {
+      const selectedAnswer = userAnswers.get(item.id)?.[0];
+      if (!selectedAnswer) continue;
+      const selectedOption = item.options.find((opt: any) => opt.text === selectedAnswer);
       if (selectedOption?.nextStep) {
         const nextStepIndex = this.script()!.steps.findIndex(s => s.id === selectedOption.nextStep);
         if (nextStepIndex !== -1) return nextStepIndex;
+      }
+    }
+
+    // Manual single-select required-check options
+    const checkItems = step.content.filter((item: any) =>
+      item.type === 'required-check' && Array.isArray(item.requiredChecks)
+    );
+    for (const item of checkItems) {
+      for (const check of item.requiredChecks) {
+        if (!check.manual || check.selectionMode !== 'single' || !Array.isArray(check.options)) {
+          continue;
+        }
+        const selectedAnswer = userAnswers.get(check.question)?.[0];
+        if (!selectedAnswer) continue;
+        const selectedOption = check.options.find((opt: any) => opt.text === selectedAnswer);
+        if (selectedOption?.nextStep) {
+          const nextStepIndex = this.script()!.steps.findIndex(s => s.id === selectedOption.nextStep);
+          if (nextStepIndex !== -1) return nextStepIndex;
+        }
       }
     }
 
@@ -196,6 +216,11 @@ export class CallScriptJourneyComponent implements OnInit {
       const target = `${condition.checkQuestion}: ${condition.answer}`;
       if (this.completedChecks().has(target)) return true;
 
+      const manualAnswer = this.userAnswers().get(condition.checkQuestion);
+      if (Array.isArray(manualAnswer) && manualAnswer.includes(condition.answer)) {
+        return true;
+      }
+
       // Auto checks are considered completed even if completedChecks hasn't been updated yet
       return this.script()?.steps.some((step: any) =>
         step.content?.some((item: any) =>
@@ -210,8 +235,18 @@ export class CallScriptJourneyComponent implements OnInit {
       ) ?? false;
     }
 
-    const answers = this.userAnswers().get(dependsOn);
-    return Array.isArray(answers) && answers.length > 0;
+    const selectedAnswers = this.userAnswers().get(dependsOn) || [];
+    if (!Array.isArray(selectedAnswers) || selectedAnswers.length === 0) {
+      return false;
+    }
+
+    const requiredAnswers = (condition.answers || []).map((a: string) => String(a).trim());
+    if (requiredAnswers.length === 0) {
+      // No specific answers required → any answer satisfies the condition
+      return true;
+    }
+
+    return requiredAnswers.some((answer: string) => selectedAnswers.includes(answer));
   }
 
   hasEndCallAction(): boolean {
