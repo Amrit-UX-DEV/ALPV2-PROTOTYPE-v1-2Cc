@@ -108,14 +108,14 @@
   color: var(--alp-color-slate-700);
 }
 
-.alp-script-setup__association-value {
+.alp-script-setup__association-group {
   display: flex;
   align-items: center;
   flex-wrap: wrap;
   gap: var(--alp-space-3);
 }
 
-.alp-script-setup__association-value .alp-status-tag {
+.alp-script-setup__association-group .alp-status-tag {
   margin-top: 0;
 }
 
