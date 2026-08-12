@@ -42,6 +42,13 @@ export class CallScriptJourneyComponent implements OnInit {
         this.loadScript();
       }
     });
+
+    effect(() => {
+      const step = this.currentStep();
+      if (step) {
+        this.markAutoChecksAsCompleted(step);
+      }
+    });
   }
 
   async ngOnInit() {
@@ -98,6 +105,22 @@ export class CallScriptJourneyComponent implements OnInit {
     this.userAnswers.update(map => {
       map.set(stepId, [option.text]);
       return new Map(map);
+    });
+  }
+
+  selectManualCheck(option: any, question: string) {
+    this.userAnswers.update(map => {
+      map.set(question, [option.text]);
+      return new Map(map);
+    });
+
+    this.completedChecks.update(set => {
+      const prefix = `${question}: `;
+      Array.from(set)
+        .filter(text => text.startsWith(prefix))
+        .forEach(text => set.delete(text));
+      set.add(`${question}: ${option.text}`);
+      return new Set(set);
     });
   }
 
@@ -170,9 +193,21 @@ export class CallScriptJourneyComponent implements OnInit {
     const dependsOn = condition.dependsOn;
 
     if (condition.checkQuestion) {
-      const checkAnswers = this.completedChecks();
       const target = `${condition.checkQuestion}: ${condition.answer}`;
-      return checkAnswers.has(target);
+      if (this.completedChecks().has(target)) return true;
+
+      // Auto checks are considered completed even if completedChecks hasn't been updated yet
+      return this.script()?.steps.some((step: any) =>
+        step.content?.some((item: any) =>
+          item.type === 'required-check' &&
+          item.id === dependsOn &&
+          item.requiredChecks?.some((check: any) =>
+            check.auto &&
+            check.question === condition.checkQuestion &&
+            String(check.answer) === String(condition.answer)
+          )
+        )
+      ) ?? false;
     }
 
     const answers = this.userAnswers().get(dependsOn);
