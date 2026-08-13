@@ -544,3 +544,24 @@ button.exit-wizard{
   .wizard-container.wizard-vertical-theme-01 li.step-container.step-complete + li.step-container:not(.step-complete) .fulltermination-example {
       display: inline-block;
   }
+
+/* ═══════════════════════════════════════════════════════════════ */
+/* ANGULAR NAVIGATION OVERRIDES                                       */
+/* Ensures active step body is visible when rendered via @if control  */
+/* flow (comment anchor nodes can break the + sibling selector)       */
+/* ═══════════════════════════════════════════════════════════════ */
+
+.wizard-container.wizard-vertical-theme-01 .step-container[stepstatus="active"] .content-section-body {
+  display: block;
+  min-height: 160px;
+  border-right: 1px solid #dcdcdc;
+  border-bottom: 1px solid #dcdcdc;
+  background-color: rgba(255, 255, 255, 0.7);
+  border-radius: 0 0 0 6px;
+  margin-bottom: 15px;
+  padding: 10px;
+  position: relative;
+  padding-bottom: 75px;
+  color: #222;
+  border-left: 7px solid #3c4981;
+}

@@ -1,641 +1,195 @@
+<!-- ═══════════════════════════════════════════════════════════════ -->
+<!-- ALPHA WORK PLAN — Wizard Shell                                    -->
+<!-- 4 steps: Script Association → Build → Preview → Confirmation      -->
+<!-- All navigation is Angular-driven (no jQuery)                       -->
+<!-- ═══════════════════════════════════════════════════════════════ -->
+
 <div class="alpha-wizard">
-<div class="rowx">
-  <div class="col-md-12" style="padding-left:0;">
-    <div class="card">
-      <div _ngcontent-svx-c52="" class="card-header"><button _ngcontent-svx-c52="" class="btn btn-danger exit-wizard" id="wizard-exit-btn-external" type="button"> Exit </button><h1 class="page-title">Available Steps for Script Management</h1></div>
-      
-    </div>
-    <div _ngcontent-c13="" class="card wizard-card" style=" /* display: none; */ ">
-      <div _ngcontent-c13="" class="card-block wizard-card">
-        <div class="wizard-container wizard-vertical-theme-01">
-          <ul class="wizard-navigation-map vertical-map">
-            <li stepstatus="incomplete"> <a href="#"> <span class="wizard-map-badge">1 </span> <span class="wizard-map-step-name">1. Script Association </span> </a> </li>
-            <li stepstatus="incomplete"> <a href="#"> <span class="wizard-map-badge">2 </span> <span class="wizard-map-step-name">2. -- </span> </a> </li>
-            <li stepstatus="incomplete"> <a href="#"> <span class="wizard-map-badge">3 </span> <span class="wizard-map-step-name">3. -- </span> </a> </li>
-            <li stepstatus="incomplete"> <a href="#"> <span class="wizard-map-badge">4 </span> <span class="wizard-map-step-name">4. --</span> </a> </li>
-           
-          </ul>
-          <ul class="step-container-list">
-            <li class="step-container example-step01" stepstatus="incomplete">
-              <div class="content-section">
-                <div onclick="sidebarStep(this)" class="content-section-header step-open"> 1. Script Association <i alpha-ui-event="click" alpha-ui-attr-toggle=".example-step02 ,step-complete" class="fa fa-circle-o" aria-hidden="true"></i> </div>
-                <div class="content-section-body">
-                  <div class="content-block">
 
-                    <alpha-script-setup
-                    (continue)="onSetupContinue($event)">
-                  </alpha-script-setup>
-
-                  <div class="wizard-navigation"> 
-                    <button type="button" class="ui-btn ui-disabled">Reset Step</button>
-                    <button id="ux-btn-next-step-1" alpha-ui-event="click" alpha-ui-attr-toggle=".example-step01 ,show-summary|step-complete" type="button" class="ui-btn stepNext ux-btn-next-step-1">Save</button> </div>
-                </div>
-              </div>
-            </div></li>
-            <li class="step-container example-step02" stepstatus="incomplete">
-              <div class="content-section">
-                <div onclick="sidebarStep(this)" class="content-section-header"> 2. View / Build Script  <i class="fa fa-circle-o" aria-hidden="true"></i> </div>
-                <div class="content-section-body ">
-                  <div class="content-block">
-                    
-                    <alpha-script-builder
-  [setup]="setupSelection()">
-</alpha-script-builder>
-
-                  </div>
-
-
-                  
-<div class="wizard-navigation">
-                  
-                    <button type="button" class="ui-btn ui-disabled">Reset Step</button>
-                    <button type="button" class="ui-btn stepPrevious">Previous</button>
-                    <button alpha-ui-event="click" alpha-ui-attr-toggle=".example-step02 ,show-summary|step-complete" type="button" class="ui-btn stepNext">Next</button>
-                  </div>
-                </div>
-              </div>
-            </li>
-            <li class="step-container example-step03 " stepstatus="incomplete">
-              <div class="content-section">
-                <div onclick="sidebarStep(this)" class="content-section-header"> 3. Preview Script <i alpha-ui-event="click" alpha-ui-attr-toggle=".example-step04 ,step-complete" class="fa fa-circle-o" aria-hidden="true"></i></div>
-                <div class="content-section-body">
-
-
-                  
-                  <div class="wizard-navigation"> 
-                    <button type="button" class="ui-btn ui-disabled">Reset Step</button>
-                    <button type="button" class="ui-btn stepPrevious">Previous</button>
-                    <button alpha-ui-event="click" alpha-ui-attr-toggle=".example-step03 ,show-summary|step-complete" type="button" class="ui-btn stepNext">Save</button>
-                  </div>
-                </div>
-              </div>
-            </li>
-            
-            <li class="step-container example-step04" stepstatus="incomplete">
-              <div class="content-section">
-                <div onclick="sidebarStep(this)" class="content-section-header">4. Confirmation
-                  <i alpha-ui-event="click" alpha-ui-attr-toggle=".example-step03 ,step-complete" class="fa fa-circle-o" aria-hidden="true"></i>
-                </div>
-                <div class="content-section-body">
-                  <div class="notification-block status-success"><div class="notification-message"><p>Success Script Added</p></div></div>
-
-
-                  
-                  
-                  
-                  
-                  
-                  
-                  
-                  
-                  <div class="wizard-navigation">
-                    <button type="button" class="ui-btn">Finish</button>
-                    
-                  </div>
-                </div>
-              </div>
-            </li>
-            
-            <li class="step-container example-step05" stepstatus="incomplete" style="display: none;">
-              <div class="content-section">
-                <div onclick="sidebarStep(this)" class="content-section-header"> 5. Payee Details <i class="fa fa-circle-o" aria-hidden="true"></i> </div>
-                <div class="content-section-body presentation-content">
-                  <div class="body-content">
-                    <div class="quad-diagram example-6-a1">
-                      <div class="data-structure-diagram-col" style=" height: 100%; ">
-                        <div class="alpha-layout-col-2 column-padding data-structure-diagram-container">
-                          <ul id="UXGroupxxxxSummaryProto" class="alpha-linked-data-structure">
-                            <li class="alpha-parent-item margin-bottom-15">
-                              <alpha-policy-unit>
-                                <div class="multi-action-tile tile--size-w-med no-selected-client-02">
-                                  <div class="action-container"> <button type="button" alpha-ui-event="click" alpha-ui-attr-toggle=".alpha-app-container,show-select-client-overlay-02" class="action--single" client-id="ux02"> <span class="alpha-info" style=" /* text-align: center; */ /* display: block; */ "><i class="fa fa-plus-circle fa-2x" aria-hidden="true"></i></span> <span class="alpha-info text-weight-bold text-align-center margin-top-10">Select Client</span> </button> </div>
-                                </div>
-                                <div class="multi-action-tile tile--size-w-med selected-client-02">
-                                  <div class="action-container"> <button type="button" class="action--view state--ui-active alpha-selected ui-disabled" ux-tc="cg2" ux-selection-group="sg1" ux-parent="cg2"> <span class="tile--data-strong"><i aria-hidden="true" class="fa fa-male"></i> Individual</span> <span class="tile--data tile--spacer"> Mr Joe Bloggs </span> <span class="tile--data-heading">Date of Birth: </span> <span class="tile--data-strong tile--spacer"> 30 Apr 1965 (54) </span> <span class="tile--data-heading">National Insurance: </span> <span class="tile--data-strong tile--spacer"> RM439286P </span> <span class="tile--address-details "> <span class="tile--data-strong tile--spacer"> <i class="fa fa-home" aria-hidden="true"></i> <span class="tile--address-status"> <i class="fa fa-check" aria-hidden="true"></i> Permanent </span> </span> <span class="tile--data tile--data-strong"> 123 Example Road, </span> <span class="tile--data tile--data-strong"> Perry Barr, </span> <span class="tile--data tile--data-strong"> Birmingham, </span> <span class="tile--data tile--spacer tile--data-strong"> B1 3JJ </span> </span>
-                                      <!--<span class="tile--data-action-command"> Click to Change Client </span>--> </button> <button type="button" class="action--view ui-disabled" alpha-ui-event="click" alpha-ui-attr-toggle=".app-overlay ,app-overlay--open" style=" /* min-width: 190px; */ "> <span class="tile--data-strong"> Money Laundering </span> <span class="tile--data tile--data-heading">Requires payment details</span>
-                                      <!--<span class="alpha-additional-info data-bubble--status onhold" style="font-weight: bold;float: left;display: inline-block !important;margin-top: 10px;" ng-reflect-klass="alpha-additional-info data-bub"> Pending </span>--> </button> </div>
-                                </div>
-                              </alpha-policy-unit>
-                              <ul>
-                                <li class="alpha-item-group">
-                                  <ul>
-                                    <li class="alpha-parent-item">
-                                      <div class="multi-action-tile tile--size-w-med ">
-                                        <div class="action-container"> <button type="button" helper-ux-waypoint="Click to Continue" alpha-ui-event="click" alpha-ui-attr-toggle=".alpha-app-container ,show-o|sub-step-1" class="action--single show-ux-waypoint" client-id="ux02"> <span class="alpha-info"><i class="fa fa-plus-circle fa-2x" aria-hidden="true"></i></span> <span class="alpha-info text-weight-bold text-align-center margin-top-10">Enter Payment Details</span></button> </div>
-                                      </div>
-                                    </li>
-                                    <li class="alpha-parent-item" style=" display: none; "> <button alpha-ui-event="click" alpha-ui-attr-toggle=".alpha-app-container ,show-overlay" type="button" class="data-tile no-margin-right text-align-left" style=" min-width: 230px; "> <span class="alpha-info text-weight-bold text-align-left">Financial Crime Details</span> </button> </li>
-                                    <li class="alpha-parent-item" style=" display: none; "> <button alpha-ui-event="click" alpha-ui-attr-toggle=".alpha-app-container ,show-overlay" type="button" class="data-tile no-margin-right text-align-left" style=" min-width: 230px; background-color: #efefef; border-color: #ccc; pointer-events: none; "> <span class="alpha-info text-weight-bold text-align-left">Declaration</span>
-                                        <div class="notification-block status-warning" style=" padding: 0; background: none; border: none; padding-left: 5px; margin-top: 10px; width: 200px; ">
-                                          <div class="notification-message">
-                                            <p>Sections incomplete <br>Payment Details, <br>Financial Crime</p>
-                                            <div> </div>
-                                          </div>
-                                        </div>
-                                      </button> </li>
-                                  </ul>
-                                </li>
-                              </ul>
-                            </li>
-                          </ul>
-                        </div>
-                      </div>
-                    </div>
-                    <div class="quad-diagram example-6-a2">
-                      <div class="data-structure-diagram-col" style=" height: 100%; ">
-                        <div class="alpha-layout-col-2 column-padding data-structure-diagram-container">
-                          <ul id="UXGroupxxxxSummaryProto" class="alpha-linked-data-structure">
-                            <li class="alpha-parent-item margin-bottom-15">
-                              <alpha-policy-unit>
-                                <div class="multi-action-tile tile--size-w-med no-selected-client-02">
-                                  <div class="action-container"> <button type="button" alpha-ui-event="click" alpha-ui-attr-toggle=".alpha-app-container,show-select-client-overlay-02" class="action--single" client-id="ux02"> <span class="alpha-info" style=" /* text-align: center; */ /* display: block; */ "><i class="fa fa-plus-circle fa-2x" aria-hidden="true"></i></span> <span class="alpha-info text-weight-bold text-align-center margin-top-10">Select Client</span> </button> </div>
-                                </div>
-                                <div class="multi-action-tile tile--size-w-med selected-client-02">
-                                  <div class="action-container"> <button type="button" class="action--view state--ui-active ui-disabled" ux-tc="cg2" ux-selection-group="sg1" ux-parent="cg2"> <span class="tile--data-strong"><i aria-hidden="true" class="fa fa-male"></i> Individual</span> <span class="tile--data tile--spacer"> Mr Joe Bloggs </span> <span class="tile--data-heading">Date of Birth: </span> <span class="tile--data-strong tile--spacer"> 30 Apr 1965 (54) </span> <span class="tile--data-heading">National Insurance: </span> <span class="tile--data-strong tile--spacer"> RM439286P </span> <span class="tile--address-details "> <span class="tile--data-strong tile--spacer"> <i class="fa fa-home" aria-hidden="true"></i> <span class="tile--address-status"> <i class="fa fa-check" aria-hidden="true"></i> Permanent </span> </span> <span class="tile--data tile--data-strong"> 123 Example Road, </span> <span class="tile--data tile--data-strong"> Perry Barr, </span> <span class="tile--data tile--data-strong"> Birmingham, </span> <span class="tile--data tile--spacer tile--data-strong"> B1 3JJ </span> </span>
-                                      <!--<span class="tile--data-action-command"> Click to Change Client </span>--> </button> <button type="button" class="action--view state--ui-active--no-icon icon--circle-arrow--right " alpha-ui-event="click" alpha-ui-attr-toggle=".app-overlay ,app-overlay--open" style=" /* min-width: 190px; */ "> <span class="tile--data-strong"> Money Laundering </span> <span class="tile--data tile--data-heading"> Click to enter details </span>
-                                      <!--<span class="alpha-additional-info data-bubble--status onhold" style="font-weight: bold;float: left;display: inline-block !important;margin-top: 10px;"> Pending </span>--> </button> </div>
-                                </div>
-                              </alpha-policy-unit>
-                            </li>
-                          </ul>
-                        </div>
-                      </div>
-                    </div>
-                    <div class="quad-diagram example-6-a3">
-                      <div class="data-structure-diagram-col" style=" height: 100%; ">
-                        <div class="alpha-layout-col-2 column-padding data-structure-diagram-container">
-                          <ul id="UXGroupxxxxSummaryProto" class="alpha-linked-data-structure">
-                            <li class="alpha-parent-item margin-bottom-15" style=" display: none; ">
-                              <alpha-policy-unit>
-                                <div class="multi-action-tile tile--size-w-med">
-                                  <div class="action-container"> <button alpha-ui-event="click" alpha-ui-attr-toggle=".alpha-app-container ,show-overlay" type="button" class="data-tile no-margin-right layout-100pc"> <span class="alpha-info text-weight-bold text-align-center">Edit Selected Clients</span> <span class="alpha-additional-info ">Click to edit details. </span> </button> </div>
-                                </div>
-                              </alpha-policy-unit>
-                              <ul>
-                                <li class="alpha-item-group" style=" /* display: none; */ "> </li>
-                              </ul>
-                            </li>
-                            <li class="alpha-parent-item margin-bottom-15" style=" display: none; ">
-                              <alpha-policy-unit> <button alpha-ui-event="click" alpha-ui-selectable="single,selected-item" type="button" class="data-tile active"> <span class="alpha-secondary-info" hidden=""> Individual </span> <span class="alpha-info text-weight-bold"> <i class="fa fa-male" aria-hidden="true"></i> Individual </span> <span class="alpha-additional-info"> Mr Fred Bloggs </span> <span class="alpha-additional-info text-weight-bold">Life 1</span> <span class="alpha-additional-info date-info"> D.O.B: 13 Oct 1984 (33) </span> </button> </alpha-policy-unit>
-                              <ul>
-                                <li class="alpha-item-group">
-                                  <ul>
-                                    <li class="alpha-parent-item"> <button alpha-ui-event="click" alpha-ui-attr-toggle=".alpha-app-container ,show-overlay" type="button" class="data-tile no-margin-right text-align-left" style=" min-width: 230px; "> <span class="alpha-info text-weight-bold text-align-left">Payment Details</span> </button> </li>
-                                    <li class="alpha-parent-item"> <button alpha-ui-event="click" alpha-ui-attr-toggle=".alpha-app-container ,show-overlay" type="button" class="data-tile no-margin-right text-align-left" style=" min-width: 230px; "> <span class="alpha-info text-weight-bold text-align-left">Financial Crime Details</span> </button> </li>
-                                    <li class="alpha-parent-item"> <button alpha-ui-event="click" alpha-ui-attr-toggle=".alpha-app-container ,show-overlay" type="button" class="data-tile no-margin-right text-align-left" style=" min-width: 230px; background-color: #efefef; border-color: #ccc; pointer-events: none; "> <span class="alpha-info text-weight-bold text-align-left">Declaration</span>
-                                        <div class="notification-block status-warning" style=" padding: 0; background: none; border: none; padding-left: 5px; margin-top: 10px; width: 200px; ">
-                                          <div class="notification-message">
-                                            <p>Sections incomplete <br>Payment Details, <br>Financial Crime</p>
-                                            <div> </div>
-                                          </div>
-                                        </div>
-                                      </button> </li>
-                                  </ul>
-                                </li>
-                              </ul>
-                            </li>
-                            <li class="alpha-parent-item margin-bottom-15">
-                              <alpha-policy-unit>
-                                <div class="multi-action-tile tile--size-w-med no-selected-client-02">
-                                  <div class="action-container"> <button type="button" alpha-ui-event="click" alpha-ui-attr-toggle=".alpha-app-container,show-select-client-overlay-02" class="action--view" client-id="ux02"> <span class="alpha-info" style=" /* text-align: center; */ /* display: block; */ "><i class="fa fa-plus-circle fa-2x" aria-hidden="true"></i></span> <span class="alpha-info text-weight-bold text-align-center margin-top-10">Select Client</span> </button> <button type="button" class="action--view ui-disabled" alpha-ui-event="click" alpha-ui-attr-toggle=".app-overlay ,app-overlay--open" style=" /* min-width: 190px; */ "> <span class="tile--data-strong"> Money Laundering </span> <span class="tile--data tile--data-heading">Requires a selected client</span>
-                                      <!--<span class="alpha-additional-info data-bubble--status onhold" style="font-weight: bold;float: left;display: inline-block !important;margin-top: 10px;"> Pending </span>--> </button> </div>
-                                </div>
-                                <div class="multi-action-tile tile--size-w-med selected-client-02">
-                                  <div class="action-container"> <button type="button" class="action--view state--ui-active ui-disabled" ux-tc="cg2" ux-selection-group="sg1" ux-parent="cg2"> <span class="tile--data-strong"><i aria-hidden="true" class="fa fa-male"></i> Individual</span> <span class="tile--data tile--spacer"> Mr Joe Bloggs </span> <span class="tile--data-heading">Date of Birth: </span> <span class="tile--data-strong tile--spacer"> 30 Apr 1965 (54) </span> <span class="tile--data-heading">National Insurance: </span> <span class="tile--data-strong tile--spacer"> RM439286P </span> <span class="tile--address-details "> <span class="tile--data-strong tile--spacer"> <i class="fa fa-home" aria-hidden="true"></i> <span class="tile--address-status"> <i class="fa fa-check" aria-hidden="true"></i> Permanent </span> </span> <span class="tile--data tile--data-strong"> 123 Example Road, </span> <span class="tile--data tile--data-strong"> Perry Barr, </span> <span class="tile--data tile--data-strong"> Birmingham, </span> <span class="tile--data tile--spacer tile--data-strong"> B1 3JJ </span> </span>
-                                      <!--<span class="tile--data-action-command"> Click to Change Client </span>--> </button> <button type="button" class="action--view state--ui-active--no-icon icon--circle-arrow--right " alpha-ui-event="click" alpha-ui-attr-toggle=".alpha-app-container ,show-o" style=" /* min-width: 190px; */ "> <span class="tile--data-strong"> Money Laundering </span> <span class="tile--data tile--data-heading"> Click to enter details </span>
-                                      <!--<span class="alpha-additional-info data-bubble--status onhold" style="font-weight: bold;float: left;display: inline-block !important;margin-top: 10px;"> Pending </span>--> </button> </div>
-                                </div>
-                              </alpha-policy-unit>
-                              <ul>
-                                <li class="alpha-item-group">
-                                  <ul>
-                                    <li class="alpha-parent-item refund-example show-example">
-                                      <div class="multi-action-tile tile--size-w-med refund-01">
-                                        <div class="action-container"> <button alpha-ui-event="click" alpha-ui-attr-toggle=".refund-example ,show-example" type="button" class="data-tile no-margin-right text-align-left" style=" min-width: 230px; "> <span class="alpha-info ">Suspense</span> <span class="alpha-additional-info text-weight-bold margin-top-10"> 432.27 </span> <span class="alpha-info text-weight-bold text-align-left margin-top-10">Payment Details</span> <span class="alpha-additional-info margin-bottom-10">Click to enter details. </span> </button> </div>
-                                      </div>
-                                      <div class="multi-action-tile tile--size-w-med refund-02">
-                                        <div class="action-container"> <button type="button" class="action data-tile ui-disabled" style="min-width: 278px;"> <span class="alpha-info margin-top-10" style=" /* display: none; */ ">Small Pots</span><span class="alpha-additional-info text-weight-bold margin-top-10">8,432.27 (100%)</span> <span class="alpha-additional-info text-weight-bold margin-top-10"><span class="alpha-additional-info text-weight-bold " style=" /* display: inline; */ padding-left: 0; ">Direct Credit</span> </span>
-                                            <div style="width: 254px;">
-                                              <div style=" float: left; width: 50%; /* display: inline-block; */ "> <span class="alpha-additional-info text-svize-s margin-top-10">Bank Code</span> <span class="alpha-additional-info text-weight-bold">55-66-77</span> <span class="alpha-additional-info text-sixze-s margin-top-10 ">Account Number</span> <span class="alpha-additional-info text-weight-bold">9892793842</span> </div>
-                                              <div style=" /* float: left; */ width: 50%; display: inline-block; "> <span class="alpha-additional-info texxt-size-s margin-top-10">Share Number</span> <span class="alpha-additional-info text-weight-bold">322332232</span> <span class="alpha-additional-info text-sxize-s margin-top-10">Account Name</span> <span class="alpha-additional-info text-weight-bold">Mr J Bloggs</span> </div>
-                                            </div><span class="alpha-additional-info text-xsizxe-s margin-top-10 ">Receiving Scheme Ref</span> <span class="alpha-additional-info text-weight-bold">565334323</span> <span class="alpha-additional-info text-xsize-s margin-top-15" style=" display: none; ">Bank Details</span> <span class="alpha-additional-info text-weight-bold" style=" white-space: pre-line; display: none; "> Halifax, The Telford Centre, 121 Ashdown Lane, Telford TF3 4AH </span> <span class="alpha-additional-info text-sxize-s margin-top-10">Verified By</span> <span class="alpha-additional-info text-sxize-s text-weight-bold">Financial Institution</span> <span class=" tile--data-action-command ux-hide"> Click to Change Payment Details </span>
-                                          </button> </div>
-                                      </div>
-                                    </li>
-                                    <li class="alpha-parent-item" style=" display: none; "> <button alpha-ui-event="click" alpha-ui-attr-toggle=".alpha-app-container ,show-overlay" type="button" class="data-tile no-margin-right text-align-left" style=" min-width: 230px; background-color: #efefef; border-color: #ccc; pointer-events: none; "> <span class="alpha-info text-weight-bold text-align-left">Declaration</span>
-                                        <div class="notification-block status-warning" style=" padding: 0; background: none; border: none; padding-left: 5px; margin-top: 10px; width: 200px; ">
-                                          <div class="notification-message">
-                                            <p>Sections incomplete <br>Payment Details, <br>Financial Crime</p>
-                                            <div> </div>
-                                          </div>
-                                        </div>
-                                      </button> </li>
-                                  </ul>
-                                </li>
-                              </ul>
-                            </li>
-                            <li class="alpha-parent-item margin-bottom-15" style=" display: none; ">
-                              <alpha-policy-unit> <button alpha-ui-event="click" alpha-ui-selectable="single,selected-item" type="button" class="data-tile active"> <span class="alpha-secondary-info" hidden=""> Individual </span> <span class="alpha-info text-weight-bold"> <i class="fa fa-male" aria-hidden="true"></i> Individual </span> <span class="alpha-additional-info margin-bottom-10"> Mr Fred Bloggs </span> <span class="alpha-additional-info text-weight-bold">Life 1</span> <span class="alpha-additional-info date-info text-size-s"> D.O.B: 13 Oct 1984 (33) </span> <span class="alpha-additional-info margin-top-15 ">Address </span> <span class="alpha-additional-info text-weight-bold">123 Example Road, </span> <span class="alpha-additional-info text-weight-bold">Perry Barr, </span> <span class="alpha-additional-info text-weight-bold">Birmingham, </span> <span class="alpha-additional-info text-weight-bold">B1 3JJ</span> <span class="alpha-additional-info text-weight-bold">United Kingdom </span> </button> </alpha-policy-unit>
-                              <ul>
-                                <li class="alpha-item-group">
-                                  <ul>
-                                    <li class="alpha-parent-item"> <button alpha-ui-event="click" alpha-ui-attr-toggle=".alpha-app-container ,show-overlay" type="button" class="data-tile no-margin-right text-align-left" style=" min-width: 230px; "> <span class="alpha-info text-weight-bold text-align-left">Payment Details</span> </button> <button alpha-ui-event="click" alpha-ui-attr-toggle=".alpha-app-container ,show-overlay" type="button" class="data-tile no-margin-right text-align-left" style=" min-width: 230px; "> <span class="alpha-info text-weight-bold text-align-left">Financial Crime Details</span> </button> <button alpha-ui-event="click" alpha-ui-attr-toggle=".alpha-app-container ,show-overlay" type="button" class="data-tile no-margin-right text-align-left" style=" min-width: 230px; background-color: #efefef; border-color: #ccc; pointer-events: none; "> <span class="alpha-info text-weight-bold text-align-left">Declaration</span>
-                                        <div class="notification-block status-warning" style=" padding: 0; background: none; border: none; padding-left: 5px; margin-top: 10px; width: 200px; ">
-                                          <div class="notification-message">
-                                            <p>Sections incomplete <br>Payment Details, <br>Financial Crime</p>
-                                            <div> </div>
-                                          </div>
-                                        </div>
-                                      </button> </li>
-                                    <li class="alpha-parent-item" style=" display: none; "> <button alpha-ui-event="click" alpha-ui-attr-toggle=".alpha-app-container ,show-overlay" type="button" class="data-tile no-margin-right text-align-left" style=" min-width: 230px; "> <span class="alpha-info text-weight-bold text-align-left">Financial Crime Details</span> </button> </li>
-                                    <li class="alpha-parent-item" style=" display: none; "> <button alpha-ui-event="click" alpha-ui-attr-toggle=".alpha-app-container ,show-overlay" type="button" class="data-tile no-margin-right text-align-left" style=" min-width: 230px; background-color: #efefef; border-color: #ccc; pointer-events: none; "> <span class="alpha-info text-weight-bold text-align-left">Declaration</span>
-                                        <div class="notification-block status-warning" style=" padding: 0; background: none; border: none; padding-left: 5px; margin-top: 10px; width: 200px; ">
-                                          <div class="notification-message">
-                                            <p>Sections incomplete <br>Payment Details, <br>Financial Crime</p>
-                                            <div> </div>
-                                          </div>
-                                        </div>
-                                      </button> </li>
-                                  </ul>
-                                </li>
-                              </ul>
-                            </li>
-                          </ul>
-                          <ul id="UXGroupxxxxSummaryProto" class="alpha-linked-data-structure" style=" display: none; ">
-                            <li class="alpha-parent-item margin-bottom-15">
-                              <alpha-policy-unit>
-                                <div class="multi-action-tile tile--size-w-med">
-                                  <div class="action-container"> <button alpha-ui-event="click" alpha-ui-attr-toggle=".alpha-app-container ,show-overlay" type="button" class="data-tile no-margin-right layout-100pc"> <span class="alpha-info text-weight-bold text-align-center">Edit Selected Clients</span> <span class="alpha-additional-info ">Click to edit details. </span> </button> </div>
-                                </div>
-                              </alpha-policy-unit>
-                              <ul>
-                                <li class="alpha-item-group" style=" /* display: none; */ "> </li>
-                              </ul>
-                            </li>
-                            <li class="alpha-parent-item margin-bottom-15" style=" display: none; ">
-                              <alpha-policy-unit> <button alpha-ui-event="click" alpha-ui-selectable="single,selected-item" type="button" class="data-tile active"> <span class="alpha-secondary-info" hidden=""> Individual </span> <span class="alpha-info text-weight-bold"> <i class="fa fa-male" aria-hidden="true"></i> Individual </span> <span class="alpha-additional-info"> Mr Fred Bloggs </span> <span class="alpha-additional-info text-weight-bold">Life 1</span> <span class="alpha-additional-info date-info"> D.O.B: 13 Oct 1984 (33) </span> </button> </alpha-policy-unit>
-                              <ul>
-                                <li class="alpha-item-group">
-                                  <ul>
-                                    <li class="alpha-parent-item"> <button alpha-ui-event="click" alpha-ui-attr-toggle=".alpha-app-container ,show-overlay" type="button" class="data-tile no-margin-right text-align-left" style=" min-width: 230px; "> <span class="alpha-info text-weight-bold text-align-left">Payment Details</span> </button> </li>
-                                    <li class="alpha-parent-item"> <button alpha-ui-event="click" alpha-ui-attr-toggle=".alpha-app-container ,show-overlay" type="button" class="data-tile no-margin-right text-align-left" style=" min-width: 230px; "> <span class="alpha-info text-weight-bold text-align-left">Financial Crime Details</span> </button> </li>
-                                    <li class="alpha-parent-item"> <button alpha-ui-event="click" alpha-ui-attr-toggle=".alpha-app-container ,show-overlay" type="button" class="data-tile no-margin-right text-align-left" style=" min-width: 230px; background-color: #efefef; border-color: #ccc; pointer-events: none; "> <span class="alpha-info text-weight-bold text-align-left">Declaration</span>
-                                        <div class="notification-block status-warning" style=" padding: 0; background: none; border: none; padding-left: 5px; margin-top: 10px; width: 200px; ">
-                                          <div class="notification-message">
-                                            <p>Sections incomplete <br>Payment Details, <br>Financial Crime</p>
-                                            <div> </div>
-                                          </div>
-                                        </div>
-                                      </button> </li>
-                                  </ul>
-                                </li>
-                              </ul>
-                            </li>
-                            <li class="alpha-parent-item margin-bottom-15">
-                              <alpha-policy-unit>
-                                <div class="multi-action-tile tile--size-w-med">
-                                  <div class="action-container"> <button type="button" class="action--view state--ui-active ui-disabled" client-id="ux02"> <span class="tile--data-strong"><i class="fa fa-building" aria-hidden="true"></i> Corporate</span> <span class="tile--data tile--spacer">ABC Corp</span> <span class="tile--address-details"> <span class="tile--data-strong tile--spacer"> <i class="fa fa-home" aria-hidden="true"></i> <span class="tile--address-status"> <i class="fa fa-check" aria-hidden="true"></i> Permanent </span> </span> <span class="tile--data">ABC House, </span> <span class="tile--data">Queens Way, </span> <span class="tile--data"> Birmingham, </span> <span class="tile--data"> B1 3LJ </span> <span class="tile--data"> United Kingdom </span> </span> </button> <button type="button" class="action--view state--ui-active--no-icon icon--circle-arrow--right " alpha-ui-event="click" alpha-ui-attr-toggle=".alpha-app-container ,show-o"> <span class="tile--data-strong"> Money Laundering </span> <span class="tile--data tile--data-heading"> Click to enter details </span>
-                                      <!--<span class="alpha-additional-info data-bubble--status onhold" style="font-weight: bold;float: left;display: inline-block !important;margin-top: 10px;"> Pending </span>--> </button> </div>
-                                </div>
-                              </alpha-policy-unit>
-                              <ul>
-                                <li class="alpha-item-group">
-                                  <ul>
-                                    <li class="alpha-parent-item">
-                                      <div class="multi-action-tile tile--size-w-med">
-                                        <div class="action-container"> <button alpha-ui-event="click" alpha-ui-attr-toggle=".alpha-app-container ,show-o" type="button" class="data-tile " style=" min-width: 278px; "> <span class="alpha-secondary-info" hidden=""> Individual </span> <span class="alpha-info "> Transfer </span> <span class="alpha-additional-info text-weight-bold margin-top-10"> 8,432.27 - 100%<span class="alpha-additional-info text-weight-bold margin-top-15" style=" /* display: inline; */ padding-left: 0; ">Direct Credit</span> </span>
-                                            <div style="width: 254px;">
-                                              <div style=" float: left; width: 50%; "> <span class="alpha-additional-info text-svize-s margin-top-10">Bank Code</span> <span class="alpha-additional-info text-weight-bold">22-33-44</span> <span class="alpha-additional-info text-sixze-s margin-top-10 ">Account Number</span> <span class="alpha-additional-info text-weight-bold">5566778899</span> </div>
-                                              <div style=" float: left; width: 50%; "> <span class="alpha-additional-info texxt-size-s margin-top-10">Share Number</span> <span class="alpha-additional-info text-weight-bold">322332232</span> <span class="alpha-additional-info text-sxize-s margin-top-10">Account Name</span> <span class="alpha-additional-info text-weight-bold">ABC Corp</span> </div>
-                                            </div><span class="alpha-additional-info text-xsizxe-s margin-top-15 ">Receiving Scheme Ref</span> <span class="alpha-additional-info text-weight-bold">322332232</span> <span class="alpha-additional-info text-xsize-s margin-top-15" style=" display: none; ">Bank Details</span> <span class="alpha-additional-info text-weight-bold" style=" white-space: pre-line; display: none; "> Halifax, The Telford Centre, 121 Ashdown Lane, Telford TF3 4AH </span> <span class="alpha-additional-info text-sxize-s margin-top-10">Verified By</span> <span class="alpha-additional-info text-sxize-s text-weight-bold">Financial Institution</span>
-                                          </button> </div>
-                                      </div>
-                                    </li>
-                                    <li class="alpha-parent-item" style=" display: none; "> <button alpha-ui-event="click" alpha-ui-attr-toggle=".alpha-app-container ,show-overlay" type="button" class="data-tile no-margin-right text-align-left" style=" min-width: 230px; "> <span class="alpha-info text-weight-bold text-align-left">Financial Crime Details</span> </button> </li>
-                                    <li class="alpha-parent-item" style=" display: none; "> <button alpha-ui-event="click" alpha-ui-attr-toggle=".alpha-app-container ,show-overlay" type="button" class="data-tile no-margin-right text-align-left" style=" min-width: 230px; background-color: #efefef; border-color: #ccc; pointer-events: none; "> <span class="alpha-info text-weight-bold text-align-left">Declaration</span>
-                                        <div class="notification-block status-warning" style=" padding: 0; background: none; border: none; padding-left: 5px; margin-top: 10px; width: 200px; ">
-                                          <div class="notification-message">
-                                            <p>Sections incomplete <br>Payment Details, <br>Financial Crime</p>
-                                            <div> </div>
-                                          </div>
-                                        </div>
-                                      </button> </li>
-                                  </ul>
-                                </li>
-                              </ul>
-                            </li>
-                            <li class="alpha-parent-item margin-bottom-15" style=" display: none; ">
-                              <alpha-policy-unit> <button alpha-ui-event="click" alpha-ui-selectable="single,selected-item" type="button" class="data-tile active " style=" pointer-events: none; background-color: #efefef; border-color: #cccccc; "> <span class="alpha-secondary-info" hidden=""> Individual </span> <span class="alpha-info "> <i class="fa fa-male" aria-hidden="true"></i> Individual </span> <span class="alpha-additional-info margin-bottom-10">Mr Fred Bloggs </span> <span class="alpha-additional-info text-weight-bold">Life 1</span> <span class="alpha-additional-info date-info text-size-s">D.O.B: 13 Oct 1984 (33)</span> <span class="alpha-additional-info margin-top-15 ">Address </span> <span class="alpha-additional-info text-weight-bold">123 Example Road, </span> <span class="alpha-additional-info text-weight-bold">Perry Barr, </span> <span class="alpha-additional-info text-weight-bold">Birmingham, </span> <span class="alpha-additional-info text-weight-bold">B1 3JJ</span> <span class="alpha-additional-info text-weight-bold">United Kingdom </span> </button> </alpha-policy-unit>
-                              <ul>
-                                <li class="alpha-item-group">
-                                  <ul>
-                                    <li class="alpha-parent-item"> <button alpha-ui-event="click" alpha-ui-attr-toggle=".alpha-app-container ,show-overlay" type="button" class="data-tile no-margin-right text-align-left" style=" min-width: 230px; "> <span class="alpha-info text-weight-bold text-align-left">Payment Details</span> </button> <button alpha-ui-event="click" alpha-ui-attr-toggle=".alpha-app-container ,show-overlay" type="button" class="data-tile no-margin-right text-align-left" style=" min-width: 230px; "> <span class="alpha-info text-weight-bold text-align-left">Financial Crime Details</span> </button> <button alpha-ui-event="click" alpha-ui-attr-toggle=".alpha-app-container ,show-overlay" type="button" class="data-tile no-margin-right text-align-left" style=" min-width: 230px; background-color: #efefef; border-color: #ccc; pointer-events: none; "> <span class="alpha-info text-weight-bold text-align-left">Declaration</span>
-                                        <div class="notification-block status-warning" style=" padding: 0; background: none; border: none; padding-left: 5px; margin-top: 10px; width: 200px; ">
-                                          <div class="notification-message">
-                                            <p>Sections incomplete <br>Payment Details, <br>Financial Crime</p>
-                                            <div> </div>
-                                          </div>
-                                        </div>
-                                      </button> </li>
-                                    <li class="alpha-parent-item" style=" display: none; "> <button alpha-ui-event="click" alpha-ui-attr-toggle=".alpha-app-container ,show-overlay" type="button" class="data-tile no-margin-right text-align-left" style=" min-width: 230px; "> <span class="alpha-info text-weight-bold text-align-left">Financial Crime Details</span> </button> </li>
-                                    <li class="alpha-parent-item" style=" display: none; "> <button alpha-ui-event="click" alpha-ui-attr-toggle=".alpha-app-container ,show-overlay" type="button" class="data-tile no-margin-right text-align-left" style=" min-width: 230px; background-color: #efefef; border-color: #ccc; pointer-events: none; "> <span class="alpha-info text-weight-bold text-align-left">Declaration</span>
-                                        <div class="notification-block status-warning" style=" padding: 0; background: none; border: none; padding-left: 5px; margin-top: 10px; width: 200px; ">
-                                          <div class="notification-message">
-                                            <p>Sections incomplete <br>Payment Details, <br>Financial Crime</p>
-                                            <div> </div>
-                                          </div>
-                                        </div>
-                                      </button> </li>
-                                  </ul>
-                                </li>
-                              </ul>
-                            </li>
-                          </ul>
-                        </div>
-                      </div>
-                    </div>
-                    <div class="quad-diagram example-6-a4">
-                      <div class="data-structure-diagram-col" style=" height: 100%; ">
-                        <div class="alpha-layout-col-2 column-padding data-structure-diagram-container">
-                          <ul id="UXGroupxxxxSummaryProto" class="alpha-linked-data-structure">
-                            <li class="alpha-parent-item margin-bottom-15" style=" display: none; ">
-                              <alpha-policy-unit>
-                                <div class="multi-action-tile tile--size-w-med">
-                                  <div class="action-container"> <button alpha-ui-event="click" alpha-ui-attr-toggle=".alpha-app-container ,show-overlay" type="button" class="data-tile no-margin-right layout-100pc"> <span class="alpha-info text-weight-bold text-align-center">Edit Selected Clients</span> <span class="alpha-additional-info ">Click to edit details. </span> </button> </div>
-                                </div>
-                              </alpha-policy-unit>
-                              <ul>
-                                <li class="alpha-item-group" style=" /* display: none; */ "> </li>
-                              </ul>
-                            </li>
-                            <li class="alpha-parent-item margin-bottom-15" style=" display: none; ">
-                              <alpha-policy-unit> <button alpha-ui-event="click" alpha-ui-selectable="single,selected-item" type="button" class="data-tile active"> <span class="alpha-secondary-info" hidden=""> Individual </span> <span class="alpha-info text-weight-bold"> <i class="fa fa-male" aria-hidden="true"></i> Individual </span> <span class="alpha-additional-info"> Mr Fred Bloggs </span> <span class="alpha-additional-info text-weight-bold">Life 1</span> <span class="alpha-additional-info date-info"> D.O.B: 13 Oct 1984 (33) </span> </button> </alpha-policy-unit>
-                              <ul>
-                                <li class="alpha-item-group">
-                                  <ul>
-                                    <li class="alpha-parent-item"> <button alpha-ui-event="click" alpha-ui-attr-toggle=".alpha-app-container ,show-overlay" type="button" class="data-tile no-margin-right text-align-left" style=" min-width: 230px; "> <span class="alpha-info text-weight-bold text-align-left">Payment Details</span> </button> </li>
-                                    <li class="alpha-parent-item"> <button alpha-ui-event="click" alpha-ui-attr-toggle=".alpha-app-container ,show-overlay" type="button" class="data-tile no-margin-right text-align-left" style=" min-width: 230px; "> <span class="alpha-info text-weight-bold text-align-left">Financial Crime Details</span> </button> </li>
-                                    <li class="alpha-parent-item"> <button alpha-ui-event="click" alpha-ui-attr-toggle=".alpha-app-container ,show-overlay" type="button" class="data-tile no-margin-right text-align-left" style=" min-width: 230px; background-color: #efefef; border-color: #ccc; pointer-events: none; "> <span class="alpha-info text-weight-bold text-align-left">Declaration</span>
-                                        <div class="notification-block status-warning" style=" padding: 0; background: none; border: none; padding-left: 5px; margin-top: 10px; width: 200px; ">
-                                          <div class="notification-message">
-                                            <p>Sections incomplete <br>Payment Details, <br>Financial Crime</p>
-                                            <div> </div>
-                                          </div>
-                                        </div>
-                                      </button> </li>
-                                  </ul>
-                                </li>
-                              </ul>
-                            </li>
-                            <li class="alpha-parent-item margin-bottom-15">
-                              <alpha-policy-unit>
-                                <div class="multi-action-tile tile--size-w-med no-selected-client-02">
-                                  <div class="action-container"> <button type="button" alpha-ui-event="click" alpha-ui-attr-toggle=".alpha-app-container,show-select-client-overlay-02" class="action--view" client-id="ux02"> <span class="alpha-info" style=" /* text-align: center; */ /* display: block; */ "><i class="fa fa-plus-circle fa-2x" aria-hidden="true"></i></span> <span class="alpha-info text-weight-bold text-align-center margin-top-10">Select Client</span> </button> <button type="button" class="action--view ui-disabled" alpha-ui-event="click" alpha-ui-attr-toggle=".app-overlay ,app-overlay--open" style=" /* min-width: 190px; */ "> <span class="tile--data-strong"> Money Laundering </span> <span class="tile--data tile--data-heading">Requires a selected client</span>
-                                      <!--<span class="alpha-additional-info data-bubble--status onhold" style="font-weight: bold;float: left;display: inline-block !important;margin-top: 10px;"> Pending </span>--> </button> </div>
-                                </div>
-                                <div class="multi-action-tile tile--size-w-med selected-client-02">
-                                  <div class="action-container"> <button type="button" class="action--view state--ui-active ui-disabled" ux-tc="cg2" ux-selection-group="sg1" ux-parent="cg2"> <span class="tile--data-strong"><i aria-hidden="true" class="fa fa-male"></i> Individual</span> <span class="tile--data tile--spacer"> Mr Joe Bloggs </span> <span class="tile--data-heading">Date of Birth: </span> <span class="tile--data-strong tile--spacer"> 30 Apr 1965 (54) </span> <span class="tile--data-heading">National Insurance: </span> <span class="tile--data-strong tile--spacer"> RM439286P </span> <span class="tile--address-details "> <span class="tile--data-strong tile--spacer"> <i class="fa fa-home" aria-hidden="true"></i> <span class="tile--address-status"> <i class="fa fa-check" aria-hidden="true"></i> Permanent </span> </span> <span class="tile--data tile--data-strong"> 123 Example Road, </span> <span class="tile--data tile--data-strong"> Perry Barr, </span> <span class="tile--data tile--data-strong"> Birmingham, </span> <span class="tile--data tile--spacer tile--data-strong"> B1 3JJ </span> </span>
-                                      <!--<span class="tile--data-action-command"> Click to Change Client </span>--> </button> <button type="button" class="action--view state--ui-active--no-icon icon--circle-arrow--right ui-disabled " alpha-ui-event="click" alpha-ui-attr-toggle=".app-overlay ,app-overlay--open" style=" /* min-width: 190px; */ "> <span class="tile--data-strong"> Money Laundering </span>
-                                      <!--<span class="tile--data tile--data-heading"> Click to enter details </span>--> <span class="alpha-additional-info data-bubble--status active" style="font-weight: bold;float: left;display: inline-block !important;margin-top: 10px;" ng-reflect-klass="alpha-additional-info data-bub"> <i class="fa fa-check" aria-hidden="true"></i> Passed </span> </button> </div>
-                                </div>
-                              </alpha-policy-unit>
-                              <ul>
-                                <li class="alpha-item-group">
-                                  <ul>
-                                    <li class="alpha-parent-item refund-example ">
-                                      <div class="multi-action-tile tile--size-w-med ">
-                                        <div class="action-container"> <button type="button" class="action data-tile ui-disabled" style="min-width: 278px;"> <span class="alpha-info margin-top-10" style=" /* display: none; */ ">Small Pots</span><span class="alpha-additional-info text-weight-bold margin-top-10">8,432.27 (100%)</span> <span class="alpha-additional-info text-weight-bold margin-top-10"><span class="alpha-additional-info text-weight-bold " style=" /* display: inline; */ padding-left: 0; ">Direct Credit</span> </span>
-                                            <div style="width: 254px;">
-                                              <div style=" float: left; width: 50%; /* display: inline-block; */ "> <span class="alpha-additional-info text-svize-s margin-top-10">Bank Code</span> <span class="alpha-additional-info text-weight-bold">55-66-77</span> <span class="alpha-additional-info text-sixze-s margin-top-10 ">Account Number</span> <span class="alpha-additional-info text-weight-bold">9892793842</span> </div>
-                                              <div style=" /* float: left; */ width: 50%; display: inline-block; "> <span class="alpha-additional-info texxt-size-s margin-top-10">Share Number</span> <span class="alpha-additional-info text-weight-bold">322332232</span> <span class="alpha-additional-info text-sxize-s margin-top-10">Account Name</span> <span class="alpha-additional-info text-weight-bold">Mr J Bloggs</span> </div>
-                                            </div><span class="alpha-additional-info text-xsizxe-s margin-top-10 ">Receiving Scheme Ref</span> <span class="alpha-additional-info text-weight-bold">565334323</span> <span class="alpha-additional-info text-xsize-s margin-top-15" style=" display: none; ">Bank Details</span> <span class="alpha-additional-info text-weight-bold" style=" white-space: pre-line; display: none; "> Halifax, The Telford Centre, 121 Ashdown Lane, Telford TF3 4AH </span> <span class="alpha-additional-info text-sxize-s margin-top-10">Verified By</span> <span class="alpha-additional-info text-sxize-s text-weight-bold">Financial Institution</span> <span class=" tile--data-action-command ux-hide"> Click to Change Payment Details </span>
-                                          </button> </div>
-                                      </div>
-                                      <div class="multi-action-tile tile--size-w-med refund-02">
-                                        <div class="action-container"> <button alpha-ui-event="click" alpha-ui-attr-toggle=".refund-example ,show-example" type="button" class="data-tile " style=" min-width: 278px; "> <span class="alpha-secondary-info" hidden=""> Individual </span> <span class="alpha-info ">Refund</span> <span class="alpha-additional-info text-weight-bold margin-top-10"> 432.27<span class="alpha-additional-info text-weight-bold margin-top-15" style=" /* display: inline; */ padding-left: 0; ">Direct Credit</span> </span>
-                                            <div style="width: 254px;">
-                                              <div style=" float: left; width: 50%; "> <span class="alpha-additional-info text-svize-s margin-top-10">Bank Code</span> <span class="alpha-additional-info text-weight-bold">55-66-77</span> <span class="alpha-additional-info text-sixze-s margin-top-10 ">Account Number</span> <span class="alpha-additional-info text-weight-bold">9892793842</span> </div>
-                                              <div style=" float: left; width: 50%; "> <span class="alpha-additional-info texxt-size-s margin-top-10">Share Number</span> <span class="alpha-additional-info text-weight-bold">322332232</span> <span class="alpha-additional-info text-sxize-s margin-top-10">Account Name</span> <span class="alpha-additional-info text-weight-bold">Mr J Bloggs</span> </div>
-                                            </div><span class="alpha-additional-info text-xsizxe-s margin-top-15 ">Receiving Scheme Ref</span> <span class="alpha-additional-info text-weight-bold">565334323</span> <span class="alpha-additional-info text-xsize-s margin-top-15" style=" display: none; ">Bank Details</span> <span class="alpha-additional-info text-weight-bold" style=" white-space: pre-line; display: none; "> Halifax, The Telford Centre, 121 Ashdown Lane, Telford TF3 4AH </span> <span class="alpha-additional-info text-sxize-s margin-top-10">Verified By</span> <span class="alpha-additional-info text-sxize-s text-weight-bold">Financial Institution</span>
-                                          </button> </div>
-                                      </div>
-                                    </li>
-                                    <li class="alpha-parent-item" style=" display: none; "> <button alpha-ui-event="click" alpha-ui-attr-toggle=".alpha-app-container ,show-overlay" type="button" class="data-tile no-margin-right text-align-left" style=" min-width: 230px; background-color: #efefef; border-color: #ccc; pointer-events: none; "> <span class="alpha-info text-weight-bold text-align-left">Declaration</span>
-                                        <div class="notification-block status-warning" style=" padding: 0; background: none; border: none; padding-left: 5px; margin-top: 10px; width: 200px; ">
-                                          <div class="notification-message">
-                                            <p>Sections incomplete <br>Payment Details, <br>Financial Crime</p>
-                                            <div> </div>
-                                          </div>
-                                        </div>
-                                      </button> </li>
-                                  </ul>
-                                </li>
-                              </ul>
-                            </li>
-                            <li class="alpha-parent-item margin-bottom-15" style=" display: none; ">
-                              <alpha-policy-unit> <button alpha-ui-event="click" alpha-ui-selectable="single,selected-item" type="button" class="data-tile active"> <span class="alpha-secondary-info" hidden=""> Individual </span> <span class="alpha-info text-weight-bold"> <i class="fa fa-male" aria-hidden="true"></i> Individual </span> <span class="alpha-additional-info margin-bottom-10"> Mr Fred Bloggs </span> <span class="alpha-additional-info text-weight-bold">Life 1</span> <span class="alpha-additional-info date-info text-size-s"> D.O.B: 13 Oct 1984 (33) </span> <span class="alpha-additional-info margin-top-15 ">Address </span> <span class="alpha-additional-info text-weight-bold">123 Example Road, </span> <span class="alpha-additional-info text-weight-bold">Perry Barr, </span> <span class="alpha-additional-info text-weight-bold">Birmingham, </span> <span class="alpha-additional-info text-weight-bold">B1 3JJ</span> <span class="alpha-additional-info text-weight-bold">United Kingdom </span> </button> </alpha-policy-unit>
-                              <ul>
-                                <li class="alpha-item-group">
-                                  <ul>
-                                    <li class="alpha-parent-item"> <button alpha-ui-event="click" alpha-ui-attr-toggle=".alpha-app-container ,show-overlay" type="button" class="data-tile no-margin-right text-align-left" style=" min-width: 230px; "> <span class="alpha-info text-weight-bold text-align-left">Payment Details</span> </button> <button alpha-ui-event="click" alpha-ui-attr-toggle=".alpha-app-container ,show-overlay" type="button" class="data-tile no-margin-right text-align-left" style=" min-width: 230px; "> <span class="alpha-info text-weight-bold text-align-left">Financial Crime Details</span> </button> <button alpha-ui-event="click" alpha-ui-attr-toggle=".alpha-app-container ,show-overlay" type="button" class="data-tile no-margin-right text-align-left" style=" min-width: 230px; background-color: #efefef; border-color: #ccc; pointer-events: none; "> <span class="alpha-info text-weight-bold text-align-left">Declaration</span>
-                                        <div class="notification-block status-warning" style=" padding: 0; background: none; border: none; padding-left: 5px; margin-top: 10px; width: 200px; ">
-                                          <div class="notification-message">
-                                            <p>Sections incomplete <br>Payment Details, <br>Financial Crime</p>
-                                            <div> </div>
-                                          </div>
-                                        </div>
-                                      </button> </li>
-                                    <li class="alpha-parent-item" style=" display: none; "> <button alpha-ui-event="click" alpha-ui-attr-toggle=".alpha-app-container ,show-overlay" type="button" class="data-tile no-margin-right text-align-left" style=" min-width: 230px; "> <span class="alpha-info text-weight-bold text-align-left">Financial Crime Details</span> </button> </li>
-                                    <li class="alpha-parent-item" style=" display: none; "> <button alpha-ui-event="click" alpha-ui-attr-toggle=".alpha-app-container ,show-overlay" type="button" class="data-tile no-margin-right text-align-left" style=" min-width: 230px; background-color: #efefef; border-color: #ccc; pointer-events: none; "> <span class="alpha-info text-weight-bold text-align-left">Declaration</span>
-                                        <div class="notification-block status-warning" style=" padding: 0; background: none; border: none; padding-left: 5px; margin-top: 10px; width: 200px; ">
-                                          <div class="notification-message">
-                                            <p>Sections incomplete <br>Payment Details, <br>Financial Crime</p>
-                                            <div> </div>
-                                          </div>
-                                        </div>
-                                      </button> </li>
-                                  </ul>
-                                </li>
-                              </ul>
-                            </li>
-                          </ul>
-                          <ul id="UXGroupxxxxSummaryProto" class="alpha-linked-data-structure" style=" display: none; ">
-                            <li class="alpha-parent-item margin-bottom-15">
-                              <alpha-policy-unit>
-                                <div class="multi-action-tile tile--size-w-med">
-                                  <div class="action-container"> <button alpha-ui-event="click" alpha-ui-attr-toggle=".alpha-app-container ,show-overlay" type="button" class="data-tile no-margin-right layout-100pc"> <span class="alpha-info text-weight-bold text-align-center">Edit Selected Clients</span> <span class="alpha-additional-info ">Click to edit details. </span> </button> </div>
-                                </div>
-                              </alpha-policy-unit>
-                              <ul>
-                                <li class="alpha-item-group" style=" /* display: none; */ ">
-                                  <ul> </ul>
-                                </li>
-                              </ul>
-                            </li>
-                            <li class="alpha-parent-item margin-bottom-15" style=" display: none; ">
-                              <alpha-policy-unit> <button alpha-ui-event="click" alpha-ui-selectable="single,selected-item" type="button" class="data-tile active"> <span class="alpha-secondary-info" hidden=""> Individual </span> <span class="alpha-info text-weight-bold"> <i class="fa fa-male" aria-hidden="true"></i> Individual </span> <span class="alpha-additional-info"> Mr Fred Bloggs </span> <span class="alpha-additional-info text-weight-bold">Life 1</span> <span class="alpha-additional-info date-info"> D.O.B: 13 Oct 1984 (33) </span> </button> </alpha-policy-unit>
-                              <ul>
-                                <li class="alpha-item-group">
-                                  <ul>
-                                    <li class="alpha-parent-item"> <button alpha-ui-event="click" alpha-ui-attr-toggle=".alpha-app-container ,show-overlay" type="button" class="data-tile no-margin-right text-align-left" style=" min-width: 230px; "> <span class="alpha-info text-weight-bold text-align-left">Payment Details</span> </button> </li>
-                                    <li class="alpha-parent-item"> <button alpha-ui-event="click" alpha-ui-attr-toggle=".alpha-app-container ,show-overlay" type="button" class="data-tile no-margin-right text-align-left" style=" min-width: 230px; "> <span class="alpha-info text-weight-bold text-align-left">Financial Crime Details</span> </button> </li>
-                                    <li class="alpha-parent-item"> <button alpha-ui-event="click" alpha-ui-attr-toggle=".alpha-app-container ,show-overlay" type="button" class="data-tile no-margin-right text-align-left" style=" min-width: 230px; background-color: #efefef; border-color: #ccc; pointer-events: none; "> <span class="alpha-info text-weight-bold text-align-left">Declaration</span>
-                                        <div class="notification-block status-warning" style=" padding: 0; background: none; border: none; padding-left: 5px; margin-top: 10px; width: 200px; ">
-                                          <div class="notification-message">
-                                            <p>Sections incomplete <br>Payment Details, <br>Financial Crime</p>
-                                            <div> </div>
-                                          </div>
-                                        </div>
-                                      </button> </li>
-                                  </ul>
-                                </li>
-                              </ul>
-                            </li>
-                            <li class="alpha-parent-item margin-bottom-15">
-                              <alpha-policy-unit>
-                                <div class="multi-action-tile tile--size-w-med">
-                                  <div class="action-container"> <button type="button" class="action--view state--ui-active ui-disabled" client-id="ux02"> <span class="tile--data-strong"><i class="fa fa-building" aria-hidden="true"></i> Corporate</span> <span class="tile--data tile--spacer">ABC Corp</span> <span class="tile--address-details"> <span class="tile--data-strong tile--spacer"> <i class="fa fa-home" aria-hidden="true"></i> <span class="tile--address-status"> <i class="fa fa-check" aria-hidden="true"></i> Permanent </span> </span> <span class="tile--data">ABC House, </span> <span class="tile--data">Queens Way, </span> <span class="tile--data"> Birmingham, </span> <span class="tile--data"> B1 3LJ </span> <span class="tile--data"> United Kingdom </span> </span> </button> <button type="button" class="action--view state--ui-active--no-icon icon--circle-arrow--right ui-disabled " alpha-ui-event="click" alpha-ui-attr-toggle=".app-overlay ,app-overlay--open" style=" /* min-width: 190px; */ "> <span class="tile--data-strong"> Money Laundering </span>
-                                      <!--<span class="tile--data tile--data-heading tile--spacer"> Click to enter details </span>--> <span class="alpha-additional-info data-bubble--status active" style="font-weight: bold;float: left;display: inline-block !important;/* margin-top: 10px; */"> <i class="fa fa-check" aria-hidden="true"></i> Passed </span> </button> </div>
-                                </div>
-                              </alpha-policy-unit>
-                              <ul>
-                                <li class="alpha-item-group">
-                                  <ul>
-                                    <li class="alpha-parent-item">
-                                      <div class="multi-action-tile tile--size-w-med">
-                                        <div class="action-container"> <button alpha-ui-event="click" alpha-ui-attr-toggle=".alpha-app-container ,show-o" type="button" class="data-tile " style=" min-width: 278px; "> <span class="alpha-secondary-info" hidden=""> Individual </span> <span class="alpha-info "> Transfer </span> <span class="alpha-additional-info text-weight-bold margin-top-10"> 8,432.27 - 100%<span class="alpha-additional-info text-weight-bold margin-top-15" style=" /* display: inline; */ padding-left: 0; ">Direct Credit</span> </span>
-                                            <div style="width: 254px;">
-                                              <div style=" float: left; width: 50%; "> <span class="alpha-additional-info text-svize-s margin-top-10">Bank Code</span> <span class="alpha-additional-info text-weight-bold">22-33-44</span> <span class="alpha-additional-info text-sixze-s margin-top-10 ">Account Number</span> <span class="alpha-additional-info text-weight-bold">5566778899</span> </div>
-                                              <div style=" float: left; width: 50%; "> <span class="alpha-additional-info texxt-size-s margin-top-10">Share Number</span> <span class="alpha-additional-info text-weight-bold">322332232</span> <span class="alpha-additional-info text-sxize-s margin-top-10">Account Name</span> <span class="alpha-additional-info text-weight-bold">ABC Corp</span> </div>
-                                            </div><span class="alpha-additional-info text-xsizxe-s margin-top-15 ">Receiving Scheme Ref</span> <span class="alpha-additional-info text-weight-bold">322332232</span> <span class="alpha-additional-info text-xsize-s margin-top-15" style=" display: none; ">Bank Details</span> <span class="alpha-additional-info text-weight-bold" style=" white-space: pre-line; display: none; "> Halifax, The Telford Centre, 121 Ashdown Lane, Telford TF3 4AH </span> <span class="alpha-additional-info text-sxize-s margin-top-10">Verified By</span> <span class="alpha-additional-info text-sxize-s text-weight-bold">Financial Institution</span>
-                                          </button> </div>
-                                      </div>
-                                    </li>
-                                    <li class="alpha-parent-item" style=" display: none; "> <button alpha-ui-event="click" alpha-ui-attr-toggle=".alpha-app-container ,show-overlay" type="button" class="data-tile no-margin-right text-align-left" style=" min-width: 230px; "> <span class="alpha-info text-weight-bold text-align-left">Financial Crime Details</span> </button> </li>
-                                    <li class="alpha-parent-item" style=" display: none; "> <button alpha-ui-event="click" alpha-ui-attr-toggle=".alpha-app-container ,show-overlay" type="button" class="data-tile no-margin-right text-align-left" style=" min-width: 230px; background-color: #efefef; border-color: #ccc; pointer-events: none; "> <span class="alpha-info text-weight-bold text-align-left">Declaration</span>
-                                        <div class="notification-block status-warning" style=" padding: 0; background: none; border: none; padding-left: 5px; margin-top: 10px; width: 200px; ">
-                                          <div class="notification-message">
-                                            <p>Sections incomplete <br>Payment Details, <br>Financial Crime</p>
-                                            <div> </div>
-                                          </div>
-                                        </div>
-                                      </button> </li>
-                                  </ul>
-                                </li>
-                              </ul>
-                            </li>
-                            <li class="alpha-parent-item margin-bottom-15" style=" display: none; ">
-                              <alpha-policy-unit> <button alpha-ui-event="click" alpha-ui-selectable="single,selected-item" type="button" class="data-tile active " style=" pointer-events: none; background-color: #efefef; border-color: #cccccc; "> <span class="alpha-secondary-info" hidden=""> Individual </span> <span class="alpha-info "> <i class="fa fa-male" aria-hidden="true"></i> Individual </span> <span class="alpha-additional-info margin-bottom-10">Mr Fred Bloggs </span> <span class="alpha-additional-info text-weight-bold">Life 1</span> <span class="alpha-additional-info date-info text-size-s">D.O.B: 13 Oct 1984 (33)</span> <span class="alpha-additional-info margin-top-15 ">Address </span> <span class="alpha-additional-info text-weight-bold">123 Example Road, </span> <span class="alpha-additional-info text-weight-bold">Perry Barr, </span> <span class="alpha-additional-info text-weight-bold">Birmingham, </span> <span class="alpha-additional-info text-weight-bold">B1 3JJ</span> <span class="alpha-additional-info text-weight-bold">United Kingdom </span> </button> </alpha-policy-unit>
-                              <ul>
-                                <li class="alpha-item-group">
-                                  <ul>
-                                    <li class="alpha-parent-item"> <button alpha-ui-event="click" alpha-ui-attr-toggle=".alpha-app-container ,show-overlay" type="button" class="data-tile no-margin-right text-align-left" style=" min-width: 230px; "> <span class="alpha-info text-weight-bold text-align-left">Payment Details</span> </button> <button alpha-ui-event="click" alpha-ui-attr-toggle=".alpha-app-container ,show-overlay" type="button" class="data-tile no-margin-right text-align-left" style=" min-width: 230px; "> <span class="alpha-info text-weight-bold text-align-left">Financial Crime Details</span> </button> <button alpha-ui-event="click" alpha-ui-attr-toggle=".alpha-app-container ,show-overlay" type="button" class="data-tile no-margin-right text-align-left" style=" min-width: 230px; background-color: #efefef; border-color: #ccc; pointer-events: none; "> <span class="alpha-info text-weight-bold text-align-left">Declaration</span>
-                                        <div class="notification-block status-warning" style=" padding: 0; background: none; border: none; padding-left: 5px; margin-top: 10px; width: 200px; ">
-                                          <div class="notification-message">
-                                            <p>Sections incomplete <br>Payment Details, <br>Financial Crime</p>
-                                            <div> </div>
-                                          </div>
-                                        </div>
-                                      </button> </li>
-                                    <li class="alpha-parent-item" style=" display: none; "> <button alpha-ui-event="click" alpha-ui-attr-toggle=".alpha-app-container ,show-overlay" type="button" class="data-tile no-margin-right text-align-left" style=" min-width: 230px; "> <span class="alpha-info text-weight-bold text-align-left">Financial Crime Details</span> </button> </li>
-                                    <li class="alpha-parent-item" style=" display: none; "> <button alpha-ui-event="click" alpha-ui-attr-toggle=".alpha-app-container ,show-overlay" type="button" class="data-tile no-margin-right text-align-left" style=" min-width: 230px; background-color: #efefef; border-color: #ccc; pointer-events: none; "> <span class="alpha-info text-weight-bold text-align-left">Declaration</span>
-                                        <div class="notification-block status-warning" style=" padding: 0; background: none; border: none; padding-left: 5px; margin-top: 10px; width: 200px; ">
-                                          <div class="notification-message">
-                                            <p>Sections incomplete <br>Payment Details, <br>Financial Crime</p>
-                                            <div> </div>
-                                          </div>
-                                        </div>
-                                      </button> </li>
-                                  </ul>
-                                </li>
-                              </ul>
-                            </li>
-                          </ul>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                  <div class="wizard-navigation">
-                    <div class="notification-block status-warning example-status-01">
-                      <div class="notification-message">
-                        <p>To unlock the next step, complete the following sections - Payment Details, Money Laundering. </p>
-                        <div> </div>
-                      </div>
-                    </div>
-                    <div class="notification-block status-warning example-status-02">
-                      <div class="notification-message">
-                        <p>To unlock the next step, complete the following sections - Select Client, Payment Details, Money Laundering. </p>
-                        <div> </div>
-                      </div>
-                    </div>
-                    <div class="notification-block status-warning example-status-03">
-                      <div class="notification-message">
-                        <p>To unlock the next step, complete the following sections - Money Laundering. </p>
-                        <div> </div>
-                      </div>
-                    </div>
-                    <div class="notification-block status-warning example-status-04">
-                      <div class="notification-message">
-                        <p>To unlock the next step, reivew and declare you have checked everything. </p>
-                        <div class="multi-action-tile tile--size-w-med">
-                          <div class="action-container"> <button style="width: 100%;max-width:100%;;" class="data-tile no-margin-right text-align-left declaration-btn" type="button" alpha-ui-selectable="toggle,declared" alpha-ui-event="click" alpha-ui-attr-toggle=".alpha-app-container ,show-ml-review"> <span class="alpha-info text-weight-bold text-align-left">Review Money Laundering</span> <span class="alpha-additional-info " style=" /* display: none; */ ">Click to review money laundering information.</span> </button> </div>
-                        </div>
-                        <div class="multi-action-tile tile--size-w-med">
-                          <div class="action-container"> <button style="width: 100%;max-width:100%;" class="data-tile no-margin-right text-align-left declaration-btn" type="button" alpha-ui-selectable="toggle,declared" alpha-ui-event="click" alpha-ui-attr-toggle=".pd-next-step ,ui-disabled"> <span class="alpha-info text-weight-bold text-align-left">Declaration</span> <span class="alpha-additional-info " style=" /* display: none; */ ">Click to declare you have checked everything.</span> </button> </div>
-                        </div>
-                      </div>
-                    </div>
-                    <div class="multi-action-tile tile--size-w-med">
-                      <div class="action-container"> </div>
-                    </div><button type="button" class="ui-btn stepReset">Reset</button><button type="button" class="ui-btn stepPrevious">Previous</button> <button type="button" class="ui-btn stepNext pd-next-step ui-disabled">Request</button>
-                  </div>
-                </div>
-              </div>
-            </li>
-            <li class="step-container example-step06" stepstatus="incomplete" style="
-display: none;
-">
-              <div class="content-section">
-                <div onclick="sidebarStep(this)" class="content-section-header step-open"> 4. Authorisation <i class="fa fa-circle-o" aria-hidden="true"></i> </div>
-                <div class="content-section-body">
-                  <div class="question-block dpa-initial-item notification-block auth-01 status-warning">
-                    <div class="notification-message">
-                      <p>Liability and Payment Authorisation 1 - Jonathan Burns</p>
-                      <div>
-                        <div class="question-btn-block" style=" position: relative; padding: 10px 0; ">
-                          <div class="form-group auth-options" style=" margin-bottom: 0; width: 100%; margin-right: 10px; "> <span class="action-group"> <button class="btn btn-success" alpha-ui-target=".auth-options" alpha-ui-selectable="toggle,example-auth-save" style=" display: inline-block; margin-bottom: 5px; margin-right: 5px; "> Authorise <i class="fa fa-check" aria-hidden="true"></i> </button><button alpha-ui-target=".auth-options" alpha-ui-selectable="toggle,example-reject-save" class="btn btn-danger" type="button" style=" margin-bottom: 5px; /* margin-left: 5px; */ "> Reject <i class="fa fa-times" aria-hidden="true"></i> </button> </span> <span class="example-auth-save"> <button alpha-ui-target=".auth-options" alpha-ui-selectable="toggle,example-auth-save" class="btn btn-success" type="button" style=" margin-bottom: 5px; /* margin-left: 5px; */ "> Cancel </button> <input class="form-control" type="password" placeholder="Enter Password to Authorise" style=" display: inline-block; width: 250px; position: relative; /* top: 2px; */ "> <button class="btn btn-success" alpha-ui-target=".auth-01" alpha-ui-selectable="toggle,dpa-question-correct|status-warning|status-success" style=" display: inline-block; margin-bottom: 5px; margin-right: 5px; "> Authorise <i class="fa fa-check" aria-hidden="true"></i> </button> </span> <span class="example-reject-save"> <button class="btn btn-success" alpha-ui-target=".auth-options" alpha-ui-selectable="toggle,example-reject-save" style=" display: inline-block; margin-bottom: 5px; margin-right: 5px; "> Cancel </button><input class="form-control" type="password" placeholder="Enter Password to Reject" style=" display: inline-block; width: 250px; position: relative; /* top: 2px; */ margin-bottom: 5px; "> <input class="form-control" type="text" placeholder="Enter Reason" style=" display: inline-block; width: 250px; position: relative; /* top: 2px; */ margin-bottom: 5px; "> <button alpha-ui-target=".auth-01" alpha-ui-selectable="toggle,dpa-question-false|status-error|status-warning|status-success" class="btn btn-danger" type="button" style=" margin-bottom: 5px; "> Reject <i class="fa fa-times" aria-hidden="true"></i> </button> </span> </div><button alpha-ui-target=".auth-01" alpha-ui-selectable="toggle,dpa-question-correct|status-warning|status-success" class="question-btn-correct" style=" padding-left: 0; display: none; "> <i class="fa fa-check-square" aria-hidden="true"></i> </button> <button alpha-ui-target=".auth-01" alpha-ui-selectable="toggle,dpa-question-false|status-error|status-warning|status-success" class="question-btn-false" style=" display: none; "> <i class="fa fa-square" aria-hidden="true"></i> </button>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                  <div class="question-block dpa-initial-item notification-block auth-01 status-secruity">
-                    <div class="notification-message">
-                      <p>Liability and Payment Authorisation 2</p>
-                      <div>
-                        <div class="question-btn-block" style=" position: relative; padding: 10px 0; ">
-                          <div class="form-group" style=" margin-bottom: 0; width: 450px; margin-right: 10px; display: none; "> <label style=" display: none; ">Password</label> <input class="form-control" type="text" placeholder="Enter Authorisation Password" style=" display: inline-block; width: 250px; position: relative; top: 2px; "> <button class="btn btn-success" alpha-ui-target=".auth-01" alpha-ui-selectable="toggle,dpa-question-correct|status-warning|status-success" style=" display: inline-block; "> Authorise <i class="fa fa-check" aria-hidden="true"></i> </button> <button alpha-ui-target=".auth-01" alpha-ui-selectable="toggle,dpa-question-false|status-error|status-warning|status-success" class="btn btn-danger" type="button">Reject</button> </div><button alpha-ui-target=".auth-01" alpha-ui-selectable="toggle,dpa-question-correct|status-warning|status-success" class="question-btn-correct" style=" padding-left: 0; display: none; "> <i class="fa fa-check-square" aria-hidden="true"></i> </button> <button alpha-ui-target=".auth-01" alpha-ui-selectable="toggle,dpa-question-false|status-error|status-warning|status-success" class="question-btn-false" style=" display: none; "> <i class="fa fa-square" aria-hidden="true"></i> </button>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                  <div class="question-block dpa-initial-item notification-block auth-01 status-secruity">
-                    <div class="notification-message">
-                      <p> Actuarial Authorisation</p>
-                      <div>
-                        <div class="question-btn-block" style=" position: relative; padding: 10px 0; ">
-                          <div class="form-group" style=" margin-bottom: 0; width: 450px; margin-right: 10px; display: none; "> <label style=" display: none; ">Password</label> <input class="form-control" type="text" placeholder="Enter Authorisation Password" style=" display: inline-block; width: 250px; position: relative; top: 2px; "> <button class="btn btn-success" alpha-ui-target=".auth-01" alpha-ui-selectable="toggle,dpa-question-correct|status-warning|status-success" style=" display: inline-block; "> Authorise <i class="fa fa-check" aria-hidden="true"></i> </button> <button alpha-ui-target=".auth-01" alpha-ui-selectable="toggle,dpa-question-false|status-error|status-warning|status-success" class="btn btn-danger" type="button">Reject</button> </div><button alpha-ui-target=".auth-01" alpha-ui-selectable="toggle,dpa-question-correct|status-warning|status-success" class="question-btn-correct" style=" padding-left: 0; display: none; "> <i class="fa fa-check-square" aria-hidden="true"></i> </button> <button alpha-ui-target=".auth-01" alpha-ui-selectable="toggle,dpa-question-false|status-error|status-warning|status-success" class="question-btn-false" style=" display: none; "> <i class="fa fa-square" aria-hidden="true"></i> </button>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                  <div class="wizard-navigation"> <button type="button" class="ui-btn stepPrevious" style=" display: none; "> Previous </button> <button type="button" class="ui-btn">Finish</button> </div>
-                </div>
-              </div>
-            </li>
-          </ul>
+  <!-- ── Header: title + exit button ────────────────────────────── -->
+  <div class="rowx">
+    <div class="col-md-12" style="padding-left:0;">
+      <div class="card">
+        <div class="card-header">
+          <button
+            class="btn btn-danger exit-wizard"
+            type="button"
+            (click)="exitWizard()">
+            Exit
+          </button>
+          <h1 class="page-title">Available Steps for Script Management</h1>
         </div>
       </div>
+
+      <!-- ── Wizard card ─────────────────────────────────────────── -->
+      <div class="card wizard-card">
+        <div class="card-block wizard-card">
+          <div class="wizard-container wizard-vertical-theme-01">
+
+            <!-- ── Side rail: step navigation map ─────────────────── -->
+            <ul class="wizard-navigation-map vertical-map">
+              @for (step of steps; track step.id; let i = $index) {
+                <li [attr.stepstatus]="stepStatus(i)">
+                  <a
+                    href="#"
+                    (click)="$event.preventDefault(); canGoToStep(i) && goToStep(i)"
+                    [style.pointerEvents]="canGoToStep(i) ? 'auto' : 'none'"
+                    [style.opacity]="canGoToStep(i) ? '1' : '0.5'">
+                    <span class="wizard-map-badge">{{ i + 1 }}</span>
+                    <span class="wizard-map-step-name">{{ i + 1 }}. {{ step.label }}</span>
+                  </a>
+                </li>
+              }
+            </ul>
+
+            <!-- ── Step containers ────────────────────────────────── -->
+            <ul class="step-container-list">
+
+              <!-- ── Step 1: Script Association ───────────────────── -->
+              <li
+                class="step-container example-step01"
+                [attr.stepstatus]="stepStatus(0)">
+                <div class="content-section">
+                  <div class="content-section-header step-open">
+                    1. {{ steps[0].label }}
+                    <i class="fa fa-circle-o" aria-hidden="true"></i>
+                  </div>
+                  @if (currentStepIndex() === 0) {
+                    <div class="content-section-body">
+                      <div class="content-block">
+
+                        <!-- Script association component -->
+                        <alpha-script-setup
+                          (continue)="onSetupContinue($event)">
+                        </alpha-script-setup>
+
+                        <!-- Step navigation -->
+                        <div class="wizard-navigation">
+                          <button type="button" class="ui-btn ui-disabled">Reset Step</button>
+                          <button
+                            type="button"
+                            class="ui-btn stepNext"
+                            (click)="nextStep()">
+                            Save
+                          </button>
+                        </div>
+                      </div>
+                    </div>
+                  }
+                </div>
+              </li>
+
+              <!-- ── Step 2: View / Build Script ──────────────────── -->
+              <li
+                class="step-container example-step02"
+                [attr.stepstatus]="stepStatus(1)">
+                <div class="content-section">
+                  <div class="content-section-header" [class.step-open]="currentStepIndex() === 1">
+                    2. {{ steps[1].label }}
+                    <i class="fa fa-circle-o" aria-hidden="true"></i>
+                  </div>
+                  @if (currentStepIndex() === 1) {
+                    <div class="content-section-body">
+                      <div class="content-block">
+
+                        <!-- Script builder component (receives setup from Step 1) -->
+                        <alpha-script-builder
+                          [setup]="setupSelection()">
+                        </alpha-script-builder>
+
+                      </div>
+                      <div class="wizard-navigation">
+                        <button type="button" class="ui-btn ui-disabled">Reset Step</button>
+                        <button
+                          type="button"
+                          class="ui-btn stepPrevious"
+                          (click)="previousStep()">
+                          Previous
+                        </button>
+                        <button
+                          type="button"
+                          class="ui-btn stepNext"
+                          (click)="nextStep()">
+                          Next
+                        </button>
+                      </div>
+                    </div>
+                  }
+                </div>
+              </li>
+
+              <!-- ── Step 3: Preview Script ────────────────────────── -->
+              <li
+                class="step-container example-step03"
+                [attr.stepstatus]="stepStatus(2)">
+                <div class="content-section">
+                  <div class="content-section-header" [class.step-open]="currentStepIndex() === 2">
+                    3. {{ steps[2].label }}
+                    <i class="fa fa-circle-o" aria-hidden="true"></i>
+                  </div>
+                  @if (currentStepIndex() === 2) {
+                    <div class="content-section-body">
+                      <div class="content-block">
+                        <!-- Preview content will be added here -->
+                      </div>
+                      <div class="wizard-navigation">
+                        <button type="button" class="ui-btn ui-disabled">Reset Step</button>
+                        <button
+                          type="button"
+                          class="ui-btn stepPrevious"
+                          (click)="previousStep()">
+                          Previous
+                        </button>
+                        <button
+                          type="button"
+                          class="ui-btn stepNext"
+                          (click)="nextStep()">
+                          Save
+                        </button>
+                      </div>
+                    </div>
+                  }
+                </div>
+              </li>
+
+              <!-- ── Step 4: Confirmation ──────────────────────────── -->
+              <li
+                class="step-container example-step04"
+                [attr.stepstatus]="stepStatus(3)">
+                <div class="content-section">
+                  <div class="content-section-header" [class.step-open]="currentStepIndex() === 3">
+                    4. {{ steps[3].label }}
+                    <i class="fa fa-circle-o" aria-hidden="true"></i>
+                  </div>
+                  @if (currentStepIndex() === 3) {
+                    <div class="content-section-body">
+                      <div class="notification-block status-success">
+                        <div class="notification-message">
+                          <p>Success Script Added</p>
+                        </div>
+                      </div>
+                      <div class="wizard-navigation">
+                        <button
+                          type="button"
+                          class="ui-btn"
+                          (click)="exitWizard()">
+                          Finish
+                        </button>
+                      </div>
+                    </div>
+                  }
+                </div>
+              </li>
+
+            </ul>
+            <!-- /step-container-list -->
+
+          </div>
+          <!-- /wizard-container -->
+        </div>
+      </div>
+      <!-- /wizard-card -->
     </div>
   </div>
 </div>
-</div>
+<!-- /alpha-wizard -->
