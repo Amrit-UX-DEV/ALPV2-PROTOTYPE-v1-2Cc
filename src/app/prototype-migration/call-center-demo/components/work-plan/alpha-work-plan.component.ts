@@ -89,10 +89,8 @@ export class AlphaWorkPlanComponent {
     console.log('Exit wizard clicked');
   }
 
-  /* ── Step 1 → Step 2 handshake ────────────────────────────────── */
-
+  /** Stores the script selection from Step 1. Does NOT advance the wizard. */
   onSetupContinue(selection: ScriptSetupSelection): void {
     this.setupSelection.set(selection);
-    this.nextStep();
   }
 }
