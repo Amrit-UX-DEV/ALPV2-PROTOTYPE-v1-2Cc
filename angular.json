@@ -19,14 +19,7 @@
             "production": {
               "extractLicenses": true,
               "namedChunks": false,
-              "optimization": {
-                "scripts": true,
-                "styles": {
-                  "minify": true,
-                  "inlineCritical": false
-                },
-                "fonts": true
-              },
+              "optimization": false,
               "outputHashing": "all",
               "sourceMap": false
             }
