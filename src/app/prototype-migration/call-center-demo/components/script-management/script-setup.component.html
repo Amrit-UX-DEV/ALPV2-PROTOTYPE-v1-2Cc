@@ -484,7 +484,7 @@
 
   <!-- Draft replacement confirmation dialog -->
   @if (showReplaceConfirm()) {
-    <div class="alp-dialog-overlay" (click)="cancelReplacePrimary()">
+    <div class="alp-dialog-overlay alp-dialog-overlay--nested" (click)="cancelReplacePrimary()">
       <div class="alp-dialog alp-dialog--small" (click)="$event.stopPropagation()">
         <div class="alp-dialog__header">
           <h4>Replace current draft?</h4>
@@ -505,7 +505,7 @@
 
   <!-- Cross-association copy confirmation dialog -->
   @if (showCrossAssociationConfirm()) {
-    <div class="alp-dialog-overlay" (click)="cancelCrossAssociationCopy()">
+    <div class="alp-dialog-overlay alp-dialog-overlay--nested" (click)="cancelCrossAssociationCopy()">
       <div class="alp-dialog alp-dialog--small" (click)="$event.stopPropagation()">
         <div class="alp-dialog__header">
           <h4>Save copy under a different association?</h4>
@@ -526,7 +526,7 @@
 
   <!-- Remove copy draft confirmation dialog -->
   @if (showRemoveCopyDraftConfirm()) {
-    <div class="alp-dialog-overlay" (click)="cancelRemoveTopSlotDraft()">
+    <div class="alp-dialog-overlay alp-dialog-overlay--nested" (click)="cancelRemoveTopSlotDraft()">
       <div class="alp-dialog alp-dialog--small" (click)="$event.stopPropagation()">
         <div class="alp-dialog__header">
           <h4>Remove copy draft?</h4>
