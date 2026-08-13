@@ -8,9 +8,7 @@
 @import './style-stack-update-ver04/01-bootstrap-v4-0-0-alpha6.css';
 @import './style-stack-update-ver04/02-modal-styles.css';
 
-/* Font Awesome */
-@import url('https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.css');
-@import url('https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.13.0/css/all.min.css');
+/* Font Awesome (loaded via <link> in index.html to avoid build errors) */
 
 /* Resets & Grids */
 @import './style-stack-update-ver04/04-html-resets.css';
