@@ -4,6 +4,7 @@ import {
   ViewChild,
   ElementRef,
   CUSTOM_ELEMENTS_SCHEMA,
+  inject,
 } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
@@ -14,14 +15,14 @@ import { CallScriptJourneyComponent } from './components/call-rep-scripts/journe
 import { RecentCallersComponent } from './components/recent-callers/recent-callers.component';
 import { TransferCallPopoverComponent } from './components/transfer-call-popover/transfer-call-popover.component'; 
 import { AlphaGroupSummaryComponent } from './components/group-summary/alpha-group-summary.component';
-import { AlphaWorkPlanComponent } from './components/work-plan/alpha-work-plan.component';
+import { WizardShellComponent, WizardRegistryService, registerWizardComponents } from '../wizard';
 
 @Component({
   selector: 'app-call-center-demo',
   standalone: true,
   imports: [
     AlphaGroupSummaryComponent,
-    AlphaWorkPlanComponent,
+    WizardShellComponent,
     CallerSelectorComponent, 
     CommonModule, 
     FormsModule, 
@@ -126,6 +127,7 @@ export class CallCenterDemoComponent implements AfterViewInit {
   }
 
   constructor() {
+    registerWizardComponents(inject(WizardRegistryService));
     console.log('Call Center Demo Prototype Loaded');
   }
 
