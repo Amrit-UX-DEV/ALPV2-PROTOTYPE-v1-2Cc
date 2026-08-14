@@ -1,0 +1,114 @@
+<!-- ═══════════════════════════════════════════════════════════════ -->
+<!-- WIZARD SHELL — Generic JSON-driven wizard                          -->
+<!-- Header + side rail + step containers + navigation                  -->
+<!-- ═══════════════════════════════════════════════════════════════ -->
+
+@if (config()) {
+  <div class="alpha-wizard">
+
+    <!-- ── Header: title + exit button ────────────────────────── -->
+    <div class="rowx">
+      <div class="col-md-12" style="padding-left:0;">
+        <div class="card">
+          <div class="card-header">
+            <button
+              class="btn btn-danger exit-wizard"
+              type="button"
+              (click)="exitWizard()">
+              {{ exitLabel() }}
+            </button>
+            <h1 class="page-title">{{ title() }}</h1>
+          </div>
+        </div>
+
+        <!-- ── Wizard card ─────────────────────────────────────── -->
+        <div class="card wizard-card">
+          <div class="card-block wizard-card">
+            <div class="wizard-container wizard-vertical-theme-01">
+
+              <!-- ── Side rail: step navigation map ─────────────── -->
+              <ul class="wizard-navigation-map vertical-map">
+                @for (step of steps(); track step.id; let i = $index) {
+                  <li [attr.stepstatus]="stepStatus(i)">
+                    <a
+                      href="#"
+                      (click)="$event.preventDefault(); canGoToStep(i) && goToStep(i)"
+                      [style.pointerEvents]="canGoToStep(i) ? 'auto' : 'none'"
+                      [style.opacity]="canGoToStep(i) ? '1' : '0.5'">
+                      <span class="wizard-map-badge">{{ i + 1 }}</span>
+                      <span class="wizard-map-step-name">{{ i + 1 }}. {{ step.label }}</span>
+                    </a>
+                  </li>
+                }
+              </ul>
+
+              <!-- ── Step containers ────────────────────────────── -->
+              <ul class="step-container-list">
+                @for (step of steps(); track step.id; let i = $index) {
+                  <li
+                    class="step-container {{ 'example-step' + (i + 1) }}"
+                    [attr.stepstatus]="stepStatus(i)">
+                    <div class="content-section">
+                      <div
+                        class="content-section-header"
+                        [class.step-open]="currentStepIndex() === i">
+                        {{ i + 1 }}. {{ step.label }}
+                        <i class="fa fa-circle-o" aria-hidden="true"></i>
+                      </div>
+                      @if (currentStepIndex() === i) {
+                        <div class="content-section-body">
+                          <div class="content-block">
+
+                            <!-- Dynamic step component -->
+                            <wizard-step-host [step]="step"></wizard-step-host>
+
+                          </div>
+
+                          <!-- Navigation buttons -->
+                          <div class="wizard-navigation">
+                            @if (step.navigation?.showReset) {
+                              <button type="button" class="ui-btn ui-disabled">Reset Step</button>
+                            }
+                            @if (!isFirstStep()) {
+                              <button
+                                type="button"
+                                class="ui-btn stepPrevious"
+                                (click)="previousStep()">
+                                {{ step.navigation?.previousLabel ?? 'Previous' }}
+                              </button>
+                            }
+                            @if (!isLastStep()) {
+                              <button
+                                type="button"
+                                class="ui-btn stepNext"
+                                (click)="nextStep()">
+                                {{ step.navigation?.saveLabel ?? step.navigation?.nextLabel ?? 'Next' }}
+                              </button>
+                            }
+                            @if (isLastStep()) {
+                              <button
+                                type="button"
+                                class="ui-btn"
+                                (click)="exitWizard()">
+                                {{ step.navigation?.finishLabel ?? 'Finish' }}
+                              </button>
+                            }
+                          </div>
+                        </div>
+                      }
+                    </div>
+                  </li>
+                }
+              </ul>
+              <!-- /step-container-list -->
+
+            </div>
+            <!-- /wizard-container -->
+          </div>
+        </div>
+        <!-- /wizard-card -->
+      </div>
+    </div>
+  </div>
+  <!-- /alpha-wizard -->
+}

@@ -1,0 +1,49 @@
+{
+  "id": "script-management",
+  "title": "Available Steps for Script Management",
+  "exitLabel": "Exit",
+  "steps": [
+    {
+      "id": "step-1",
+      "label": "Script Association",
+      "componentId": "alpha-script-setup",
+      "output": "continue",
+      "navigation": {
+        "saveLabel": "Save",
+        "showReset": true
+      }
+    },
+    {
+      "id": "step-2",
+      "label": "View / Build Script",
+      "componentId": "alpha-script-builder",
+      "inputs": {
+        "setup": "step-1"
+      },
+      "navigation": {
+        "nextLabel": "Next",
+        "previousLabel": "Previous",
+        "showReset": true
+      }
+    },
+    {
+      "id": "step-3",
+      "label": "Preview Script",
+      "componentId": "alpha-script-preview",
+      "navigation": {
+        "saveLabel": "Save",
+        "previousLabel": "Previous",
+        "showReset": true
+      }
+    },
+    {
+      "id": "step-4",
+      "label": "Confirmation",
+      "componentId": "wizard-confirmation",
+      "navigation": {
+        "finishLabel": "Finish",
+        "previousLabel": "Previous"
+      }
+    }
+  ]
+}
