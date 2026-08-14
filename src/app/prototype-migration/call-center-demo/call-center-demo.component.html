@@ -772,13 +772,53 @@ display: none;
 <span class="app-toolbar--heading" style="
 /* display: none; */
 ">
-                                        <img src="Images/alpha-icon-72.png" class="app-icon" alt="Alpha" style="
+                                            <img src="../../images/alpha-icon-72.png" class="app-icon" alt="Alpha" style="
 /* display: none; */
 width: 30px;
 padding: 5px;
-"><strong>Policy Enquiry</strong>
-                                    </span>
+"><strong>Search</strong>
+                                        </span>
 </div>
+
+<ul>
+                                          
+  <alpha-search-field _nghost-c8="" ng-version="4.0.0">
+      <li _ngcontent-c8="" class="alpha-accordion-parent" routerlinkactive="alpha-selected" alpha-data-inspector="NaN">
+          <a _ngcontent-c8="" title="Search">
+              <span _ngcontent-c8="">Search</span>
+              <span _ngcontent-c8="" class="alpha-openclose"></span>
+             <span class="alpha-openclose"></span></a>
+          <ul _ngcontent-c8="" class="alpha-accordion-children">
+              <li _ngcontent-c8="">
+                  <div _ngcontent-c8="" class="container-fluid  toolbar-searchform">
+                      <form _ngcontent-c8="" class="primary-field ng-untouched ng-pristine ng-valid" novalidate="">
+                          <div _ngcontent-c8="" class="form-group">
+                              <label _ngcontent-c8="" for="searchCriteria">Search Criteria</label>
+                              <select _ngcontent-c8="" class="form-control ng-untouched ng-pristine ng-valid" formcontrolname="searchCriteria" id="PolicySearch_SearchCriteria">
+                                  <!---->
+                                  <option _ngcontent-c8="" value="Policy">Policy</option>
+                                  <option _ngcontent-c8="" value="Agent">Agent</option>
+                                  <option _ngcontent-c8="" value="Client">Client</option>
+                                  <option _ngcontent-c8="" value="Company">Company</option>
+                                  <option _ngcontent-c8="" value="Other">Other</option>
+                              </select>
+                          </div>
+                          <div _ngcontent-c8="" class="form-group">
+                            <label _ngcontent-c8="" for="referenceNumber">Reference Number</label>
+                            <input _ngcontent-c8="" autocomplete="off" autofocus="" class="form-control ng-untouched ng-pristine ng-valid" formcontrolname="referenceNumber" id="PolicySearch_ReferenceNumber" name="referenceNumber" type="input" placeholder="Enter Policy Number">
+                        </div>
+                         
+                          
+                          <button _ngcontent-c8="" class="btn btn-success" id="PolicySearch_SearchButton" style="width: 68%; float: right" type="submit">Search</button>
+                          <button _ngcontent-c8="" class="btn btn-danger" id="PolicySearch_ClearButton" style="width: 30%" type="button">Clear</button>
+                      </form>
+                  </div>
+              </li>
+          </ul>
+      </li>
+  </alpha-search-field>
+</ul>
+
 
 
 </div>
@@ -901,6 +941,18 @@ display: none;
 
                                                     <div class="alp-crit-warn"><i class="fas fa-exclamation-triangle alp-crit-warn__icon"></i><div class="alp-crit-warn__msg"><strong>Breach Potential:</strong> Different Client Address Locations </div></div>
                                                 </widget-header>
+
+<!-- Widget Menu -->
+
+<div class="ui-app--widget-component view-widgets" style="padding: 0;"><ul class="widget-selection"><li class="widget-selection-header"><span class="widget-selection-header-title">Select a Service App to use alongside Alpha.</span></li><li alpha-widget-tile="callcenter" class="widget-tile"><span onclick="loadWidget(this)" class="widget-tile-btn"><span class="widget-title"><span class="widget-icon"><strong><i aria-hidden="true" class="fa fa-phone"></i></strong></span><span class="widget-title-text">Call Centre </span></span></span><span alpha-ui-selectable="toggle,active" alpha-ui-event="click" alpha-ui-attr-toggle=".ux-example--call-centre ,shortcut-active" class="add-shortcut active"></span></li></ul></div>
+
+
+
+
+<!-- END: Widget Menu -->
+
+
+
                                                 <widget-body>
                                                     <alpha-callcenter-steps-caller-details>
                                                         <div class="sidebar-content">
