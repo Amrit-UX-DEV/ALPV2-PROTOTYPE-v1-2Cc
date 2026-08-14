@@ -5,10 +5,10 @@ import {
   Input,
   OnDestroy,
   OnInit,
-  Subscription,
   ViewContainerRef,
   inject,
 } from '@angular/core';
+import { Subscription } from 'rxjs';
 import { WizardStepConfig } from '../../models/wizard.models';
 import { WizardContextService } from '../../services/wizard-context.service';
 import { WizardRegistryService } from '../../services/wizard-registry.service';
