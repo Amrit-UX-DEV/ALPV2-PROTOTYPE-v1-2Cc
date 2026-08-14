@@ -796,7 +796,9 @@ width: inherit;
       <!-- Content Area -->
     <div [ngSwitch]="currentView">
         <alpha-group-summary *ngSwitchCase="'group-summary'"></alpha-group-summary>
-        <alpha-work-plan *ngSwitchCase="'work-plan'"></alpha-work-plan>
+        <wizard-shell *ngSwitchCase="'work-plan'"
+          [configUrl]="'assets/data/wizard-configs/script-management.wizard.json'">
+        </wizard-shell>
     </div>
 
     </div>
