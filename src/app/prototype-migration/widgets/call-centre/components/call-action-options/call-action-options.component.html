@@ -1,0 +1,357 @@
+                    <section class="card form-group" style="width: 100%;background-color: #fff;">
+
+
+
+
+                        <div class="alpha-sections">
+                            <div ux-tab-section="01" style="display: block;">
+    <!-- CALL DETAILS -->
+
+    <section>
+
+    <section>
+    <div class="card">
+        <div class="card-header">
+        Reason for calling </div>
+        <div>
+    
+    
+            <div class="select-input-btn-join search--block">
+                <select class="form-control" formcontrolname="searchCriteria" style="
+    display: none;
+    ">
+                    <!---->
+                    <option selected="" value="All">All</option>
+                    <option value="Agent">Business Areas</option>
+                    <option value="Client">Request Types</option>
+    
+                </select>
+                <input class="form-control" type="text" placeholder="Enter Search Criteria ">
+                
+    
+                
+                <button class="btn btn-success ux-xxexample-add-btn"><i class="fa fa-search" aria-hidden="true"></i></button>
+    
+            </div>
+            <div class=" tile-scroll--block">
+                <div class="row">
+                    <div class="col">
+                        <div class="form-group">
+                            <div>
+                                <ul class="request-type-tiles">
+                                    <li alpha-ui-selectable="toggle,selected-item" class="detail-block-item business-area" style="
+    display: none;
+    ">
+                                        <span class="item-info-0">Business
+                                            Area</span>
+                                        <span class="item-info-1"><i class="fa fa-suitcase" aria-hidden="true"></i> Full
+                                            Policy Details</span>
+                                    </li>
+    
+                                    <li alpha-ui-selectable="toggle,selected-item" class="detail-block-item">
+                                        <span class="item-info-0"><i class="fa fa-suitcase" aria-hidden="true"></i> Full
+                                            Policy Details</span><span class="item-info-1">Full Policy
+                                            Details</span>
+                                    </li>
+                                    <li alpha-ui-selectable="toggle,selected-item" class="detail-block-item">
+                                        <span class="item-info-0"><i class="fa fa-suitcase" aria-hidden="true"></i> Full
+                                            Policy Details</span><span class="item-info-1">Fund
+                                            Value</span>
+                                    </li>
+                                    <li alpha-ui-selectable="toggle,selected-item" class="detail-block-item">
+                                        <span class="item-info-0" title="Client Services Payment Out"><i class="fa fa-suitcase" aria-hidden="true"></i> Client
+                                            Services Payment Out</span><span class="item-info-1">Transfer
+                                            Value</span>
+                                    </li>
+                                    <li alpha-ui-selectable="toggle,selected-item" (click)="toggleScript()" class="detail-block-item">
+                                        <span class="item-info-0"><i class="fa fa-suitcase" aria-hidden="true"></i> Client
+                                            Services Policy Details</span><span class="item-info-1">Surrender</span>
+                                    </li>
+                                    <li alpha-ui-selectable="toggle,selected-item" class="detail-block-item">
+                                        <span class="item-info-0"><i class="fa fa-suitcase" aria-hidden="true"></i> Policy
+                                            Details</span><span class="item-info-1">Letter of
+                                            Authority</span>
+                                    </li>
+    
+                                    <li alpha-ui-selectable="toggle,selected-item" class="detail-block-item">
+                                        <span class="item-info-0"><i class="fa fa-suitcase" aria-hidden="true"></i> Claims
+                                            Servicing</span><span class="item-info-1">Death
+                                            Notification</span>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    </section>
+    @if (showElement) {
+    <div class="alp-script-status-tile">
+    <div class="alp-script-status-tile__content">
+      <div class="alp-script-status-tile__icon">
+        <!-- <i class="fas fa-check-circle"></i> -->
+      </div>
+      <div class="alp-script-status-tile__text">
+        <strong>Mr Joe Bloggs</strong> already had the Surrender script read to them. 
+<br> <br>
+        <p>06 Jul 2026, 10:15 <strong>(16 Days ago)</strong> </p>
+      </div>
+
+
+
+
+      
+    </div>
+    
+    <button (click)="toggle()"  type="button" class="alp-script-status-tile__run-btn">
+      <i class="fas fa-play"></i> Run Script Again
+    </button>
+  </div>
+    }
+
+   <!-- CALL-REP-SCRIPTS -->
+   @if (showScript) {
+   <alpha-call-script-journey 
+   scriptId="surrender-001">
+ </alpha-call-script-journey>
+   }
+    <div class="card">
+        <div class="card-header">
+        Topics Discussed on Call</div>
+        <div>
+    
+
+            <div class=" tile-scroll--block">
+                <div class="row">
+                    <div class="col">
+                        <div class="form-group">
+                            <div>
+                                <ul class="request-type-tiles">
+                                    <li (click)="toggleDetails()" alpha-ui-selectable="toggle,selected-item" class="detail-block-item business-area" style="min-height:38px;">
+                              
+                                        <span class="item-info-1"><i class="fa fa-comment" aria-hidden="true"></i> Policy Values</span>
+                                    </li>
+                                    <li alpha-ui-selectable="toggle,selected-item" class="detail-block-item business-area" style="min-height:38px;">
+                              
+                                    <span class="item-info-1"><i class="fa fa-comment" aria-hidden="true"></i> Option 2</span>
+                                </li>
+                                <li alpha-ui-selectable="toggle,selected-item" class="detail-block-item business-area" style="min-height:38px;">
+                              
+                                <span class="item-info-1"><i class="fa fa-comment" aria-hidden="true"></i> Option 3</span>
+                                </li>
+                                <li alpha-ui-selectable="toggle,selected-item" class="detail-block-item business-area" style="min-height:38px;">
+                              
+                                <span class="item-info-1"><i class="fa fa-comment" aria-hidden="true"></i> Option 4</span>
+                            </li>
+                    
+                      
+     
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <section>
+    <div #contentContainer class="card">
+        <div class="card-header">Call Details</div>
+        <div class="alp-key-value-grid">
+            <div class="alp-key-value-grid__label">Policy</div>
+            <div class="alp-key-value-grid__value"> 80007
+                <span class="text--success">(DPA Passed <i aria-hidden="true" class="fa fa-check"></i>)</span></div>
+            <div class="alp-key-value-grid__label">Caller Name</div>
+            <div class="alp-key-value-grid__value">Mr Joe Bloggs</div>
+            <div class="alp-key-value-grid__label">Phone Number (Daytime) </div>
+            <div class="alp-key-value-grid__value">07456789999 </div>
+            <div class="alp-key-value-grid__label">Email</div>
+            <div class="alp-key-value-grid__value">Joe.B@lorumipsum.com</div>
+        </div>
+
+        <div class="alp-key-value-grid alp-key-value-grid--added-item" *ngIf="showDetails">
+            <div class="alp-key-value-grid__label">Fund Value</div>
+            <div class="alp-key-value-grid__value"> £71,516.55 <span class="text--error"> Estimated</span></div>
+
+            <div class="alp-key-value-grid__label">Transfer Value</div>
+            <div class="alp-key-value-grid__value"> £71,516.55 <span class="text--error"> Estimated</span></div>
+       
+        </div>
+
+        
+        <div #editablePart class="editable-section"></div>
+    </div>
+</section>
+
+
+    </section>
+                                <section>
+                                    <div class="card">
+                                        <div class="card-header">Additional Call Details</div>
+                                        <div class="card-block">
+                                            <!-- <div class="row">
+                                                <div class="col">
+                                                    <div class="form-group">
+                                                        <label>Reason For Calling?</label>
+                                                        <div>
+                                                            <select alpha-ui-event="change" alpha-ui-value-check="required" alpha-ui-attr-toggle=".additional-info,field-required" class="form-control">
+                                                                <option value="">01: Reason 1</option>
+                                                                <option value="">02: Reason 2</option>
+                                                                <option value="">03: Reason 3</option>
+                                                                <option value="">04: Reason 4</option>
+                                                                <option value="">05: Reason 5</option>
+                                                                <option value="">06: Reason 6</option>
+                                                                <option value="">07: Reason 7</option>
+                                                                <option value="">08: Reason 8</option>
+                                                                <option value="">09: Reason 9</option>
+                                                                <option value="">10: Reason 10</option>
+                                                                <option value="">11: Reason 11</option>
+                                                                <option value="">12: Reason 12</option>
+                                                                <option value="">13: Reason 13</option>
+                                                                <option value="">14: Reason 14</option>
+                                                                <option value="">15: Reason 15</option>
+                                                                <option value="">16: Reason 16</option>
+                                                                <option value="">17: Reason 17</option>
+                                                                <option value="">18: Reason 18</option>
+                                                                <option value="">19: Reason 19</option>
+                                                                <option value="required">20: Reason 20</option>
+                                                            </select><span class="form-field-value"> </span>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div> -->
+                                            <div class="row margin-top-10">
+                                                <div class="col">
+                                                    <div class="form-group additional-info">
+                                                        <!-- <label>Additional Informtion (Optional)</label> -->
+                                                        <!---->
+                                                        <div>
+
+                                                            <!-- Char Count Text Area -->
+                                                            <textarea 
+    [(ngModel)]="typedContent"
+    (ngModelChange)="onType()"
+    rows="6"
+    maxlength="1000"
+    placeholder="Type here...">
+  </textarea>
+
+  <div class="count">
+    <strong>{{ totalChars }} / {{ maxChars }}</strong>
+    <span *ngIf="remaining >= 0" class="remaining"> ({{ remaining }} remaining)</span>
+    <span *ngIf="remaining < 0" class="over-limit"> — Over the limit!</span>
+  </div> 
+                                                        </div>
+
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                    </div>
+
+                                </section>
+                                <section>
+                                    <div class="card ">
+                                        <div class="card-header">Action Information</div>
+
+
+
+
+
+
+                                        <div class=" question-sets centered-questions ">
+                                            <button alpha-ui-selectable="single,declared" class="data-tile declaration-btn ui-btn-width--45">
+                                                <span class="item-info-1">Action Taken</span>
+                                            </button>
+                                            <button alpha-ui-selectable="single,declared" class="data-tile declaration-btn ui-btn-width--45">
+                                                <span class="item-info-1">Action Required</span>
+                                            </button>
+
+
+                                        </div>
+                                    </div>
+
+                                </section>
+
+
+
+                               
+                                <section style="
+                                    display: none;
+                                ">
+                                    <div class="card">
+                                        <div class="card-header">
+                                            All Request Types
+                                        </div>
+                                        <div>
+                                            <div class="card-block">
+                                                <div class="row">
+                                                    <div class="col">
+                                                        <div class="form-group">
+                                                            <b><label>Select a Business Area:</label></b>
+                                                            <div>
+                                                                <select size="4" alpha-ui-event="change" alpha-ui-value-check="other" alpha-ui-attr-toggle=".business-area-requests,show-form" class="form-control">
+                                                                    <option value="other">A Call Center Task
+                                                                    </option>
+                                                                    <option value="">Claims Servicing</option>
+                                                                    <option value="">New Business</option>
+                                                                    <option value="">Premium Servicing</option>
+                                                                    <option value="">Client Services Payment
+                                                                        Out/option&gt;
+                                                                    </option>
+                                                                    <option value="">Full Policy Details
+                                                                    </option>
+                                                                    <option value="">Pension Servicing</option>
+                                                                    <option value="">Chargeable Events</option>
+                                                                </select>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="row business-area-requests show-form ">
+                                                    <div class="col">
+                                                        <div class="form-group">
+                                                            <b><label>Select a Request Type:</label></b>
+                                                            <div>
+                                                                <select size="4" alpha-ui-event="change" alpha-ui-value-check="other" alpha-ui-attr-toggle=".other-caller-options,show-form" class="form-control">
+                                                                    <option value="">Death Notification</option>
+                                                                    <option value="">Fund Value</option>
+                                                                    <option value="">Transfer Value</option>
+                                                                    <option value="">Change of Address</option>
+                                                                    <option value="">Letter of Authority
+                                                                    </option>
+                                                                    <option value="">Full Policy Details
+                                                                    </option>
+                                                                </select>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </section>
+
+
+
+                            </div>
+
+
+
+
+                        </div>
+
+
+                        <div class="overlay-action-container text-center ">
+                            <button class="btn btn-danger" type="button" alpha-ui-event="click" alpha-ui-attr-toggle=".call-info-action-container ,show-call-action-options">Cancel</button>
+
+                            <button class="btn btn btn-success" type="button" alpha-ui-event="click" alpha-ui-attr-toggle=".call-info-action-container ,show-call-action-options|show-added-call-action">Update
+                                Details</button>
+                        </div>
+                    </section>
+
+
