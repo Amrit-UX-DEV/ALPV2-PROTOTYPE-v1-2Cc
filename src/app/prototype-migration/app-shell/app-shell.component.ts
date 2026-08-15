@@ -18,7 +18,7 @@ import { AlphaGroupSummaryComponent } from './components/group-summary/alpha-gro
 import { WizardShellComponent, WizardRegistryService, registerWizardComponents } from '../wizard';
 
 @Component({
-  selector: 'app-call-center-demo',
+  selector: 'app-shell',
   standalone: true,
   imports: [
     AlphaGroupSummaryComponent,
@@ -33,10 +33,10 @@ import { WizardShellComponent, WizardRegistryService, registerWizardComponents }
     
     
   ],
-  templateUrl: './call-center-demo.component.html',
+  templateUrl: './app-shell.component.html',
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
 })
-export class CallCenterDemoComponent implements AfterViewInit {
+export class AppShellComponent implements AfterViewInit {
 
   public currentView: 'group-summary' | 'work-plan' = 'work-plan';
 
