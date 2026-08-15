@@ -2,9 +2,9 @@ import { Type } from '@angular/core';
 import { WizardRegistryService } from './services/wizard-registry.service';
 
 // Step components
-import { ScriptSetupComponent } from '../call-center-demo/components/script-management/script-setup.component';
-import { ScriptBuilderComponent } from '../call-center-demo/components/call-rep-scripts/script-builder/script-builder.component';
-import { ScriptPreviewComponent } from '../call-center-demo/components/call-rep-scripts/script-builder/preview/script-preview.component';
+import { ScriptSetupComponent } from '../app-shell/components/script-management/script-setup.component';
+import { ScriptBuilderComponent } from '../app-shell/components/call-rep-scripts/script-builder/script-builder.component';
+import { ScriptPreviewComponent } from '../app-shell/components/call-rep-scripts/script-builder/preview/script-preview.component';
 import { WizardConfirmationComponent } from './components/wizard-confirmation/wizard-confirmation.component';
 
 /**
