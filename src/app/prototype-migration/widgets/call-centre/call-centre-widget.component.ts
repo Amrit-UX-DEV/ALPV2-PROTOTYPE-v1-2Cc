@@ -7,10 +7,10 @@ import {
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 
-import { CallerSelectorComponent } from '../../app-shell/components/caller-selector/caller-selector.component';
-import { CallScriptJourneyComponent } from '../../app-shell/components/call-rep-scripts/journey/call-script-journey.component';
-import { RecentCallersComponent } from '../../app-shell/components/recent-callers/recent-callers.component';
-import { TransferCallPopoverComponent } from '../../app-shell/components/transfer-call-popover/transfer-call-popover.component';
+import { CallerSelectorComponent } from './components/caller-selector/caller-selector.component';
+import { CallScriptJourneyComponent } from './components/journey/call-script-journey.component';
+import { RecentCallersComponent } from './components/recent-callers/recent-callers.component';
+import { TransferCallPopoverComponent } from './components/transfer-call-popover/transfer-call-popover.component';
 
 /**
  * Call centre service app that docks into the app shell's right sidebar.
