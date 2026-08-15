@@ -1,73 +1,69 @@
 
-<button  title="Click to view Extra Care details" (click)="openDialog()"
- style="text-align:left;"
-      class="action--extra-care secondary-action state--ui-active--no-icon">
-      <div  class="ui-alpha-indicators"><span 
-          class="indicator vulnerable">Extra Care Client</span></div>
-      <ul  class="extra-care-types">
-        <li  class="extra-care-types__item">Health- Hearing</li>
-        <li  class="extra-care-types__item"> Capability -Managing Finances</li>
-        <li  class="extra-care-types__item"> Health- Severe/Long Term Illness</li>
-        <!--container-->
-      </ul><!--container-->
-    </button><!--container-->
+<button title="Click to view Extra Care details" (click)="openDialog()" style="text-align:left;" class="action--extra-care secondary-action state--ui-active--no-icon">
+      <div class="ui-alpha-indicators"><span class="indicator vulnerable">Extra Care Client</span></div>
+      <ul class="extra-care-types">
+        <li class="extra-care-types__item">Health- Hearing</li>
+        <li class="extra-care-types__item"> Capability -Managing Finances</li>
+        <li class="extra-care-types__item"> Health- Severe/Long Term Illness</li>
+        
+      </ul>
+    </button>
 
 
-    <dialog #vulnerabilityDialog >
+    <dialog #vulnerabilityDialog>
 <div style="
 right: unset;
 left: 115px;
-"
-  class="ui-correspondence-creation-set-up ui-local-overlay address-book ux-example-address-book">
-  <div  class="ui-local-overlay-header">
-    <strong >Extra Care Information</strong>
-    <!--container-->
-    <!--container-->
+" class="ui-correspondence-creation-set-up ui-local-overlay address-book ux-example-address-book">
+  <div class="ui-local-overlay-header">
+    <strong>Extra Care Information</strong>
+    
+    
   </div>
-  <div  class="ui-local-overlay-body">
-    <div  class="vulnerability-view">
-      <div  class="caller-section">
-        <h4  class="section-title">Client</h4>
-        <div  class="ui-work-items content--flex-eq-tile-grid">
-          <alpha-caller-tile-v2  >
-            <div  class="alp-tile multi-action-tile tile--default tile--size-w-med">
-              <div  class="action-container">
-                <button  class="action selected-caller state--ui-active" disabled=""><!--container--><span  class="tile--data-strong"><span  class="tile--role-type">Individual</span></span><span  class="tile--data tile--spacer">Mr Joe Bloggs</span><!--container--><div  class="ui-tile-address-block tile--spacer"><span  class="tile--address-details"><span  class="tile--data-strong tile--spacer"><i  aria-hidden="true" class="fa fa-home"></i>&nbsp; <span  class="tile--address-status"><i  aria-hidden="true" class="fa fa-check"></i> Correspondence </span></span><span  data-toggle="tooltip" class="tile--data-strong" title="Prime Minister">Prime Minister</span><span  data-toggle="tooltip" class="tile--data-strong" title="Durham">Durham</span><span  data-toggle="tooltip" class="tile--data-strong" title="Fox Road">Fox Road</span><span  data-toggle="tooltip" class="tile--data-strong" title="BA3 8SX">BA3 8SX</span><!--container--></span></div><!--container--><!--container--></button>
-                <!--container-->
+  <div class="ui-local-overlay-body">
+    <div class="vulnerability-view">
+      <div class="caller-section">
+        <h4 class="section-title">Client</h4>
+        <div class="ui-work-items content--flex-eq-tile-grid">
+          <alpha-caller-tile-v2>
+            <div class="alp-tile multi-action-tile tile--default tile--size-w-med">
+              <div class="action-container">
+                <button class="action selected-caller state--ui-active" disabled=""><span class="tile--data-strong"><span class="tile--role-type">Individual</span></span><span class="tile--data tile--spacer">Mr Joe Bloggs</span><div class="ui-tile-address-block tile--spacer"><span class="tile--address-details"><span class="tile--data-strong tile--spacer"><i aria-hidden="true" class="fa fa-home"></i>&nbsp; <span class="tile--address-status"><i aria-hidden="true" class="fa fa-check"></i> Correspondence </span></span><span data-toggle="tooltip" class="tile--data-strong" title="Prime Minister">Prime Minister</span><span data-toggle="tooltip" class="tile--data-strong" title="Durham">Durham</span><span data-toggle="tooltip" class="tile--data-strong" title="Fox Road">Fox Road</span><span data-toggle="tooltip" class="tile--data-strong" title="BA3 8SX">BA3 8SX</span></span></div></button>
+                
               </div>
             </div>
           </alpha-caller-tile-v2>
         </div>
       </div>
-      <div  class="caller-section vulnerability-details-section">
-        <h4  class="section-title">Extra Care Details</h4>
-        <div  class="ui-work-items content--flex-eq-tile-grid tile-collection--size-w-lrg">
-          <div  class="multi-action-tile tile--default tile--size-w-lrg">
-            <div  class="action-container">
-              <button  class="action state--ui-active vulnerability-tile"><span  class="tile--data-heading">Type:</span><span  class="tile--data-strong tile--spacer">Health- Hearing</span><span  class="tile--data-heading">Notification Method:</span><span  class="tile--data-strong tile--spacer">Phone</span><span  class="tile--data-heading">Date Notified:</span><span  class="tile--data-strong tile--spacer">21 Aug 2025</span><span  class="tile--data-heading">Stop Date:</span><span  class="tile--data-strong tile--spacer">Permanent</span><span  class="tile--data-heading">Helping Hand:</span><span  class="tile--data-strong tile--spacer">Speak Slower / Louder</span></button>
+      <div class="caller-section vulnerability-details-section">
+        <h4 class="section-title">Extra Care Details</h4>
+        <div class="ui-work-items content--flex-eq-tile-grid tile-collection--size-w-lrg">
+          <div class="multi-action-tile tile--default tile--size-w-lrg">
+            <div class="action-container">
+              <button class="action state--ui-active vulnerability-tile"><span class="tile--data-heading">Type:</span><span class="tile--data-strong tile--spacer">Health- Hearing</span><span class="tile--data-heading">Notification Method:</span><span class="tile--data-strong tile--spacer">Phone</span><span class="tile--data-heading">Date Notified:</span><span class="tile--data-strong tile--spacer">21 Aug 2025</span><span class="tile--data-heading">Stop Date:</span><span class="tile--data-strong tile--spacer">Permanent</span><span class="tile--data-heading">Helping Hand:</span><span class="tile--data-strong tile--spacer">Speak Slower / Louder</span></button>
             </div>
           </div>
-          <div  class="multi-action-tile tile--default tile--size-w-lrg">
-            <div  class="action-container">
-              <button  class="action state--ui-active vulnerability-tile"><span  class="tile--data-heading">Type:</span><span  class="tile--data-strong tile--spacer">Capability -Managing Finances</span><span  class="tile--data-heading">Notification Method:</span><span  class="tile--data-strong tile--spacer">Phone</span><span  class="tile--data-heading">Date Notified:</span><span  class="tile--data-strong tile--spacer">21 Aug 2025</span><span  class="tile--data-heading">Stop Date:</span><span  class="tile--data-strong tile--spacer">Permanent</span><span  class="tile--data-heading">Helping Hand:</span><span  class="tile--data-strong tile--spacer">Extra time allowed</span></button>
+          <div class="multi-action-tile tile--default tile--size-w-lrg">
+            <div class="action-container">
+              <button class="action state--ui-active vulnerability-tile"><span class="tile--data-heading">Type:</span><span class="tile--data-strong tile--spacer">Capability -Managing Finances</span><span class="tile--data-heading">Notification Method:</span><span class="tile--data-strong tile--spacer">Phone</span><span class="tile--data-heading">Date Notified:</span><span class="tile--data-strong tile--spacer">21 Aug 2025</span><span class="tile--data-heading">Stop Date:</span><span class="tile--data-strong tile--spacer">Permanent</span><span class="tile--data-heading">Helping Hand:</span><span class="tile--data-strong tile--spacer">Extra time allowed</span></button>
             </div>
           </div>
-          <div  class="multi-action-tile tile--default tile--size-w-lrg">
-            <div  class="action-container">
-              <button  class="action state--ui-active vulnerability-tile"><span  class="tile--data-heading">Type:</span><span  class="tile--data-strong tile--spacer">Health- Severe/Long Term Illness</span><span  class="tile--data-heading">Notification Method:</span><span  class="tile--data-strong tile--spacer">Phone</span><span  class="tile--data-heading">Date Notified:</span><span  class="tile--data-strong tile--spacer">21 Aug 2025</span><span  class="tile--data-heading">Stop Date:</span><span  class="tile--data-strong tile--spacer">Permanent</span><span  class="tile--data-heading">Helping Hand:</span><span  class="tile--data-strong tile--spacer">Extra Care</span></button>
+          <div class="multi-action-tile tile--default tile--size-w-lrg">
+            <div class="action-container">
+              <button class="action state--ui-active vulnerability-tile"><span class="tile--data-heading">Type:</span><span class="tile--data-strong tile--spacer">Health- Severe/Long Term Illness</span><span class="tile--data-heading">Notification Method:</span><span class="tile--data-strong tile--spacer">Phone</span><span class="tile--data-heading">Date Notified:</span><span class="tile--data-strong tile--spacer">21 Aug 2025</span><span class="tile--data-heading">Stop Date:</span><span class="tile--data-strong tile--spacer">Permanent</span><span class="tile--data-heading">Helping Hand:</span><span class="tile--data-strong tile--spacer">Extra Care</span></button>
             </div>
           </div>
-          <!--container-->
+          
         </div>
       </div>
     </div>
-    <!--container-->
-    <!--container-->
+    
+    
   </div>
-  <div  class="ui-local-overlay-footer">
-    <span  class="ui-button--multi-state ui-text-nowrap pin-menu ui-dock-collapse display-inline"><button  (click)="closeDialog()" class="ui-button"><span  class="ui-button-content"><span  class="ui-button-icon-left"><i  class="fas fa-arrow-left"></i></span><span  class="ui-button-text"><strong >Close</strong></span><span  class="ui-button-icon-right"></span></span></button></span>
-    <!--container-->
-    <!--container-->
+  <div class="ui-local-overlay-footer">
+    <span class="ui-button--multi-state ui-text-nowrap pin-menu ui-dock-collapse display-inline"><button (click)="closeDialog()" class="ui-button"><span class="ui-button-content"><span class="ui-button-icon-left"><i class="fas fa-arrow-left"></i></span><span class="ui-button-text"><strong>Close</strong></span><span class="ui-button-icon-right"></span></span></button></span>
+    
+    
   </div>
 </div>
 </dialog>
