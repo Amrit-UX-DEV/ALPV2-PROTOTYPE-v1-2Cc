@@ -8,6 +8,8 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 
 import { CallScriptJourneyComponent } from '../components/journey/call-script-journey.component';
+import { CallInformationOptionsComponent } from '../components/call-information-options/call-information-options.component';
+import { CallPensionOptionsComponent } from '../components/call-pension-options/call-pension-options.component';
 
 /**
  * Step 4 of the call centre journey: log the call information.
@@ -20,7 +22,13 @@ import { CallScriptJourneyComponent } from '../components/journey/call-script-jo
 @Component({
   selector: 'li[alpha-call-info-step]',
   standalone: true,
-  imports: [CommonModule, FormsModule, CallScriptJourneyComponent],
+  imports: [
+    CommonModule,
+    FormsModule,
+    CallScriptJourneyComponent,
+    CallInformationOptionsComponent,
+    CallPensionOptionsComponent,
+  ],
   templateUrl: './call-info-step.component.html',
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
 })
