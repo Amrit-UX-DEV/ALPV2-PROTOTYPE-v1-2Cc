@@ -66,10 +66,7 @@
                                                                                                 <label for="searchCriteria">Surname</label>
                                                                                                 <input class="form-control" formcontrolname="surname" id="PolicySearch_Surname" name="surname" placeholder="Enter Surname" type="input">
                                                                                             </div>
-                                                                                            <div class="search--input-grow remove-padding-right col-md-12" hidden="">
-                                                                                                <label for="name">Name</label>
-                                                                                                <input class="form-control" formcontrolname="name" id="PolicySearch_Name" name="name" placeholder="Enter Name" type="input">
-                                                                                            </div>
+                                                                                            
                                                                                             <div class="search--input-compact col-md-12" hidden="">
                                                                                                 <label for="searchCriteria" style="white-space: nowrap;">Sounds
                                                                                                     Like?</label>
@@ -80,112 +77,14 @@
                                                                                                 </label>
                                                                                             </div>
                                                                                         </div>
-                                                                                        <div class="row form-group" hidden="">
-                                                                                            <div class="search--input-grow col-md-12" hidden="">
-                                                                                                <label for="searchCriteria">Forename</label>
-                                                                                                <input class="form-control" formcontrolname="forename" id="PolicySearch_Forename" name="forename" placeholder="Enter Forename" type="input" readonly="">
-                                                                                            </div>
-                                                                                            <div class="remove-padding-left search--input-compact col-md-12" hidden="">
-                                                                                                <label for="searchCriteria">Initials</label>
-                                                                                                <input class="form-control" formcontrolname="initials" id="PolicySearch_Initials" name="initials" placeholder="Initials" type="input" readonly="">
-                                                                                            </div>
-                                                                                        </div>
-                                                                                        <div class="row form-group search--date-selection search--date-selection" hidden="">
-                                                                                            <div hidden="">
-                                                                                                <label for="dateOfBirthRaw">Date
-                                                                                                    Of
-                                                                                                    Birth</label>
-                                                                                                <input class="date-input-padding" formcontrolname="dateOfBirthRaw" id="DateOfBirth_DatePicker" matinput="" maxlength="11" name="DateOfBirth_DatePicker" placeholder="DD/MM/YYYY" style="line-height: 2; width: 78%" aria-haspopup="true" max="2018-09-03">
-                                                                                                <mat-datepicker-toggle class="mat-datepicker-toggle" matsuffix="">
-                                                                                                    <button mat-icon-button="" type="button" class="mat-icon-button" aria-label="Open calendar"><span class="mat-button-wrapper">
-                                                                                                            <svg class="mat-datepicker-toggle-default-icon" fill="currentColor" focusable="false" height="24px" viewBox="0 0 24 24" width="24px">
-                                                                                                                <path d="M0 0h24v24H0z" fill="none">
-                                                                                                                </path>
-                                                                                                                <path d="M19 3h-1V1h-2v2H8V1H6v2H5c-1.11 0-1.99.9-1.99 2L3 19c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm0 16H5V8h14v11zM7 10h5v5H7z">
-                                                                                                                </path>
-                                                                                                            </svg>
-                                                                                                        </span>
-                                                                                                        <div class="mat-button-ripple mat-ripple mat-button-ripple-round" matripple="">
-                                                                                                        </div>
-                                                                                                        <div class="mat-button-focus-overlay">
-                                                                                                        </div>
-                                                                                                    </button>
-                                                                                                </mat-datepicker-toggle>
-                                                                                                <mat-datepicker>
-                                                                                                </mat-datepicker>
-                                                                                                
-                                                                                                
-                                                                                            </div>
-                                                                                        </div>
-                                                                                        <div class="row form-group search--inline-control search--input-gender" hidden="">
-                                                                                            <div hidden="">
-                                                                                                <label for="sex">Gender</label>
-                                                                                                <select class="form-control" formcontrolname="sex" id="PolicySearch_Sex">
-                                                                                                    
-                                                                                                    <option value="Male">
-                                                                                                        Male
-                                                                                                    </option>
-                                                                                                    <option value="Female">
-                                                                                                        Female
-                                                                                                    </option>
-                                                                                                    <option value="Either">
-                                                                                                        Either
-                                                                                                    </option>
-                                                                                                </select>
-                                                                                            </div>
-                                                                                        </div>
-                                                                                        <div class="row form-group search--input-postcode search--inline-control" hidden="">
-                                                                                            <div class="search--input-grow col-md-12" hidden="">
-                                                                                                <label for="niNumber">NI
-                                                                                                    Number</label>
-                                                                                                <input class="form-control" formcontrolname="niNumber" id="PolicySearch_NINumber" name="niNumber" placeholder="Enter NI Number" style="text-transform: capitalize" type="input">
-                                                                                            </div>
-                                                                                            <div class="col-md-12" hidden="">
-                                                                                                <label for="postcode">Postcode</label>
-                                                                                                <input class="form-control" formcontrolname="postcode" id="PolicySearch_Postcode" name="postcode" placeholder="Postcode" style="text-transform: capitalize" type="input">
-                                                                                            </div>
-                                                                                        </div>
-                                                                                        <div class="row form-group search--input-compact search--inline-control search--input-compact" hidden="">
-                                                                                            <div class="col-md-12">
-                                                                                                <label for="financialInstitution">Financial
-                                                                                                    Institution</label>
-                                                                                                <label class="switch switch-left-right">
-                                                                                                    <input class="switch-input" formcontrolname="financialInstitution" id="PolicySearch_FinancialInstitution" type="checkbox">
-                                                                                                    <span class="switch-label" data-off="Off" data-on="On"></span>
-                                                                                                    <span class="switch-handle"></span>
-                                                                                                </label>
-                                                                                            </div>
-                                                                                        </div>
-                                                                                        <div class="row form-group" hidden="">
-                                                                                            <div class="col-md-12">
-                                                                                                <label for="payeename">Payee
-                                                                                                    Name</label>
-                                                                                                <input class="form-control" formcontrolname="payeeName" id="UnallocatedPayment_Search_PayeeName" name="payeename" placeholder="Payee Name" type="input">
-                                                                                            </div>
-                                                                                        </div>
-                                                                                        <div class="row form-group search--inline-control search--input-number-amount" hidden="">
-                                                                                            <div class="col-md-12">
-                                                                                                <label for="amount">Amount</label>
-                                                                                                <input class="form-control" formcontrolname="amount" id="UnallocatedPayment_Search_Amount" name="amount" placeholder="0.00" type="input">
-                                                                                            </div>
-                                                                                        </div>
-                                                                                        <div class="row form-group search--inline-control search--input-bank-account" hidden="">
-                                                                                            <div style="padding-left: 13px;">
-                                                                                                <label for="sortcode">Sort
-                                                                                                    Code &amp;
-                                                                                                    Account
-                                                                                                    Number</label>
-                                                                                                <div class="row" style="padding-left: 15px;">
-                                                                                                    <input class="form-control" formcontrolname="sortCode1" id="PolicySearch_SortCode1" maxlength="2" name="sortcode1" onfocus="this.select();" placeholder="00" style="width: 31px;" type="input">
-                                                                                                    <label for="sortCode12" style="padding-left: 1px; padding-right: 1px;">-</label>
-                                                                                                    <input class="form-control" formcontrolname="sortCode2" id="PolicySearch_SortCode2" maxlength="2" name="sortcode2" onfocus="this.select();" placeholder="00" style="width: 31px;" type="input">
-                                                                                                    <label for="sortCode23" style="padding-left: 1px; padding-right: 1px;">-</label>
-                                                                                                    <input class="form-control" formcontrolname="sortCode3" id="PolicySearch_SortCode3" maxlength="2" name="sortcode3" onfocus="this.select();" placeholder="00" style="width: 31px;" type="input">
-                                                                                                    <label for="toUsenextElementSibiling" style="display:none"></label>
-                                                                                                    <input class="form-control search--input-bank-account-number" formcontrolname="accountNo" id="PolicySearch_AccountNumber" maxlength="8" name="accountnoseq4" onfocus="this.select();" placeholder="12345678" style="margin-left:10px; width: 90px;" type="input">
-                                                                                                </div>
-                                                                                            </div>
-                                                                                        </div>
+                                                                                        
+                                                                                        
+                                                                                        
+                                                                                        
+                                                                                        
+                                                                                        
+                                                                                        
+                                                                                        
                                                                                         <div class="row form-group search--date-selection search--inline-control" hidden="">
                                                                                             <div class="col-md-12">
                                                                                                 <label for="effectiveDate">Effective
@@ -364,13 +263,7 @@
                     
                     
                   </div>
-                  <div class="ui-work-items" style="width: 100%; display: flex; align-items: center; justify-content: center;" hidden="">
-                    <div class="alp-tile multi-action-tile tile--default tile--size-w-lrg ui-work-item-tile" style="margin-top: 0;">
-                      <div class="action-container">
-                        <button type="button" class="action--single content--center alp-tile__select-caller"><span class="tile--icon-col"><i class="fas fa-address-book" style="font-size: 32px;"></i></span><span class="tile--content-col"><span class="tile--data tile--spacer" style="margin-top: 7px; margin-left: 5px;"><strong>Select Who is Calling</strong></span></span></button>
-                      </div>
-                    </div>
-                  </div>
+                  
                   <div class="row other-caller-options">
                     <div class="col">
                       <div class="form-group">
