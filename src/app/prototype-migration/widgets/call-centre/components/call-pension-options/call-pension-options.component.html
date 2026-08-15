@@ -1,0 +1,395 @@
+                      <section class="card form-group" style="width: 100%;background-color: #fff;">
+                          <div class="alpha-sections">
+                              <div ux-tab-section="01" style="display: block;">
+
+                                  <section>
+                                      <div class="card">
+                                          <div class="card-header">Guidance</div>
+                              
+                                          <!-- The twelve pension guidance question sets. The ux-show-question-setNN class on this element selects which set is visible; jQuery swaps it. -->
+                                          <div class="ux-question-visibility ux-show-question-set01 margin-top-10" alpha-pension-question-sets></div>
+                              
+                              
+                                      </div>
+                              
+                              
+                              
+                              
+                                  </section>
+
+                                  <div class="ui-pension-guidance-information-container-a ux-hide">  
+
+                                      <div class="card">
+
+                                          <div class="ui-grouping-container margin-top-10 margin-bottom-15">
+                                              <div class="ui-grouping-container--heading"><p class="ui-group-container--heading-content"><strong>Appointment Information</strong></p></div>
+
+
+                                              <div class="notification-block status-prompt">
+                                                  <div class="notification-message">
+                                                      <p class="small-text">I will now book you a free appointment using the online: <a class="ui-site-link" href="https://www.moneyhelper.org.uk/en/pensions-and-retirement/pension-wise/book-a-free-pension-wise-appointment/how-to-book-a-phone-appointment/book-a-phone-appointment" target="_blank" onclick="openURLWindowPopup()">Pension Wise Appointment Booking Form <i class="fas fa-external-link-alt"></i></a></p>
+                                                  </div>
+                                              </div>
+
+
+                                          </div>
+
+                                          <div class="flex-container justify-content-center">
+                                              <div class="flex-col">
+                                                  <div class="multi-action-tile tile--default tile--size-w-med">
+                                                      <div class="action-container">
+                                                        <button class="action--single state--ui-active ui-disabled-with-state">
+                                                      
+                                                      
+                                                      
+                                                      
+                                                            
+                                                                <span class="tile--data-strong">
+                                                                    <i aria-hidden="true" class="fa fa-male"></i>
+                                                      
+                                                                    <!--bindings={
+                                                      "ng-reflect-ng-if": "true"
+                                                      }--><span class="tile--role-type">Individual</span>
+                                                                    <!--bindings={
+                                                      "ng-reflect-ng-if": "false"
+                                                      }-->
+                                                                </span>
+                                                                
+                                                                
+                                                                
+                                                      
+                                                            
+                                                      
+                                                            <span class="tile--data tile--spacer">
+                                                                Mr Joe Bloggs</span>
+                                                      
+                                                            <span class="tile--data-heading">
+                                                                Date of Birth:
+                                                            </span>
+                                                             <span class="tile--data-strong tile--spacer">
+                                                                13 Nov 1966 (55)
+                                                            </span>
+                                                      
+                                                            <span class="tile--data-heading">Email:</span>
+                                                          
+                                                                <span class="tile--data-strong tile--spacer">Joe.B@lorumipsum.com</span>
+                                                          <span class="tile--data-heading">Daytime Telephone Number:</span>
+                                                            
+                                                            <span class="tile--data-strong tile--spacer">07456789999
+                                                                                                                        </span>
+                                                          
+                                                          
+                                                      
+                                                      <span class="ui-data-indicator ui-status active " style="
+                                                        display: none;
+                                                      ">Active</span>
+
+                                                      
+                                                          </button>
+                                                      
+                                                      
+                                                      
+                                                      
+                                                      
+                                                        </div>
+                                                      </div>
+                                              </div>
+                                          </div>
+
+
+
+                                          <div class="card-header">Appointment Booking Information</div>
+
+                                          <div class="card-block">
+
+
+                                              <div class="row">
+                                                  <div class="col">
+                                                      <div class="form-group">
+                                                          <label>Appointment Date</label>
+                                                          <span style="position: relative;">
+                                                              <input class="form-control" type="input" value="" placeholder="Enter Date">
+                                                              <i class="far fa-calendar-alt" style="position: absolute;right: -85px;top: 22px;font-size: 18px;color: #1282f5;"></i>
+                                                          </span>
+                                                          
+                                                      </div>
+                                                  </div>
+                                                  <div class="col">
+                                                      <div class="form-group">
+                                                          <label>Appointment Time</label>
+                                                          <div class="ui-appointment-time-container flex-container align-items-center">
+                                                              <div class="flex-col">
+                                                                  <input class="form-control ui-time-hh" maxlength="2" type="input" value="" placeholder="HH">
+                                                              </div>
+                                                              <div class="flex-col">
+                                                                  <span class="ui-form-label-spacer">:</span>
+                                                              </div>
+                                                              <div class="flex-col">
+                                                                  <input class="form-control ui-time-mm" maxlength="2" type="input" value="" placeholder="MM" onchange="toggleButtonState('.ui-btn-success-guidance-update','ui-disabled')">
+                                                              </div>
+                                                              <div class="flex-col">
+                                                                  <select class="form-control ui-time-am-pm margin-left-5">
+                                                                      <option value="am">am</option>
+                                                                      <option value="pm">pm</option>
+                                                                  </select>
+                                                              </div>
+
+                                                              
+                                                          </div>
+                                                          
+                                                      </div>
+                                                  </div>
+                                              </div>
+
+
+                                              <div class="ui-pension-booking-information-container-c2 ux-hide">
+
+                                                  <div class="row">
+                                                      <div class="col">
+                                                          <div class="form-group">
+                                                              <label>Appointment Date</label>
+                                                              <span style="position: relative;">
+                                                                  <input class="form-control" type="input" value="" placeholder="Enter Date">
+                                                                  <i class="far fa-calendar-alt" style="position: absolute;right: -85px;top: 22px;font-size: 18px;color: #1282f5;"></i>
+                                                              </span>
+                                                              
+                                                          </div>
+                                                      </div>
+                                                      <div class="col">
+                                                          <div class="form-group">
+                                                              <label>Appointment Time</label>
+                                                              <div class="ui-appointment-time-container flex-container align-items-center">
+                                                                  <div class="flex-col">
+                                                                      <input class="form-control ui-time-hh" maxlength="2" type="input" value="" placeholder="HH">
+                                                                  </div>
+                                                                  <div class="flex-col">
+                                                                      <span class="ui-form-label-spacer">:</span>
+                                                                  </div>
+                                                                  <div class="flex-col">
+                                                                      <input class="form-control ui-time-mm" maxlength="2" type="input" value="" placeholder="MM" onchange="toggleButtonState('.ui-btn-success-guidance-update','ui-disabled')">
+                                                                  </div>
+                                                                  <div class="flex-col">
+                                                                      <select class="form-control ui-time-am-pm margin-left-5">
+                                                                          <option value="am">am</option>
+                                                                          <option value="pm">pm</option>
+                                                                      </select>
+                                                                  </div>
+
+                                                                  
+                                                              </div>
+                                                          </div>
+                                                      </div>
+                                                  </div>
+                                              
+                                              </div>
+
+
+
+                                              
+                                              <!-- <div class="row">
+                                                  <div class="col">
+                                                      <div class="form-group">
+                                                          <label>Email</label>
+                                                          <span style="position: relative;">
+                                                              <input class="form-control" type="input" value="Joe.B@lorumipsum.com" placeholder="Joe.B@lorumipsum.com">
+                                                          </span>
+                                                          
+                                                      </div>
+                                                  </div>
+                                                  <div class="col">
+                                                      <div class="form-group">
+                                                          <label>Phone Number</label>
+                                                          <input class="form-control" type="input" value="" placeholder="Enter Phone Number">
+                                                      </div>
+                                                  </div>
+                                              </div> -->
+
+
+                                              
+
+
+
+                                              
+                                          </div>
+                                      </div>
+
+                                      
+                                  </div>
+
+                                  <div class="ui-pension-guidance-information-container-b ux-hide">
+
+
+                                      <div class="card">
+
+
+                                          <div class="card-header">Appointment Booking Information</div>
+
+                                          <div class="card-block">
+
+
+
+
+                                              <div class="row">
+                                                  <div class="col">
+                                                      <div class="form-group">
+                                                          <label>Appointment Date</label>
+                                                          <span style="position: relative;">
+                                                              <input class="form-control" type="input" value="" placeholder="Enter Date">
+                                                              <i class="far fa-calendar-alt" style="position: absolute;right: -85px;top: 22px;font-size: 18px;color: #1282f5;"></i>
+                                                          </span>
+                                                          
+                                                      </div>
+                                                  </div>
+                                                  <div class="col">
+                                                      <div class="form-group">
+                                                          <label>Appointment Time</label>
+                                                          <div class="ui-appointment-time-container flex-container align-items-center">
+                                                              <div class="flex-col">
+                                                                  <input class="form-control ui-time-hh" maxlength="2" type="input" value="" placeholder="HH">
+                                                              </div>
+                                                              <div class="flex-col">
+                                                                  <span class="ui-form-label-spacer">:</span>
+                                                              </div>
+                                                              <div class="flex-col">
+                                                                  <input class="form-control ui-time-mm" maxlength="2" type="input" value="" placeholder="MM" onchange="toggleButtonState('.ui-btn-success-guidance-update','ui-disabled')">
+                                                              </div>
+                                                              <div class="flex-col">
+                                                                  <select class="form-control ui-time-am-pm margin-left-5">
+                                                                      <option value="am">am</option>
+                                                                      <option value="pm">pm</option>
+                                                                  </select>
+                                                              </div>
+
+                                                              
+                                                          </div>
+                                                      </div>
+                                                  </div>
+                                              </div>
+
+
+                                             
+
+
+                                          </div>
+                                      </div>
+
+
+
+                                      <!-- <div class="card">
+                                          <div class="ui-grouping-container margin-top-10 margin-bottom-15">
+                                              <div class="ui-grouping-container--heading"><p class="ui-group-container--heading-content"><strong>Getting Advice</strong></p></div>
+                                              <div class="notification-block status-prompt">
+                                              <div class="notification-message">
+                                                  <p class="small-text">We recommend you use the government's free, impartial guidance service, called Pension Wise before making any decision about your retirement options. Information on Pension Wise can be found in the letter from the government that was included in your options pack, or you can go to <a class="ui-site-link" href="#" target="_blank">www.pensionwise.go.uk <i class="fas fa-external-link-alt"></i></a> </p>
+                                              </div>
+                                              </div>
+                                          </div>
+
+                                          <div class="card-header">Information</div>
+
+                                          <div class="textarea--with-count-container">
+                                              <div class="textarea--with-count">
+                                                <label class="textarea--control-label margin-bottom-5">Notes</label>
+                                                <textarea id="textarea--with-count-1" class="form-control full-width" maxlength="1000"></textarea>
+                                                <progress id="textarea--count-value-progress-1" value="1000" max="1000"></progress>
+                                                <label class="textarea--count-progress">Characters Remaining: <span id="textarea--count-value-1" class="textarea--count-value">1000</span></label>
+                                              </div>
+                                          </div>
+
+                                      </div> -->
+                                  </div>
+
+                                  <div class="ui-pension-guidance-information-container-c ux-hide">
+                                      <div class="card">
+                                          <div class="ui-grouping-container margin-top-10 margin-bottom-15">
+                                              <div class="ui-grouping-container--heading"><p class="ui-group-container--heading-content"><strong>Getting Advice</strong></p></div>
+                                              <div class="notification-block status-prompt">
+                                              <div class="notification-message">
+                                                  <p class="small-text">We recommend you use the government's free, impartial guidance service, called Pension Wise before making any decision about your retirement options. Information on Pension Wise can be found in the letter from the government that was included in your options pack, or you can go to <a class="ui-site-link" href="#" target="_blank">www.pensionwise.go.uk <i class="fas fa-external-link-alt"></i></a> </p>
+                                              </div>
+                                              </div>
+                                          </div>
+
+                                          <div class="card-header">Opt Out Reason</div>
+
+                                          <div class="card-block">
+
+                                              <div class="row">
+                                                  <div class="col">
+                                                      <div class="form-group">
+                                                          
+                                                          <div>
+                                                              <select onChange="toggleButtonState('.ui-btn-sucess-pension-wise-update','ui-disabled')" class="form-control">
+                                                                  <option value="">Please select reason</option>
+                                                                  <option value="1">Reason 1</option>
+                                                                  <option value="2">Reason 2</option>
+                                                                  <option value="3">Reason 3</option>
+                                                                  <option value="4">Reason 4</option>
+                                                                  <!-- <option value="5">Appointment not applicable</option> -->
+                                                              </select>
+                                                          </div>
+                                                          
+                                                      </div>
+                                                  </div>
+                                              </div>
+
+                                              
+                                          </div>
+
+
+                                      </div>
+                                  </div>
+
+
+                                  <div class="ui-pension-booking-information-container-c ux-hide">
+                                      <div class="card">
+                                         
+                                          <div class="card-header">Other Reason</div>
+
+                                          <div class="card-block">
+
+                                              <div class="row">
+                                                  <div class="col">
+                                                      <div class="form-group">
+                                                        
+                                                          <div>
+                                                              <select onChange="toggleButtonState('.ui-btn-sucess-pension-wise-update','ui-disabled')" class="form-control">
+                                                                  <option value="">Please select reason</option>
+                                                                  <option value="1">Reason 1</option>
+                                                                  <option value="2">Reason 2</option>
+                                                                  <option value="3">Reason 3</option>
+                                                                  <option value="4">Reason 4</option>
+                                                                  <option value="5">Appointment not applicable at this time</option>
+                                                              </select>
+                                                          </div>
+                                                          
+                                                      </div>
+                                                  </div>
+                                              </div>
+
+                                              
+                                          </div>
+
+
+                                      </div>
+                                  </div>
+
+
+
+                              </div>
+
+
+
+
+                          </div>
+
+
+                          <div class="overlay-action-container text-center">
+                              <button class="btn btn-danger" alpha-ui-event="click" alpha-ui-attr-toggle=".call-info-action-container ,show-call-pension-action-options">Cancel</button>
+                              <button class="btn btn btn-success ui-btn-success-guidance-update-none ux-hide" alpha-ui-event="click" alpha-ui-attr-toggle=".call-info-action-container ,show-call-pension-action-options">Update Details</button>
+                              <button class="btn btn btn-success ui-btn-success-guidance-update ui-disabled" alpha-ui-event="click" alpha-ui-attr-toggle=".call-info-action-container ,show-call-pension-action-options|show-added-call-pension-action" onclick="toggleReviewContent()">Update Details</button>
+                             
+                          </div>
+                      </section>
+
+
