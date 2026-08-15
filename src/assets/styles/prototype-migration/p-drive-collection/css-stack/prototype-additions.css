@@ -2332,3 +2332,19 @@ ul.alpha-linked-data-structure li .ui-button--multi-state button.ui-button .ui-b
     z-index:1;
 
 }
+
+/* ---------------------------------------------------------------
+   Call centre demo: styles extracted from inline style attributes.
+   !important mirrors the precedence the inline styles had.
+   --------------------------------------------------------------- */
+
+button.action--maintain.secondary-action.state--ui--no-icon { border: none !important; border: 0.1rem solid #3c4981 !important; }
+button.action--single.state--ui-default.ui-disabled-with-state { border-width: 1px !important; }
+button.action.state--ui-default.ui-disabled-with-state { border-width: 1px !important; }
+div.app-branding--block { width: 60px !important; }
+div.business-processes.ui-menu-action-block { border-bottom: 0px solid rgba(255, 255, 255, 0.3) !important; }
+div.ui-er--all-apps-btn.ui-er--app-item { margin-top: 0 !important; margin-bottom: 0 !important; }
+div.ui-scratch-pad--widget { margin-bottom: 20px !important; }
+i.fa-piggy-bank.fas { font-size: 22px !important; position: relative !important; left: -2px !important; }
+i.fa-th.fas { font-size: 24px !important; }
+textarea.ui-sp-note-text { margin-top: 0px !important; margin-bottom: 0px !important; height: 130px !important; }
