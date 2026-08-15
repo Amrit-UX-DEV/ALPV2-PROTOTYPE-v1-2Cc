@@ -1,6 +1,6 @@
 import { Component, Input, OnInit, inject, signal, computed, effect } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { CallRepScriptService, CallRepScript } from '../call-rep-script.service';
+import { CallRepScriptService, CallRepScript } from './call-rep-script.service';
 
 @Component({
   selector: 'alpha-call-script-journey',
