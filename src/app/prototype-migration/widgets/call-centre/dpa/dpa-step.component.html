@@ -1,0 +1,224 @@
+        <div class="content-section">
+            <!-- ===== STEP 2 of 5: DPA / SECURITY QUESTIONS ===== -->
+            <div onclick="sidebarStep(this)" class="ui-app-header-dpa content-section-header">
+                <span class="step-number">2 </span>Data Protection Identity Check<i class="fa fa-chevron-down" aria-hidden="true"></i>
+            </div>
+            <div class="content-section-body">
+                <section>
+                    <div class="card dpa-card">
+                        <div class="card-header">
+                            <ul class="dpa-check-btn">
+                                <li alpha-ui-selectable="single,selected-item" class="detail-block-item selected-item dpa-example-pending">
+                                    <span class="item-info-0">Policy</span><span class="item-info-1">80007</span>
+                                    <span class="item-info-2 status-label onhold">
+                                        DPA Pending
+                                    </span>
+                                </li>
+
+                                <li alpha-ui-selectable="single,selected-item" class="detail-block-item selected-item dpa-passed dpa-example-passed" style="
+                                    display: none;
+                                ">
+                                    <span class="item-info-0">Policy</span><span class="item-info-1">80007</span>
+                                    <span class="item-info-2 status-label">
+                                        DPA Passed <i class="fa fa-check" aria-hidden="true"></i>
+                                    </span>
+                                </li>
+
+                                <li hidden="" alpha-ui-selectable="single,selected-item" class="detail-block-item ">
+                                    <span class="item-info-0">Policy</span><span class="item-info-1">43013900</span>
+                                    <span class="item-info-2 status-label">
+                                        DPA Pending
+                                    </span>
+                                </li>
+                                <li hidden="" alpha-ui-selectable="single,selected-item" class="detail-block-item dpa-passed">
+                                    <span class="item-info-0">Policy</span><span class="item-info-1">BC2823R</span>
+                                    <span class="item-info-2 status-label">
+                                        DPA Passed <i class="fa fa-check" aria-hidden="true"></i>
+                                    </span>
+                                </li>
+                                <li hidden="" alpha-ui-selectable="single,selected-item" class="detail-block-item dpa-failed">
+                                    <span class="item-info-0">Policy</span><span class="item-info-1">FA123</span>
+                                    <span class="item-info-2 status-label">
+                                        DPA Failed <i class="fa fa-times" aria-hidden="true"></i>
+                                    </span>
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="card-block">
+                            <div class="hide-show-content-container">
+                                <h3 hidden="" class="section-sub-heading">IFA Specific Questions (2 Required)
+                                </h3>
+                                <ul hidden="" class="alpha-question-checklist dpa-client-questions">
+                                    <li class="question-block dpa-initial-item dpa-block-ifa-01 dpa-question-correct dpa-show-next">
+                                        <div>
+                                            <label>
+
+                                                <span class="question-item">Full Name?</span>
+                                                <span class="answer-item">Wise Wealth</span>
+                                            </label>
+                                            <div class="question-btn-block">
+                                                <button alpha-ui-target=".dpa-block-ifa-01" alpha-ui-selectable="toggle,dpa-question-correct|dpa-show-next" class="question-btn-correct"><i class="fa fa-check-square" aria-hidden="true"></i></button>
+                                                <button alpha-ui-target=".dpa-block-ifa-01" alpha-ui-selectable="toggle,dpa-question-false" class="question-btn-false"><i class="fa fa-square" aria-hidden="true"></i></button>
+                                            </div>
+                                        </div>
+                                    </li>
+                                    <li class="question-block dpa-block-ifa-02">
+
+                                        <div>
+                                            <label>
+
+                                                <span class="question-item">Address?</span>
+                                                <span class="answer-item">123 Albert Street Road, Mayfair,
+                                                    London</span>
+                                            </label>
+                                            <div class="question-btn-block">
+                                                <button alpha-ui-target=".dpa-block-ifa-02" alpha-ui-selectable="toggle,dpa-question-correct|dpa-show-next" class="question-btn-correct"><i class="fa fa-check-square" aria-hidden="true"></i></button>
+                                                <button alpha-ui-target=".dpa-block-ifa-02" alpha-ui-selectable="toggle,dpa-question-false" class="question-btn-false"><i class="fa fa-square" aria-hidden="true"></i></button>
+                                            </div>
+                                        </div>
+                                    </li>
+
+
+                                </ul>
+                                <h3 class="section-sub-heading">Client Specific Questions (3 Required)</h3>
+                                <ul class="alpha-question-checklist dpa-client-questions">
+                                    <li class="question-block dpa-initial-item dpa-block-client-01 ">
+                                        <div>
+                                            <label>
+
+                                                <span class="question-item">Policy Holder Full Name (Not
+                                                    initials)?</span>
+                                                <span class="answer-item">Mr Joe Bloggs</span>
+                                            </label>
+                                            <div class="question-btn-block">
+                                                <button alpha-ui-target=".dpa-block-client-01" alpha-ui-selectable="toggle,dpa-question-correct|dpa-show-next" class="question-btn-correct"><i class="fa fa-check-square" aria-hidden="true"></i></button>
+                                                <button alpha-ui-target=".dpa-block-client-01" alpha-ui-selectable="toggle,dpa-question-false" class="question-btn-false"><i class="fa fa-square" aria-hidden="true"></i></button>
+                                            </div>
+                                        </div>
+                                    </li>
+                                    <li class="question-block dpa-block-client-02 ">
+
+                                        <div>
+                                            <label>
+
+                                                <span class="question-item">First line of Address?</span>
+                                                <span class="answer-item">42 Chester Court</span>
+                                            </label>
+                                            <div class="question-btn-block">
+                                                <button alpha-ui-target=".dpa-block-client-02" alpha-ui-selectable="toggle,dpa-question-correct|dpa-show-next" class="question-btn-correct"><i class="fa fa-check-square" aria-hidden="true"></i></button>
+                                                <button alpha-ui-target=".dpa-block-client-02" alpha-ui-selectable="toggle,dpa-question-false" class="question-btn-false"><i class="fa fa-square" aria-hidden="true"></i></button>
+                                            </div>
+                                        </div>
+                                    </li>
+                                    <li class="question-block dpa-block-client-03 ">
+                                        <div>
+                                            <label>
+
+                                                <span class="question-item">Date of Birth?</span>
+                                                <span class="answer-item">13 Nov 1966</span>
+                                            </label>
+                                            <div class="question-btn-block">
+                                                <button alpha-ui-target=".dpa-block-client-03" alpha-ui-selectable="toggle,dpa-question-correct|dpa-show-next" class="question-btn-correct"><i class="fa fa-check-square" aria-hidden="true"></i></button>
+                                                <button alpha-ui-target=".dpa-block-client-03" alpha-ui-selectable="toggle,dpa-question-false" class="question-btn-false"><i class="fa fa-square" aria-hidden="true"></i></button>
+                                            </div>
+                                        </div>
+                                    </li>
+                                    <li class="question-block dpa-block-client-04 ">
+                                        <div>
+                                            <label>
+                                                <span class="question-item">National Insurance Number?</span>
+                                                <span class="answer-item">JP 28 93 90A</span>
+                                            </label>
+                                            <div class="question-btn-block">
+                                                <button alpha-ui-target=".dpa-block-client-04" alpha-ui-selectable="toggle,dpa-question-correct" class="question-btn-correct"><i class="fa fa-check-square" aria-hidden="true"></i></button>
+                                                <button alpha-ui-target=".dpa-block-client-04" alpha-ui-selectable="toggle,dpa-question-false" class="question-btn-false"><i class="fa fa-square" aria-hidden="true"></i></button>
+                                            </div>
+                                        </div>
+                                    </li>
+                                </ul>
+                                <h3 class="section-sub-heading">Policy Specific Questions (1 Required)</h3>
+                                <ul class="alpha-question-checklist dpa-policy-questions">
+                                    <li class="question-block dpa-initial-item dpa-block-policy-01">
+                                        <div>
+                                            <label>
+                                                <span class="question-item">Policy Number?</span>
+                                                <span class="answer-item">80007</span>
+                                            </label>
+                                            <div class="question-btn-block">
+                                                <button alpha-ui-target=".dpa-block-policy-01" alpha-ui-selectable="toggle,dpa-question-correct" alpha-ui-event="click" alpha-ui-attr-toggle=".ui-btn-dpa-done,ui-disabled" class="question-btn-correct"><i class="fa fa-check-square" aria-hidden="true"></i></button>
+                                                <button alpha-ui-target=".dpa-block-policy-01" alpha-ui-selectable="toggle,dpa-question-false" class="question-btn-false"><i class="fa fa-square" aria-hidden="true"></i></button>
+                                            </div>
+                                        </div>
+                                       
+                                    </li>
+                                    <li class="question-block  dpa-block-policy-02">
+                                        <div>
+                                            <label>
+                                                <span class="question-item">Premium Amount?</span>
+                                                <span class="answer-item">£500.00</span>
+                                            </label>
+                                            <div class="question-btn-block">
+                                                <button alpha-ui-target=".dpa-block-policy-02" alpha-ui-selectable="toggle,dpa-question-correct" class="question-btn-correct"><i class="fa fa-check-square" aria-hidden="true"></i></button>
+                                                <button alpha-ui-target=".dpa-block-policy-02" alpha-ui-selectable="toggle,dpa-question-false" class="question-btn-false"><i class="fa fa-square" aria-hidden="true"></i></button>
+                                            </div>
+                                        </div>
+                                       
+                                    </li>
+                                    <li class="question-block  dpa-block-policy-03">
+                                        <div>
+                                            <label>
+                                                <span class="question-item">Amount of life cover?</span>
+                                                <span class="answer-item">£250,000.00</span>
+                                            </label>
+                                            <div class="question-btn-block">
+                                                <button alpha-ui-target=".dpa-block-policy-03" alpha-ui-selectable="toggle,dpa-question-correct" class="question-btn-correct"><i class="fa fa-check-square" aria-hidden="true"></i></button>
+                                                <button alpha-ui-target=".dpa-block-policy-03" alpha-ui-selectable="toggle,dpa-question-false" class="question-btn-false"><i class="fa fa-square" aria-hidden="true"></i></button>
+                                            </div>
+                                        </div>
+                                       
+                                    </li>
+                                    <li class="question-block  dpa-block-policy-04">
+                                        <div>
+                                            <label>
+                                                <span class="question-item">Funds Invested?</span>
+                                                <span class="answer-item">£500,000.00</span>
+                                            </label>
+                                           
+                                        </div>
+                                        <div class="dpa-extra-question form-content-center mt-20">
+                                          
+                                        </div>
+                                    </li>
+
+                                </ul>
+                                <div class="row dpa-bailout-content">
+                                    <div class="form-group">
+                                        <label>Reason For Bailing out on this caller?</label>
+
+                                        <div>
+                                            <textarea></textarea>
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </div>
+                            <div class="row hide-from-tile ">
+                                <div class="col">
+                                    <div class="form-group form-content-center">
+                                      <button class="ui-btn"> Bailout <i class="fa fa-exclamation-triangle" aria-hidden="true"></i></button>
+                                      <!-- <button class="ui-btn"> Logwork <i class="fa fa-exclamation-triangle" aria-hidden="true"></i></button> -->
+                                      <button class="ui-btn ui-btn-dpa-done ui-disabled" onclick="toggleAppStep('.ui-app-header-dpa','.ui-app-header-contact-info');"> Continue Call Journey <i class="fa fa-check" aria-hidden="true"></i></button>
+
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+
+
+
+            </div>
+        </div>
+
