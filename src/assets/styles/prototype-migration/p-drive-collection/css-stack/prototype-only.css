@@ -1526,7 +1526,7 @@ alpha-wcm-tile .ui-tooltip-icon-block.ui-tile-type.email-item{
 }
 
 alpha-wcm-tile .ui-tooltip-icon-block.ui-tile-type.email-item .ui-content-icon{
-    color:#f2fbff; !important;
+    color:#f2fbff !important;
     font-size:18px;
 }
 
@@ -1548,7 +1548,7 @@ alpha-wcm-tile .ui-tooltip-icon-block.ui-tile-type.document-item{
 }
 
 alpha-wcm-tile .ui-tooltip-icon-block.ui-tile-type.document-item .ui-content-icon{
-    color:#ffffff; !important;
+    color:#ffffff !important;
     font-size:18px;
 }
 
@@ -1570,7 +1570,7 @@ alpha-wcm-tile .ui-tooltip-icon-block.ui-tile-type.call-item{
 }
 
 alpha-wcm-tile .ui-tooltip-icon-block.ui-tile-type.call-item .ui-content-icon{
-    color:#ffffff; !important;
+    color:#ffffff !important;
     font-size:18px;
 }
 
@@ -1591,7 +1591,7 @@ alpha-wcm-tile .ui-tooltip-icon-block.ui-tile-type.portal-item{
 }
 
 alpha-wcm-tile .ui-tooltip-icon-block.ui-tile-type.portal-item .ui-content-icon{
-    color:#ffffff; !important;
+    color:#ffffff !important;
     font-size:18px;
 }
 
