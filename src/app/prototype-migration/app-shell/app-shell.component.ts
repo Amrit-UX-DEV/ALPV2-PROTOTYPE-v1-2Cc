@@ -9,6 +9,7 @@ import { VersionSwitcherComponent } from './components/version-switcher/version-
 import { AlphaGroupSummaryComponent } from './components/group-summary/alpha-group-summary.component';
 import { WizardShellComponent, WizardRegistryService, registerWizardComponents } from '../wizard';
 import { RightDockComponent } from './regions/right-dock/right-dock.component';
+import { ExplorerToolbarComponent, AppView } from './regions/explorer-toolbar/explorer-toolbar.component';
 
 @Component({
   selector: 'app-shell',
@@ -19,15 +20,16 @@ import { RightDockComponent } from './regions/right-dock/right-dock.component';
     CommonModule,
     VersionSwitcherComponent,
     RightDockComponent,
+    ExplorerToolbarComponent,
   ],
   templateUrl: './app-shell.component.html',
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
 })
 export class AppShellComponent implements AfterViewInit {
 
-  public currentView: 'group-summary' | 'work-plan' = 'work-plan';
+  public currentView: AppView = 'work-plan';
 
-  switchView(view: 'group-summary' | 'work-plan') {
+  switchView(view: AppView) {
     this.currentView = view;
   }
 
