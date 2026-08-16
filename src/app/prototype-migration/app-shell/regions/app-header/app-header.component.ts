@@ -1,4 +1,6 @@
-import { Component, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
+import { Component, CUSTOM_ELEMENTS_SCHEMA, inject } from '@angular/core';
+
+import { PrototypeContextService } from '../../../context/prototype-context.service';
 
 /**
  * The application header strip: system date, the user and settings dropdown,
@@ -14,15 +16,10 @@ import { Component, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
  * with rules like `.ui-app-theme--dark .app-header .app-page--heading h1`, so
  * the element and its position both need to stay put.
  *
- * No Angular bindings at all: 314 lines of static markup with 20 alpha-ui-*
- * hooks that the prototype's jQuery binds after render.
- *
- * This is the region the context work lands in first. .app-page--header holds
- * the breadcrumb and the heading, and the heading's .context-info spans are
- * where the hard-coded policy currently lives: policy 80007, In Force, Group
- * Stakeholder Pen Plan Pre Nov 04, Great Britain, UK Sterling, Extra Care
- * Client. Those are 31 of these 314 lines, and they become the first consumer
- * of the context JSON.
+ * The breadcrumb and page heading are the prototype's first context consumers:
+ * the policy number, status, product, territory, currency and the Extra Care
+ * indicator all come from the context JSON now. The rest of the region is
+ * still static markup with 20 alpha-ui-* hooks that jQuery binds after render.
  */
 @Component({
   selector: 'div[alpha-app-header]',
@@ -30,4 +27,7 @@ import { Component, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
   templateUrl: './app-header.component.html',
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
 })
-export class AppHeaderComponent {}
+export class AppHeaderComponent {
+  /** Read directly in the template as ctx.policy(), ctx.screen() and so on. */
+  protected readonly ctx = inject(PrototypeContextService);
+}
