@@ -1,6 +1,6 @@
 import { Injectable, computed, signal } from '@angular/core';
 
-import { PrototypeContext } from './prototype-context.model';
+import { ContextClient, PrototypeContext } from './prototype-context.model';
 
 /** Where context files live. Adding a context means adding a file here. */
 export const CONTEXT_DATA_PATH = 'assets/data/contexts';
@@ -21,11 +21,13 @@ const FALLBACK_CONTEXT: PrototypeContext = {
   policy: {
     number: '80007',
     productName: 'Group Stakeholder Pen Plan Pre Nov 04',
+    company: 'HSBC (LifePen)',
+    policyType: 'Unit Linked',
     status: 'In Force',
     territory: 'Great Britain',
     currency: { label: 'UK Sterling', symbol: '£' },
+    clients: [],
   },
-  clients: [],
   screen: { breadcrumbs: ['Search', 'Group Summary'], headingPrefix: 'Group Summary:' },
 };
 
@@ -43,16 +45,29 @@ export class PrototypeContextService {
 
   readonly context = this.current.asReadonly();
   readonly policy = computed(() => this.current().policy);
-  readonly clients = computed(() => this.current().clients);
   readonly screen = computed(() => this.current().screen);
+
+  /** The clients attached to the policy, in render order. */
+  readonly clients = computed(() => this.policy().clients);
 
   /** Clients flagged for extra care, i.e. those with at least one entry. */
   readonly extraCareClients = computed(() =>
-    this.current().clients.filter((c) => (c.extraCare?.length ?? 0) > 0),
+    this.clients().filter((c) => (c.extraCare?.length ?? 0) > 0),
   );
 
   /** Drives the Extra Care indicator in the header. */
   readonly hasExtraCareClient = computed(() => this.extraCareClients().length > 0);
+
+  /**
+   * Looks a client up by identity key.
+   *
+   * The group summary has hand-authored tiles for particular clients, mixed in
+   * with entries that are not modelled yet, so those tiles cannot simply be
+   * looped over. Until they can, they name the client they show.
+   */
+  clientByKey(key: string): ContextClient | undefined {
+    return this.clients().find((c) => c.key === key);
+  }
 
   /**
    * Replaces the current context. Awaited during bootstrap so the first render
