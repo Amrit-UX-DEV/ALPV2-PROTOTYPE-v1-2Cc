@@ -9,6 +9,7 @@ import { VersionSwitcherComponent } from './components/version-switcher/version-
 import { AlphaGroupSummaryComponent } from './components/group-summary/alpha-group-summary.component';
 import { WizardShellComponent, WizardRegistryService, registerWizardComponents } from '../wizard';
 import { CallCentreWidgetComponent } from '../widgets/call-centre/call-centre-widget.component';
+import { RightDockComponent } from './regions/right-dock/right-dock.component';
 
 @Component({
   selector: 'app-shell',
@@ -19,6 +20,7 @@ import { CallCentreWidgetComponent } from '../widgets/call-centre/call-centre-wi
     CommonModule,
     VersionSwitcherComponent,
     CallCentreWidgetComponent,
+    RightDockComponent,
   ],
   templateUrl: './app-shell.component.html',
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
