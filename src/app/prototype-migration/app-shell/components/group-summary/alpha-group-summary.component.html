@@ -359,7 +359,7 @@
         
         <div class="multi-action-tile tile--default tile--size-w-med">
             <div class="action-container">
-                <button class="action state--ui-active" type="button" [attr.client-id]="client('MrJoeBloggs')?.id" [attr.policy-client-link]="tokenFor('MrJoeBloggs')">
+                <button class="action state--ui-active" [class.alpha-selected]="ctx.isSelected('client', 'MrJoeBloggs')" (click)="ctx.select('client', 'MrJoeBloggs')" type="button" [attr.client-id]="client('MrJoeBloggs')?.id" [attr.policy-client-link]="tokenFor('MrJoeBloggs')">
         
             <span class="tile--data-strong">
                 <i aria-hidden="true" class="fa fa-male"></i>
@@ -528,7 +528,7 @@
         
         <div hidden class="multi-action-tile tile--default tile--size-w-med">
         <div class="action-container">
-        <button class="action state--ui-active" type="button" [attr.client-id]="client('MrsLucyBloggs')?.id" [attr.policy-client-link]="tokenFor('MrsLucyBloggs')">
+        <button class="action state--ui-active" [class.alpha-selected]="ctx.isSelected('client', 'MrsLucyBloggs')" (click)="ctx.select('client', 'MrsLucyBloggs')" type="button" [attr.client-id]="client('MrsLucyBloggs')?.id" [attr.policy-client-link]="tokenFor('MrsLucyBloggs')">
         
         
         
@@ -605,7 +605,7 @@
         <div class="ui-diagram-content scroll-child-items">
         
         
-        <div class="ui-policy-row" [attr.linked-clients]="linkedClients()" selected-client=""> 
+        <div class="ui-policy-row" [class.ui-show-linked-member]="showLinkedMember()" [attr.linked-clients]="linkedClients()" [attr.selected-client]="selectedClientToken() ?? ''"> 
         <div class="ui-flag-col"> 
         <span class="ui-key-icons">
         <span class="ui-tooltip-icon-block ui-tooltip--user-found">
@@ -778,7 +778,7 @@
         <div class="ui-interesed-party-content content--flex-eq-tile-grid"> 
         <div class="multi-action-tile tile--default tile--size-w-med">
           <div class="action-container">
-            <button class="client-unit state--ui-active" type="button" [attr.client-id]="client('MrJoeBloggs')?.id">
+            <button class="client-unit state--ui-active" [class.alpha-selected]="ctx.isSelected('client', 'MrJoeBloggs')" (click)="ctx.select('client', 'MrJoeBloggs')" type="button" [attr.client-id]="client('MrJoeBloggs')?.id">
               <span class="tile--data-strong">{{ client('MrJoeBloggs')?.roles?.join(', ') }}</span>
               <span class="tile--data">
                {{ client('MrJoeBloggs')?.name }}

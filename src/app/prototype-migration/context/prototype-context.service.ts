@@ -1,6 +1,11 @@
 import { Injectable, computed, signal } from '@angular/core';
 
-import { ContextClient, PrototypeContext } from './prototype-context.model';
+import {
+  ContextClient,
+  ContextScope,
+  ContextSelection,
+  PrototypeContext,
+} from './prototype-context.model';
 
 /** Where context files live. Adding a context means adding a file here. */
 export const CONTEXT_DATA_PATH = 'assets/data/contexts';
@@ -67,6 +72,33 @@ export class PrototypeContextService {
    */
   clientByKey(key: string): ContextClient | undefined {
     return this.clients().find((c) => c.key === key);
+  }
+
+  private readonly currentSelection = signal<ContextSelection | null>(null);
+
+  /** What the user has selected, and therefore the context the app is in. */
+  readonly selection = this.currentSelection.asReadonly();
+
+  /** The selected client, when the selection is a client at all. */
+  readonly selectedClient = computed(() => {
+    const selected = this.currentSelection();
+    return selected?.scope === 'client' ? this.clientByKey(selected.key) : undefined;
+  });
+
+  /**
+   * Puts the app into a context.
+   *
+   * Selection deliberately lives here rather than in the screen that was
+   * clicked, because the whole prototype reads from it: choosing a client is
+   * what should decide which policies highlight and which options are offered.
+   */
+  select(scope: ContextScope, key: string): void {
+    this.currentSelection.set({ scope, key });
+  }
+
+  isSelected(scope: ContextScope, key: string): boolean {
+    const selected = this.currentSelection();
+    return selected?.scope === scope && selected.key === key;
   }
 
   /**

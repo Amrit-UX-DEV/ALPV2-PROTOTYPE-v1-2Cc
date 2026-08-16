@@ -85,6 +85,22 @@ export interface ContextPolicy {
   clients: ContextClient[];
 }
 
+/**
+ * What kind of thing is currently selected.
+ *
+ * Selecting something is what puts the prototype into a context: choose a
+ * client and the app is in client context, choose the policy and it is in
+ * policy context, and so on. The hierarchy is a group wrapping clients and
+ * policies, where a client may hold several policies.
+ */
+export type ContextScope = 'group' | 'policy' | 'client' | 'agent';
+
+export interface ContextSelection {
+  scope: ContextScope;
+  /** Identity key of the selected thing, e.g. 'MrJoeBloggs' for a client. */
+  key: string;
+}
+
 export interface ContextScreen {
   /** Breadcrumb trail, e.g. ['Search', 'Group Summary']. */
   breadcrumbs: string[];

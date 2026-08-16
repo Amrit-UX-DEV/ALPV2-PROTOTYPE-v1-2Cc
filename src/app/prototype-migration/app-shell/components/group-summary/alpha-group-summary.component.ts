@@ -51,4 +51,23 @@ export class AlphaGroupSummaryComponent {
   protected tokenFor(key: string): string | null {
     return this.token(this.client(key));
   }
+
+  /**
+   * The selected client in linked-clients spelling, or null when the selection
+   * is not a client. css-updates.css matches it with [selected-client*="..."].
+   */
+  protected readonly selectedClientToken = computed(() =>
+    this.token(this.ctx.selectedClient()),
+  );
+
+  /**
+   * Whether the policy row should reveal its linked-member indicator.
+   *
+   * True only when the selected client is actually one of this policy's, which
+   * is what stops an unrelated selection from lighting the row up.
+   */
+  protected readonly showLinkedMember = computed(() => {
+    const token = this.selectedClientToken();
+    return token !== null && this.linkedClients().split(' ').includes(token);
+  });
 }
