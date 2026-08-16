@@ -4,23 +4,20 @@ import {
   CUSTOM_ELEMENTS_SCHEMA,
   inject,
 } from '@angular/core';
-import { CommonModule } from '@angular/common';
 import { VersionSwitcherComponent } from './components/version-switcher/version-switcher.component';
-import { AlphaGroupSummaryComponent } from './components/group-summary/alpha-group-summary.component';
-import { WizardShellComponent, WizardRegistryService, registerWizardComponents } from '../wizard';
+import { WizardRegistryService, registerWizardComponents } from '../wizard';
 import { RightDockComponent } from './regions/right-dock/right-dock.component';
 import { ExplorerToolbarComponent, AppView } from './regions/explorer-toolbar/explorer-toolbar.component';
+import { AppBodyComponent } from './regions/app-body/app-body.component';
 
 @Component({
   selector: 'app-shell',
   standalone: true,
   imports: [
-    AlphaGroupSummaryComponent,
-    WizardShellComponent,
-    CommonModule,
     VersionSwitcherComponent,
     RightDockComponent,
     ExplorerToolbarComponent,
+    AppBodyComponent,
   ],
   templateUrl: './app-shell.component.html',
   schemas: [CUSTOM_ELEMENTS_SCHEMA],

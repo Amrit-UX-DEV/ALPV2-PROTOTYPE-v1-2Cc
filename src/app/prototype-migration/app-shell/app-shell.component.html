@@ -378,18 +378,7 @@ width: inherit;
      ============================================================ -->
 <div class="alpha-layout-col-2 alpha-app-body" style="
 width: inherit;
-">
-      <router-outlet></router-outlet>
-      
-      <!-- GROUP SUMMARY HERE -->
-      <!-- Content Area -->
-    <div [ngSwitch]="currentView">
-        <alpha-group-summary *ngSwitchCase="'group-summary'"></alpha-group-summary>
-        <wizard-shell *ngSwitchCase="'work-plan'" [configUrl]="'assets/data/wizard-configs/script-management.wizard.json'">
-        </wizard-shell>
-    </div>
-
-    </div>
+" alpha-app-body [currentView]="currentView"></div>
 
 
 <!-- ============================================================
