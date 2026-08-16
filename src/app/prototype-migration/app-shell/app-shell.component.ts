@@ -8,7 +8,6 @@ import { CommonModule } from '@angular/common';
 import { VersionSwitcherComponent } from './components/version-switcher/version-switcher.component';
 import { AlphaGroupSummaryComponent } from './components/group-summary/alpha-group-summary.component';
 import { WizardShellComponent, WizardRegistryService, registerWizardComponents } from '../wizard';
-import { CallCentreWidgetComponent } from '../widgets/call-centre/call-centre-widget.component';
 import { RightDockComponent } from './regions/right-dock/right-dock.component';
 
 @Component({
@@ -19,7 +18,6 @@ import { RightDockComponent } from './regions/right-dock/right-dock.component';
     WizardShellComponent,
     CommonModule,
     VersionSwitcherComponent,
-    CallCentreWidgetComponent,
     RightDockComponent,
   ],
   templateUrl: './app-shell.component.html',

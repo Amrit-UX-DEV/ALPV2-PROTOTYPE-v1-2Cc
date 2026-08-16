@@ -1,5 +1,7 @@
 import { Component, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 
+import { CallCentreWidgetComponent } from '../../../widgets/call-centre/call-centre-widget.component';
+
 /**
  * The right-hand dock: the app rail listing running and available service
  * apps, and the widget dock beneath it.
@@ -11,13 +13,19 @@ import { Component, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
  * Wrapping it in a component element collapsed the rail and the dock the last
  * time it was attempted.
  *
- * The markup is entirely static. Everything interactive here is driven by the
- * prototype's jQuery: 11 alpha-ui-* hooks and one inline onclick, all bound
+ * The markup has no Angular bindings. Everything interactive here is driven by
+ * the prototype's jQuery: 11 alpha-ui-* hooks and one inline onclick, all bound
  * after render by the scripts the shell loads in ngAfterViewInit.
+ *
+ * It does host the call centre widget, though. That import is load-bearing:
+ * CUSTOM_ELEMENTS_SCHEMA means an unimported component selector renders as an
+ * empty unknown element with no compile error, so the widget silently vanishes
+ * without it.
  */
 @Component({
   selector: 'alpha-right-sidebar',
   standalone: true,
+  imports: [CallCentreWidgetComponent],
   templateUrl: './right-dock.component.html',
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
 })
