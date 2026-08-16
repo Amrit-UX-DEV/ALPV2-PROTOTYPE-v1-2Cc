@@ -279,29 +279,34 @@
 
 
 
+                            <!-- Driven by the prototype context. Edit
+                                 src/assets/data/contexts/policy-80007.json rather than this markup.
+                                 The element and class structure below is unchanged from the
+                                 hard-coded version, because the theme stylesheets target
+                                 .app-header .context-info and .app-page--heading h1. -->
                             <div class="app-page--header">
                                 <nav aria-label="Breadcrumb" class="app-navigation--breadcrumbs">
                                     <ol>
+                                        @for (crumb of ctx.screen().breadcrumbs; track crumb) {
                                         <li>
-                                            <a> Search </a>
+                                            <a> {{ crumb }} </a>
                                         </li>
-                                        <li>
-                                            <a> Group Summary </a>
-                                        </li>
-                                        
+                                        }
                                     </ol>
                                 </nav>
                                 <div class="app-page--heading">
                                     <h1>
-                                        Group Summary:  <span class="context-info">
-                                            <span>Policy 80007</span>
-                                            <span class="ui-data-indicator ui-status active">In Force</span>,
+                                        {{ ctx.screen().headingPrefix }}  <span class="context-info">
+                                            <span>Policy {{ ctx.policy().number }}</span>
+                                            <span class="ui-data-indicator ui-status active">{{ ctx.policy().status }}</span>,
                                             <span>
-                                              Group Stakeholder Pen Plan Pre Nov 04
+                                              {{ ctx.policy().productName }}
       </span>
-                                            <span>Great Britain,</span>
-                                            <span class="ui-data-indicator ui-app-currency ui-status active">UK Sterling <span class="ui-currency-icon">£</span></span>
+                                            <span>{{ ctx.policy().territory }},</span>
+                                            <span class="ui-data-indicator ui-app-currency ui-status active">{{ ctx.policy().currency.label }} <span class="ui-currency-icon">{{ ctx.policy().currency.symbol }}</span></span>
+                                            @if (ctx.hasExtraCareClient()) {
                                             <span class="ui-data-indicator vulnerable"> Extra Care Client </span>
+                                            }
                                         </span>
                                     </h1>
 
