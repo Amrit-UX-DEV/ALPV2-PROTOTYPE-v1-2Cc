@@ -9,6 +9,7 @@ import { WizardRegistryService, registerWizardComponents } from '../wizard';
 import { RightDockComponent } from './regions/right-dock/right-dock.component';
 import { ExplorerToolbarComponent, AppView } from './regions/explorer-toolbar/explorer-toolbar.component';
 import { AppBodyComponent } from './regions/app-body/app-body.component';
+import { AppHeaderComponent } from './regions/app-header/app-header.component';
 
 @Component({
   selector: 'app-shell',
@@ -18,6 +19,7 @@ import { AppBodyComponent } from './regions/app-body/app-body.component';
     RightDockComponent,
     ExplorerToolbarComponent,
     AppBodyComponent,
+    AppHeaderComponent,
   ],
   templateUrl: './app-shell.component.html',
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
