@@ -6,40 +6,17 @@
  * mostly does not.
  */
 
-/*
- * The 21 menu blocks that are not part of the current context.
- *
- * .alpha-explorer-toolbar .ui-menu-action-block in css-alpha-explorer.css sets
- * display: block at (0,2,0). A single utility class is (0,1,0) and would lose,
- * which would reveal all 21 blocks at once. Two classes only draw with it, so
- * the host is named as well to win outright at (0,3,0) rather than relying on
- * the attribute view encapsulation adds or on import order.
- *
- * This is really state rather than presentation: which sections apply depends on
- * the context the app is in. It belongs in Angular once the menu is driven by
- * the context rather than by markup, and this class is where that will hook in.
- */
-:host .ui-menu-action-block.ui-menu-action-block--hidden {
-  display: none;
-}
-
 /* Separates the search and group summary blocks from what follows. */
 .ui-menu-action-block--divider {
   border-bottom: 2px solid rgba(255, 255, 255, 0.3);
 }
 
-/* Optical alignment for two icons that sit slightly off their labels. */
+/* Optical alignment for an icon that sits slightly off its label. */
 .toolbar-icon--clipboard {
   font-size: 22px;
   position: relative;
   top: 1px;
   left: -1px;
-}
-
-.toolbar-icon--calendar {
-  font-size: 21px;
-  position: relative;
-  top: 1px;
 }
 
 .app-icon {

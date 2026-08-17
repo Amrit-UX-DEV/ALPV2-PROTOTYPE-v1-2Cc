@@ -100,17 +100,3 @@ body {
 .cell-wrap-text {
   white-space: normal !important;
 }
-
-/* ---------------------------------------------------------------------------
-   TEMPORARY, FOR REVIEW ONLY. Markup that was hidden by something other than
-   ux-hide has been revealed and marked with alp-audit-reveal so it can be seen
-   and judged. Delete this block and the alp-audit-reveal classes once decided.
-
-   outline rather than border, because an outline takes up no space and so the
-   surrounding layout stays exactly as it is.
-   --------------------------------------------------------------------------- */
-
-.alp-audit-reveal {
-  outline: 2px solid red;
-  outline-offset: -1px;
-}

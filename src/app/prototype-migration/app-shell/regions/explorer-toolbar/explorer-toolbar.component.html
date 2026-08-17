@@ -8,15 +8,7 @@
     <button class="ui-menu-action tier-0" alpha-ui-event="click" alpha-ui-attr-toggle=".ux-toolbar-example ,extended">
     <span class="details"><i class="fa fa-search" aria-hidden="true"></i> </span>
     <span class="tooltip">Search ALPHA</span> </button>
-  </div>
-  <div class="ui-menu-action-block enquiry alp-audit-reveal">
-    <button class="ui-menu-action tier-0"> <span class="details"><svg class="ui-icon--svg">
-    <g xmlns="http://www.w3.org/2000/svg" id="enquiry"> <g>
-    <path d="M34.415,11.25h-19.33c-2.114,0-3.835,1.72-3.835,3.834v19.331c0,2.114,1.721,3.834,3.835,3.834h19.33    c2.114,0,3.835-1.72,3.835-3.834V15.084C38.25,12.97,36.529,11.25,34.415,11.25z M15.085,13.25h19.33    c1.012,0,1.835,0.823,1.835,1.834v8.666h-23v-8.666C13.25,14.073,14.073,13.25,15.085,13.25z M34.415,36.25h-19.33    c-1.012,0-1.835-0.823-1.835-1.834V25.75h23v8.666C36.25,35.427,35.427,36.25,34.415,36.25z"></path>
-    <polygon points="19.838,18.502 29.662,18.502 29.662,21.415 31.662,21.415 31.662,16.502 17.838,16.502 17.838,21.415     19.838,21.415   "></polygon>
-    <polygon points="17.838,33.415 19.838,33.415 19.838,30.502 29.662,30.502 29.662,33.415 31.662,33.415 31.662,28.502     17.838,28.502   "></polygon>
-    </g> </g> </svg> </span> <span class="tooltip">Enquiry</span> </button>
-  </div>
+  </div>
   <div class="ui-menu-action-block group-summary">
     <button class="ui-menu-action tier-0" [class.active]="currentView === 'group-summary'" (click)="switchView('group-summary')">
     <span class="details"><i class="fa fa-users" aria-hidden="true"></i> </span>
@@ -30,89 +22,7 @@
     <button class="ui-menu-action tier-0" [class.active]="currentView === 'work-plan'" (click)="switchView('work-plan')">
     <span class="details"><i class="fas fa-clipboard-list toolbar-icon--clipboard"></i> </span>
     <span class="tooltip">Business Processes</span> </button>
-  </div>
-  <div class="ui-menu-action-block scheme-summary alp-audit-reveal">
-    <button class="ui-menu-action tier-0"> <span class="details"><i class="fa fa-building" aria-hidden="true"></i>
-    </span> <span class="tooltip">Scheme Summary</span> </button>
-  </div>
-  <div class="ui-menu-action-block alp-audit-reveal">
-    <button class="ui-menu-action tier-0"> <span class="details"><i class="fa fa-user" aria-hidden="true"></i>
-    </span> <span class="tooltip">Client Details</span> </button>
-  </div>
-  <div class="ui-menu-action-block master-scheme-summary alp-audit-reveal">
-    <button class="ui-menu-action tier-0"> <span class="details"><i class="fa fa-umbrella" aria-hidden="true"></i>
-    <span class="icon-shelf"> <i class="fa fa-umbrella" aria-hidden="true"></i>
-    <i class="fa fa-umbrella" aria-hidden="true"></i> </span> </span> <span class="tooltip">Master Scheme Summary</span>
-    </button>
-  </div>
-  <div class="ui-menu-action-block billing-group-summary alp-audit-reveal">
-    <button class="ui-menu-action tier-0"> <span class="details"><i class="fa fa-umbrella" aria-hidden="true"></i>
-    </span> <span class="tooltip">Billing Group Summary</span> </button>
-  </div>
-  <div class="ui-menu-action-block scheme-details alp-audit-reveal">
-    <button class="ui-menu-action tier-0"> <span class="details"><i class="fa fa-building" aria-hidden="true"></i>
-    </span> <span class="tooltip">Scheme Details</span> </button>
-  </div>
-  <div class="ui-menu-action-block agent-details alp-audit-reveal">
-    <button class="ui-menu-action tier-0"> <span class="details"><i class="fas fa-briefcase"></i>
-    </span> <span class="tooltip">Agent Details</span> </button>
-  </div>
-  <div class="ui-menu-action-block policy-details alp-audit-reveal">
-    <button class="ui-menu-action tier-0"> <span class="details"><i class="fas fa-file-signature"></i>
-    </span> <span class="tooltip">Policy Details</span> </button>
-  </div>
-  <div class="ui-menu-action-block policy-summary alp-audit-reveal">
-    <button class="ui-menu-action tier-0"> <span class="details"><i class="fas fa-tachometer-alt"></i>
-    </span> <span class="tooltip">Policy Summary</span> </button>
-  </div>
-  <div class="ui-menu-action-block estimated-valuations alp-audit-reveal">
-    <button class="ui-menu-action tier-0"> <span class="details"><i class="fas fa-wallet"></i>
-    </span> <span class="tooltip">Estimated Valuations</span> </button>
-  </div>
-  <div class="ui-menu-action-block premium-details alp-audit-reveal">
-    <button class="ui-menu-action tier-0"> <span class="details"><i class="fas fa-piggy-bank" aria-hidden="true"></i>
-    </span> <span class="tooltip">Premium  Details</span> </button>
-  </div>
-  <div class="ui-menu-action-block investment-details alp-audit-reveal">
-    <button class="ui-menu-action tier-0"> <span class="details"><i class="far fa-chart-bar"></i>
-    </span> <span class="tooltip">Investment Details</span> </button>
-  </div>
-  <div class="ui-menu-action-block processing-details alp-audit-reveal">
-    <button class="ui-menu-action tier-0"> <span class="details"><i class="far fa-calendar-alt toolbar-icon--calendar"></i>
-    </span> <span class="tooltip">Processing Details</span> </button>
-  </div>
-  <div class="ui-menu-action-block benefits alp-audit-reveal">
-    <button class="ui-menu-action tier-0"> <span class="details"><i class="fas fa-cloud-sun"></i>
-    </span> <span class="tooltip">Benefits</span> </button>
-  </div>
-  <div class="ui-menu-action-block claims alp-audit-reveal">
-    <button class="ui-menu-action tier-0"> <span class="details"><i class="fa fa-umbrella" aria-hidden="true"></i>
-    </span> <span class="tooltip">Claims</span> </button>
-  </div>
-  <div class="ui-menu-action-block commission-details alp-audit-reveal">
-    <button class="ui-menu-action tier-0"> <span class="details"><i class="fa fa-umbrella" aria-hidden="true"></i>
-    </span> <span class="tooltip">Commission Details</span> </button>
-  </div>
-  <div class="ui-menu-action-block pension-information alp-audit-reveal">
-    <button class="ui-menu-action tier-0"> <span class="details"><i class="fa fa-umbrella" aria-hidden="true"></i>
-    </span> <span class="tooltip">Pension Information</span> </button>
-  </div>
-  <div class="ui-menu-action-block price-rates alp-audit-reveal">
-    <button class="ui-menu-action tier-0"> <span class="details"><i class="fa fa-umbrella" aria-hidden="true"></i>
-    </span> <span class="tooltip">Price &amp; Rates</span> </button>
-  </div>
-  <div class="ui-menu-action-block product-information alp-audit-reveal">
-    <button class="ui-menu-action tier-0"> <span class="details"><i class="fa fa-umbrella" aria-hidden="true"></i>
-    </span> <span class="tooltip">Product Information</span> </button>
-  </div>
-  <div class="ui-menu-action-block security alp-audit-reveal">
-    <button class="ui-menu-action tier-0"> <span class="details"><i class="fas fa-lock"></i> </span>
-    <span class="tooltip">Security</span> </button>
-  </div>
-  <div class="ui-menu-action-block workflow alp-audit-reveal">
-    <button class="ui-menu-action tier-0"> <span class="details"><i class="fas fa-retweet"></i>
-    </span> <span class="tooltip">Workflow</span> </button>
-  </div>
+  </div>
 </div>
 <!-- ===== Slide-out search panel: toggled by the rail's search button ===== -->
 <div class="ui-action-menu-extended">
