@@ -42,7 +42,9 @@ function loadWidget(thisElement) {
   previouslyLoaded.remove();
   loaderAppendLocation.prepend(thisWidgetInfo);
 
-  document.querySelectorAll('.docked-features')[0].classList.remove('view-widgets');
+  // .docked-features was the always hidden widget list, since deleted. Guarded
+  // rather than dropped, because the class may still exist in other views.
+  document.querySelectorAll('.docked-features')[0]?.classList.remove('view-widgets');
   widgetLoader.setAttribute('widget-loading', true);
   setTimeout(function () {
     widgetLoader.setAttribute('widget-loading', false);
@@ -52,6 +54,8 @@ function loadWidget(thisElement) {
 function viewWidgetList() {
   let element = document.getElementsByClassName('docked-features')[0];
   let viewWidgetListClass = 'view-widgets';
+
+  if (!element) return;
 
   element.classList.contains(viewWidgetListClass)
     ? element.classList.remove(viewWidgetListClass)
