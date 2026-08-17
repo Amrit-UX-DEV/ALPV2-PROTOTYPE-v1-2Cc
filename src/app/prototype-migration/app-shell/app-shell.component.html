@@ -1,255 +1,180 @@
 <alpha-version-switcher hidden></alpha-version-switcher>
-
 <alpha-thin-client>
-<router-outlet>
-
-</router-outlet>
-
-<alpha-v2-template>
-    
-<div class="alpha-app-container alpha-layout-wrap hide-card-header-btns">
-
-
-
-        <div class="alpha-layout-main show-example-gs">
-
-            <div class="alpha-layout-col">
-
-
-                <!-- ============================================================
+  <router-outlet>
+  </router-outlet>
+  <alpha-v2-template>
+    <div class="alpha-app-container alpha-layout-wrap hide-card-header-btns">
+      <div class="alpha-layout-main show-example-gs">
+        <div class="alpha-layout-col">
+          <!-- ============================================================
                      APP CONTENT AREA
                      Holds <main> plus the modal overlays that sit after it.
                      ============================================================ -->
-                <div class="alpha-layout-row-2 alpha-app-content">
-
-                    <div class="menu-toolbar-handle" style="
-/* border-right: 1px solid #85b2e2; */
-/* width: 40px; */
-display: none;
-">
-                        <div class="app-explorer--rail-action" style="
-display: none;
-">
-                            <img src="Images/alpha-icon-72.png" class="app-icon" alt="Alpha">
-                        </div>
-
-                        <i aria-hidden="true" class="fa fa-bars" onclick="pinSidebar(this, 'alpha-sidebar')"></i>
-                        <span style="
-display: none;
-">Menu Toolbar</span>
-                    </div>
-
-
-
-
-                    <main class="alpha-layout-col-2" style="
-height: 100vh;
-width: inherit;
-">
-                        <!-- ===== APP HEADER: client/policy context, tabs, action buttons ===== -->
-                        <div class="app-header" alpha-app-header></div>
-                        <div class="alpha-layout-row-2" style="width: inherit;">
-    <!-- ============================================================
+          <div class="alpha-layout-row-2 alpha-app-content">
+            <div class="menu-toolbar-handle alp-hidden">
+              <div class="app-explorer--rail-action alp-hidden">
+              <img src="Images/alpha-icon-72.png" class="app-icon" alt="Alpha"> </div>
+              <i aria-hidden="true" class="fa fa-bars" onclick="pinSidebar(this, 'alpha-sidebar')"></i>
+              <span>Menu Toolbar</span>
+            </div>
+            <main class="alpha-layout-col-2 shell-main">
+              <!-- ===== APP HEADER: client/policy context, tabs, action buttons ===== -->
+              <div class="app-header" alpha-app-header></div>
+              <div class="alpha-layout-row-2 shell-inherit-width">
+                <!-- ============================================================
          LEFT RAIL: icon rail plus the slide-out search panel.
          The panel is hidden by
            .alpha-explorer-toolbar .ui-action-menu-extended { display: none }
          and revealed when jQuery adds .extended to this element. Keep the
          panel nested inside this div or it renders open by default.
          ============================================================ -->
-    <div class="alpha-explorer-toolbar ux-toolbar-example pinned01" alpha-explorer-toolbar
+                <div class="alpha-explorer-toolbar ux-toolbar-example pinned01" alpha-explorer-toolbar
          [currentView]="currentView" (viewChange)="switchView($event)"></div>
-<!-- ============================================================
+                <!-- ============================================================
      APP BODY: the switchable main view (group summary / work plan wizard).
      ============================================================ -->
-<div class="alpha-layout-col-2 alpha-app-body" style="
-width: inherit;
-" alpha-app-body [currentView]="currentView"></div>
-
-
-<!-- ============================================================
+                <div class="alpha-layout-col-2 alpha-app-body shell-inherit-width" alpha-app-body [currentView]="currentView"></div>
+                <!-- ============================================================
      RIGHT SIDEBAR: app rail plus the widget dock.
      Must stay a SIBLING of .alpha-app-body. Nesting it inside collapses
      the rail and the dock.
      ============================================================ -->
-<alpha-right-sidebar class="alpha-layout-col-1 alpha-right-sidebar pinned"></alpha-right-sidebar>
-
-  <!--Component undefined (undefined) is disabled--></div>
-                        <alpha-footer hidden="" class="alpha-layout-col-3 alpha-app-context-info">
-                            <alpha-context-bar class="alpha-context-bar-details">
-                                <span class="alpha-context-bar-info" id="ContextBar_PolicyContext"></span>
-                                <span class="alpha-context-bar-date" ng-hide="nodatetime">22 Jul 2016</span>
-
-                                <div>
-                                    <i aria-hidden="true" class="fa fa-bell-o"></i>
-                                    <!---->
-                                </div>
-                            </alpha-context-bar>
-                        </alpha-footer>
-                    </main>
-
-                    
-
-<!-- ============================================================
+                <alpha-right-sidebar class="alpha-layout-col-1 alpha-right-sidebar pinned"></alpha-right-sidebar>
+                <!--Component undefined (undefined) is disabled-->
+              </div>
+              <alpha-footer hidden="" class="alpha-layout-col-3 alpha-app-context-info">
+                <alpha-context-bar class="alpha-context-bar-details">
+                  <span class="alpha-context-bar-info" id="ContextBar_PolicyContext"></span>
+                  <span class="alpha-context-bar-date" ng-hide="nodatetime">22 Jul 2016</span> <div>
+                  <i aria-hidden="true" class="fa fa-bell-o"></i> <!----> </div>
+                </alpha-context-bar>
+              </alpha-footer>
+            </main>
+            <!-- ============================================================
      OVERLAYS: full-screen modals, shown by jQuery adding
      .app-overlay--open. Siblings of <main>, inside .alpha-app-content.
      ============================================================ -->
-<div class="app-overlay ui--modal-overlay app-overlay--reassure-now-portal-view" [class.app-overlay--open]="overlay.isOpen('reassure-now-portal-view')">
-<div class="app-overlay--header app-overlay--context-bar">
-<div class="app-page--heading">
-<h1 class="app-overlay--main-heading"><img class="reassure-now--overlay-header-logo" src="Images/ReAssureNow_Logo_White.png" alt="ReAssure Now"> Your Policies </h1> <button (click)="overlay.close()" class="app-overlay-close"> <i class="fa fa-times" aria-hidden="true"></i> </button>
-</div>
-</div>
-<div class="app-overlay--body">
-<div class="reassure-now--portal-view-container">
-<div class="col-md-12">
-  <div class="card screen-detail-block-card">
-    <div class="card-block container">
-      <section class="form-group col-md-12">
-
-        <div class="reassure-now--portal-policy">
-            <div class="flex-container align-items-center space-between">
-                <div class="flex-col reassure-now--portal-policy-heading-container">
-                    <h2 class="reassure-now--portal-policy-heading">Legacy Lifebased Personal Pension</h2>
-                    <p class="reassure-now--portal-policy-number">Policy number: 0123456G</p>
+            <div class="app-overlay ui--modal-overlay app-overlay--reassure-now-portal-view" [class.app-overlay--open]="overlay.isOpen('reassure-now-portal-view')">
+              <div class="app-overlay--header app-overlay--context-bar">
+                <div class="app-page--heading">
+                  <h1 class="app-overlay--main-heading"><img class="reassure-now--overlay-header-logo" src="Images/ReAssureNow_Logo_White.png" alt="ReAssure Now">
+                  Your Policies </h1> <button (click)="overlay.close()" class="app-overlay-close">
+                  <i class="fa fa-times" aria-hidden="true"></i> </button>
                 </div>
-                <div class="flex-col reassure-now--portal-policy-indicator-container">
-                    <div class="alpha-indicators">
-                        <span class="indicator pension">Pension</span>
-                    </div>
-                </div>
-                <div class="flex-col reassure-now--portal-policy-status-container">
-                    <p class="reassure-now--portal-policy-status active"><strong><i class="fa fa-check-circle-o" aria-hidden="true"></i> Active</strong></p>
-                </div>
-            </div>
-        </div>
-
-
-        <div class="reassure-now--portal-policy">
-            <div class="flex-container align-items-center space-between">
-                <div class="flex-col reassure-now--portal-policy-heading-container">
-                    <h2 class="reassure-now--portal-policy-heading">Legacy Lifebased Personal Pension</h2>
-                    <p class="reassure-now--portal-policy-number">Policy number: 0123456G</p>
-                </div>
-                <div class="flex-col reassure-now--portal-policy-indicator-container">
-                    <div class="alpha-indicators">
-                        <span class="indicator pension">Pension</span>
-                    </div>
-                </div>
-                <div class="flex-col reassure-now--portal-policy-status-container">
-                    <p class="reassure-now--portal-policy-status inactive"><strong><i class="fa fa-times-circle-o" aria-hidden="true"></i> Inactive</strong></p>
-                </div>
-            </div>
-        </div>
-
-        <div class="reassure-now--portal-policy ui--not-available">
-            <div class="flex-container align-items-center space-between">
-                <div class="flex-col reassure-now--portal-policy-heading-container">
-                    <h2 class="reassure-now--portal-policy-heading">Legacy Lifebased Personal Pension</h2>
-                    <p class="reassure-now--portal-policy-number">Policy number: 0123456G</p>
-                </div>
-                <div class="flex-col reassure-now--portal-policy-indicator-container">
-                    <div class="alpha-indicators">
-                        <span class="indicator pension">Pension</span>
-                    </div>
-                </div>
-                <div class="flex-col reassure-now--portal-policy-status-container">
-                    <p class="reassure-now--portal-policy-status not-available"><strong><i class="fa fa-minus-circle" aria-hidden="true"></i> Not available</strong></p>
-                </div>
-            </div>
-        </div>
-
-      </section>
-    </div>
-  </div>
-</div>
-</div>
-</div>
-
-</div><div class="app-overlay notification-example">
-
-                        <div class="app-overlay--header">
-                            <div class="left-header-content"> </div>
-                            <div class="middle-header-content"><h2><i aria-hidden="true" class="fa fa-bell-o"></i> 2 Active Notifications </h2> </div>
-                            <div class="right-header-content"><button class="ui-btn" style="
-transform: scale(1);
-" alpha-ui-event="click" alpha-ui-attr-toggle=".notification-example ,app-overlay--open"><span class=""><strong>Warning Acknowledged</strong></span><i aria-hidden="true" class="fa fa-times" style="padding-left:5px;"></i></button> </div>
-                        </div>
-                        <div class="app-overlay--body">
-
-                            <ul class="alpha-linked-data-structure" style="
-text-align: center;
-">
-                                <li style="
-text-align: center;
-justify-content: center;
-">
-                                    <div class="multi-action-tile tile--size-w-med">
-  <div class="action-container">
-
-    <button type="button" class="state--ui-active alpha-selected" alpha-ui-attr-toggle=".alpha-layout-main,show-example1">
-    <span class="tile--data-strong tile--spacer">Gan Life (Alpha)</span>
-    <span class="tile--data">
-        Unit Linked
-    </span>
-    <span class="tile--data-strong tile--spacer">43013900</span>
-    <span class="tile--data tile--spacer">Lifetime Account V1</span>
-    <span class="alpha-additional-info data-bubble--status active" style="font-weight: bold">
-      In Force
-    </span>
-    <div class="alpha-indicators">
-        <span class="indicator warning"><i aria-hidden="true" class="fa fa-bell-o"></i> 2</span>
-    </div>
-    </button>
-    
-
-
-
-    
-
-  </div>
-</div>
-                                </li>
-                            </ul>
-
-                            <div class="app-notifications--results">
-                                <div class="notification-block status-warning">
-                                    <div class="notification-message">
-                                        <p>Admin Warning Example</p>
-                                    </div>
+              </div>
+              <div class="app-overlay--body">
+                <div class="reassure-now--portal-view-container">
+                  <div class="col-md-12">
+                    <div class="card screen-detail-block-card">
+                      <div class="card-block container">
+                        <section class="form-group col-md-12">
+                          <div class="reassure-now--portal-policy">
+                            <div class="flex-container align-items-center space-between">
+                              <div class="flex-col reassure-now--portal-policy-heading-container">
+                                <h2 class="reassure-now--portal-policy-heading">Legacy Lifebased Personal Pension</h2>
+                                <p class="reassure-now--portal-policy-number">Policy number: 0123456G</p>
+                              </div>
+                              <div class="flex-col reassure-now--portal-policy-indicator-container">
+                                <div class="alpha-indicators">
+                                  <span class="indicator pension">Pension</span>
                                 </div>
-
-                                <div class="notification-block status-info" style="
-background-color: #fff;
-">
-                                    <div class="notification-message">
-                                        <p>@Retirement Example</p>
-                                    </div>
-                                </div>
-
+                              </div>
+                              <div class="flex-col reassure-now--portal-policy-status-container">
+                                <p class="reassure-now--portal-policy-status active"><strong><i class="fa fa-check-circle-o" aria-hidden="true"></i>
+                                  Active</strong></p>
+                              </div>
                             </div>
-
-
-
-                        </div>
-
-
+                          </div>
+                          <div class="reassure-now--portal-policy">
+                            <div class="flex-container align-items-center space-between">
+                              <div class="flex-col reassure-now--portal-policy-heading-container">
+                                <h2 class="reassure-now--portal-policy-heading">Legacy Lifebased Personal Pension</h2>
+                                <p class="reassure-now--portal-policy-number">Policy number: 0123456G</p>
+                              </div>
+                              <div class="flex-col reassure-now--portal-policy-indicator-container">
+                                <div class="alpha-indicators">
+                                  <span class="indicator pension">Pension</span>
+                                </div>
+                              </div>
+                              <div class="flex-col reassure-now--portal-policy-status-container">
+                                <p class="reassure-now--portal-policy-status inactive"><strong><i class="fa fa-times-circle-o" aria-hidden="true"></i>
+                                  Inactive</strong></p>
+                              </div>
+                            </div>
+                          </div>
+                          <div class="reassure-now--portal-policy ui--not-available">
+                            <div class="flex-container align-items-center space-between">
+                              <div class="flex-col reassure-now--portal-policy-heading-container">
+                                <h2 class="reassure-now--portal-policy-heading">Legacy Lifebased Personal Pension</h2>
+                                <p class="reassure-now--portal-policy-number">Policy number: 0123456G</p>
+                              </div>
+                              <div class="flex-col reassure-now--portal-policy-indicator-container">
+                                <div class="alpha-indicators">
+                                  <span class="indicator pension">Pension</span>
+                                </div>
+                              </div>
+                              <div class="flex-col reassure-now--portal-policy-status-container">
+                                <p class="reassure-now--portal-policy-status not-available"><strong><i class="fa fa-minus-circle" aria-hidden="true"></i>
+                                  Not available</strong></p>
+                              </div>
+                            </div>
+                          </div>
+                        </section>
+                      </div>
                     </div>
-
+                  </div>
                 </div>
-
+              </div>
             </div>
+            <div class="app-overlay notification-example">
+              <div class="app-overlay--header">
+                <div class="left-header-content">
+                </div>
+                <div class="middle-header-content">
+                  <h2><i aria-hidden="true" class="fa fa-bell-o"></i> 2 Active Notifications
+                  </h2>
+                </div>
+                <div class="right-header-content"><button class="ui-btn ui-btn--no-scale" alpha-ui-event="click" alpha-ui-attr-toggle=".notification-example ,app-overlay--open"><span class=""><strong>Warning Acknowledged</strong></span><i aria-hidden="true" class="fa fa-times overlay-close-icon"></i></button>
+                </div>
+              </div>
+              <div class="app-overlay--body">
+                <ul class="alpha-linked-data-structure notification-list">
+                  <li class="notification-list--item">
+                    <div class="multi-action-tile tile--size-w-med">
+                      <div class="action-container">
+                        <button type="button" class="state--ui-active alpha-selected" alpha-ui-attr-toggle=".alpha-layout-main,show-example1">
+                        <span class="tile--data-strong tile--spacer">Gan Life (Alpha)</span>
+                        <span class="tile--data"> Unit Linked </span>
+                        <span class="tile--data-strong tile--spacer">43013900</span>
+                        <span class="tile--data tile--spacer">Lifetime Account V1</span>
+                        <span class="alpha-additional-info data-bubble--status active data-bubble--status-strong">
+                        In Force </span> <div class="alpha-indicators">
+                        <span class="indicator warning"><i aria-hidden="true" class="fa fa-bell-o"></i>
+                        2</span> </div> </button>
+                      </div>
+                    </div>
+                  </li>
+                </ul>
+                <div class="app-notifications--results">
+                  <div class="notification-block status-warning">
+                    <div class="notification-message">
+                      <p>Admin Warning Example</p>
+                    </div>
+                  </div>
+                  <div class="notification-block status-info notification-block--plain">
+                    <div class="notification-message">
+                      <p>@Retirement Example</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
+      </div>
     </div>
-
-    <div class="loading" id="loading" style="display: none;">
-        <i class="fa fa-spinner fa-pulse fa-3x fa-fw"></i>
-        <span class="sr-only">Loading...</span>
+    <div class="loading alp-hidden" id="loading">
+      <i class="fa fa-spinner fa-pulse fa-3x fa-fw"></i> <span class="sr-only">Loading...</span>
     </div>
-
-
-</alpha-v2-template>
-
-
-
-
+  </alpha-v2-template>
 </alpha-thin-client>

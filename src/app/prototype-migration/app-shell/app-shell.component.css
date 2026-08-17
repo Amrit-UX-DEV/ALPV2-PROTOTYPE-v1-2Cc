@@ -1,0 +1,59 @@
+/*
+ * Rules that replace this template's inline styles.
+ *
+ * Three declarations moved to design system utilities instead: the hidden menu
+ * toolbar handle, the hidden rail action and the loading spinner all take
+ * alp-hidden, because nothing in the cascade competes for their display.
+ */
+
+/* Shell geometry. */
+.shell-main {
+  height: 100vh;
+  width: inherit;
+}
+
+.shell-inherit-width {
+  width: inherit;
+}
+
+/*
+ * The notification overlay's acknowledge button.
+ *
+ * .ui-btn sets transform: scale(0.9) and .ui-btn:hover sets scale(1.03), in two
+ * stylesheets each. The inline style outranked both, so the button sat at its
+ * natural size and did not react to hover. A class has to name the hover state
+ * as well, or the button would shrink and then animate.
+ */
+button.ui-btn--no-scale,
+button.ui-btn--no-scale:hover {
+  transform: scale(1);
+}
+
+.overlay-close-icon {
+  padding-left: 5px;
+}
+
+.notification-list {
+  text-align: center;
+}
+
+.notification-list--item {
+  text-align: center;
+  justify-content: center;
+}
+
+/*
+ * ul.alpha-linked-data-structure li button .alpha-additional-info sets
+ * font-weight: normal at (0,2,3), so this needs three classes to win.
+ */
+.alpha-additional-info.data-bubble--status.data-bubble--status-strong {
+  font-weight: bold;
+}
+
+/*
+ * .notification-block.status-info sets a background in both prototype-only.css
+ * and 34-notification-blocks.css at (0,2,0), so a modifier alone would tie.
+ */
+.notification-block.status-info.notification-block--plain {
+  background-color: #fff;
+}
