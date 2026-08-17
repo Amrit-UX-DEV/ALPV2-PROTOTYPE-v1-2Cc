@@ -353,7 +353,7 @@
         <div class="ui-diagram-content scroll-child-items"> 
         <div class="multi-action-tile tile--default tile--size-w-med">
         <div class="action-container">
-        <button type="button" class="state--ui- group-unit state--ui-active" style="max-width: 145px; text-align:left;"><span class="tile--data-strong"><div><i aria-hidden="true" class="fas fa-briefcase inline"></i><span> Servicing Agent</span></div></span><span class="tile--data">Albert Wesker</span></button>
+        <button type="button" class="state--ui- group-unit state--ui-active" [class.alpha-selected]="isPartySelected('ServicingAgent')" (click)="selectParty('ServicingAgent')" style="max-width: 145px; text-align:left;"><span class="tile--data-strong"><div><i aria-hidden="true" class="fas fa-briefcase inline"></i><span> {{ client('ServicingAgent')?.roles?.join(', ') }}</span></div></span><span class="tile--data">{{ client('ServicingAgent')?.name }}</span></button>
         </div>
         </div>
         
