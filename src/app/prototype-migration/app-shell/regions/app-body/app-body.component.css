@@ -1,0 +1,24 @@
+/*
+ * What the body shows before anything has been searched.
+ *
+ * The app starts in non context, so the group summary has no policy to draw.
+ * This states that rather than leaving the area blank, which would read as a
+ * failure to load.
+ */
+.alp-no-context {
+  padding: 40px;
+  text-align: center;
+  color: #6b6b6b;
+}
+
+.alp-no-context h2 {
+  margin: 0 0 8px;
+  font-size: 18px;
+  font-weight: bold;
+  color: #444;
+}
+
+.alp-no-context p {
+  margin: 0;
+  font-size: 14px;
+}

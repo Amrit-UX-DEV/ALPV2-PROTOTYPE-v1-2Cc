@@ -1,5 +1,6 @@
 import {
   Component,
+  inject,
   Input,
   Output,
   EventEmitter,
@@ -11,6 +12,7 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 
 import { CallScriptJourneyComponent } from '../journey/call-script-journey.component';
+import { PrototypeContextService } from '../../../../context/prototype-context.service';
 
 /**
  * The call action options panel inside the call information step.
@@ -35,6 +37,9 @@ import { CallScriptJourneyComponent } from '../journey/call-script-journey.compo
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
 })
 export class CallActionOptionsComponent {
+  /** The policy the call is about, read in the template as ctx.policy(). */
+  protected readonly ctx = inject(PrototypeContextService);
+
   @Input() showDetails = false;
   @Output() detailsToggled = new EventEmitter<void>();
 

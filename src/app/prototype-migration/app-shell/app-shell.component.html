@@ -24,11 +24,11 @@
          panel nested inside this div or it renders open by default.
          ============================================================ -->
                 <div class="alpha-explorer-toolbar ux-toolbar-example pinned01" alpha-explorer-toolbar
-         [currentView]="currentView" (viewChange)="switchView($event)"></div>
+         [currentView]="views.view()" (viewChange)="switchView($event)"></div>
                 <!-- ============================================================
      APP BODY: the switchable main view (group summary / work plan wizard).
      ============================================================ -->
-                <div class="alpha-layout-col-2 alpha-app-body shell-inherit-width" alpha-app-body [currentView]="currentView"></div>
+                <div class="alpha-layout-col-2 alpha-app-body shell-inherit-width" alpha-app-body [currentView]="views.view()"></div>
                 <!-- ============================================================
      RIGHT SIDEBAR: app rail plus the widget dock.
      Must stay a SIBLING of .alpha-app-body. Nesting it inside collapses

@@ -115,6 +115,29 @@ export interface ContextSelection {
   key: string;
 }
 
+/**
+ * What kind of context the app is in.
+ *
+ * 'none' is a context in its own right, not the absence of one: before
+ * anything has been searched the app is in non context, and screens are
+ * expected to say so rather than render an empty policy. Every other kind
+ * names the thing the context is about.
+ */
+export type ContextKind = ContextScope | 'none';
+
+/**
+ * The journey this context runs.
+ *
+ * Two policies can present the same screens and still need different call
+ * handling, so the journey belongs to the context rather than to the widget.
+ * scriptId points at an entry in call-rep-scripts/index.json.
+ */
+export interface ContextJourney {
+  scriptId: string;
+  /** Shown where the journey is named, e.g. 'Surrender Request'. */
+  title: string;
+}
+
 export interface ContextScreen {
   /** Breadcrumb trail, e.g. ['Search', 'Group Summary']. */
   breadcrumbs: string[];
@@ -125,6 +148,56 @@ export interface ContextScreen {
 export interface PrototypeContext {
   /** Identifier for this context file, e.g. 'policy-80007'. */
   id: string;
-  policy: ContextPolicy;
+  /**
+   * What this context is about. Defaults to 'policy' when a file omits it,
+   * since every context file so far describes a policy.
+   */
+  kind?: ContextKind;
+  /**
+   * What the header calls this context, e.g. 'Non Context'. Only needed where
+   * there is no policy to summarise.
+   */
+  label?: string;
+  /**
+   * Absent in non context. Screens that show policy detail check for it rather
+   * than rendering a blank policy.
+   */
+  policy?: ContextPolicy;
   screen: ContextScreen;
+  journey?: ContextJourney;
+}
+
+/**
+ * One searchable entry in the context registry.
+ *
+ * The registry is what makes contexts findable. It holds only what a search
+ * needs to match on and where the context lives, so looking up a policy costs
+ * one small file rather than every context in the prototype.
+ */
+export interface ContextIndexEntry {
+  /** Context id, and the file name without .json, e.g. 'policy-80007'. */
+  id: string;
+  /** File within CONTEXT_DATA_PATH. Held explicitly so ids can outlive names. */
+  file: string;
+  kind: ContextKind;
+  /**
+   * Which search criteria this entry answers to, matching the values in the
+   * Search Criteria dropdown, e.g. 'Policy'.
+   */
+  criteria: string;
+  /** What has to be keyed to find it, e.g. '80007'. */
+  reference: string;
+  /** Product description, for showing a match before it is loaded. */
+  label: string;
+  company: string;
+  /** Client names, so a search by client can find the policy. */
+  clients: string[];
+  /** scriptId of the journey this context runs. */
+  journey?: string;
+}
+
+export interface ContextIndex {
+  version: string;
+  lastUpdated: string;
+  contexts: ContextIndexEntry[];
 }
