@@ -24,6 +24,7 @@ export type AppView = 'group-summary' | 'work-plan';
   selector: 'div[alpha-explorer-toolbar]',
   standalone: true,
   templateUrl: './explorer-toolbar.component.html',
+  styleUrl: './explorer-toolbar.component.css',
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
 })
 export class ExplorerToolbarComponent {
