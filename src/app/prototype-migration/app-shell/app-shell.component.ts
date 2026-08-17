@@ -23,6 +23,7 @@ import { OverlayService } from '../ui/overlay.service';
     AppHeaderComponent,
   ],
   templateUrl: './app-shell.component.html',
+  styleUrl: './app-shell.component.css',
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
 })
 export class AppShellComponent implements AfterViewInit {
