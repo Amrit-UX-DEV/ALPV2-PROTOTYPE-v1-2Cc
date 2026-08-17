@@ -1,0 +1,15 @@
+/*
+ * The linked-member indicator.
+ *
+ * css-updates.css hides .ui-policy-row .ui-user-found and then reveals one
+ * again with a rule per client, keyed to names like ux-MrJoeBloggs. That means
+ * a client added to the context JSON alone would select but stay invisible.
+ *
+ * The component now renders only the indicator that should show, so which one
+ * appears is already decided by the time the browser styles it. This makes it
+ * visible without naming any client. View encapsulation scopes it to this
+ * template, and the added attribute selectors outweigh the global rule.
+ */
+.ui-policy-row .ui-alpha-indicators.selected-users .ui-user-found {
+  display: block;
+}

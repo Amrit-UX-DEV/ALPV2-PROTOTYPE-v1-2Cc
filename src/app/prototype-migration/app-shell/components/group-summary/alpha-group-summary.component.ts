@@ -1,4 +1,4 @@
-import { Component, CUSTOM_ELEMENTS_SCHEMA, computed, inject } from '@angular/core';
+import { Component, CUSTOM_ELEMENTS_SCHEMA, computed, inject, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { VulnerableClientActionComponent } from '../vulnerable-client-action/vulnerable-client-action.component';
 import { ContextClient } from '../../../context/prototype-context.model';
@@ -86,14 +86,33 @@ export class AlphaGroupSummaryComponent {
   );
 
   /**
-   * Whether the policy row should reveal its linked-member indicator.
+   * The one linked member whose indicator the policy row should show, or
+   * undefined when there is nothing to show.
    *
-   * True only when the selected client is actually a linked member of this
-   * policy, which is what stops selecting the agent, the beneficiary or an
-   * unrelated client from lighting the row up.
+   * The template renders this and nothing else, so which indicator appears is
+   * decided here rather than by rendering every member and leaving a
+   * stylesheet to reveal one of them. Selecting the agent, the beneficiary or
+   * a client who is not a member of this policy yields undefined.
    */
-  protected readonly showLinkedMember = computed(() => {
-    const token = this.selectedClientToken();
-    return token !== null && this.linkedClients().split(' ').includes(token);
+  protected readonly selectedLinkedMember = computed(() => {
+    const selected = this.ctx.selectedClient();
+    if (!selected?.linked) return undefined;
+    const token = this.token(selected);
+    return token !== null && this.linkedClients().split(' ').includes(token)
+      ? selected
+      : undefined;
   });
+
+  /** Whether the policy row is showing a linked member at all. */
+  protected readonly showLinkedMember = computed(() => this.selectedLinkedMember() !== undefined);
+
+  /**
+   * Whether the policy tile is expanded. It starts open, matching the markup
+   * this replaced, where the details carried no collapse class.
+   */
+  protected readonly policyDetailsExpanded = signal(true);
+
+  protected togglePolicyDetails(): void {
+    this.policyDetailsExpanded.update((open) => !open);
+  }
 }
