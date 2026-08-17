@@ -3,64 +3,87 @@
   "policy": {
     "number": "80007",
     "productName": "Group Stakeholder Pen Plan Pre Nov 04",
+    "company": "HSBC (LifePen)",
+    "policyType": "Unit Linked",
     "status": "In Force",
     "territory": "Great Britain",
     "currency": {
       "label": "UK Sterling",
       "symbol": "£"
-    }
+    },
+    "clients": [
+      {
+        "key": "MrMrsBloggs",
+        "name": "Mr & Mrs Bloggs",
+        "roles": [
+          "Policy Holder"
+        ],
+        "linked": true
+      },
+      {
+        "id": "ux02",
+        "key": "MrJoeBloggs",
+        "name": "Mr Joe Bloggs",
+        "roles": [
+          "Policy Holder",
+          "Life 1"
+        ],
+        "linked": true,
+        "extraCare": [
+          {
+            "type": "Health- Hearing",
+            "method": "Phone",
+            "notified": "21 Aug 2025",
+            "stop": "Permanent",
+            "helpingHand": "Speak Slower / Louder"
+          },
+          {
+            "type": "Capability -Managing Finances",
+            "method": "Phone",
+            "notified": "21 Aug 2025",
+            "stop": "Permanent",
+            "helpingHand": "Extra time allowed"
+          },
+          {
+            "type": "Health- Severe/Long Term Illness",
+            "method": "Phone",
+            "notified": "21 Aug 2025",
+            "stop": "Permanent",
+            "helpingHand": "Extra Care"
+          }
+        ]
+      },
+      {
+        "id": "ux03",
+        "key": "MrsLucyBloggs",
+        "name": "Mrs Lucy Bloggs",
+        "roles": [
+          "Life 2"
+        ],
+        "linked": true
+      },
+      {
+        "key": "ServicingAgent",
+        "name": "Albert Wesker",
+        "roles": [
+          "Servicing Agent"
+        ],
+        "scope": "agent"
+      },
+      {
+        "key": "Beneficiary",
+        "name": "Mr Luke Smith",
+        "roles": [
+          "Beneficiary"
+        ]
+      }
+    ]
   },
-  "clients": [
-    {
-      "id": "ux02",
-      "key": "MrJoeBloggs",
-      "name": "Mr Joe Bloggs",
-      "roles": ["Life 1", "Payer"],
-      "extraCare": [
-        {
-          "type": "Health- Hearing",
-          "method": "Phone",
-          "notified": "21 Aug 2025",
-          "stop": "Permanent",
-          "helpingHand": "Speak Slower / Louder"
-        },
-        {
-          "type": "Capability -Managing Finances",
-          "method": "Phone",
-          "notified": "21 Aug 2025",
-          "stop": "Permanent",
-          "helpingHand": "Extra time allowed"
-        },
-        {
-          "type": "Health- Severe/Long Term Illness",
-          "method": "Phone",
-          "notified": "21 Aug 2025",
-          "stop": "Permanent",
-          "helpingHand": "Extra Care"
-        }
-      ]
-    },
-    {
-      "id": "ux03",
-      "key": "MrsLucyBloggs",
-      "name": "Mrs Lucy Bloggs",
-      "roles": ["Life 2"]
-    },
-    {
-      "id": "ux01",
-      "key": "MrMrsBloggs",
-      "name": "Mr & Mrs Bloggs",
-      "roles": ["Policy Holder"]
-    },
-    {
-      "id": "ux04",
-      "key": "Admin01",
-      "name": "Mr Phil Spencer",
-      "roles": ["Scheme Administrator"]
-    }
-  ],
   "screen": {
-    "breadcrumbs": ["Search", "Group Summary"],
+    "breadcrumbs": [
+      "Search",
+      "Group Summary"
+    ],
     "headingPrefix": "Group Summary:"
   }
 }

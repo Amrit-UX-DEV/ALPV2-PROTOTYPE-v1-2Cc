@@ -10,6 +10,7 @@ import { RightDockComponent } from './regions/right-dock/right-dock.component';
 import { ExplorerToolbarComponent, AppView } from './regions/explorer-toolbar/explorer-toolbar.component';
 import { AppBodyComponent } from './regions/app-body/app-body.component';
 import { AppHeaderComponent } from './regions/app-header/app-header.component';
+import { OverlayService } from '../ui/overlay.service';
 
 @Component({
   selector: 'app-shell',
@@ -25,6 +26,8 @@ import { AppHeaderComponent } from './regions/app-header/app-header.component';
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
 })
 export class AppShellComponent implements AfterViewInit {
+
+  protected readonly overlay = inject(OverlayService);
 
   public currentView: AppView = 'work-plan';
 

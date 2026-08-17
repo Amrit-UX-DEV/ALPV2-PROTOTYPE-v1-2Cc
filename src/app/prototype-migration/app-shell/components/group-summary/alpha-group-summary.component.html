@@ -353,13 +353,13 @@
         <div class="ui-diagram-content scroll-child-items"> 
         <div class="multi-action-tile tile--default tile--size-w-med">
         <div class="action-container">
-        <button type="button" class="state--ui- group-unit state--ui-active" style="max-width: 145px; text-align:left;"><span class="tile--data-strong"><div><i aria-hidden="true" class="fas fa-briefcase inline"></i><span> Servicing Agent</span></div></span><span class="tile--data">Albert Wesker</span></button>
+        <button type="button" class="state--ui- group-unit state--ui-active" [class.alpha-selected]="isPartySelected('ServicingAgent')" (click)="selectParty('ServicingAgent')" style="max-width: 145px; text-align:left;"><span class="tile--data-strong"><div><i aria-hidden="true" class="fas fa-briefcase inline"></i><span> {{ client('ServicingAgent')?.roles?.join(', ') }}</span></div></span><span class="tile--data">{{ client('ServicingAgent')?.name }}</span></button>
         </div>
         </div>
         
         <div class="multi-action-tile tile--default tile--size-w-med">
             <div class="action-container">
-                <button class="action state--ui-active" type="button" client-id="ux02" policy-client-link="uxMrJoeBloggs">
+                <button class="action state--ui-active" [class.alpha-selected]="isPartySelected('MrJoeBloggs')" (click)="selectParty('MrJoeBloggs')" type="button" [attr.client-id]="client('MrJoeBloggs')?.id" [attr.policy-client-link]="tokenFor('MrJoeBloggs')">
         
             <span class="tile--data-strong">
                 <i aria-hidden="true" class="fa fa-male"></i>
@@ -369,7 +369,7 @@
             </span>
             
                 <span class="tile--data tile--spacer">
-                    Mr Joe Bloggs</span>
+                    {{ client('MrJoeBloggs')?.name }}</span>
         
                 <span class="tile--data-heading">
                     Date of Birth:
@@ -512,7 +512,7 @@
         
         
         
-                <button alpha-ui-attr-toggle=".app-overlay--reassure-now-portal-view,app-overlay--open" alpha-ui-event="click" class="action--view secondary-action state--ui-active--no-icon icon--expand-right">
+                <button (click)="overlay.toggle('reassure-now-portal-view')" class="action--view secondary-action state--ui-active--no-icon icon--expand-right">
                 <span class="reassure-now-container">
                     <img class="reassure-now-logo" src="Images/ReAssureNow_Logo_Active.png" title="ReAssure Now" alt="ReAssure Now">
                     <span class="reassure-now-logo-caption tile--data-strong reassure-now--active">Active</span>
@@ -528,7 +528,7 @@
         
         <div hidden class="multi-action-tile tile--default tile--size-w-med">
         <div class="action-container">
-        <button class="action state--ui-active" type="button" client-id="ux03" policy-client-link="uxMrsLucyBloggs">
+        <button class="action state--ui-active" [class.alpha-selected]="isPartySelected('MrsLucyBloggs')" (click)="selectParty('MrsLucyBloggs')" type="button" [attr.client-id]="client('MrsLucyBloggs')?.id" [attr.policy-client-link]="tokenFor('MrsLucyBloggs')">
         
         
         
@@ -543,7 +543,7 @@
         
         
         <span class="tile--data tile--spacer">
-            Mrs Lucy Bloggs</span>
+            {{ client('MrsLucyBloggs')?.name }}</span>
         
         <span class="tile--data-heading">
             Date of Birth:
@@ -587,7 +587,7 @@
         
         </button>
         
-        <button alpha-ui-attr-toggle=".app-overlay--reassure-now-portal-view,app-overlay--open" alpha-ui-event="click" class="action--view secondary-action state--ui-active--no-icon icon--expand-right">
+        <button (click)="overlay.toggle('reassure-now-portal-view')" class="action--view secondary-action state--ui-active--no-icon icon--expand-right">
         <span class="reassure-now-container">
             <img class="reassure-now-logo" src="Images/ReAssureNow_Logo_Active.png" title="ReAssure Now" alt="ReAssure Now">
             <span class="reassure-now-logo-caption tile--data-strong reassure-now--active">Active</span>
@@ -605,7 +605,7 @@
         <div class="ui-diagram-content scroll-child-items">
         
         
-        <div class="ui-policy-row" linked-clients="uxMrMrsBloggs uxMrJoeBloggs uxMrsLucyBloggs" selected-client=""> 
+        <div class="ui-policy-row" [class.ui-show-linked-member]="showLinkedMember()" [attr.linked-clients]="linkedClients()" [attr.selected-client]="selectedClientToken() ?? ''"> 
         <div class="ui-flag-col"> 
         <span class="ui-key-icons">
         <span class="ui-tooltip-icon-block ui-tooltip--user-found">
@@ -628,16 +628,16 @@
         <div class="ui-policy-tile--long ux-policy-example01"> 
             <div class="ui-policy-details state--ui-active">
         <div class="ui-core-details">
-        <button class="ui-row-tile-action alpha-selected">
+        <button class="ui-row-tile-action" [class.alpha-selected]="policySelected()" (click)="selectPolicy()">
           <span class="ui-action-content"> 
         
         
         
         <span class="ui-alpha-indicators selected-users">
         
-        <span class="indicator ui-user-found ux-MrMrsBloggs">Mr &amp; Mrs Bloggs - Policy Holder</span>
-        <span class="indicator ui-user-found ux-MrJoeBloggs">Mr Joe Bloggs - Life 1, Payer</span>
-        <span class="indicator ui-user-found ux-MrsLucyBloggs">Mrs Lucy Bloggs - Life 2</span>
+        @for (client of linkedMembers(); track client.key) {
+        <span class="indicator ui-user-found ux-{{ client.key }}">{{ client.name }} - {{ client.roles.join(', ') }}</span>
+        }
         
         </span>
         
@@ -646,14 +646,14 @@
         <span class="tile--data-block long-tile-reference-number"> 
         <span class="tile--data-heading">Policy Number:</span>
         <span class="tile--data ui-policy-number">
-        <strong>80007</strong>
+        <strong>{{ ctx.policy().number }}</strong>
         </span>
         </span>
         
         
         
         <span class="ui-alpha-indicators top-line-indicators">
-                <span class="indicator ui-status active">In Force</span><span class="indicator pension">Life</span>
+                <span class="indicator ui-status active">{{ ctx.policy().status }}</span><span class="indicator pension">Life</span>
         
         
         <span class="indicator party-count">
@@ -681,7 +681,7 @@
         </span><span class="tile--data-block">
         <span class="tile--data-heading">Company</span>
         <span class="tile--data">
-        <strong>HSBC (LifePen)</strong>
+        <strong>{{ ctx.policy().company }}</strong>
         </span>
         </span>
         
@@ -694,14 +694,14 @@
         Policy Type         
         </span>
         <span class="tile--data">
-        <strong>Unit Linked</strong>
+        <strong>{{ ctx.policy().policyType }}</strong>
         </span>
         </span><span class="tile--data-block">
         <span class="tile--data-heading">
         Product Description 
         </span>
         <span class="tile--data">
-        <strong>Group Stakeholder Pen Plan Pre Nov 04</strong>
+        <strong>{{ ctx.policy().productName }}</strong>
         </span>
         </span>
         
@@ -778,14 +778,14 @@
         <div class="ui-interesed-party-content content--flex-eq-tile-grid"> 
         <div class="multi-action-tile tile--default tile--size-w-med">
           <div class="action-container">
-            <button class="client-unit state--ui-active" type="button" client-id="ux02">
-              <span class="tile--data-strong">Policy Holder, Life 1</span>
+            <button class="client-unit state--ui-active" [class.alpha-selected]="isPartySelected('MrJoeBloggs')" (click)="selectParty('MrJoeBloggs')" type="button" [attr.client-id]="client('MrJoeBloggs')?.id">
+              <span class="tile--data-strong">{{ client('MrJoeBloggs')?.roles?.join(', ') }}</span>
               <span class="tile--data">
-               Mr Joe Bloggs
+               {{ client('MrJoeBloggs')?.name }}
               </span>
             </button>
           </div>
-        </div><div class="multi-action-tile tile--default tile--size-w-med"><div class="action-container"><button class="client-unit state--ui-active" data-cy="btn-select-interested-parties" type="button"><span class="tile--data-strong">Servicing Agent</span><span class="tile--data">Albert Wesker</span></button></div></div>
+        </div><div class="multi-action-tile tile--default tile--size-w-med"><div class="action-container"><button class="client-unit state--ui-active" [class.alpha-selected]="isPartySelected('ServicingAgent')" (click)="selectParty('ServicingAgent')" data-cy="btn-select-interested-parties" type="button"><span class="tile--data-strong">{{ client('ServicingAgent')?.roles?.join(', ') }}</span><span class="tile--data">{{ client('ServicingAgent')?.name }}</span></button></div></div>
         </div>
         </div><div class="ui-interested-party-container"> 
         <div class="ui-diagram-header ui-header-fill"><strong><span class="ui-count-bubble">1</span> Third Parties</strong>
@@ -794,9 +794,9 @@
         <div class="ui-interesed-party-content content--flex-eq-tile-grid"> 
         <div class="multi-action-tile tile--default tile--size-w-med">
         <div class="action-container">
-        <button class="client-unit state--ui-active" type="button">
-        <span class="tile--data-strong">Beneficiary</span>
-        <span class="tile--data">Mr Luke Smith</span><span class="tile--address-details">
+        <button class="client-unit state--ui-active" [class.alpha-selected]="isPartySelected('Beneficiary')" (click)="selectParty('Beneficiary')" type="button">
+        <span class="tile--data-strong">{{ client('Beneficiary')?.roles?.join(', ') }}</span>
+        <span class="tile--data">{{ client('Beneficiary')?.name }}</span><span class="tile--address-details">
         
           
           <span class="tile--data-strong tile--spacer">
