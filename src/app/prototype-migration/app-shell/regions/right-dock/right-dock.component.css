@@ -1,0 +1,25 @@
+/*
+ * Two rules that cannot be design system utilities.
+ *
+ * Both replace inline styles. An inline style beats every selector, so moving
+ * one into a class only works if the class still wins, and these two do not
+ * win as plain utilities.
+ */
+
+/*
+ * label.ui-er--label {display: block} in prototype-additions.css is a tag plus
+ * a class, so it beats a single utility class. View encapsulation adds an
+ * attribute to this selector, which puts it back in front.
+ */
+.dock-rail-label {
+  display: none;
+}
+
+/*
+ * Cancels the divider .ui-er--content carries by default. Not a spacing or
+ * display concern, so it stays with the component rather than becoming a
+ * utility.
+ */
+.dock-rail-section--plain {
+  border-top: none;
+}

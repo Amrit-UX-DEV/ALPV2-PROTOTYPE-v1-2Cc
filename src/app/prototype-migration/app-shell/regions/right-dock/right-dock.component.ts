@@ -27,6 +27,7 @@ import { CallCentreWidgetComponent } from '../../../widgets/call-centre/call-cen
   standalone: true,
   imports: [CallCentreWidgetComponent],
   templateUrl: './right-dock.component.html',
+  styleUrl: './right-dock.component.css',
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
 })
 export class RightDockComponent {}
