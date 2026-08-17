@@ -15,13 +15,20 @@
       {
         "key": "MrMrsBloggs",
         "name": "Mr & Mrs Bloggs",
-        "roles": ["Policy Holder"]
+        "roles": [
+          "Policy Holder"
+        ],
+        "linked": true
       },
       {
         "id": "ux02",
         "key": "MrJoeBloggs",
         "name": "Mr Joe Bloggs",
-        "roles": ["Policy Holder", "Life 1"],
+        "roles": [
+          "Policy Holder",
+          "Life 1"
+        ],
+        "linked": true,
         "extraCare": [
           {
             "type": "Health- Hearing",
@@ -50,12 +57,33 @@
         "id": "ux03",
         "key": "MrsLucyBloggs",
         "name": "Mrs Lucy Bloggs",
-        "roles": ["Life 2"]
+        "roles": [
+          "Life 2"
+        ],
+        "linked": true
+      },
+      {
+        "key": "ServicingAgent",
+        "name": "Albert Wesker",
+        "roles": [
+          "Servicing Agent"
+        ],
+        "scope": "agent"
+      },
+      {
+        "key": "Beneficiary",
+        "name": "Mr Luke Smith",
+        "roles": [
+          "Beneficiary"
+        ]
       }
     ]
   },
   "screen": {
-    "breadcrumbs": ["Search", "Group Summary"],
+    "breadcrumbs": [
+      "Search",
+      "Group Summary"
+    ],
     "headingPrefix": "Group Summary:"
   }
 }

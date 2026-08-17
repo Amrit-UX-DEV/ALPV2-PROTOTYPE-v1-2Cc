@@ -359,7 +359,7 @@
         
         <div class="multi-action-tile tile--default tile--size-w-med">
             <div class="action-container">
-                <button class="action state--ui-active" [class.alpha-selected]="ctx.isSelected('client', 'MrJoeBloggs')" (click)="ctx.select('client', 'MrJoeBloggs')" type="button" [attr.client-id]="client('MrJoeBloggs')?.id" [attr.policy-client-link]="tokenFor('MrJoeBloggs')">
+                <button class="action state--ui-active" [class.alpha-selected]="isPartySelected('MrJoeBloggs')" (click)="selectParty('MrJoeBloggs')" type="button" [attr.client-id]="client('MrJoeBloggs')?.id" [attr.policy-client-link]="tokenFor('MrJoeBloggs')">
         
             <span class="tile--data-strong">
                 <i aria-hidden="true" class="fa fa-male"></i>
@@ -512,7 +512,7 @@
         
         
         
-                <button alpha-ui-attr-toggle=".app-overlay--reassure-now-portal-view,app-overlay--open" alpha-ui-event="click" class="action--view secondary-action state--ui-active--no-icon icon--expand-right">
+                <button (click)="overlay.toggle('reassure-now-portal-view')" class="action--view secondary-action state--ui-active--no-icon icon--expand-right">
                 <span class="reassure-now-container">
                     <img class="reassure-now-logo" src="Images/ReAssureNow_Logo_Active.png" title="ReAssure Now" alt="ReAssure Now">
                     <span class="reassure-now-logo-caption tile--data-strong reassure-now--active">Active</span>
@@ -528,7 +528,7 @@
         
         <div hidden class="multi-action-tile tile--default tile--size-w-med">
         <div class="action-container">
-        <button class="action state--ui-active" [class.alpha-selected]="ctx.isSelected('client', 'MrsLucyBloggs')" (click)="ctx.select('client', 'MrsLucyBloggs')" type="button" [attr.client-id]="client('MrsLucyBloggs')?.id" [attr.policy-client-link]="tokenFor('MrsLucyBloggs')">
+        <button class="action state--ui-active" [class.alpha-selected]="isPartySelected('MrsLucyBloggs')" (click)="selectParty('MrsLucyBloggs')" type="button" [attr.client-id]="client('MrsLucyBloggs')?.id" [attr.policy-client-link]="tokenFor('MrsLucyBloggs')">
         
         
         
@@ -587,7 +587,7 @@
         
         </button>
         
-        <button alpha-ui-attr-toggle=".app-overlay--reassure-now-portal-view,app-overlay--open" alpha-ui-event="click" class="action--view secondary-action state--ui-active--no-icon icon--expand-right">
+        <button (click)="overlay.toggle('reassure-now-portal-view')" class="action--view secondary-action state--ui-active--no-icon icon--expand-right">
         <span class="reassure-now-container">
             <img class="reassure-now-logo" src="Images/ReAssureNow_Logo_Active.png" title="ReAssure Now" alt="ReAssure Now">
             <span class="reassure-now-logo-caption tile--data-strong reassure-now--active">Active</span>
@@ -628,14 +628,14 @@
         <div class="ui-policy-tile--long ux-policy-example01"> 
             <div class="ui-policy-details state--ui-active">
         <div class="ui-core-details">
-        <button class="ui-row-tile-action alpha-selected">
+        <button class="ui-row-tile-action" [class.alpha-selected]="policySelected()" (click)="selectPolicy()">
           <span class="ui-action-content"> 
         
         
         
         <span class="ui-alpha-indicators selected-users">
         
-        @for (client of ctx.clients(); track client.key) {
+        @for (client of linkedMembers(); track client.key) {
         <span class="indicator ui-user-found ux-{{ client.key }}">{{ client.name }} - {{ client.roles.join(', ') }}</span>
         }
         
@@ -778,14 +778,14 @@
         <div class="ui-interesed-party-content content--flex-eq-tile-grid"> 
         <div class="multi-action-tile tile--default tile--size-w-med">
           <div class="action-container">
-            <button class="client-unit state--ui-active" [class.alpha-selected]="ctx.isSelected('client', 'MrJoeBloggs')" (click)="ctx.select('client', 'MrJoeBloggs')" type="button" [attr.client-id]="client('MrJoeBloggs')?.id">
+            <button class="client-unit state--ui-active" [class.alpha-selected]="isPartySelected('MrJoeBloggs')" (click)="selectParty('MrJoeBloggs')" type="button" [attr.client-id]="client('MrJoeBloggs')?.id">
               <span class="tile--data-strong">{{ client('MrJoeBloggs')?.roles?.join(', ') }}</span>
               <span class="tile--data">
                {{ client('MrJoeBloggs')?.name }}
               </span>
             </button>
           </div>
-        </div><div class="multi-action-tile tile--default tile--size-w-med"><div class="action-container"><button class="client-unit state--ui-active" data-cy="btn-select-interested-parties" type="button"><span class="tile--data-strong">Servicing Agent</span><span class="tile--data">Albert Wesker</span></button></div></div>
+        </div><div class="multi-action-tile tile--default tile--size-w-med"><div class="action-container"><button class="client-unit state--ui-active" [class.alpha-selected]="isPartySelected('ServicingAgent')" (click)="selectParty('ServicingAgent')" data-cy="btn-select-interested-parties" type="button"><span class="tile--data-strong">{{ client('ServicingAgent')?.roles?.join(', ') }}</span><span class="tile--data">{{ client('ServicingAgent')?.name }}</span></button></div></div>
         </div>
         </div><div class="ui-interested-party-container"> 
         <div class="ui-diagram-header ui-header-fill"><strong><span class="ui-count-bubble">1</span> Third Parties</strong>
@@ -794,9 +794,9 @@
         <div class="ui-interesed-party-content content--flex-eq-tile-grid"> 
         <div class="multi-action-tile tile--default tile--size-w-med">
         <div class="action-container">
-        <button class="client-unit state--ui-active" type="button">
-        <span class="tile--data-strong">Beneficiary</span>
-        <span class="tile--data">Mr Luke Smith</span><span class="tile--address-details">
+        <button class="client-unit state--ui-active" [class.alpha-selected]="isPartySelected('Beneficiary')" (click)="selectParty('Beneficiary')" type="button">
+        <span class="tile--data-strong">{{ client('Beneficiary')?.roles?.join(', ') }}</span>
+        <span class="tile--data">{{ client('Beneficiary')?.name }}</span><span class="tile--address-details">
         
           
           <span class="tile--data-strong tile--spacer">

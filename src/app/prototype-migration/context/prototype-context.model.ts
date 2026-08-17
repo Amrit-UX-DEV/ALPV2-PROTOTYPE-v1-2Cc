@@ -52,6 +52,20 @@ export interface ContextClient {
   name: string;
   /** e.g. ['Policy Holder', 'Life 1']. Rendered joined by ', '. */
   roles: string[];
+  /**
+   * What selecting this party puts the app into. Defaults to 'client'; a
+   * servicing agent is an 'agent'. It is what lets one list hold everyone
+   * attached to the policy without flattening the distinction between them.
+   */
+  scope?: ContextScope;
+  /**
+   * Whether this party appears as a linked-client indicator on the policy row.
+   *
+   * Only the lives and holders are drawn on the row; a servicing agent or a
+   * beneficiary is attached to the policy but is not one of its linked
+   * members, and has no indicator to reveal.
+   */
+  linked?: boolean;
   /** Absent or empty means this client is not flagged for extra care. */
   extraCare?: ExtraCareEntry[];
 }
