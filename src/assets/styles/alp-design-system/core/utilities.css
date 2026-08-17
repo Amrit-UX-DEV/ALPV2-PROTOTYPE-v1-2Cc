@@ -23,6 +23,17 @@
 .alp-text-soft { color: var(--alp-color-text-soft); }
 .alp-text-danger { color: var(--alp-color-danger); }
 
+/* Display */
+.alp-block { display: block; }
+.alp-inline-block { display: inline-block; }
+.alp-hidden { display: none; }
+
+/* Spacing */
+.alp-m-0 { margin: 0; }
+.alp-mt-0 { margin-top: 0; }
+.alp-mb-0 { margin-bottom: 0; }
+.alp-p-0 { padding: 0; }
+
 /* Screen reader only */
 .alp-sr-only {
   position: absolute;
