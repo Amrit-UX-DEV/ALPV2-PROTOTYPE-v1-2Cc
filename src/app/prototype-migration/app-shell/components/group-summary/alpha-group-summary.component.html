@@ -635,7 +635,7 @@
         
         <span class="ui-alpha-indicators selected-users">
         
-        @for (client of linkedMembers(); track client.key) {
+        @if (selectedLinkedMember(); as client) {
         <span class="indicator ui-user-found ux-{{ client.key }}">{{ client.name }} - {{ client.roles.join(', ') }}</span>
         }
         
@@ -714,7 +714,7 @@
         </button> 
         <div class="ui-extended-actions"> </div></div>
         
-        <div class="ui-expanded-details ux-expand-example01"> 
+        <div class="ui-expanded-details ux-expand-example01" [class.ux-hide]="!policyDetailsExpanded()"> 
         
         
         
@@ -821,7 +821,7 @@
         
             
         </div>
-        <button class="ui-policy-open" alpha-ui-event="click" alpha-ui-attr-toggle=".ux-expand-example01,ux-hide">
+        <button class="ui-policy-open" (click)="togglePolicyDetails()">
         <strong><i class="fa fa-chevron-down" aria-hidden="true"></i></strong>
         </button>
             
