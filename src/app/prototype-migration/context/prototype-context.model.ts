@@ -164,6 +164,14 @@ export interface PrototypeContext {
    */
   label?: string;
   /**
+   * What was keyed to find this context, e.g. 'PMR12345678910'.
+   *
+   * Held here so a screen can show the reference on its own. The label reads as
+   * a sentence for the header, and picking the reference back out of it would
+   * tie the screen to how the header happens to be worded.
+   */
+  reference?: string;
+  /**
    * Absent in no context. Screens that show policy detail check for it rather
    * than rendering a blank policy.
    */

@@ -66,6 +66,9 @@ export class PrototypeContextService {
   /** What to call the current context where there is no policy to summarise. */
   readonly label = computed(() => this.current().label ?? NO_CONTEXT.label!);
 
+  /** What was keyed to find the current context, empty when nothing was. */
+  readonly reference = computed(() => this.current().reference ?? '');
+
   /** The journey this context runs, if it names one. */
   readonly journey = computed(() => this.current().journey);
 
