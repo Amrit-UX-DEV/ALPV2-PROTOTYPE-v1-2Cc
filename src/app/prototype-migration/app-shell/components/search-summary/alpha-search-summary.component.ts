@@ -297,9 +297,12 @@ export class AlphaSearchSummaryComponent {
 
   protected readonly openGroups = this.groups.asReadonly();
 
-  protected readonly allOpen = computed(() => Object.values(this.groups()).every(Boolean));
-
-  protected readonly someOpen = computed(() => Object.values(this.groups()).some(Boolean));
+  /**
+   * Whether anything is open, which is what the one control works from: with a
+   * group open there is something to collapse, and with all of them closed the
+   * only useful thing it can do is open them.
+   */
+  protected readonly anyOpen = computed(() => Object.values(this.groups()).some(Boolean));
 
   /**
    * The fields in each group, named on its header.
@@ -324,9 +327,15 @@ export class AlphaSearchSummaryComponent {
     this.groups.update((groups) => ({ ...groups, [group]: open }));
   }
 
-  /** Opens or closes every group at once. */
-  protected setAllGroups(event: Event): void {
-    const open = (event.target as HTMLInputElement).checked;
+  /**
+   * Opens or closes every group at once, overriding wherever they were left.
+   *
+   * One control with one meaning at any moment: anything open and it closes
+   * everything, nothing open and it opens everything. Mixed states resolve the
+   * same way, so the rep never has to press it twice to see what it does.
+   */
+  protected toggleAllGroups(): void {
+    const open = !this.anyOpen();
     this.groups.set({ matched: open, 'not-matched': open, 'not-held': open });
   }
 

@@ -30,15 +30,17 @@
       ></alp-policy-tile>
     }
 
-    <label class="alp-checkbox-label alp-search-summary__toggle-all">
-      <input
-        type="checkbox"
-        [checked]="allOpen()"
-        [indeterminate]="someOpen() && !allOpen()"
-        (change)="setAllGroups($event)"
-      />
-      Expand all groups
-    </label>
+    <div class="alp-search-summary__controls">
+      <button type="button" class="alp-btn alp-btn--ghost" (click)="toggleAllGroups()">
+        {{ anyOpen() ? 'Collapse all groups' : 'Expand all groups' }}
+        <i
+          aria-hidden="true"
+          class="fas"
+          [class.fa-angle-double-up]="anyOpen()"
+          [class.fa-angle-double-down]="!anyOpen()"
+        ></i>
+      </button>
+    </div>
 
     <div class="alp-search-summary__panels">
       @if (agreements().length) {
