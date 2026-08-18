@@ -25,6 +25,15 @@ export class ContextSearchService {
 
   readonly searching = signal(false);
 
+  /**
+   * Whether there is anything to search for.
+   *
+   * Both forms disable their Search button on this, so an empty reference
+   * cannot be submitted: run() would return without doing anything, which
+   * looks like the button is broken rather than not yet usable.
+   */
+  readonly canSearch = computed(() => this.term().trim().length > 0 && !this.searching());
+
   private readonly missed = signal(false);
   private readonly missedTerm = signal('');
   private readonly missedCriteria = signal('');
@@ -76,7 +85,7 @@ export class ContextSearchService {
     if (result === 'found') this.views.show('group-summary');
   }
 
-  /** Empties the search and returns the app to non context. */
+  /** Empties the search and returns the app to no context. */
   clear(): void {
     this.term.set('');
     this.clearMessage();

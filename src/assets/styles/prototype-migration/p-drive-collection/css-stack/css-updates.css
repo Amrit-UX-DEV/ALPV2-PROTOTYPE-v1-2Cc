@@ -1086,6 +1086,28 @@ button.ui-row-open:hover {
     
 }
 
+/* Client and party tiles, selected: the same faint blue as the policy tile above.
+
+   ux-helpers-2.css gives these #85b2e2 with white text, which is both heavier than
+   the policy tile and drops the label out of black, so a selected client read as a
+   different kind of thing from a selected policy.
+
+   Scoped to the two containers the group summary puts its party tiles in, because
+   the same .multi-action-tile markup is used elsewhere, including a permanently
+   selected tile in the notifications overlay that should keep its own colour.
+
+   This file loads after ux-helpers-2.css so these win, and the two theme sheets
+   load after this file at equal specificity so Light and Dark are untouched. */
+.ui-diagram-content .multi-action-tile .action-container > button.alpha-selected,
+.ui-diagram-content .multi-action-tile .action-container > button.alpha-selected:hover,
+.ui-diagram-content .multi-action-tile .action-container > button.alpha-selected .tile--address-status,
+.ui-interesed-party-content .multi-action-tile .action-container > button.alpha-selected,
+.ui-interesed-party-content .multi-action-tile .action-container > button.alpha-selected:hover,
+.ui-interesed-party-content .multi-action-tile .action-container > button.alpha-selected .tile--address-status {
+    background-color: rgb(223, 231, 239);
+    color: #222;
+}
+
 /* Hover State */
 .ui-policy-tile--long  button.ui-row-tile-action:hover,
 .ui-row-details button.ui-row-tile-action:hover {

@@ -23,7 +23,6 @@ import { ContextSearchService } from '../../../context/context-search.service';
   standalone: true,
   imports: [CallerSelectorComponent, RecentCallersComponent],
   templateUrl: './caller-details-step.component.html',
-  styleUrl: './caller-details-step.component.css',
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
 })
 export class CallerDetailsStepComponent {

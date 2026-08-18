@@ -48,10 +48,14 @@
         <label for="MenuSearch_ReferenceNumber">Reference Number</label>
         <input autocomplete="off" autofocus="" class="form-control" formcontrolname="referenceNumber" id="MenuSearch_ReferenceNumber" name="referenceNumber" type="input" placeholder="Enter Policy Number" [value]="search.term()" (input)="onReferenceInput($event)">
         </div>
-        <button class="btn btn-success policy-search-submit" id="MenuSearch_SearchButton" type="submit" [disabled]="search.searching()">Search</button>
+        <button class="btn btn-success policy-search-submit" id="MenuSearch_SearchButton" type="submit" [disabled]="!search.canSearch()">Search</button>
         <button class="btn btn-danger policy-search-clear" id="MenuSearch_ClearButton" type="button" (click)="search.clear()">Clear</button>
         @if (search.notFound()) {
-        <p class="alp-search-no-match">No {{ search.notFoundLabel() }} found for <strong>{{ search.notFoundTerm() }}</strong>.</p>
+        <div class="notification-block status-warning">
+          <div class="notification-message">
+            <p>No {{ search.notFoundLabel() }} found for {{ search.notFoundTerm() }}</p>
+          </div>
+        </div>
         }
         </form> </div> </li> </ul>
       </li>

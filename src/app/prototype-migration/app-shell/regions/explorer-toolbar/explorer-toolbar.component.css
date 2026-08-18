@@ -35,14 +35,10 @@
 }
 
 /*
- * The failed search message. Lighter than the same message in the call centre
- * widget, because this panel is dark: the widget's #b00020 is close to unreadable
- * against it.
+ * The failed search notification. The block itself is styled globally; all it
+ * needs here is to clear the two search buttons above it, which float.
  */
-.alp-search-no-match {
+.toolbar-searchform .notification-block {
   clear: both;
-  margin: 8px 0 0;
-  padding: 0 0.3rem;
-  font-size: 13px;
-  color: #ff8a80;
+  margin-top: 10px;
 }

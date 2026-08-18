@@ -1,7 +1,7 @@
 /*
  * What the body shows before anything has been searched.
  *
- * The app starts in non context, so the group summary has no policy to draw.
+ * The app starts in no context, so the group summary has no policy to draw.
  * This states that rather than leaving the area blank, which would read as a
  * failure to load.
  */
