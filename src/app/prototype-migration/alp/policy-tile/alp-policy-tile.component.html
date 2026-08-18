@@ -1,0 +1,37 @@
+<div class="alp-policy-tile" [class.alp-policy-tile--selected]="selected()">
+  <div class="alp-policy-tile__head">
+    <div class="alp-policy-tile__reference">
+      <span class="alp-policy-tile__label">Policy Number</span>
+      <strong class="alp-policy-tile__number">{{ policy().number }}</strong>
+    </div>
+    <div class="alp-policy-tile__indicators">
+      <span class="alp-policy-tile__status">{{ policy().status }}</span>
+      @for (flag of flags(); track flag) {
+        <span class="alp-policy-tile__flag">{{ flag }}</span>
+      }
+    </div>
+  </div>
+
+  <dl class="alp-policy-tile__facts">
+    <div class="alp-policy-tile__fact">
+      <dt class="alp-policy-tile__label">Company</dt>
+      <dd class="alp-policy-tile__value">{{ policy().company }}</dd>
+    </div>
+    <div class="alp-policy-tile__fact">
+      <dt class="alp-policy-tile__label">Policy Type</dt>
+      <dd class="alp-policy-tile__value">{{ policy().policyType }}</dd>
+    </div>
+    <div class="alp-policy-tile__fact">
+      <dt class="alp-policy-tile__label">Product Description</dt>
+      <dd class="alp-policy-tile__value">{{ policy().productName }}</dd>
+    </div>
+  </dl>
+
+  @if (actionLabel()) {
+    <div class="alp-policy-tile__actions">
+      <button type="button" class="alp-btn alp-btn--primary" (click)="action.emit()">
+        {{ actionLabel() }}
+      </button>
+    </div>
+  }
+</div>

@@ -1,0 +1,102 @@
+/* =========================================================
+   ALP DESIGN SYSTEM — POLICY TILE
+   A compact policy summary. Mirrors what the legacy policy
+   tile shows, in alp- classes and tokens, so screens can
+   summarise a policy without the legacy tile's behaviour.
+   ========================================================= */
+
+.alp-policy-tile {
+  display: flex;
+  flex-direction: column;
+  gap: var(--alp-space-4);
+  padding: var(--alp-space-4);
+  border: 1px solid var(--alp-color-border);
+  border-left: 4px solid var(--alp-color-brand);
+  border-radius: var(--alp-radius-md);
+  background: var(--alp-color-surface);
+  box-shadow: var(--alp-shadow-xs);
+}
+
+.alp-policy-tile--selected {
+  border-color: var(--alp-color-selected);
+  background: var(--alp-color-selected-soft);
+}
+
+.alp-policy-tile__head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--alp-space-3);
+}
+
+.alp-policy-tile__reference {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.alp-policy-tile__number {
+  font-size: var(--alp-font-size-lg);
+  font-weight: var(--alp-font-weight-bold);
+  color: var(--alp-color-text);
+}
+
+.alp-policy-tile__indicators {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--alp-space-2);
+}
+
+.alp-policy-tile__status,
+.alp-policy-tile__flag {
+  padding: 2px var(--alp-space-2);
+  border-radius: var(--alp-radius-full);
+  font-size: var(--alp-font-size-xs);
+  font-weight: var(--alp-font-weight-semibold);
+}
+
+.alp-policy-tile__status {
+  background: var(--alp-color-success-soft);
+  color: var(--alp-color-success-text);
+}
+
+.alp-policy-tile__flag {
+  background: var(--alp-color-neutral-soft);
+  color: var(--alp-color-neutral-text);
+}
+
+/* Facts sit in a row on a wide tile and stack on a narrow one, which is what
+   lets the same tile serve a full-width screen and a sidebar. */
+.alp-policy-tile__facts {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--alp-space-2) var(--alp-space-6);
+  margin: 0;
+}
+
+.alp-policy-tile__fact {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 140px;
+}
+
+.alp-policy-tile__label {
+  font-size: var(--alp-font-size-xs);
+  font-weight: var(--alp-font-weight-normal);
+  color: var(--alp-color-text-muted);
+}
+
+.alp-policy-tile__value {
+  margin: 0;
+  font-size: var(--alp-font-size-sm);
+  font-weight: var(--alp-font-weight-semibold);
+  color: var(--alp-color-text);
+}
+
+.alp-policy-tile__actions {
+  display: flex;
+  justify-content: flex-end;
+}

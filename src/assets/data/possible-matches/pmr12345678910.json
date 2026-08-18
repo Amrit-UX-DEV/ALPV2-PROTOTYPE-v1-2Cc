@@ -1,0 +1,43 @@
+{
+  "givenName": "Joe",
+  "surName": "Bloggs",
+  "dateOfBirth": "1962-11-26",
+  "niNumber": "AB850005A",
+  "alternateSurname1": "Blogs",
+  "alternateSurname2": " ",
+  "alternateSurname3": " ",
+  "alternateSurname4": " ",
+  "alternateSurname5": " ",
+  "email": "joe.bloggs@example.com",
+  "alternameEmail": " ",
+  "phoneNumber": "07700 900123",
+  "alternatePhoneNumber": " ",
+  "niNumberMatched": false,
+  "givenNameMatched": true,
+  "surnameMatched": true,
+  "dobMatched": true,
+  "alternateSurname1Matched": false,
+  "alternateSurname2Matched": false,
+  "alternateSurname3Matched": false,
+  "alternateSurname4Matched": false,
+  "alternateSurname5Matched": false,
+  "pmrDetails": [
+    {
+      "pensionReference": "80007",
+      "possibleMatchReference": "PMR12345678910",
+      "pensionValidUntill": "2026-08-21",
+      "addresses": [
+        {
+          "line1": "24 Kenilworth Road",
+          "line2": "Leamington Spa",
+          "line3": "Warwickshire",
+          "line4": " ",
+          "line5": " ",
+          "countryCode": "GB",
+          "postcode": "CV32 6JF",
+          "postcodeMatched": true
+        }
+      ]
+    }
+  ]
+}
