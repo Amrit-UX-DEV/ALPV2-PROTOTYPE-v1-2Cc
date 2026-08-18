@@ -1,4 +1,5 @@
-import { ChangeDetectionStrategy, Component, computed, inject } from '@angular/core';
+import { formatDate } from '@angular/common';
+import { ChangeDetectionStrategy, Component, LOCALE_ID, computed, inject } from '@angular/core';
 
 import {
   AlpPolicyTileComponent,
@@ -87,6 +88,7 @@ export class AlphaSearchSummaryComponent {
   protected readonly ctx = inject(PrototypeContextService);
   protected readonly matches = inject(PossibleMatchService);
   private readonly views = inject(AppViewService);
+  private readonly locale = inject(LOCALE_ID);
 
   protected readonly noData = NO_DATA;
 
@@ -115,6 +117,9 @@ export class AlphaSearchSummaryComponent {
   /** The pension the reference resolved to, and the address held against it. */
   protected readonly detail = this.matches.detail;
   protected readonly theirAddress = this.matches.address;
+
+  /** How long the reference stays valid, written as every other date is. */
+  protected readonly validUntil = computed(() => this.asDate(this.detail()?.pensionValidUntill));
 
   /**
    * Our client for this possible match, matched on name.
@@ -146,7 +151,12 @@ export class AlphaSearchSummaryComponent {
     return [
       this.compare('Given Name', them.givenName, us?.givenName, them.givenNameMatched),
       this.compare('Surname', them.surName, us?.surname, them.surnameMatched),
-      this.compare('Date of Birth', them.dateOfBirth, us?.dateOfBirth, them.dobMatched),
+      this.compare(
+        'Date of Birth',
+        this.asDate(them.dateOfBirth),
+        this.asDate(us?.dateOfBirth),
+        them.dobMatched,
+      ),
       this.compare('NI Number', them.niNumber, us?.niNumber, them.niNumberMatched),
     ];
   });
@@ -311,6 +321,29 @@ export class AlphaSearchSummaryComponent {
       agreedValue: weHold ? ourValue : theyHold ? theirValue : NO_DATA,
       spellingsDiffer: theyHold && weHold && theirValue !== ourValue,
     };
+  }
+
+  /**
+   * A date written the way the rest of the app writes one, e.g. 13 Nov 1966.
+   *
+   * Both platforms send dates as 1966-11-13, and a rep comparing this screen
+   * against the group summary should not have to work out that the two are the
+   * same day. formatDate is what the date pipe calls, on the same locale, so the
+   * two screens cannot present a date differently.
+   *
+   * Anything unparseable is returned as it arrived: their record carries
+   * placeholders, and a placeholder should be shown verbatim rather than guessed
+   * at.
+   */
+  private asDate(value: string | undefined): string {
+    const trimmed = (value ?? '').trim();
+    if (!hasValue(trimmed)) return trimmed;
+
+    try {
+      return formatDate(trimmed, 'dd MMM yyyy', this.locale);
+    } catch {
+      return trimmed;
+    }
   }
 
   /** Case and spacing are not differences worth reporting to a rep. */

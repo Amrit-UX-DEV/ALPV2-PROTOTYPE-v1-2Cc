@@ -142,11 +142,20 @@
   color: var(--alp-color-text);
 }
 
-/* ---- Differences: a tile each ---- */
+/* ---- Differences: a tile each ----
+   Two to a row, so a full address or an email has the width to sit on one or two
+   lines rather than wrapping to four. One to a row once the region is too narrow
+   to give each of them that width. */
 .alp-search-summary__diffs {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(16rem, 1fr));
+  grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: var(--alp-space-3);
+}
+
+@media (max-width: 60rem) {
+  .alp-search-summary__diffs {
+    grid-template-columns: minmax(0, 1fr);
+  }
 }
 
 .alp-search-summary__diff {
@@ -182,13 +191,12 @@
   margin: 0;
 }
 
-/* A fixed label column, so the two values line up under each other and the
-   difference between them is the only thing moving. */
+/* Label above value, the same way round as everywhere else on the screen, so a
+   long value has the whole width of the tile to sit in. */
 .alp-search-summary__diff-value {
-  display: grid;
-  grid-template-columns: 6.5rem 1fr;
-  gap: var(--alp-space-2);
-  align-items: baseline;
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
   padding: var(--alp-space-2) 0;
 }
 
@@ -198,6 +206,9 @@
 
 .alp-search-summary__diff-value dt {
   font-size: var(--alp-font-size-xs);
+  font-weight: var(--alp-font-weight-semibold);
+  text-transform: uppercase;
+  letter-spacing: var(--alp-letter-spacing-wider);
   color: var(--alp-color-text-muted);
 }
 
@@ -265,11 +276,10 @@
   color: var(--alp-color-slate-700);
 }
 
-/* One side holding nothing where the other does reads as absent rather than as
-   a value. */
+/* One side holding nothing where the other does reads as absent rather than as a
+   value: lighter and unemphasised, never italic. */
 .alp-search-summary__absent-value {
   font-weight: var(--alp-font-weight-normal);
-  font-style: italic;
   color: var(--alp-color-text-muted);
 }
 
