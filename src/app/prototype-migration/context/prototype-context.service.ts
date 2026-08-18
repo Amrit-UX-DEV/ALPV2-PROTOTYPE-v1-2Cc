@@ -24,6 +24,9 @@ export const CONTEXT_INDEX_FILE = `${CONTEXT_DATA_PATH}/index.json`;
  * what keeps every consumer free of null checks, and it gives the header
  * something to name.
  *
+ * 'No Context' is the application's own wording for this state, on the header
+ * and on the screen alike, so it is written once here and read from both.
+ *
  * The heading prefix is deliberately empty. A real context names the screen it
  * is showing, as in 'Group Summary: Policy 80007', but there is no screen and
  * no policy to prefix here, so the header reads 'No Context' on its own rather
@@ -60,6 +63,21 @@ export class PrototypeContextService {
 
   /** Whether there is a policy to show. False before a search finds one. */
   readonly hasPolicy = computed(() => this.policy() !== undefined);
+
+  /**
+   * The policy the header summarises, which is not always the one the context
+   * resolved.
+   *
+   * A possible match carries a policy so the caller can be taken through DPA,
+   * but the rep has not moved onto it yet, so its context asks the header to
+   * stay quiet about it. Everything else defaults to naming its policy.
+   */
+  readonly headerPolicy = computed(() =>
+    this.screen().policyDetail === false ? undefined : this.policy(),
+  );
+
+  /** The pension the context points at, for moving on to that policy's own. */
+  readonly pensionReference = computed(() => this.current().pensionReference);
 
   /** 'none' until a context is activated, then whatever the context declares. */
   readonly kind = computed(() => this.current().kind ?? 'policy');
@@ -186,6 +204,27 @@ export class PrototypeContextService {
     return 'found';
   }
 
+  /**
+   * Moves from a context that points at a policy into that policy's own context.
+   *
+   * This is how a possible match is left behind: the rep decides the record is
+   * their caller and carries on with the policy, so the app stops being in a
+   * possible match altogether rather than keeping it alongside. The record, the
+   * heading and the breadcrumb all follow from the context, so they all change
+   * with it.
+   */
+  async activatePolicy(reference: string | undefined): Promise<void> {
+    if (!reference) return;
+
+    const entry = this.policyEntry(reference);
+    if (!entry) {
+      console.error(`No policy context for reference '${reference}', staying where we are.`);
+      return;
+    }
+
+    await this.activate(entry.id);
+  }
+
   /** Puts the app back into no context, as the search form's Clear does. */
   clear(): void {
     this.current.set(NO_CONTEXT);
@@ -222,6 +261,13 @@ export class PrototypeContextService {
     }
   }
 
+  /** The registry entry for a policy reference, which is how a policy is found. */
+  private policyEntry(reference: string): ContextIndexEntry | undefined {
+    return this.registry().find(
+      (c) => c.criteria.toLowerCase() === 'policy' && c.reference === reference,
+    );
+  }
+
   /** Reads a context file. Throws, so the caller decides what a failure means. */
   private async load(file: string): Promise<PrototypeContext> {
     const response = await fetch(`${CONTEXT_DATA_PATH}/${file}?t=${Date.now()}`);
@@ -239,9 +285,7 @@ export class PrototypeContextService {
   private async policyFor(reference: string | undefined): Promise<ContextPolicy | undefined> {
     if (!reference) return undefined;
 
-    const entry = this.registry().find(
-      (c) => c.criteria.toLowerCase() === 'policy' && c.reference === reference,
-    );
+    const entry = this.policyEntry(reference);
     if (!entry) {
       console.error(`No policy context for pension reference '${reference}'.`);
       return undefined;

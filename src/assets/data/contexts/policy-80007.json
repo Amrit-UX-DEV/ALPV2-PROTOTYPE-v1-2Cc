@@ -55,17 +55,19 @@
             "helpingHand": "Extra Care"
           }
         ],
-        "dateOfBirth": "1962-11-26",
-        "niNumber": "AB850009C",
+        "dateOfBirth": "1966-11-13",
+        "niNumber": "RM439286P",
         "email": "j.bloggs@example.com",
+        "alternateEmail": "joe.bloggs@example.co.uk",
         "phoneNumber": "07700 900123",
+        "alternatePhoneNumber": "01926 555019",
         "address": {
           "lines": [
-            "24 Kenilworth Road",
-            "Leamington Spa",
-            "Warwickshire"
+            "42 Chester Court",
+            "Lorum Road",
+            "Ipsum"
           ],
-          "postcode": "CV32 6JF",
+          "postcode": "TL67 8RL",
           "countryCode": "GB"
         }
       },
@@ -73,10 +75,14 @@
         "id": "ux03",
         "key": "MrsLucyBloggs",
         "name": "Mrs Lucy Bloggs",
+        "givenName": "Lucy",
+        "surname": "Bloggs",
         "roles": [
           "Life 2"
         ],
-        "linked": true
+        "linked": true,
+        "dateOfBirth": "1985-02-07",
+        "niNumber": "JP439286P"
       },
       {
         "key": "ServicingAgent",
@@ -85,13 +91,6 @@
           "Servicing Agent"
         ],
         "scope": "agent"
-      },
-      {
-        "key": "Beneficiary",
-        "name": "Mr Luke Smith",
-        "roles": [
-          "Beneficiary"
-        ]
       }
     ]
   },

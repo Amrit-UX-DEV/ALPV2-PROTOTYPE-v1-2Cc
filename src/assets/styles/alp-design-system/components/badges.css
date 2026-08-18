@@ -91,13 +91,34 @@
   background: var(--alp-color-purple-600);
 }
 
+/* Amber 600 under white text is 3.19:1, which only clears AA for large text, and
+   these tags are small, bold and uppercase. Amber 700 takes it to 5.02:1. */
 .alp-status-tag--historic {
-  background: var(--alp-color-amber-600);
+  background: var(--alp-color-amber-700);
+}
+
+/* Green 700 under white is 5.48:1, blue 700 is 8.72:1, amber 700 is 5.02:1, and
+   slate 700 on slate 200 is 8.4:1, so every variant here clears AA for body text.
+   Any new one has to do the same: a tag nobody can read is not a tag. */
+.alp-status-tag--info {
+  background: var(--alp-color-blue-700);
+}
+
+.alp-status-tag--warning {
+  background: var(--alp-color-amber-700);
 }
 
 .alp-status-tag--neutral {
   background: var(--alp-color-slate-200);
   color: var(--alp-color-slate-700);
+}
+
+/* A field one side simply does not hold. Neutral put it on slate 200, which is
+   all but invisible against the pale fills a value sits on, and a state nobody
+   notices is not a state. Orange 700 keeps white text at 5.18:1 and the tag
+   itself stands 4.95:1 clear of those fills. */
+.alp-status-tag--absent {
+  background: var(--alp-color-orange-700);
 }
 
 .alp-status-tag--product {
@@ -159,8 +180,9 @@
   margin-left: auto;
 }
 
+/* Was #8b5cf6, white on which is 4.23:1, AA for large text only. */
 .alp-script-journey__check-badge.manual {
-  background-color: #8b5cf6;
+  background-color: #7c3aed;
   color: var(--alp-color-white);
 }
 

@@ -1,6 +1,17 @@
-import { ChangeDetectionStrategy, Component, computed, inject } from '@angular/core';
+import { formatDate } from '@angular/common';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  LOCALE_ID,
+  computed,
+  inject,
+  signal,
+} from '@angular/core';
 
-import { AlpPolicyTileComponent } from '../../../alp/policy-tile/alp-policy-tile.component';
+import {
+  AlpPolicyTileComponent,
+  PolicyTileSignpost,
+} from '../../../alp/policy-tile/alp-policy-tile.component';
 import { PossibleMatchService } from '../../../context/possible-match.service';
 import { hasValue } from '../../../context/possible-match.model';
 import { ContextClient } from '../../../context/prototype-context.model';
@@ -11,25 +22,50 @@ import { AppViewService } from '../../../ui/app-view.service';
 export const NO_DATA = 'No Data';
 
 /**
- * One field, as the other platform holds it and as we hold it.
+ * What a row's two values amount to.
  *
- * matched is optional because their record only flags some fields. Where it is
- * absent nothing is claimed either way, which is more honest than inferring a
- * match by comparing two strings ourselves.
+ * not-held is for a field neither platform holds. It is not a verdict on a
+ * comparison, it is the absence of one, and it is the only case where no
+ * comparison is possible: everything we hold is compared.
  */
+export type ComparisonVerdict = 'matched' | 'not-matched' | 'not-held';
+
+/** One field, as the other platform holds it and as we hold it. */
 export interface ComparisonRow {
   label: string;
   theirs: string;
   ours: string;
-  matched?: boolean;
+  verdict: ComparisonVerdict;
+  /**
+   * The one value a matched field can be shown as, which is ours where we hold
+   * it. A field can be flagged as matching while only one side holds it, and
+   * printing 'No Data' as the agreed value would read as a mistake.
+   */
+  agreedValue: string;
+  /**
+   * Whether a matched field is nevertheless written differently on the two
+   * platforms. Their flags allow it, and a rep about to read a name back to a
+   * caller needs to see their spelling rather than only ours.
+   */
+  spellingsDiffer: boolean;
 }
+
+/** A field with the section it came from, since the panels group by verdict. */
+export interface ComparisonField extends ComparisonRow {
+  section: string;
+}
+
+/**
+ * Their country code is a telephone dialling code, ours is an ISO country code,
+ * so the same country arrives spelled two ways. Mapped rather than compared as
+ * text, otherwise the one field both platforms agree on reads as a mismatch.
+ */
+const DIALLING_CODES: Record<string, string> = { '44': 'GB' };
 
 /** A named run of rows, e.g. the identity fields. */
 export interface ComparisonSection {
   title: string;
   rows: ComparisonRow[];
-  /** Shown under the rows, where the fields need explaining. */
-  note?: string;
 }
 
 /**
@@ -57,6 +93,7 @@ export class AlphaSearchSummaryComponent {
   protected readonly ctx = inject(PrototypeContextService);
   protected readonly matches = inject(PossibleMatchService);
   private readonly views = inject(AppViewService);
+  private readonly locale = inject(LOCALE_ID);
 
   protected readonly noData = NO_DATA;
 
@@ -66,9 +103,32 @@ export class AlphaSearchSummaryComponent {
    */
   protected readonly policyFlags = ['Life'];
 
+  /**
+   * The parties signposted on the tile: who is party to the policy, and who
+   * only has an interest in it.
+   *
+   * Both are counted from the policy's own parties, so the tile cannot say two
+   * where the group summary lists three. A party to the policy has a client id
+   * of its own; the joint holder entry and the servicing agent do not.
+   *
+   * A count of none is dropped rather than shown as a nought, which is what the
+   * group summary does with the same indicators: the policy holds no third
+   * parties, so nothing on either screen mentions them.
+   */
+  protected readonly signposts = computed<PolicyTileSignpost[]>(() => {
+    const clients = this.ctx.clients();
+    return [
+      { label: 'Interested Parties', value: clients.filter((client) => client.id).length },
+      { label: 'Third Parties', value: clients.filter((client) => client.thirdParty).length },
+    ].filter((signpost) => signpost.value > 0);
+  });
+
   /** The pension the reference resolved to, and the address held against it. */
   protected readonly detail = this.matches.detail;
   protected readonly theirAddress = this.matches.address;
+
+  /** How long the reference stays valid, written as every other date is. */
+  protected readonly validUntil = computed(() => this.asDate(this.detail()?.pensionValidUntill));
 
   /**
    * Our client for this possible match, matched on name.
@@ -91,9 +151,6 @@ export class AlphaSearchSummaryComponent {
     });
   });
 
-  /** Whether we hold the person at all, which is what the rep needs to know first. */
-  protected readonly knownToUs = computed(() => this.ourClient() !== undefined);
-
   /** The identity fields, in the order a rep would read them out. */
   private readonly identityRows = computed<ComparisonRow[]>(() => {
     const them = this.matches.record();
@@ -103,16 +160,25 @@ export class AlphaSearchSummaryComponent {
     return [
       this.compare('Given Name', them.givenName, us?.givenName, them.givenNameMatched),
       this.compare('Surname', them.surName, us?.surname, them.surnameMatched),
-      this.compare('Date of Birth', them.dateOfBirth, us?.dateOfBirth, them.dobMatched),
+      this.compare(
+        'Date of Birth',
+        this.asDate(them.dateOfBirth),
+        this.asDate(us?.dateOfBirth),
+        them.dobMatched,
+      ),
       this.compare('NI Number', them.niNumber, us?.niNumber, them.niNumberMatched),
     ];
   });
 
   /**
-   * The alternate surnames they hold.
+   * All five alternate surnames, held or not.
    *
-   * Only those they actually sent are listed: five empty rows say nothing, and
-   * their record pads the ones it has nothing for.
+   * Every field the other platform sends is shown, including the ones they have
+   * nothing for: which of the five is empty is itself worth seeing, and hiding
+   * them would leave the rep unsure whether a field was absent or never sent.
+   *
+   * We hold no alternate surnames at all, so our side of these rows is empty by
+   * definition rather than by accident.
    */
   private readonly alternateSurnameRows = computed<ComparisonRow[]>(() => {
     const them = this.matches.record();
@@ -126,22 +192,15 @@ export class AlphaSearchSummaryComponent {
       [them.alternateSurname5, them.alternateSurname5Matched],
     ];
 
-    return alternates
-      .map(([value, matched], i) => ({ value, matched, position: i + 1 }))
-      .filter((alternate) => hasValue(alternate.value))
-      .map((alternate) =>
-        this.compare(
-          `Alternate Surname ${alternate.position}`,
-          alternate.value,
-          this.ourClient()?.surname,
-          alternate.matched,
-        ),
-      );
+    return alternates.map(([value, matched], i) =>
+      this.compare(`Alternate Surname ${i + 1}`, value, undefined, matched),
+    );
   });
 
   /**
-   * Contact fields, which their record carries no match flags for, so these
-   * rows compare the two values without claiming either way.
+   * Contact fields. Their record carries no flags for these, so the two values
+   * are compared here: we hold an email, a phone number and an address for every
+   * client, whether or not the group summary shows them.
    */
   private readonly contactRows = computed<ComparisonRow[]>(() => {
     const them = this.matches.record();
@@ -150,9 +209,9 @@ export class AlphaSearchSummaryComponent {
 
     return [
       this.compare('Email', them.email, us?.email),
-      this.compare('Alternate Email', them.alternameEmail, undefined),
+      this.compare('Alternate Email', them.alternameEmail, us?.alternateEmail),
       this.compare('Phone Number', them.phoneNumber, us?.phoneNumber),
-      this.compare('Alternate Phone Number', them.alternatePhoneNumber, undefined),
+      this.compare('Alternate Phone Number', them.alternatePhoneNumber, us?.alternatePhoneNumber),
     ];
   });
 
@@ -174,41 +233,197 @@ export class AlphaSearchSummaryComponent {
   });
 
   /**
-   * The comparison, grouped as the rep reads it.
+   * Every field the comparison covers, in the order a rep reads them.
    *
-   * Sections with nothing in them are dropped rather than drawn empty, so a
-   * record holding no alternate surnames and no address simply shows fewer
-   * headings.
+   * A section with nothing in it is dropped rather than carried empty, so a
+   * record holding no alternate surnames and no address simply compares fewer
+   * fields. The sections themselves no longer appear on screen; each field
+   * carries its section's name onto its tile.
    */
-  protected readonly sections = computed<ComparisonSection[]>(() =>
+  private readonly sections = computed<ComparisonSection[]>(() =>
     [
       { title: 'Identity', rows: this.identityRows() },
       { title: 'Alternate Surnames', rows: this.alternateSurnameRows() },
-      {
-        title: 'Contact',
-        rows: this.contactRows(),
-        note: 'The other platform sends no match flag for email or phone, so these are shown side by side without a verdict.',
-      },
+      { title: 'Contact', rows: this.contactRows() },
       { title: 'Address', rows: this.addressRows() },
     ].filter((section) => section.rows.length > 0),
   );
 
-  /** Takes the rep into the group summary, where the call carries on. */
-  protected openGroupSummary(): void {
+  /** Every field compared, each still knowing which section it belongs to. */
+  private readonly fields = computed<ComparisonField[]>(() =>
+    this.sections().flatMap((section) =>
+      section.rows.map((row) => ({ ...row, section: section.title })),
+    ),
+  );
+
+  protected readonly fieldCount = computed(() => this.fields().length);
+
+  /**
+   * The comparison grouped by what it found rather than by section.
+   *
+   * Field by field down a list, every row looks alike and the rep has to read
+   * all of them to find the three that matter. Grouped this way each one can be
+   * shown at the density it deserves: a tile per difference, a line per
+   * agreement, and a name per field neither platform holds.
+   */
+  protected readonly differences = computed(() =>
+    this.fields().filter((field) => field.verdict === 'not-matched'),
+  );
+
+  protected readonly agreements = computed(() =>
+    this.fields().filter((field) => field.verdict === 'matched'),
+  );
+
+  protected readonly notHeld = computed(() =>
+    this.fields().filter((field) => field.verdict === 'not-held'),
+  );
+
+  /**
+   * Which groups are open.
+   *
+   * Held here rather than left to the details elements, so one control can open
+   * and close all three and still agree with what is on screen: every group
+   * reports its own toggle back, including the ones the rep works by hand.
+   *
+   * What matched and what differs are open on arrival. What neither platform
+   * holds sits above them closed: it is the group with nothing in it to work
+   * through, so it says its piece in its header and stays out of the way.
+   */
+  private readonly groups = signal<Record<ComparisonVerdict, boolean>>({
+    matched: true,
+    'not-matched': true,
+    'not-held': false,
+  });
+
+  protected readonly openGroups = this.groups.asReadonly();
+
+  /**
+   * Whether anything is open, which is what the one control works from: with a
+   * group open there is something to collapse, and with all of them closed the
+   * only useful thing it can do is open them.
+   */
+  protected readonly anyOpen = computed(() => Object.values(this.groups()).some(Boolean));
+
+  /**
+   * The fields in each group, named on its header.
+   *
+   * A closed group still has to say what is in it, or closing one hides the very
+   * thing the rep was about to look for.
+   */
+  protected readonly agreementLabels = computed(() => this.labels(this.agreements()));
+  protected readonly differenceLabels = computed(() => this.labels(this.differences()));
+  protected readonly notHeldLabels = computed(() => this.labels(this.notHeld()));
+
+  /**
+   * A group opening or closing, however it happened.
+   *
+   * The details element owns its own state, so it is read back off the element
+   * rather than assumed, which keeps the expand-all control honest when a rep
+   * has been opening groups by hand.
+   */
+  protected onGroupToggle(group: ComparisonVerdict, event: Event): void {
+    const open = (event.target as HTMLDetailsElement).open;
+    if (this.groups()[group] === open) return;
+    this.groups.update((groups) => ({ ...groups, [group]: open }));
+  }
+
+  /**
+   * Opens or closes every group at once, overriding wherever they were left.
+   *
+   * One control with one meaning at any moment: anything open and it closes
+   * everything, nothing open and it opens everything. Mixed states resolve the
+   * same way, so the rep never has to press it twice to see what it does.
+   */
+  protected toggleAllGroups(): void {
+    const open = !this.anyOpen();
+    this.groups.set({ matched: open, 'not-matched': open, 'not-held': open });
+  }
+
+  /** The field names of a group, for its header to summarise it with. */
+  private labels(fields: ComparisonField[]): string {
+    return fields.map((field) => field.label).join(' · ');
+  }
+
+  /**
+   * Takes the rep into the group summary, where the call carries on.
+   *
+   * The possible match is left behind rather than carried along: deciding this
+   * record is the caller is deciding to work their policy, so the app moves into
+   * that policy's own context and the reference, the heading, the breadcrumb and
+   * the other platform's record all go with the context that held them.
+   */
+  protected async openGroupSummary(): Promise<void> {
+    await this.ctx.activatePolicy(this.ctx.pensionReference());
     this.views.show('group-summary');
   }
 
+  /**
+   * One row of the comparison.
+   *
+   * Their record flags some fields and not others, but everything they send has a
+   * counterpart on our side, so where there is no flag the two values are
+   * compared here instead. A field neither platform holds is the only row with no
+   * comparison to make.
+   */
   private compare(
     label: string,
     theirs: string | undefined,
     ours: string | undefined,
-    matched?: boolean,
+    flag?: boolean,
   ): ComparisonRow {
+    const theirValue = (theirs ?? '').trim();
+    const ourValue = (ours ?? '').trim();
+    const theyHold = hasValue(theirValue);
+    const weHold = hasValue(ourValue);
+
+    let verdict: ComparisonVerdict;
+    if (!theyHold && !weHold) {
+      verdict = 'not-held';
+    } else if (flag !== undefined) {
+      verdict = flag ? 'matched' : 'not-matched';
+    } else {
+      verdict = theyHold && weHold && this.same(theirValue, ourValue) ? 'matched' : 'not-matched';
+    }
+
     return {
       label,
-      theirs: hasValue(theirs) ? (theirs ?? '').trim() : NO_DATA,
-      ours: hasValue(ours) ? (ours ?? '').trim() : NO_DATA,
-      matched,
+      theirs: theyHold ? theirValue : NO_DATA,
+      ours: weHold ? ourValue : NO_DATA,
+      verdict,
+      agreedValue: weHold ? ourValue : theyHold ? theirValue : NO_DATA,
+      spellingsDiffer: theyHold && weHold && theirValue !== ourValue,
     };
+  }
+
+  /**
+   * A date written the way the rest of the app writes one, e.g. 13 Nov 1966.
+   *
+   * Both platforms send dates as 1966-11-13, and a rep comparing this screen
+   * against the group summary should not have to work out that the two are the
+   * same day. formatDate is what the date pipe calls, on the same locale, so the
+   * two screens cannot present a date differently.
+   *
+   * Anything unparseable is returned as it arrived: their record carries
+   * placeholders, and a placeholder should be shown verbatim rather than guessed
+   * at.
+   */
+  private asDate(value: string | undefined): string {
+    const trimmed = (value ?? '').trim();
+    if (!hasValue(trimmed)) return trimmed;
+
+    try {
+      return formatDate(trimmed, 'dd MMM yyyy', this.locale);
+    } catch {
+      return trimmed;
+    }
+  }
+
+  /** Case and spacing are not differences worth reporting to a rep. */
+  private same(theirs: string, ours: string): boolean {
+    const normalise = (value: string) => {
+      const trimmed = value.trim();
+      return (DIALLING_CODES[trimmed] ?? trimmed).replace(/\s+/g, ' ').toLowerCase();
+    };
+    return normalise(theirs) === normalise(ours);
   }
 }

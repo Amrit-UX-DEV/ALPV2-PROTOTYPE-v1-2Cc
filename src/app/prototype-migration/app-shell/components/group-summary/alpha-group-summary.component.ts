@@ -1,6 +1,7 @@
 import { Component, CUSTOM_ELEMENTS_SCHEMA, computed, inject, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { VulnerableClientActionComponent } from '../vulnerable-client-action/vulnerable-client-action.component';
+import { ageOn } from '../../../context/age';
 import { ContextClient } from '../../../context/prototype-context.model';
 import { PrototypeContextService } from '../../../context/prototype-context.service';
 import { OverlayService } from '../../../ui/overlay.service';
@@ -37,6 +38,29 @@ export class AlphaGroupSummaryComponent {
   );
 
   /**
+   * How many parties the policy holds, shown on the clients column, the group
+   * tile and the policy row's Interested Parties indicator.
+   *
+   * A party counts when it has a client id of its own. The joint holder entry
+   * is one representation of two of them, and a servicing agent services the
+   * policy rather than being party to it, so neither carries an id.
+   */
+  protected readonly memberCount = computed(
+    () => this.ctx.clients().filter((client) => client.id).length,
+  );
+
+  /**
+   * How many parties hold an interest in the policy without being party to it.
+   *
+   * Nought means the indicator is not drawn at all. The data decides: mark a
+   * party as a third party in the policy's JSON and both this row and the
+   * possible match summary start signposting them.
+   */
+  protected readonly thirdPartyCount = computed(
+    () => this.ctx.clients().filter((client) => client.thirdParty).length,
+  );
+
+  /**
    * The party a hand-authored tile shows.
    *
    * Several tiles are authored one per party and sit alongside entries that
@@ -45,6 +69,16 @@ export class AlphaGroupSummaryComponent {
    */
   protected client(key: string): ContextClient | undefined {
     return this.ctx.clientByKey(key);
+  }
+
+  /**
+   * The age shown in brackets after a date of birth.
+   *
+   * Derived rather than written into the tile, which is how one of them came to
+   * say 55 for someone born in 1966.
+   */
+  protected ageOf(dateOfBirth: string): number | undefined {
+    return ageOn(dateOfBirth);
   }
 
   /** The linked-clients / policy-client-link spelling of a party's identity. */

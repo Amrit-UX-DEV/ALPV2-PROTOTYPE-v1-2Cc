@@ -66,6 +66,12 @@ export interface ContextClient {
    * members, and has no indicator to reveal.
    */
   linked?: boolean;
+  /**
+   * Whether the party has an interest in the policy without being party to it,
+   * e.g. a beneficiary. Held apart from the members because the two are
+   * signposted, and counted, separately.
+   */
+  thirdParty?: boolean;
   /** Absent or empty means this client is not flagged for extra care. */
   extraCare?: ExtraCareEntry[];
   /**
@@ -82,7 +88,9 @@ export interface ContextClient {
   dateOfBirth?: string;
   niNumber?: string;
   email?: string;
+  alternateEmail?: string;
   phoneNumber?: string;
+  alternatePhoneNumber?: string;
   address?: ContextAddress;
 }
 
@@ -176,6 +184,16 @@ export interface ContextScreen {
   breadcrumbs: string[];
   /** Text before the context summary in the h1, e.g. 'Group Summary:'. */
   headingPrefix: string;
+  /**
+   * Whether the header summarises the policy. Defaults to true, since a policy
+   * context is about its policy.
+   *
+   * A possible match resolves a policy so that the caller can be taken through
+   * DPA, but the rep is not on that policy yet: they are looking at somebody
+   * else's partial record and deciding whether it is the same person. Naming the
+   * policy up there would say the call had moved on when it has not.
+   */
+  policyDetail?: boolean;
 }
 
 export interface PrototypeContext {

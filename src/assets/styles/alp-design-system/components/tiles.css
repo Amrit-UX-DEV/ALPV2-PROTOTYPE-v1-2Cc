@@ -419,9 +419,10 @@
   color: #6b21a8;
 }
 
+/* Weight rather than italic, which is not used anywhere in this system. */
 .alp-recent-callers__tile--transferred.expired .timer {
   color: var(--alp-color-red-700);
-  font-style: italic;
+  font-weight: var(--alp-font-weight-bold);
 }
 
 /* Make sure main button still takes full space */

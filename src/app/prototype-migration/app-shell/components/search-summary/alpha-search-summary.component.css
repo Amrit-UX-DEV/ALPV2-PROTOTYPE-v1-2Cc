@@ -3,15 +3,19 @@
  * a design system component and the notification block is the prototype's, so
  * neither is restyled here.
  *
- * The comparison is a grid rather than a table because each row is four cells of
- * fixed meaning, and a grid keeps the columns aligned across the section
- * headings that sit between the rows.
+ * The comparison is grouped by what it found rather than laid out field by
+ * field, because a rep reads it for one thing: what does not agree. There is no
+ * table markup anywhere here, so the legacy grid can take this over as it stands
+ * once it arrives.
  */
+/* Deeper at the foot than at the head, so the last group clears the bottom of
+   the region instead of ending flush against it, where a scroll can look
+   finished while there is still a group to read. */
 .alp-search-summary {
   display: flex;
   flex-direction: column;
   gap: var(--alp-space-4);
-  padding: var(--alp-space-5);
+  padding: var(--alp-space-5) var(--alp-space-5) var(--alp-space-10);
 }
 
 .alp-search-summary__head {
@@ -53,89 +57,371 @@
   color: var(--alp-color-text);
 }
 
-.alp-search-summary__compare {
+/* ---------------------------------------------------------------
+   THE COMPARISON
+
+   Grouped by what the comparison found, in the card language the work
+   plan screens use: a soft tinted panel, a solid uppercase chip naming
+   the group, and white tiles on a hairline border and the smallest
+   shadow inside it.
+
+   Each group opens and closes, on a details element rather than a script
+   of ours, and names the fields it holds while closed. What neither
+   platform holds is first and closed: it is the shortest thing to say and
+   the least to do anything about, so it is got out of the way rather than
+   left to interrupt the two groups a rep actually works from.
+
+   Each group is shown at the density it earns. A difference gets a tile
+   of its own with both values written out, because that is what the rep
+   works from. An agreement gets one line, since there is nothing to
+   weigh up. A field neither platform holds gets its name and nothing
+   else.
+
+   Every text pair here is AA: the chips are white on the 700-level
+   colours at 5.02:1 and 5.48:1, titles and values are slate-900 at
+   about 17:1 on every tint, and the small muted labels are 4.86:1 at
+   their worst. Nothing depends on the tints, which are far too pale to
+   carry meaning on their own; each group says what it is in words.
+   --------------------------------------------------------------- */
+.alp-search-summary__panels {
   display: flex;
   flex-direction: column;
-  border: 1px solid var(--alp-color-border);
-  border-radius: var(--alp-radius-md);
-  background: var(--alp-color-surface);
-  overflow: hidden;
+  gap: var(--alp-space-4);
 }
 
-.alp-search-summary__row {
-  display: grid;
-  grid-template-columns: minmax(160px, 1fr) minmax(140px, 2fr) minmax(140px, 2fr) 120px;
+/* Each group is a details element, so opening and closing it, and reaching it
+   from the keyboard, is the browser's job rather than ours. */
+.alp-search-summary__panel {
+  padding: var(--alp-space-4);
+  border: 1px solid var(--alp-color-border);
+  border-radius: var(--alp-radius-lg);
+  background: var(--alp-color-background);
+}
+
+/* Well clear of the header, which fills the panel's width and would otherwise
+   sit straight on top of the content. */
+.alp-search-summary__panel > *:not(summary) {
+  margin-top: var(--alp-space-5);
+}
+
+/* Closed, the header is the whole panel, so the panel keeps no padding under it.
+   Left in, that padding read as a strip of the row that could not be clicked and
+   did not light up under the pointer. */
+.alp-search-summary__panel:not([open]) {
+  padding-bottom: 0;
+}
+
+.alp-search-summary__panel--differs {
+  border-color: var(--alp-color-amber-200);
+  background: var(--alp-color-amber-50);
+}
+
+.alp-search-summary__panel--agrees {
+  border-color: var(--alp-color-green-200);
+  background: var(--alp-color-green-50);
+}
+
+.alp-search-summary__panel--absent {
+  border-color: var(--alp-color-slate-200);
+  background: var(--alp-color-slate-50);
+}
+
+/* The header reaches the panel's own edges, so it reads as one band across the
+   whole width rather than a patch in the middle. It is pulled out by the panel's
+   padding and given the same amount back, which keeps everything inside it
+   aligned with the content below.
+
+   It carries a tint of its group's colour as standing, a step darker than the
+   panel behind it, and deepens one further step under the pointer. The header
+   text is slate-700, which holds 8.07:1 at its worst on the darker of the two
+   tints, so both states are AA. */
+.alp-search-summary__panel-head {
+  display: flex;
+  flex-wrap: wrap;
   align-items: center;
   gap: var(--alp-space-3);
-  padding: var(--alp-space-3) var(--alp-space-4);
-  border-top: 1px solid var(--alp-color-border);
-  font-size: var(--alp-font-size-sm);
+  margin: calc(var(--alp-space-4) * -1) calc(var(--alp-space-4) * -1) 0;
+  padding: var(--alp-space-4);
+  /* The panel's radius less its border, so the corners sit inside it. */
+  border-radius: 11px 11px 0 0;
+  cursor: pointer;
+  list-style: none;
+  transition: background 0.15s ease;
 }
 
-.alp-search-summary__row--head {
-  border-top: 0;
-  background: var(--alp-color-background);
+/* Closed, the header is the panel's only content, so it takes all four corners. */
+.alp-search-summary__panel:not([open]) .alp-search-summary__panel-head {
+  margin-bottom: 0;
+  border-radius: 11px;
+}
+
+.alp-search-summary__panel--agrees .alp-search-summary__panel-head {
+  background: var(--alp-color-green-100);
+}
+
+.alp-search-summary__panel--agrees .alp-search-summary__panel-head:hover {
+  background: var(--alp-color-green-200);
+}
+
+.alp-search-summary__panel--differs .alp-search-summary__panel-head {
+  background: var(--alp-color-amber-100);
+}
+
+.alp-search-summary__panel--differs .alp-search-summary__panel-head:hover {
+  background: var(--alp-color-amber-200);
+}
+
+.alp-search-summary__panel--absent .alp-search-summary__panel-head {
+  background: var(--alp-color-slate-100);
+}
+
+.alp-search-summary__panel--absent .alp-search-summary__panel-head:hover {
+  background: var(--alp-color-slate-200);
+}
+
+/* The default disclosure triangle comes off, since the header carries its own
+   chevron on the other side. */
+.alp-search-summary__panel-head::-webkit-details-marker {
+  display: none;
+}
+
+.alp-search-summary__panel-head:focus-visible {
+  outline: 2px solid var(--alp-color-border-focus);
+  outline-offset: 3px;
+  border-radius: var(--alp-radius-sm);
+}
+
+/* What is in the group, for when it is closed. One line, cut off rather than
+   wrapped, so a header stays a header. */
+.alp-search-summary__panel-fields {
+  flex: 1 1 8rem;
+  min-width: 0;
   font-size: var(--alp-font-size-xs);
-  font-weight: var(--alp-font-weight-semibold);
-  text-transform: uppercase;
-  letter-spacing: 0.04em;
-  color: var(--alp-color-text-muted);
-}
-
-.alp-search-summary__field {
-  color: var(--alp-color-text-muted);
-}
-
-.alp-search-summary__value {
-  color: var(--alp-color-text);
-  word-break: break-word;
-}
-
-/* Nothing held reads as absent rather than as a value. */
-.alp-search-summary__value--empty {
-  color: var(--alp-color-text-muted);
-  font-style: italic;
-}
-
-.alp-search-summary__group {
-  margin: 0;
-  padding: var(--alp-space-3) var(--alp-space-4) var(--alp-space-2);
-  border-top: 1px solid var(--alp-color-border);
-  background: var(--alp-color-background);
-  font-size: var(--alp-font-size-xs);
-  font-weight: var(--alp-font-weight-semibold);
-  text-transform: uppercase;
-  letter-spacing: 0.04em;
-  color: var(--alp-color-text);
-}
-
-.alp-search-summary__flag {
-  display: inline-block;
-  padding: 2px var(--alp-space-2);
-  border-radius: var(--alp-radius-full);
-  font-size: var(--alp-font-size-xs);
-  font-weight: var(--alp-font-weight-semibold);
+  color: var(--alp-color-slate-700);
   white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
-.alp-search-summary__flag--matched {
-  background: var(--alp-color-success-soft);
-  color: var(--alp-color-success-text);
+.alp-search-summary__panel[open] .alp-search-summary__panel-fields {
+  display: none;
 }
 
-.alp-search-summary__flag--unmatched {
-  background: var(--alp-color-warning-soft);
-  color: var(--alp-color-warning-text);
+.alp-search-summary__panel-chevron {
+  margin-left: auto;
+  font-size: var(--alp-font-size-sm);
+  color: var(--alp-color-slate-700);
+  transition: transform 0.15s ease;
 }
 
-.alp-search-summary__flag--unflagged {
-  background: var(--alp-color-neutral-soft);
-  color: var(--alp-color-neutral-text);
+.alp-search-summary__panel[open] .alp-search-summary__panel-chevron {
+  transform: rotate(180deg);
 }
 
-.alp-search-summary__note {
+.alp-search-summary__panel-chip {
+  padding: 3px 9px;
+  border-radius: var(--alp-radius-sm);
+  font-size: var(--alp-font-size-xs);
+  font-weight: var(--alp-font-weight-bold);
+  text-transform: uppercase;
+  letter-spacing: var(--alp-letter-spacing-wide);
+  color: var(--alp-color-white);
+  background: var(--alp-color-neutral);
+}
+
+.alp-search-summary__panel--differs .alp-search-summary__panel-chip {
+  background: var(--alp-color-amber-700);
+}
+
+.alp-search-summary__panel--agrees .alp-search-summary__panel-chip {
+  background: var(--alp-color-green-700);
+}
+
+.alp-search-summary__panel--absent .alp-search-summary__panel-chip {
+  background: var(--alp-color-slate-600);
+}
+
+.alp-search-summary__panel-title {
   margin: 0;
-  padding: var(--alp-space-2) var(--alp-space-4) var(--alp-space-3);
+  font-size: var(--alp-font-size-md);
+  font-weight: var(--alp-font-weight-semibold);
+  color: var(--alp-color-text);
+}
+
+/* ---- Differences: a tile each ----
+   Two to a row, so a full address or an email has the width to sit on one or two
+   lines rather than wrapping to four. One to a row once the region is too narrow
+   to give each of them that width. */
+.alp-search-summary__diffs {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: var(--alp-space-3);
+}
+
+@media (max-width: 60rem) {
+  .alp-search-summary__diffs {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+
+/* Grid rather than a flex column, and every tile the same three rows: the
+   section, the field, and the two values.
+
+   Tiles side by side are the same height, so with the values row taking the
+   space that is left and sitting at the end of it, the two bands start at the
+   same height in both tiles however the browser is sized. Stacked in a column
+   the header lines wrapped differently in each tile and the bands drifted apart
+   from one another. */
+.alp-search-summary__diff {
+  display: grid;
+  grid-template-rows: auto auto 1fr;
+  gap: var(--alp-space-2);
+  padding: var(--alp-space-3) var(--alp-space-4);
+  /* An orange tint, so a tile that holds a difference is edged in the warm
+     colour of the group it sits in rather than the standing grey. It carries no
+     meaning on its own; the group, the chip and the labels all say what this is. */
+  border: 1px solid var(--alp-color-border-warning);
+  border-radius: var(--alp-radius-md);
+  background: var(--alp-color-surface);
+  box-shadow: var(--alp-shadow-xs);
+}
+
+/* Capitalised as it is written in the data, not set in capitals, which is how
+   labels read everywhere else on the screen. */
+.alp-search-summary__diff-section {
+  margin: 0;
+  font-size: var(--alp-font-size-xs);
+  font-weight: var(--alp-font-weight-semibold);
+  color: var(--alp-color-text-muted);
+}
+
+.alp-search-summary__diff-label {
+  margin: 0;
+  font-size: var(--alp-font-size-md);
+  font-weight: var(--alp-font-weight-semibold);
+  color: var(--alp-color-text);
+}
+
+/* At the end of the row it was given, so the bands close the tile off and line
+   up with the tile beside them. */
+.alp-search-summary__diff-values {
+  display: grid;
+  grid-template-rows: auto auto;
+  align-self: end;
+  margin: 0;
+}
+
+/* Label above value, the same way round as everywhere else on the screen, so a
+   long value has the whole width of the tile to sit in.
+
+   Each side runs the full width of the tile, pulled out by the tile's padding
+   and given it back as its own, so a faint fill can tell the two apart and each
+   band reads as one thing rather than a line of text with a tint behind it. */
+.alp-search-summary__diff-value {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: 1px;
+  margin: 0 calc(var(--alp-space-4) * -1);
+  padding: var(--alp-space-2) var(--alp-space-4);
+}
+
+/* Both sides on the same fill, so neither is set above the other: the labels say
+   whose value it is, and a hairline between them keeps them as two bands rather
+   than one block of text. */
+.alp-search-summary__diff-value--theirs,
+.alp-search-summary__diff-value--ours {
+  background: var(--alp-color-slate-50);
+}
+
+.alp-search-summary__diff-value--ours {
+  border-top: 1px solid var(--alp-color-border);
+}
+
+/* The last band closes the tile off, so it takes the tile's bottom corners. */
+.alp-search-summary__diff-value:last-child {
+  margin-bottom: calc(var(--alp-space-3) * -1);
+  padding-bottom: var(--alp-space-3);
+  border-radius: 0 0 7px 7px;
+}
+
+.alp-search-summary__diff-value dt {
+  font-size: var(--alp-font-size-xs);
+  font-weight: var(--alp-font-weight-semibold);
+  color: var(--alp-color-text-muted);
+}
+
+/* anywhere rather than break-word, because an email or an address has to be
+   able to break mid-token once the tile is narrow. */
+.alp-search-summary__diff-value dd {
+  margin: 0;
+  font-size: var(--alp-font-size-sm);
+  font-weight: var(--alp-font-weight-semibold);
+  color: var(--alp-color-text);
+  overflow-wrap: anywhere;
+}
+
+/* ---- Agreements: a line each ---- */
+.alp-search-summary__agrees {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(14rem, 1fr));
+  gap: var(--alp-space-3) var(--alp-space-5);
+  margin: 0;
+}
+
+.alp-search-summary__agree {
+  display: flex;
+  flex-direction: column;
+}
+
+.alp-search-summary__agree-label {
+  font-size: var(--alp-font-size-xs);
+  font-weight: var(--alp-font-weight-semibold);
+  color: var(--alp-color-text-muted);
+}
+
+.alp-search-summary__agree-value {
+  margin: 0;
+  font-size: var(--alp-font-size-sm);
+  font-weight: var(--alp-font-weight-semibold);
+  color: var(--alp-color-text);
+  overflow-wrap: anywhere;
+}
+
+.alp-search-summary__agree-theirs {
+  margin: 0;
   font-size: var(--alp-font-size-xs);
   color: var(--alp-color-text-muted);
+}
+
+/* ---- Held by neither: a name each ---- */
+.alp-search-summary__absent {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--alp-space-2);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.alp-search-summary__absent-item {
+  padding: 3px 10px;
+  border: 1px solid var(--alp-color-border);
+  border-radius: var(--alp-radius-full);
+  background: var(--alp-color-surface);
+  font-size: var(--alp-font-size-sm);
+  color: var(--alp-color-slate-700);
+}
+
+/* A side holding nothing says so on a tag, the same way the group of fields
+   neither platform holds does, so it stands out as a state and not as text
+   somebody typed into the record. */
+.alp-search-summary__diff-value .alp-status-tag {
+  margin-top: 0;
+}
+
+/* The one control that works all three groups sits at the end of the row above
+   them, on the same side as the chevrons it turns. */
+.alp-search-summary__controls {
+  display: flex;
+  justify-content: flex-end;
 }

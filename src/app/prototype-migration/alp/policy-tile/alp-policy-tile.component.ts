@@ -1,6 +1,17 @@
-import { ChangeDetectionStrategy, Component, input, output } from '@angular/core';
+import { ChangeDetectionStrategy, Component, computed, input, output } from '@angular/core';
 
 import { ContextPolicy } from '../../context/prototype-context.model';
+
+/**
+ * A count signposted on the tile, e.g. Interested Parties 2.
+ *
+ * A label and a number rather than named inputs, because which parties are
+ * worth signposting is the screen's decision, not the tile's.
+ */
+export interface PolicyTileSignpost {
+  label: string;
+  value: number;
+}
 
 /**
  * A compact policy tile, in ALP design system classes.
@@ -32,11 +43,30 @@ export class AlpPolicyTileComponent {
    */
   readonly flags = input<string[]>([]);
 
-  /** Empty means no action, which is what makes the tile read-only. */
+  /** Party counts to signpost. Empty means the tile signposts none. */
+  readonly signposts = input<PolicyTileSignpost[]>([]);
+
+  /**
+   * Empty means no action, which is what makes the tile read-only.
+   *
+   * The label is not drawn: the action is the group summary's own full-height
+   * chevron button at the end of the tile, and the label becomes its accessible
+   * name and its tooltip. So it still has to read as an instruction, e.g. 'View
+   * Group Summary', for anyone hearing it rather than seeing the chevron.
+   */
   readonly actionLabel = input('');
 
   /** Draws the tile as the current selection. */
   readonly selected = input(false);
+
+  /**
+   * Whether the policy is live, which is what turns the border green, the way
+   * state--ui-active does on the group summary's tile.
+   *
+   * Read from the status rather than passed in, so a screen showing a policy
+   * cannot describe it as live while its status says otherwise.
+   */
+  protected readonly active = computed(() => /in force|active/i.test(this.policy().status));
 
   /** What the action does is the caller's business, not the tile's. */
   readonly action = output<void>();

@@ -110,13 +110,13 @@
         ">
         <span class="ui-text">Interested Parties:</span>
         <span class="ui-data-value"> 
-        <i aria-hidden="true" class="fa fa-user"></i> 			3
+        <i aria-hidden="true" class="fa fa-user"></i> {{ memberCount() }}
         </span>
         </span>
         <span class="indicator party-count">
         <span class="ui-text">Members:</span>
         <span class="ui-data-value"> 
-        <i aria-hidden="true" class="fa fa-user"></i> 3</span>
+        <i aria-hidden="true" class="fa fa-user"></i> {{ memberCount() }}</span>
         </span>
         
         <span class="indicator party-count">
@@ -369,7 +369,7 @@
         </div>
         <alpha-keybar><div class="cardx-header"><div class="data-structure-diagram-key"><div class="newBusiness"><i aria-hidden="true" class="fas fa-plus-circle"></i> New Business</div><div class="active"><i aria-hidden="true" class="fas fa-circle"></i>In Force/Active</div><div class="onhold"><i aria-hidden="true" class="fas fa-adjust"></i>On Hold/Pending Change</div><div class="terminated"><i aria-hidden="true" class="fas fa-circle-o"></i>Terminated/Deceased</div><div class="skeleton"><i aria-hidden="true" class="fas fa-low-vision"></i>Skeleton</div><div class="minimum-pol"><i aria-hidden="true" class="fas min-icon"></i>Minimum</div></div></div></alpha-keybar><div class="ui-diagram-layer"> 
         <div class="ui-diagram-col ui-clients"> 
-          <div class="ui-diagram-header ui-header-fill"><strong><span class="ui-count-bubble">3</span> Members <div class="md-chip ui-filter-applied-notification ux-hide"> <strong>Filtered: 2 </strong>  </div></strong>
+          <div class="ui-diagram-header ui-header-fill"><strong><span class="ui-count-bubble">{{ memberCount() }}</span> Members <div class="md-chip ui-filter-applied-notification ux-hide"> <strong>Filtered: 2 </strong>  </div></strong>
         </div>
         
         <div class="ui-diagram-content scroll-child-items"> 
@@ -397,14 +397,16 @@
                     Date of Birth:
                 </span>
                 <span class="tile--data-strong tile--spacer">
-                    13 Nov 1966 (55)
+                    @if (client('MrJoeBloggs')?.dateOfBirth; as dob) {
+                    {{ dob | date: 'dd MMM yyyy' }} ({{ ageOf(dob) }})
+                    }
                 </span>
         
                 <span class="tile--data-heading">
                     National Insurance:
                 </span>
                 <span class="tile--data-strong tile--spacer">
-                    RM439286P
+                    {{ client('MrJoeBloggs')?.niNumber }}
                 </span>
         
                 <span class="ui-data-indicator ui-status active" style="
@@ -571,14 +573,16 @@
             Date of Birth:
         </span>
          <span class="tile--data-strong tile--spacer">
-            07 Feb 1985 (34)
+            @if (client('MrsLucyBloggs')?.dateOfBirth; as dob) {
+            {{ dob | date: 'dd MMM yyyy' }} ({{ ageOf(dob) }})
+            }
         </span>
         
         <span class="tile--data-heading">
             National Insurance:
         </span>
         <span class="tile--data-strong tile--spacer">
-            JP439286P
+            {{ client('MrsLucyBloggs')?.niNumber }}
         </span>
         
         
@@ -681,14 +685,16 @@
         <span class="indicator party-count">
         <span class="ui-text">Interested Parties:</span>
         <span class="ui-data-value"> 
-        <i aria-hidden="true" class="fa fa-user"></i> 3</span>
+        <i aria-hidden="true" class="fa fa-user"></i> {{ memberCount() }}</span>
         </span>
-        
+        @if (thirdPartyCount()) {
         <span class="indicator party-count">
         <span class="ui-text">Third Parties:</span>
         <span class="ui-data-value"> 
-        <i aria-hidden="true" class="fa fa-user"></i> 1</span>
+        <i aria-hidden="true" class="fa fa-user"></i> {{ thirdPartyCount() }}</span>
         </span>
+        }
+        
         <span class="indicator warning"><i aria-hidden="true" class="fa fa-bell-o"></i> 2</span>
         
         
@@ -794,7 +800,7 @@
         </div></div><div class="ui-interested-parties">
         
         <div class="ui-interested-party-container"> 
-        <div class="ui-diagram-header ui-header-fill"><strong><span class="ui-count-bubble">2</span> Interested Parties</strong>
+        <div class="ui-diagram-header ui-header-fill"><strong><span class="ui-count-bubble">{{ memberCount() }}</span> Interested Parties</strong>
         </div>
         
         <div class="ui-interesed-party-content content--flex-eq-tile-grid"> 
@@ -808,31 +814,6 @@
             </button>
           </div>
         </div><div class="multi-action-tile tile--default tile--size-w-med"><div class="action-container"><button class="client-unit state--ui-active" [class.alpha-selected]="isPartySelected('ServicingAgent')" (click)="selectParty('ServicingAgent')" data-cy="btn-select-interested-parties" type="button"><span class="tile--data-strong">{{ client('ServicingAgent')?.roles?.join(', ') }}</span><span class="tile--data">{{ client('ServicingAgent')?.name }}</span></button></div></div>
-        </div>
-        </div><div class="ui-interested-party-container"> 
-        <div class="ui-diagram-header ui-header-fill"><strong><span class="ui-count-bubble">1</span> Third Parties</strong>
-        </div>
-        
-        <div class="ui-interesed-party-content content--flex-eq-tile-grid"> 
-        <div class="multi-action-tile tile--default tile--size-w-med">
-        <div class="action-container">
-        <button class="client-unit state--ui-active" [class.alpha-selected]="isPartySelected('Beneficiary')" (click)="selectParty('Beneficiary')" type="button">
-        <span class="tile--data-strong">{{ client('Beneficiary')?.roles?.join(', ') }}</span>
-        <span class="tile--data">{{ client('Beneficiary')?.name }}</span><span class="tile--address-details">
-        
-          
-          <span class="tile--data-strong tile--spacer">
-            <i aria-hidden="true" class="fa fa-home"></i>
-            <span class="tile--address-status">
-              <i aria-hidden="true" class="fa fa-check"></i> Permanent
-            </span>
-          </span>
-        
-          <span class="tile--data-strong" data-toggle="tooltip" title="4 Tejpl Zgbgw">324 Westminister Road</span><span class="tile--data-strong" data-toggle="tooltip" title=" Tvdza"> Tvdza</span><span class="tile--data-strong" data-toggle="tooltip" title=" Dnjzaw"> Dnjzaw</span><span class="tile--data-strong" data-toggle="tooltip" title=" Hlbh Dxcnaczdi"> Hlbh Dxcnaczdi</span><span class="tile--data-strong" data-toggle="tooltip" title=" TL67 8RL"> TL67 8RL</span><span class="tile--data-strong" data-toggle="tooltip" title=" United Kingdom"> United Kingdom</span>
-        </span>
-        </button>
-        </div>
-        </div>
         </div>
         </div></div>
         

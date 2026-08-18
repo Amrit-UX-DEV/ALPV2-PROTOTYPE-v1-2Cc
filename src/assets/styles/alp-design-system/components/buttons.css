@@ -17,6 +17,25 @@
   font-family: inherit;
 }
 
+/* A button carrying an icon needs less room on that side than a word does.
+   The 22px either side is set for text, and an icon put beside the label leaves
+   a gap wider than the icon itself, so the label reads as pushed off centre.
+
+   Trimmed to 16px on whichever side the icon sits, which with the 8px gap gives
+   the icon the same optical margin the text has. Matched on the element rather
+   than asked for with a modifier class, so a button gets this by having an icon
+   at all and nobody has to remember it.
+
+   Icon-only buttons are square by design and keep the padding their own rules
+   set, so they are excluded rather than corrected afterwards. */
+.alp-btn:not(.alp-btn--icon):has(> i:last-child, > svg:last-child) {
+  padding-right: var(--alp-space-4);
+}
+
+.alp-btn:not(.alp-btn--icon):has(> i:first-child, > svg:first-child) {
+  padding-left: var(--alp-space-4);
+}
+
 .alp-btn--primary {
   background-color: var(--alp-color-brand);
   color: var(--alp-color-brand-text);
