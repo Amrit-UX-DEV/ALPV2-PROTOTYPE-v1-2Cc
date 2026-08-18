@@ -68,6 +68,34 @@ export interface ContextClient {
   linked?: boolean;
   /** Absent or empty means this client is not flagged for extra care. */
   extraCare?: ExtraCareEntry[];
+  /**
+   * What we hold about this client, as distinct from what another platform
+   * holds. Every field is optional because our record is often partial too, and
+   * a comparison has to be able to say that neither side holds something.
+   */
+  /**
+   * The name in parts, where a comparison needs it that way. name stays the
+   * display form, because splitting 'Mr Joe Bloggs' back up is guesswork.
+   */
+  givenName?: string;
+  surname?: string;
+  dateOfBirth?: string;
+  niNumber?: string;
+  email?: string;
+  phoneNumber?: string;
+  address?: ContextAddress;
+}
+
+/**
+ * An address as we hold it.
+ *
+ * Lines are a list rather than line1 to line5, because ours is our own shape
+ * and nothing here needs to count to five.
+ */
+export interface ContextAddress {
+  lines: string[];
+  postcode: string;
+  countryCode?: string;
 }
 
 /**
@@ -176,6 +204,22 @@ export interface PrototypeContext {
    * than rendering a blank policy.
    */
   policy?: ContextPolicy;
+  /**
+   * For a possible match: the reference of the policy the other platform's
+   * pension reference names.
+   *
+   * A possible match holds no policy of its own, but the caller still has to be
+   * taken through DPA, and DPA needs a policy. Naming the reference here rather
+   * than copying the policy in keeps one copy of it, and activating the context
+   * brings that policy with it.
+   */
+  pensionReference?: string;
+  /**
+   * For a possible match: the other platform's record, as a file within
+   * POSSIBLE_MATCH_DATA_PATH. Their payload is kept out of our context file
+   * because it is their contract, on their field names.
+   */
+  record?: string;
   screen: ContextScreen;
   journey?: ContextJourney;
 }

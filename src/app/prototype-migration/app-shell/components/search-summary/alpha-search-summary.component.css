@@ -1,19 +1,141 @@
 /*
- * Only the screen's own padding and text sizing. The card and the notification
- * block are the prototype's, so they are not restyled here.
+ * The screen's own layout, in alp- classes on design tokens. The policy tile is
+ * a design system component and the notification block is the prototype's, so
+ * neither is restyled here.
+ *
+ * The comparison is a grid rather than a table because each row is four cells of
+ * fixed meaning, and a grid keeps the columns aligned across the section
+ * headings that sit between the rows.
  */
 .alp-search-summary {
-  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: var(--alp-space-4);
+  padding: var(--alp-space-5);
 }
 
-.alp-search-summary__reference {
-  margin: 0 0 12px;
-  font-size: 15px;
-  color: #222;
+.alp-search-summary__head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: var(--alp-space-4);
+}
+
+.alp-search-summary__title {
+  margin: 0;
+  font-size: var(--alp-font-size-xl);
+  font-weight: var(--alp-font-weight-semibold);
+  color: var(--alp-color-text);
+}
+
+.alp-search-summary__refs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--alp-space-2) var(--alp-space-6);
+  margin: 0;
+}
+
+.alp-search-summary__ref {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.alp-search-summary__ref dt {
+  font-size: var(--alp-font-size-xs);
+  color: var(--alp-color-text-muted);
+}
+
+.alp-search-summary__ref dd {
+  margin: 0;
+  font-size: var(--alp-font-size-sm);
+  color: var(--alp-color-text);
+}
+
+.alp-search-summary__compare {
+  display: flex;
+  flex-direction: column;
+  border: 1px solid var(--alp-color-border);
+  border-radius: var(--alp-radius-md);
+  background: var(--alp-color-surface);
+  overflow: hidden;
+}
+
+.alp-search-summary__row {
+  display: grid;
+  grid-template-columns: minmax(160px, 1fr) minmax(140px, 2fr) minmax(140px, 2fr) 120px;
+  align-items: center;
+  gap: var(--alp-space-3);
+  padding: var(--alp-space-3) var(--alp-space-4);
+  border-top: 1px solid var(--alp-color-border);
+  font-size: var(--alp-font-size-sm);
+}
+
+.alp-search-summary__row--head {
+  border-top: 0;
+  background: var(--alp-color-background);
+  font-size: var(--alp-font-size-xs);
+  font-weight: var(--alp-font-weight-semibold);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: var(--alp-color-text-muted);
+}
+
+.alp-search-summary__field {
+  color: var(--alp-color-text-muted);
+}
+
+.alp-search-summary__value {
+  color: var(--alp-color-text);
+  word-break: break-word;
+}
+
+/* Nothing held reads as absent rather than as a value. */
+.alp-search-summary__value--empty {
+  color: var(--alp-color-text-muted);
+  font-style: italic;
+}
+
+.alp-search-summary__group {
+  margin: 0;
+  padding: var(--alp-space-3) var(--alp-space-4) var(--alp-space-2);
+  border-top: 1px solid var(--alp-color-border);
+  background: var(--alp-color-background);
+  font-size: var(--alp-font-size-xs);
+  font-weight: var(--alp-font-weight-semibold);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: var(--alp-color-text);
+}
+
+.alp-search-summary__flag {
+  display: inline-block;
+  padding: 2px var(--alp-space-2);
+  border-radius: var(--alp-radius-full);
+  font-size: var(--alp-font-size-xs);
+  font-weight: var(--alp-font-weight-semibold);
+  white-space: nowrap;
+}
+
+.alp-search-summary__flag--matched {
+  background: var(--alp-color-success-soft);
+  color: var(--alp-color-success-text);
+}
+
+.alp-search-summary__flag--unmatched {
+  background: var(--alp-color-warning-soft);
+  color: var(--alp-color-warning-text);
+}
+
+.alp-search-summary__flag--unflagged {
+  background: var(--alp-color-neutral-soft);
+  color: var(--alp-color-neutral-text);
 }
 
 .alp-search-summary__note {
   margin: 0;
-  font-size: 13px;
-  color: #6b6b6b;
+  padding: var(--alp-space-2) var(--alp-space-4) var(--alp-space-3);
+  font-size: var(--alp-font-size-xs);
+  color: var(--alp-color-text-muted);
 }

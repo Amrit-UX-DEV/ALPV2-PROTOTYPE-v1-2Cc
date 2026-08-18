@@ -3,11 +3,13 @@
   "kind": "possible-match",
   "reference": "PMR12345678910",
   "label": "Possible Match Reference PMR12345678910",
+  "pensionReference": "80007",
+  "record": "pmr12345678910.json",
   "screen": {
     "breadcrumbs": [
       "Search",
       "Possible Match"
     ],
-    "headingPrefix": "No Context:"
+    "headingPrefix": "Possible Match PMR12345678910:"
   }
 }

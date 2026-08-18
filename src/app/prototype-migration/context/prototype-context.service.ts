@@ -4,6 +4,7 @@ import {
   ContextClient,
   ContextIndex,
   ContextIndexEntry,
+  ContextPolicy,
   ContextScope,
   ContextSelection,
   PrototypeContext,
@@ -203,19 +204,54 @@ export class PrototypeContextService {
     const file = entry?.file ?? `${id}.json`;
 
     try {
-      const response = await fetch(`${CONTEXT_DATA_PATH}/${file}?t=${Date.now()}`);
-      if (!response.ok) throw new Error(`HTTP ${response.status}`);
-      const context = (await response.json()) as PrototypeContext;
-      this.current.set({ kind: entry?.kind ?? 'policy', ...context });
+      const context = await this.load(file);
+      const policy = context.policy ?? (await this.policyFor(context.pensionReference));
+      this.current.set({
+        kind: entry?.kind ?? 'policy',
+        ...context,
+        ...(policy ? { policy } : {}),
+      });
 
       // Activating a policy context selects that policy, so the group summary
       // opens on the thing that was searched for rather than with nothing
       // selected. Anything without a policy has nothing to select.
-      const policy = context.policy;
       this.currentSelection.set(policy ? { scope: 'policy', key: policy.number } : null);
     } catch (err) {
       console.error(`Failed to load context '${id}', staying in no context:`, err);
       this.clear();
+    }
+  }
+
+  /** Reads a context file. Throws, so the caller decides what a failure means. */
+  private async load(file: string): Promise<PrototypeContext> {
+    const response = await fetch(`${CONTEXT_DATA_PATH}/${file}?t=${Date.now()}`);
+    if (!response.ok) throw new Error(`HTTP ${response.status}`);
+    return (await response.json()) as PrototypeContext;
+  }
+
+  /**
+   * The policy a pension reference names, looked up through the registry.
+   *
+   * A missing policy is not fatal: the context still activates, and the screens
+   * that need a policy show their empty state, which is a truer picture of a
+   * broken link than refusing to open the context at all.
+   */
+  private async policyFor(reference: string | undefined): Promise<ContextPolicy | undefined> {
+    if (!reference) return undefined;
+
+    const entry = this.registry().find(
+      (c) => c.criteria.toLowerCase() === 'policy' && c.reference === reference,
+    );
+    if (!entry) {
+      console.error(`No policy context for pension reference '${reference}'.`);
+      return undefined;
+    }
+
+    try {
+      return (await this.load(entry.file)).policy;
+    } catch (err) {
+      console.error(`Failed to load policy '${reference}' for a possible match:`, err);
+      return undefined;
     }
   }
 }

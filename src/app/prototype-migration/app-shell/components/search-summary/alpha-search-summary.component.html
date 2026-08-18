@@ -1,22 +1,105 @@
 <div class="alp-search-summary">
-  <div class="card">
-    <div class="card-header">Possible Match</div>
-    <div class="card-block">
-      <p class="alp-search-summary__reference">Reference <strong>{{ ctx.reference() }}</strong></p>
-
-      <!-- Placeholder. The summary itself is built next, from the JSON that
-           describes the partial data held against the reference. -->
-      <div class="notification-block status-info">
-        <div class="notification-message">
-          <p>This is a placeholder for the possible match summary.</p>
+  <div class="alp-search-summary__head">
+    <h2 class="alp-search-summary__title">Possible Match</h2>
+    <dl class="alp-search-summary__refs">
+      <div class="alp-search-summary__ref">
+        <dt>Possible Match Reference</dt>
+        <dd><strong>{{ ctx.reference() }}</strong></dd>
+      </div>
+      @if (detail(); as pension) {
+        <div class="alp-search-summary__ref">
+          <dt>Pension Reference</dt>
+          <dd><strong>{{ pension.pensionReference }}</strong></dd>
         </div>
+        <div class="alp-search-summary__ref">
+          <dt>Valid Until</dt>
+          <dd>{{ pension.pensionValidUntill }}</dd>
+        </div>
+      }
+    </dl>
+  </div>
+
+  @if (matches.record()) {
+    @if (ctx.policy(); as policy) {
+      <alp-policy-tile
+        [policy]="policy"
+        [flags]="policyFlags"
+        actionLabel="View Group Summary"
+        (action)="openGroupSummary()"
+      ></alp-policy-tile>
+    }
+
+    <div
+      class="notification-block"
+      [class.status-success]="knownToUs()"
+      [class.status-warning]="!knownToUs()"
+    >
+      <div class="notification-message">
+        @if (ourClient(); as client) {
+          <p>
+            The reference resolves to <strong>{{ client.name }}</strong> on this policy. Their record
+            and ours are side by side below, so the gaps can be filled while the caller is on the
+            line.
+          </p>
+        } @else {
+          <p>
+            Nobody on this policy matches the name held against this reference, so there is nothing
+            on our side to compare. Everything below is what the other platform holds.
+          </p>
+        }
+      </div>
+    </div>
+
+    <div class="alp-search-summary__compare">
+      <div class="alp-search-summary__row alp-search-summary__row--head">
+        <span class="alp-search-summary__field">Field</span>
+        <span class="alp-search-summary__value">Other Platform</span>
+        <span class="alp-search-summary__value">Our Record</span>
+        <span class="alp-search-summary__match">Match</span>
       </div>
 
-      <p class="alp-search-summary__note">
-        The reference was found, so this screen loads. What it will show is the partial
-        data held against it, including the pension reference that identifies the policy
-        the caller is asking about.
-      </p>
+      @for (section of sections(); track section.title) {
+        <h3 class="alp-search-summary__group">{{ section.title }}</h3>
+        @for (row of section.rows; track row.label) {
+          <div class="alp-search-summary__row">
+            <span class="alp-search-summary__field">{{ row.label }}</span>
+            <span
+              class="alp-search-summary__value"
+              [class.alp-search-summary__value--empty]="row.theirs === noData"
+              >{{ row.theirs }}</span
+            >
+            <span
+              class="alp-search-summary__value"
+              [class.alp-search-summary__value--empty]="row.ours === noData"
+              >{{ row.ours }}</span
+            >
+            <span class="alp-search-summary__match">
+              @if (row.matched === true) {
+                <span class="alp-search-summary__flag alp-search-summary__flag--matched">
+                  Matched
+                </span>
+              } @else if (row.matched === false) {
+                <span class="alp-search-summary__flag alp-search-summary__flag--unmatched">
+                  Not Matched
+                </span>
+              } @else {
+                <span class="alp-search-summary__flag alp-search-summary__flag--unflagged">
+                  Not Flagged
+                </span>
+              }
+            </span>
+          </div>
+        }
+        @if (section.note) {
+          <p class="alp-search-summary__note">{{ section.note }}</p>
+        }
+      }
     </div>
-  </div>
+  } @else if (!matches.loading()) {
+    <div class="notification-block status-warning">
+      <div class="notification-message">
+        <p>The record held against this reference could not be read.</p>
+      </div>
+    </div>
+  }
 </div>

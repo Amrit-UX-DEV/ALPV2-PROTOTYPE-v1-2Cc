@@ -25,6 +25,8 @@
         "id": "ux02",
         "key": "MrJoeBloggs",
         "name": "Mr Joe Bloggs",
+        "givenName": "Joe",
+        "surname": "Bloggs",
         "roles": [
           "Policy Holder",
           "Life 1"
@@ -52,7 +54,20 @@
             "stop": "Permanent",
             "helpingHand": "Extra Care"
           }
-        ]
+        ],
+        "dateOfBirth": "1962-11-26",
+        "niNumber": "AB850009C",
+        "email": "j.bloggs@example.com",
+        "phoneNumber": "07700 900123",
+        "address": {
+          "lines": [
+            "24 Kenilworth Road",
+            "Leamington Spa",
+            "Warwickshire"
+          ],
+          "postcode": "CV32 6JF",
+          "countryCode": "GB"
+        }
       },
       {
         "id": "ux03",
