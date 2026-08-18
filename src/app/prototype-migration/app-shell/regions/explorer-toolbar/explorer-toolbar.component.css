@@ -33,3 +33,16 @@
 .policy-search-clear {
   width: 30%;
 }
+
+/*
+ * The failed search message. Lighter than the same message in the call centre
+ * widget, because this panel is dark: the widget's #b00020 is close to unreadable
+ * against it.
+ */
+.alp-search-no-match {
+  clear: both;
+  margin: 8px 0 0;
+  padding: 0 0.3rem;
+  font-size: 13px;
+  color: #ff8a80;
+}

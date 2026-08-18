@@ -40,7 +40,7 @@
                                                                                     <div class="form-group search--input-search-criteria search--inline-control">
                                                                                         <label for="searchCriteria">Search
                                                                                             Criteria</label>
-                                                                                        <select class="form-control" formcontrolname="searchCriteria" id="PolicySearch_SearchCriteria" [value]="searchCriteria()" (change)="onCriteriaChange($event)">
+                                                                                        <select class="form-control" formcontrolname="searchCriteria" id="PolicySearch_SearchCriteria" [value]="search.criteria()" (change)="onCriteriaChange($event)">
                                                                                             
                                                                                             <option value="Policy">
                                                                                                 Policy</option>
@@ -60,7 +60,7 @@
                                                                                     <div class="form-group search--input-reference-number search--inline-control">
                                                                                         <label for="PolicySearch_ReferenceNumber">Reference
                                                                                             Number</label>
-                                                                                        <input autocomplete="off" autofocus="" class="form-control" formcontrolname="referenceNumber" id="PolicySearch_ReferenceNumber" name="referenceNumber" style="text-transform: capitalize" type="input" [value]="referenceNumber()" (input)="onReferenceInput($event)" placeholder="Enter Policy Number">
+                                                                                        <input autocomplete="off" autofocus="" class="form-control" formcontrolname="referenceNumber" id="PolicySearch_ReferenceNumber" name="referenceNumber" style="text-transform: capitalize" type="input" [value]="search.term()" (input)="onReferenceInput($event)" placeholder="Enter Policy Number">
                                                                                     </div>
                                                                                     <div>
                                                                                         <div class="row form-group" hidden="">
@@ -114,10 +114,10 @@
                                                                                             </div>
                                                                                         </div>
                                                                                     </div>
-                                                                                    <button class="btn btn-success full-width ui-btn--main-search" type="submit" [disabled]="searching()">Search</button>
-                                                                                    @if (notFound()) {
-                                                                                    <p class="alp-search-no-match">No policy found for
-                                                                                        <strong>{{ notFoundTerm() }}</strong>.
+                                                                                    <button class="btn btn-success full-width ui-btn--main-search" type="submit" [disabled]="search.searching()">Search</button>
+                                                                                    @if (search.notFound()) {
+                                                                                    <p class="alp-search-no-match">No {{ search.notFoundLabel() }} found for
+                                                                                        <strong>{{ search.notFoundTerm() }}</strong>.
                                                                                     </p>
                                                                                     }
                                                                                     <button class="btn btn-danger" id="PolicySearch_ClearButton" style="width: 30%" type="button" hidden="">Clear</button>
@@ -147,20 +147,6 @@
                                                                 </ul>
 
 
-                                                                <!-- Transfer Call button -->
-                                                                <button type="button" class="alp-transfer-call-btn" (click)="showTransferPopover = true">
-                                                                    <i class="fas fa-exchange-alt"></i> Transfer Call
-                                                                </button>
-
-
-                                                                
-                                                                <!-- The new popover -->
-                                                                @if (showTransferPopover) {
-                                                                    <alpha-transfer-call-popover (transfer)="handleTransferCall($event)" (close)="showTransferPopover = false">
-                                                                    </alpha-transfer-call-popover>
-                                                                }
-
-                                                                 
                                                         </div>
                                             </div>
                                         </div>

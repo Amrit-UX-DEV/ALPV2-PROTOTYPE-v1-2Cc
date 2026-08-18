@@ -156,7 +156,16 @@
 
                 <div class="row hide-from-tile ">
                     <div class="col">
-                        <div class="form-group form-content-center">
+                        <div class="form-group form-content-center flex-content">
+                            <!-- The call can also be transferred from the confirm contact information
+                                 step, so a rep can hand it on at either point, not only here. -->
+                            <button type="button" class="alp-transfer-call-btn" (click)="showTransferPopover.set(true)">
+                                <i class="fas fa-exchange-alt"></i> Transfer Call
+                            </button>
+                            @if (showTransferPopover()) {
+                            <alpha-transfer-call-popover (transfer)="onTransferCall($event)" (close)="showTransferPopover.set(false)">
+                            </alpha-transfer-call-popover>
+                            }
                             <button class="ui-btn fill-space" onclick="toggleAppStep('.ui-app-header-call-info','.ui-app-header-review');"> Done <i class="fa fa-check" aria-hidden="true"></i></button>
                         </div>
                     </div>

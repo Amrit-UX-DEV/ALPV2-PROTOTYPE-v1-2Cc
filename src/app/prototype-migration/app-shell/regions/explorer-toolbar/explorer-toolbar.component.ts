@@ -1,6 +1,7 @@
-import { Component, Input, Output, EventEmitter, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
+import { Component, Input, Output, EventEmitter, inject, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 
 import { AppView } from '../../../ui/app-view.service';
+import { ContextSearchService } from '../../../context/context-search.service';
 
 export type { AppView } from '../../../ui/app-view.service';
 
@@ -21,6 +22,10 @@ export type { AppView } from '../../../ui/app-view.service';
  * their own .active state from it, and the app body renders the view itself.
  * So it comes in as an input and changes go back out as an event, leaving the
  * rail markup exactly as it was.
+ *
+ * The search panel drives the same search as the one in the call centre widget.
+ * A rep can use either and the result is the same, because both forms bind to
+ * the one service rather than each holding its own criteria and term.
  */
 @Component({
   selector: 'div[alpha-explorer-toolbar]',
@@ -30,10 +35,27 @@ export type { AppView } from '../../../ui/app-view.service';
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
 })
 export class ExplorerToolbarComponent {
+  /** Read in the template as search.criteria(), search.term() and so on. */
+  protected readonly search = inject(ContextSearchService);
+
   @Input() currentView: AppView = 'work-plan';
   @Output() viewChange = new EventEmitter<AppView>();
 
   switchView(view: AppView) {
     this.viewChange.emit(view);
+  }
+
+  protected onCriteriaChange(event: Event): void {
+    this.search.setCriteria((event.target as HTMLSelectElement).value);
+  }
+
+  protected onReferenceInput(event: Event): void {
+    this.search.setTerm((event.target as HTMLInputElement).value);
+  }
+
+  /** A hit here activates the context and brings its group summary up. */
+  protected async onSearch(event: Event): Promise<void> {
+    event.preventDefault();
+    await this.search.run();
   }
 }
