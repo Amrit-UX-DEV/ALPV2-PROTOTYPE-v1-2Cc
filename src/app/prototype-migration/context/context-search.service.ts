@@ -82,7 +82,12 @@ export class ContextSearchService {
     this.missedTerm.set(failed ? term : '');
     this.missedCriteria.set(failed ? criteria : '');
 
-    if (result === 'found') this.views.show('group-summary');
+    if (result === 'found') {
+      // Which screen answers a search depends on what was found, not on which
+      // form ran it: a policy has a group summary, a possible match has only
+      // the partial data held against the reference.
+      this.views.show(this.ctx.kind() === 'possible-match' ? 'search-summary' : 'group-summary');
+    }
   }
 
   /** Empties the search and returns the app to no context. */

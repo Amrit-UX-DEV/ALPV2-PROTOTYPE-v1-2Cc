@@ -122,8 +122,13 @@ export interface ContextSelection {
  * anything has been searched the app is in no context, and screens are
  * expected to say so rather than render an empty policy. Every other kind
  * names the thing the context is about.
+ *
+ * 'possible-match' is not a scope, because nothing in it can be selected: it
+ * describes partial data held against a reference a caller has given, which may
+ * or may not turn out to be someone on the system. It has no policy of its own,
+ * so screens that read a policy must not be shown for it.
  */
-export type ContextKind = ContextScope | 'none';
+export type ContextKind = ContextScope | 'none' | 'possible-match';
 
 /**
  * The journey this context runs.

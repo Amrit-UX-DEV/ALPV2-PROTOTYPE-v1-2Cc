@@ -1,7 +1,7 @@
 import { Injectable, signal } from '@angular/core';
 
 /** The views the app body can show. */
-export type AppView = 'group-summary' | 'work-plan';
+export type AppView = 'group-summary' | 'search-summary' | 'work-plan';
 
 /**
  * Which view the app body is showing.

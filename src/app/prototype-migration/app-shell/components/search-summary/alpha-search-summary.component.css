@@ -1,0 +1,19 @@
+/*
+ * Only the screen's own padding and text sizing. The card and the notification
+ * block are the prototype's, so they are not restyled here.
+ */
+.alp-search-summary {
+  padding: 20px;
+}
+
+.alp-search-summary__reference {
+  margin: 0 0 12px;
+  font-size: 15px;
+  color: #222;
+}
+
+.alp-search-summary__note {
+  margin: 0;
+  font-size: 13px;
+  color: #6b6b6b;
+}

@@ -2,6 +2,7 @@ import { Component, Input, CUSTOM_ELEMENTS_SCHEMA, inject } from '@angular/core'
 import { CommonModule } from '@angular/common';
 
 import { AlphaGroupSummaryComponent } from '../../components/group-summary/alpha-group-summary.component';
+import { AlphaSearchSummaryComponent } from '../../components/search-summary/alpha-search-summary.component';
 import { WizardShellComponent } from '../../../wizard';
 import { AppView } from '../explorer-toolbar/explorer-toolbar.component';
 import { PrototypeContextService } from '../../../context/prototype-context.service';
@@ -28,12 +29,19 @@ import { PrototypeContextService } from '../../../context/prototype-context.serv
  *
  * The group summary is a view of a policy, so it is only rendered once a search
  * has found one. Before that the app is in no context and this says so, rather
- * than drawing a summary with nothing in it.
+ * than drawing a summary with nothing in it. The possible match summary follows
+ * the same rule against its own kind of context, so neither screen can be
+ * reached by switching view without having searched.
  */
 @Component({
   selector: 'div[alpha-app-body]',
   standalone: true,
-  imports: [CommonModule, AlphaGroupSummaryComponent, WizardShellComponent],
+  imports: [
+    CommonModule,
+    AlphaGroupSummaryComponent,
+    AlphaSearchSummaryComponent,
+    WizardShellComponent,
+  ],
   templateUrl: './app-body.component.html',
   styleUrl: './app-body.component.css',
   schemas: [CUSTOM_ELEMENTS_SCHEMA],

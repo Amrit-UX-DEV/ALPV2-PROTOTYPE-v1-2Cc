@@ -13,6 +13,16 @@
                 </div>
             }
         </ng-container>
+        <ng-container *ngSwitchCase="'search-summary'">
+            @if (ctx.kind() === 'possible-match') {
+                <alpha-search-summary></alpha-search-summary>
+            } @else {
+                <div class="alp-no-context">
+                    <h2>{{ ctx.label() }}</h2>
+                    <p>Search a possible match reference to see what is held against it.</p>
+                </div>
+            }
+        </ng-container>
         <wizard-shell *ngSwitchCase="'work-plan'" [configUrl]="'assets/data/wizard-configs/script-management.wizard.json'">
         </wizard-shell>
     </div>
