@@ -19,20 +19,22 @@ export const CONTEXT_INDEX_FILE = `${CONTEXT_DATA_PATH}/index.json`;
 /**
  * Where the app starts, and where it returns when a context is cleared.
  *
- * No context is a context, not a gap: nothing has been searched yet, so there
- * is no policy to describe. Holding it as a real value rather than null is
- * what keeps every consumer free of null checks, and it gives the header
- * something to name.
+ * Having nothing in hand is a state, not a gap: nothing has been searched yet,
+ * so there is no policy to describe. Holding it as a real value rather than
+ * null is what keeps every consumer free of null checks, and it gives the
+ * header something to name.
+ *
+ * The label is what a rep is told, so it says what has happened rather than
+ * naming the mechanism: 'no context' is our word for this, not theirs.
  *
  * The heading prefix is deliberately empty. A real context names the screen it
  * is showing, as in 'Group Summary: Policy 80007', but there is no screen and
- * no policy to prefix here, so the header reads 'No Context' on its own rather
- * than 'Context: No Context'.
+ * no policy to prefix here, so the label stands on its own.
  */
 export const NO_CONTEXT: PrototypeContext = {
   id: 'no-context',
   kind: 'none',
-  label: 'No Context',
+  label: 'Nothing searched yet',
   screen: { breadcrumbs: ['Search'], headingPrefix: '' },
 };
 

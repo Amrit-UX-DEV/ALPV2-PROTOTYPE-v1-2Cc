@@ -205,8 +205,8 @@ export interface PrototypeContext {
    */
   kind?: ContextKind;
   /**
-   * What the header calls this context, e.g. 'No Context'. Only needed where
-   * there is no policy to summarise.
+   * What the header calls this context, e.g. 'Nothing searched yet'. Only
+   * needed where there is no policy to summarise.
    */
   label?: string;
   /**

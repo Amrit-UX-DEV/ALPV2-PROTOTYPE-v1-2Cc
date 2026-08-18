@@ -14,7 +14,14 @@ export type AppView = 'group-summary' | 'search-summary' | 'work-plan';
  */
 @Injectable({ providedIn: 'root' })
 export class AppViewService {
-  private readonly current = signal<AppView>('work-plan');
+  /**
+   * The app opens on the group summary with nothing searched, which is the
+   * screen a rep spends the call on and, empty, is also the screen that tells
+   * them to search for something. Where they go next is their decision: a policy
+   * number opens its group summary here, a possible match reference opens the
+   * comparison, and the rail still reaches the work plan.
+   */
+  private readonly current = signal<AppView>('group-summary');
 
   readonly view = this.current.asReadonly();
 
