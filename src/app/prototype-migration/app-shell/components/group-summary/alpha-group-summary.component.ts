@@ -50,6 +50,17 @@ export class AlphaGroupSummaryComponent {
   );
 
   /**
+   * How many parties hold an interest in the policy without being party to it.
+   *
+   * Signposted whatever the number, including none: a rep reading the row needs
+   * to know that the question has been answered, and an indicator that appears
+   * only sometimes leaves them checking elsewhere to be sure.
+   */
+  protected readonly thirdPartyCount = computed(
+    () => this.ctx.clients().filter((client) => client.thirdParty).length,
+  );
+
+  /**
    * The party a hand-authored tile shows.
    *
    * Several tiles are authored one per party and sit alongside entries that

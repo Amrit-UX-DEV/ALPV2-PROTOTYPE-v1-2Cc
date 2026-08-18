@@ -30,49 +30,70 @@
       ></alp-policy-tile>
     }
 
-    <div class="alp-search-summary__compare">
-      <div class="alp-search-summary__row alp-search-summary__row--head">
-        <span class="alp-search-summary__field">Field</span>
-        <span class="alp-search-summary__value">Other Platform</span>
-        <span class="alp-search-summary__value">Our Record</span>
-        <span class="alp-search-summary__match">Match</span>
-      </div>
+    <div class="alp-search-summary__tally">
+      <span class="alp-status-tag alp-status-tag--primary">Matched {{ tally().matched }}</span>
+      <span class="alp-status-tag alp-status-tag--warning"
+        >Not Matched {{ tally().notMatched }}</span
+      >
+      <span class="alp-status-tag alp-status-tag--neutral">Not Held {{ tally().notHeld }}</span>
+    </div>
 
-      @for (section of sections(); track section.title) {
+    @for (section of sections(); track section.title) {
+      <section class="alp-search-summary__section">
         <h3 class="alp-search-summary__group">{{ section.title }}</h3>
-        @for (row of section.rows; track row.label) {
-          <div class="alp-search-summary__row">
-            <span class="alp-search-summary__field">{{ row.label }}</span>
-            <span
-              class="alp-search-summary__value"
-              [class.alp-search-summary__value--empty]="row.theirs === noData"
-              >{{ row.theirs }}</span
+
+        <div class="alp-search-summary__grid">
+          @for (field of section.rows; track field.label) {
+            <article
+              class="alp-search-summary__card"
+              [class.alp-search-summary__card--matched]="field.verdict === 'matched'"
+              [class.alp-search-summary__card--not-matched]="field.verdict === 'not-matched'"
+              [class.alp-search-summary__card--not-held]="field.verdict === 'not-held'"
             >
-            <span
-              class="alp-search-summary__value"
-              [class.alp-search-summary__value--empty]="row.ours === noData"
-              >{{ row.ours }}</span
-            >
-            <span class="alp-search-summary__match">
-              @switch (row.verdict) {
-                @case ('matched') {
-                  <span class="alp-status-tag alp-status-tag--primary">Matched</span>
+              <div class="alp-search-summary__card-head">
+                <h4 class="alp-search-summary__card-label">{{ field.label }}</h4>
+                @switch (field.verdict) {
+                  @case ('matched') {
+                    <span class="alp-status-tag alp-status-tag--primary">Matched</span>
+                  }
+                  @case ('not-matched') {
+                    <span class="alp-status-tag alp-status-tag--warning">Not Matched</span>
+                  }
+                  @default {
+                    <span class="alp-status-tag alp-status-tag--neutral">Not Held</span>
+                  }
                 }
-                @case ('not-matched') {
-                  <span class="alp-status-tag alp-status-tag--warning">Not Matched</span>
-                }
-                @default {
-                  <span class="alp-status-tag alp-status-tag--neutral">Not Held</span>
-                }
-              }
-            </span>
-          </div>
-        }
+              </div>
+
+              <dl class="alp-search-summary__sides">
+                <div class="alp-search-summary__side">
+                  <dt class="alp-search-summary__side-label">Other Platform</dt>
+                  <dd
+                    class="alp-search-summary__side-value"
+                    [class.alp-search-summary__side-value--empty]="field.theirs === noData"
+                  >
+                    {{ field.theirs }}
+                  </dd>
+                </div>
+                <div class="alp-search-summary__side">
+                  <dt class="alp-search-summary__side-label">Our Record</dt>
+                  <dd
+                    class="alp-search-summary__side-value"
+                    [class.alp-search-summary__side-value--empty]="field.ours === noData"
+                  >
+                    {{ field.ours }}
+                  </dd>
+                </div>
+              </dl>
+            </article>
+          }
+        </div>
+
         @if (section.note) {
           <p class="alp-search-summary__note">{{ section.note }}</p>
         }
-      }
-    </div>
+      </section>
+    }
   } @else if (!matches.loading()) {
     <div class="notification-block status-warning">
       <div class="notification-message">

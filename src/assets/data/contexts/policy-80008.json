@@ -70,14 +70,6 @@
           "Servicing Agent"
         ],
         "scope": "agent"
-      },
-      {
-        "key": "Beneficiary",
-        "thirdParty": true,
-        "name": "Mr Luke Smith",
-        "roles": [
-          "Beneficiary"
-        ]
       }
     ]
   },

@@ -3,9 +3,15 @@
  * a design system component and the notification block is the prototype's, so
  * neither is restyled here.
  *
- * The comparison is a grid rather than a table because each row is four cells of
- * fixed meaning, and a grid keeps the columns aligned across the section
- * headings that sit between the rows.
+ * The comparison is a card per field rather than a table of rows. A table asks
+ * the eye to travel a long way across a wide screen and collapses badly when the
+ * window is brought in; a card keeps a field's two values and its verdict within
+ * a couple of centimetres of each other, and the grid simply reflows to fewer
+ * columns as the space narrows. There is no table markup here at all, so the
+ * legacy grid can take this over as it stands once it arrives.
+ *
+ * Verdict shows three ways over, so it never rests on colour alone: a written
+ * tag, a left edge, and the weight of the values themselves.
  */
 .alp-search-summary {
   display: flex;
@@ -53,55 +59,27 @@
   color: var(--alp-color-text);
 }
 
-.alp-search-summary__compare {
+/* How the comparison came out, before reading any of it. */
+.alp-search-summary__tally {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--alp-space-2);
+}
+
+.alp-search-summary__tally .alp-status-tag {
+  margin-top: 0;
+}
+
+.alp-search-summary__section {
   display: flex;
   flex-direction: column;
-  border: 1px solid var(--alp-color-border);
-  border-radius: var(--alp-radius-md);
-  background: var(--alp-color-surface);
-  overflow: hidden;
-}
-
-.alp-search-summary__row {
-  display: grid;
-  grid-template-columns: minmax(160px, 1fr) minmax(140px, 2fr) minmax(140px, 2fr) 120px;
-  align-items: center;
   gap: var(--alp-space-3);
-  padding: var(--alp-space-3) var(--alp-space-4);
-  border-top: 1px solid var(--alp-color-border);
-  font-size: var(--alp-font-size-sm);
-}
-
-.alp-search-summary__row--head {
-  border-top: 0;
-  background: var(--alp-color-background);
-  font-size: var(--alp-font-size-xs);
-  font-weight: var(--alp-font-weight-semibold);
-  text-transform: uppercase;
-  letter-spacing: 0.04em;
-  color: var(--alp-color-text-muted);
-}
-
-.alp-search-summary__field {
-  color: var(--alp-color-text-muted);
-}
-
-.alp-search-summary__value {
-  color: var(--alp-color-text);
-  word-break: break-word;
-}
-
-/* Nothing held reads as absent rather than as a value. */
-.alp-search-summary__value--empty {
-  color: var(--alp-color-text-muted);
-  font-style: italic;
 }
 
 .alp-search-summary__group {
   margin: 0;
-  padding: var(--alp-space-3) var(--alp-space-4) var(--alp-space-2);
-  border-top: 1px solid var(--alp-color-border);
-  background: var(--alp-color-background);
+  padding-bottom: var(--alp-space-2);
+  border-bottom: 1px solid var(--alp-color-border);
   font-size: var(--alp-font-size-xs);
   font-weight: var(--alp-font-weight-semibold);
   text-transform: uppercase;
@@ -109,19 +87,106 @@
   color: var(--alp-color-text);
 }
 
-/* The verdicts are the design system's status tags. They were this screen's own
-   before, on soft tints under the -text tokens, which are white because they are
-   meant for solid backgrounds: 1.13:1 for matched and 1.11:1 for not matched,
-   effectively invisible. The tags carry a top margin for where they usually sit,
-   under a heading, which comes off in a row that is already aligned. */
-.alp-search-summary__match .alp-status-tag {
+/* auto-fill rather than auto-fit, so a section with two fields keeps them at a
+   readable width instead of stretching them across the screen. */
+.alp-search-summary__grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(17rem, 1fr));
+  gap: var(--alp-space-3);
+}
+
+.alp-search-summary__card {
+  display: flex;
+  flex-direction: column;
+  gap: var(--alp-space-3);
+  padding: var(--alp-space-3) var(--alp-space-4);
+  border: 1px solid var(--alp-color-border);
+  border-left: 6px solid var(--alp-color-neutral);
+  border-radius: var(--alp-radius-md);
+  background: var(--alp-color-surface);
+}
+
+/* The edge colours are the status tokens the tags already use, so a card and its
+   tag cannot disagree. Each is a solid 700-level colour on white, well past the
+   3:1 that a non-text indicator needs. */
+.alp-search-summary__card--matched {
+  border-left-color: var(--alp-color-success);
+}
+
+.alp-search-summary__card--not-matched {
+  border-left-color: var(--alp-color-warning);
+}
+
+/* Neutral rather than the faint border colour: at 1.48:1 on white that edge is
+   barely an indicator at all, where the neutral is 4.76:1. */
+.alp-search-summary__card--not-held {
+  border-left-color: var(--alp-color-neutral);
+}
+
+.alp-search-summary__card-head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--alp-space-2);
+}
+
+.alp-search-summary__card-label {
+  margin: 0;
+  font-size: var(--alp-font-size-sm);
+  font-weight: var(--alp-font-weight-semibold);
+  color: var(--alp-color-text);
+}
+
+/* The tags carry a top margin for where they usually sit, under a heading, which
+   comes off on a line that is already aligned. */
+.alp-search-summary__card-head .alp-status-tag {
   margin-top: 0;
   white-space: nowrap;
 }
 
+.alp-search-summary__sides {
+  display: flex;
+  flex-direction: column;
+  gap: var(--alp-space-2);
+  margin: 0;
+}
+
+.alp-search-summary__side {
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+}
+
+.alp-search-summary__side-label {
+  font-size: var(--alp-font-size-xs);
+  color: var(--alp-color-text-muted);
+}
+
+/* anywhere rather than break-word, because an email or a long address has to be
+   able to break mid-token once the column is narrow. */
+.alp-search-summary__side-value {
+  margin: 0;
+  font-size: var(--alp-font-size-sm);
+  color: var(--alp-color-text);
+  overflow-wrap: anywhere;
+}
+
+/* A field that differs is the one worth stopping at, so both of its values carry
+   the weight. */
+.alp-search-summary__card--not-matched .alp-search-summary__side-value {
+  font-weight: var(--alp-font-weight-semibold);
+}
+
+/* Nothing held reads as absent rather than as a value. */
+.alp-search-summary__side-value--empty {
+  color: var(--alp-color-text-muted);
+  font-weight: var(--alp-font-weight-normal);
+  font-style: italic;
+}
+
 .alp-search-summary__note {
   margin: 0;
-  padding: var(--alp-space-2) var(--alp-space-4) var(--alp-space-3);
   font-size: var(--alp-font-size-xs);
   color: var(--alp-color-text-muted);
 }

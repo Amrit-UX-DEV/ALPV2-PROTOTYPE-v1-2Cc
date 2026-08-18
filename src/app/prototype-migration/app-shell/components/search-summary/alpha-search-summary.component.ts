@@ -216,6 +216,22 @@ export class AlphaSearchSummaryComponent {
     ].filter((section) => section.rows.length > 0),
   );
 
+  /**
+   * How the comparison came out, counted across every section.
+   *
+   * A rep wants to know whether this is a good match before reading any of it,
+   * and the answer is in how many fields differ. Counted from the same rows the
+   * cards are drawn from, so the tally cannot say three where four are showing.
+   */
+  protected readonly tally = computed(() => {
+    const fields = this.sections().flatMap((section) => section.rows);
+    return {
+      matched: fields.filter((field) => field.verdict === 'matched').length,
+      notMatched: fields.filter((field) => field.verdict === 'not-matched').length,
+      notHeld: fields.filter((field) => field.verdict === 'not-held').length,
+    };
+  });
+
   /** Takes the rep into the group summary, where the call carries on. */
   protected openGroupSummary(): void {
     this.views.show('group-summary');

@@ -130,14 +130,9 @@
   color: var(--alp-policy-tile-pension-text);
 }
 
-/* Party signposts, on the legacy party-count pill's colours: #393a3a label at
+/* Party signposts, in line with the status and the flags because a rep reads
+   them together. On the legacy party-count pill's colours: #393a3a label at
    9.84:1 and #3c4981 count at 7.35:1, both on its own grey. */
-.alp-policy-tile__signposts {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-}
-
 .alp-policy-tile__indicator--count {
   background-color: var(--alp-policy-tile-count-bg);
   border-color: var(--alp-policy-tile-count-border);
