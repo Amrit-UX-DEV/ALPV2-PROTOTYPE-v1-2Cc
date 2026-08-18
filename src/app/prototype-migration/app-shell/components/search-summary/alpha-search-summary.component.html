@@ -31,14 +31,43 @@
     }
 
     <div class="alp-search-summary__panels">
+      @if (agreements().length) {
+        <details class="alp-search-summary__panel alp-search-summary__panel--agrees" open>
+          <summary class="alp-search-summary__panel-head">
+            <span class="alp-search-summary__panel-chip">Matched</span>
+            <h3 class="alp-search-summary__panel-title">
+              {{ agreements().length }} of {{ fieldCount() }} fields match
+            </h3>
+            <span class="alp-search-summary__panel-fields">{{ agreementLabels() }}</span>
+            <i aria-hidden="true" class="alp-search-summary__panel-chevron fa fa-chevron-down"></i>
+          </summary>
+
+          <dl class="alp-search-summary__agrees">
+            @for (field of agreements(); track field.label) {
+              <div class="alp-search-summary__agree">
+                <dt class="alp-search-summary__agree-label">{{ field.label }}</dt>
+                <dd class="alp-search-summary__agree-value">{{ field.agreedValue }}</dd>
+                @if (field.spellingsDiffer) {
+                  <dd class="alp-search-summary__agree-theirs">
+                    Other platform: {{ field.theirs }}
+                  </dd>
+                }
+              </div>
+            }
+          </dl>
+        </details>
+      }
+
       @if (differences().length) {
-        <section class="alp-search-summary__panel alp-search-summary__panel--differs">
-          <div class="alp-search-summary__panel-head">
+        <details class="alp-search-summary__panel alp-search-summary__panel--differs" open>
+          <summary class="alp-search-summary__panel-head">
             <span class="alp-search-summary__panel-chip">Not Matched</span>
             <h3 class="alp-search-summary__panel-title">
               {{ differences().length }} of {{ fieldCount() }} fields differ
             </h3>
-          </div>
+            <span class="alp-search-summary__panel-fields">{{ differenceLabels() }}</span>
+            <i aria-hidden="true" class="alp-search-summary__panel-chevron fa fa-chevron-down"></i>
+          </summary>
 
           <div class="alp-search-summary__diffs">
             @for (field of differences(); track field.label) {
@@ -62,49 +91,26 @@
               </article>
             }
           </div>
-        </section>
-      }
-
-      @if (agreements().length) {
-        <section class="alp-search-summary__panel alp-search-summary__panel--agrees">
-          <div class="alp-search-summary__panel-head">
-            <span class="alp-search-summary__panel-chip">Matched</span>
-            <h3 class="alp-search-summary__panel-title">
-              {{ agreements().length }} of {{ fieldCount() }} fields match
-            </h3>
-          </div>
-
-          <dl class="alp-search-summary__agrees">
-            @for (field of agreements(); track field.label) {
-              <div class="alp-search-summary__agree">
-                <dt class="alp-search-summary__agree-label">{{ field.label }}</dt>
-                <dd class="alp-search-summary__agree-value">{{ field.agreedValue }}</dd>
-                @if (field.spellingsDiffer) {
-                  <dd class="alp-search-summary__agree-theirs">
-                    Other platform: {{ field.theirs }}
-                  </dd>
-                }
-              </div>
-            }
-          </dl>
-        </section>
+        </details>
       }
 
       @if (notHeld().length) {
-        <section class="alp-search-summary__panel alp-search-summary__panel--absent">
-          <div class="alp-search-summary__panel-head">
+        <details class="alp-search-summary__panel alp-search-summary__panel--absent">
+          <summary class="alp-search-summary__panel-head">
             <span class="alp-search-summary__panel-chip">Not Held</span>
             <h3 class="alp-search-summary__panel-title">
               {{ notHeld().length }} fields neither platform holds
             </h3>
-          </div>
+            <span class="alp-search-summary__panel-fields">{{ notHeldLabels() }}</span>
+            <i aria-hidden="true" class="alp-search-summary__panel-chevron fa fa-chevron-down"></i>
+          </summary>
 
           <ul class="alp-search-summary__absent">
             @for (field of notHeld(); track field.label) {
               <li class="alp-search-summary__absent-item">{{ field.label }}</li>
             }
           </ul>
-        </section>
+        </details>
       }
     </div>
 

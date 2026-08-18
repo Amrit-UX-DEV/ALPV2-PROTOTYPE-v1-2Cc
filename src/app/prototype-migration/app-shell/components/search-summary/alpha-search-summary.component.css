@@ -62,6 +62,11 @@
    the group, and white tiles on a hairline border and the smallest
    shadow inside it.
 
+   Each group opens and closes, on a details element rather than a script
+   of ours, and names the fields it holds while closed. What matched comes
+   first: it is what a rep reads to satisfy themselves who they are
+   speaking to before anything else on the screen matters.
+
    Each group is shown at the density it earns. A difference gets a tile
    of its own with both values written out, because that is what the rep
    works from. An agreement gets one line, since there is nothing to
@@ -80,14 +85,17 @@
   gap: var(--alp-space-4);
 }
 
+/* Each group is a details element, so opening and closing it, and reaching it
+   from the keyboard, is the browser's job rather than ours. */
 .alp-search-summary__panel {
-  display: flex;
-  flex-direction: column;
-  gap: var(--alp-space-3);
   padding: var(--alp-space-4);
   border: 1px solid var(--alp-color-border);
   border-radius: var(--alp-radius-lg);
   background: var(--alp-color-background);
+}
+
+.alp-search-summary__panel > *:not(summary) {
+  margin-top: var(--alp-space-3);
 }
 
 .alp-search-summary__panel--differs {
@@ -110,6 +118,47 @@
   flex-wrap: wrap;
   align-items: center;
   gap: var(--alp-space-3);
+  cursor: pointer;
+  list-style: none;
+}
+
+/* The default disclosure triangle comes off, since the header carries its own
+   chevron on the other side. */
+.alp-search-summary__panel-head::-webkit-details-marker {
+  display: none;
+}
+
+.alp-search-summary__panel-head:focus-visible {
+  outline: 2px solid var(--alp-color-border-focus);
+  outline-offset: 3px;
+  border-radius: var(--alp-radius-sm);
+}
+
+/* What is in the group, for when it is closed. One line, cut off rather than
+   wrapped, so a header stays a header. */
+.alp-search-summary__panel-fields {
+  flex: 1 1 8rem;
+  min-width: 0;
+  font-size: var(--alp-font-size-xs);
+  color: var(--alp-color-text-muted);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.alp-search-summary__panel[open] .alp-search-summary__panel-fields {
+  display: none;
+}
+
+.alp-search-summary__panel-chevron {
+  margin-left: auto;
+  font-size: var(--alp-font-size-sm);
+  color: var(--alp-color-text-muted);
+  transition: transform 0.15s ease;
+}
+
+.alp-search-summary__panel[open] .alp-search-summary__panel-chevron {
+  transform: rotate(180deg);
 }
 
 .alp-search-summary__panel-chip {

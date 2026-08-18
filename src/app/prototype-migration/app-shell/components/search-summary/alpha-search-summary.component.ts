@@ -277,12 +277,27 @@ export class AlphaSearchSummaryComponent {
     this.fields().filter((field) => field.verdict === 'not-held'),
   );
 
+  /**
+   * The fields in each group, named on its header.
+   *
+   * A closed group still has to say what is in it, or closing one hides the very
+   * thing the rep was about to look for.
+   */
+  protected readonly agreementLabels = computed(() => this.labels(this.agreements()));
+  protected readonly differenceLabels = computed(() => this.labels(this.differences()));
+  protected readonly notHeldLabels = computed(() => this.labels(this.notHeld()));
+
   /** What needs saying about how the comparison was made, once, at the end. */
   protected readonly notes = computed(() =>
     this.sections()
       .map((section) => section.note)
       .filter((note): note is string => note !== undefined),
   );
+
+  /** The field names of a group, for its header to summarise it with. */
+  private labels(fields: ComparisonField[]): string {
+    return fields.map((field) => field.label).join(' · ');
+  }
 
   /** Takes the rep into the group summary, where the call carries on. */
   protected openGroupSummary(): void {
