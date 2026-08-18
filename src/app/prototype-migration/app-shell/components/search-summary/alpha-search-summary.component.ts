@@ -262,10 +262,9 @@ export class AlphaSearchSummaryComponent {
    * The comparison grouped by what it found rather than by section.
    *
    * Field by field down a list, every row looks alike and the rep has to read
-   * all of them to find the three that matter. Grouped this way the differences
-   * are the first thing on the screen and each group can be shown at the
-   * density it deserves: a tile per difference, a line per agreement, and a name
-   * per field neither platform holds.
+   * all of them to find the three that matter. Grouped this way each one can be
+   * shown at the density it deserves: a tile per difference, a line per
+   * agreement, and a name per field neither platform holds.
    */
   protected readonly differences = computed(() =>
     this.fields().filter((field) => field.verdict === 'not-matched'),
@@ -287,7 +286,8 @@ export class AlphaSearchSummaryComponent {
    * reports its own toggle back, including the ones the rep works by hand.
    *
    * What matched and what differs are open on arrival. What neither platform
-   * holds is not, because there is nothing in it to work through.
+   * holds sits above them closed: it is the group with nothing in it to work
+   * through, so it says its piece in its header and stays out of the way.
    */
   private readonly groups = signal<Record<ComparisonVerdict, boolean>>({
     matched: true,

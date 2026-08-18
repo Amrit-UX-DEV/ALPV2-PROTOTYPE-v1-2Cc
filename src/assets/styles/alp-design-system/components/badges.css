@@ -113,6 +113,14 @@
   color: var(--alp-color-slate-700);
 }
 
+/* A field one side simply does not hold. Neutral put it on slate 200, which is
+   all but invisible against the pale fills a value sits on, and a state nobody
+   notices is not a state. Orange 700 keeps white text at 5.18:1 and the tag
+   itself stands 4.95:1 clear of those fills. */
+.alp-status-tag--absent {
+  background: var(--alp-color-orange-700);
+}
+
 .alp-status-tag--product {
   background: #222222;
   color: #fbea02;

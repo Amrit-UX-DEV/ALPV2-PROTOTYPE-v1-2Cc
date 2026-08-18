@@ -43,6 +43,28 @@
     </div>
 
     <div class="alp-search-summary__panels">
+      @if (notHeld().length) {
+        <details
+          class="alp-search-summary__panel alp-search-summary__panel--absent"
+          [open]="openGroups()['not-held']"
+          (toggle)="onGroupToggle('not-held', $event)"
+        >
+          <summary class="alp-search-summary__panel-head">
+            <span class="alp-search-summary__panel-chip">Not Held</span>
+            <h3 class="alp-search-summary__panel-title">
+              {{ notHeld().length }} fields neither platform holds
+            </h3>
+            <span class="alp-search-summary__panel-fields">{{ notHeldLabels() }}</span>
+            <i aria-hidden="true" class="alp-search-summary__panel-chevron fa fa-chevron-down"></i>
+          </summary>
+
+          <ul class="alp-search-summary__absent">
+            @for (field of notHeld(); track field.label) {
+              <li class="alp-search-summary__absent-item">{{ field.label }}</li>
+            }
+          </ul>
+        </details>
+      }
       @if (agreements().length) {
         <details
           class="alp-search-summary__panel alp-search-summary__panel--agrees"
@@ -99,7 +121,7 @@
                     <dt>Other Platform</dt>
                     <dd>
                       @if (field.theirs === noData) {
-                        <span class="alp-status-tag alp-status-tag--neutral">{{ noData }}</span>
+                        <span class="alp-status-tag alp-status-tag--absent">{{ noData }}</span>
                       } @else {
                         {{ field.theirs }}
                       }
@@ -109,7 +131,7 @@
                     <dt>Our Record</dt>
                     <dd>
                       @if (field.ours === noData) {
-                        <span class="alp-status-tag alp-status-tag--neutral">{{ noData }}</span>
+                        <span class="alp-status-tag alp-status-tag--absent">{{ noData }}</span>
                       } @else {
                         {{ field.ours }}
                       }
@@ -122,28 +144,6 @@
         </details>
       }
 
-      @if (notHeld().length) {
-        <details
-          class="alp-search-summary__panel alp-search-summary__panel--absent"
-          [open]="openGroups()['not-held']"
-          (toggle)="onGroupToggle('not-held', $event)"
-        >
-          <summary class="alp-search-summary__panel-head">
-            <span class="alp-search-summary__panel-chip">Not Held</span>
-            <h3 class="alp-search-summary__panel-title">
-              {{ notHeld().length }} fields neither platform holds
-            </h3>
-            <span class="alp-search-summary__panel-fields">{{ notHeldLabels() }}</span>
-            <i aria-hidden="true" class="alp-search-summary__panel-chevron fa fa-chevron-down"></i>
-          </summary>
-
-          <ul class="alp-search-summary__absent">
-            @for (field of notHeld(); track field.label) {
-              <li class="alp-search-summary__absent-item">{{ field.label }}</li>
-            }
-          </ul>
-        </details>
-      }
     </div>
   } @else if (!matches.loading()) {
     <div class="notification-block status-warning">
