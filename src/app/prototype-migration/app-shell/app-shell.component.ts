@@ -11,6 +11,7 @@ import { ExplorerToolbarComponent, AppView } from './regions/explorer-toolbar/ex
 import { AppBodyComponent } from './regions/app-body/app-body.component';
 import { AppHeaderComponent } from './regions/app-header/app-header.component';
 import { OverlayService } from '../ui/overlay.service';
+import { AppViewService } from '../ui/app-view.service';
 
 @Component({
   selector: 'app-shell',
@@ -30,10 +31,15 @@ export class AppShellComponent implements AfterViewInit {
 
   protected readonly overlay = inject(OverlayService);
 
-  public currentView: AppView = 'work-plan';
+  /**
+   * Which view the body shows. Held in a service rather than here because the
+   * call centre widget also changes it: finding a policy brings up its group
+   * summary, and the widget cannot reach the shell.
+   */
+  protected readonly views = inject(AppViewService);
 
   switchView(view: AppView) {
-    this.currentView = view;
+    this.views.show(view);
   }
 
   ngAfterViewInit() {

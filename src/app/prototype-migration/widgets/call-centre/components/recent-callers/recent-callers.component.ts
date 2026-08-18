@@ -1,4 +1,4 @@
-import { Component, Input, Output, EventEmitter, OnInit, signal, computed } from '@angular/core';
+import { Component, Output, EventEmitter, OnInit, signal, computed, input } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
 export interface RecentCaller {
@@ -16,11 +16,33 @@ export interface RecentCaller {
 })
 export class RecentCallersComponent implements OnInit {
 
-  @Input() policyNumber: string = '';
+  /**
+   * The policy these callers belong to.
+   *
+   * A signal input rather than @Input, because the policy can change while this
+   * component stays alive: searching another policy in the same call swaps the
+   * context without the component being recreated, so loading once in ngOnInit
+   * would leave one policy's callers showing against another.
+   */
+  readonly policyNumber = input<string>('');
 
   @Output() callerSelected = new EventEmitter<RecentCaller>();
 
-  readonly recentCallers = signal<RecentCaller[]>([]);
+  /** What the file holds, filtered below to what belongs to this policy. */
+  private readonly loaded = signal<{ policyNumber?: string; recentCallers: RecentCaller[] }>({
+    recentCallers: [],
+  });
+
+  readonly recentCallers = computed(() => {
+    const data = this.loaded();
+    const wanted = this.policyNumber();
+
+    // Recent callers belong to a policy, and the file says which. Showing them
+    // against a different policy would put one policy's callers on another.
+    if (wanted && data.policyNumber && data.policyNumber !== wanted) return [];
+    return data.recentCallers;
+  });
+
   readonly currentIndex = signal(0);
   readonly showFullList = signal(false);
 
@@ -29,7 +51,11 @@ export class RecentCallersComponent implements OnInit {
 
   readonly currentCaller = computed(() => {
     const callers = this.recentCallers();
-    return callers.length > 0 ? callers[this.currentIndex()] : null;
+    if (callers.length === 0) return null;
+
+    // The index can outlive the list it pointed into, when a shorter list
+    // arrives for a different policy.
+    return callers[Math.min(this.currentIndex(), callers.length - 1)];
   });
 
   readonly totalCallers = computed(() => this.recentCallers().length);
@@ -43,7 +69,10 @@ export class RecentCallersComponent implements OnInit {
     try {
       const res = await fetch('assets/data/call-rep-scripts/recent-callers.json');
       const data = await res.json();
-      this.recentCallers.set(data.recentCallers || []);
+      this.loaded.set({
+        policyNumber: data.policyNumber,
+        recentCallers: data.recentCallers || [],
+      });
     } catch (err) {
       console.error('Failed to load recent callers', err);
     }

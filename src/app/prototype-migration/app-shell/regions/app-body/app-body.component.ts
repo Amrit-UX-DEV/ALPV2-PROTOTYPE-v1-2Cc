@@ -1,9 +1,10 @@
-import { Component, Input, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
+import { Component, Input, CUSTOM_ELEMENTS_SCHEMA, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
 import { AlphaGroupSummaryComponent } from '../../components/group-summary/alpha-group-summary.component';
 import { WizardShellComponent } from '../../../wizard';
 import { AppView } from '../explorer-toolbar/explorer-toolbar.component';
+import { PrototypeContextService } from '../../../context/prototype-context.service';
 
 /**
  * The main body: whichever view the explorer rail last selected.
@@ -24,14 +25,21 @@ import { AppView } from '../explorer-toolbar/explorer-toolbar.component';
  *
  * currentView is an input rather than local state because the rail sets it and
  * also renders its own active state from it, so the shell owns it.
+ *
+ * The group summary is a view of a policy, so it is only rendered once a search
+ * has found one. Before that the app is in non context and this says so, rather
+ * than drawing a summary with nothing in it.
  */
 @Component({
   selector: 'div[alpha-app-body]',
   standalone: true,
   imports: [CommonModule, AlphaGroupSummaryComponent, WizardShellComponent],
   templateUrl: './app-body.component.html',
+  styleUrl: './app-body.component.css',
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
 })
 export class AppBodyComponent {
   @Input() currentView: AppView = 'work-plan';
+
+  protected readonly ctx = inject(PrototypeContextService);
 }

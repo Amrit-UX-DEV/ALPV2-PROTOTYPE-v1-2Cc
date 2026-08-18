@@ -9,7 +9,7 @@
                         <div class="card-header">
                             <ul class="dpa-check-btn">
                                 <li alpha-ui-selectable="single,selected-item" class="detail-block-item selected-item dpa-example-pending">
-                                    <span class="item-info-0">Policy</span><span class="item-info-1">80007</span>
+                                    <span class="item-info-0">Policy</span><span class="item-info-1">{{ ctx.policy()?.number }}</span>
                                     <span class="item-info-2 status-label onhold">
                                         DPA Pending
                                     </span>
@@ -18,7 +18,7 @@
                                 <li alpha-ui-selectable="single,selected-item" class="detail-block-item selected-item dpa-passed dpa-example-passed" style="
                                     display: none;
                                 ">
-                                    <span class="item-info-0">Policy</span><span class="item-info-1">80007</span>
+                                    <span class="item-info-0">Policy</span><span class="item-info-1">{{ ctx.policy()?.number }}</span>
                                     <span class="item-info-2 status-label">
                                         DPA Passed <i class="fa fa-check" aria-hidden="true"></i>
                                     </span>
@@ -111,7 +111,7 @@
                                         <div>
                                             <label>
                                                 <span class="question-item">Policy Number?</span>
-                                                <span class="answer-item">80007</span>
+                                                <span class="answer-item">{{ ctx.policy()?.number }}</span>
                                             </label>
                                             <div class="question-btn-block">
                                                 <button alpha-ui-target=".dpa-block-policy-01" alpha-ui-selectable="toggle,dpa-question-correct" alpha-ui-event="click" alpha-ui-attr-toggle=".ui-btn-dpa-done,ui-disabled" class="question-btn-correct"><i class="fa fa-check-square" aria-hidden="true"></i></button>

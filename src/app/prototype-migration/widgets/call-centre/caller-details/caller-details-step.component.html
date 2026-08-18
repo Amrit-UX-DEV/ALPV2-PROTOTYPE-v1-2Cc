@@ -9,8 +9,10 @@
                                                                             </span>Capture Caller Details
 
                                                                             <span class="header-step--summary">
-                                                                                Policy <strong>80007 </strong> |
-                                                                                Mr Joe Bloggs</span>
+                                                                                @if (ctx.policy(); as policy) {
+                                                                                Policy <strong>{{ policy.number }} </strong>
+                                                                                @if (selectedCaller(); as caller) { | {{ caller.name }} }
+                                                                                }</span>
                                                                             <i class="fa fa-chevron-down" aria-hidden="true"></i>
                                                                         </div>
                                                                         <div class="content-section-body">
@@ -34,11 +36,11 @@
                                                                     <ul class="alpha-accordion-children">
                                                                         <li>
                                                                             <div class="container-fluid toolbar-searchform">
-                                                                                <form class="primary-field" novalidate="">
+                                                                                <form class="primary-field" novalidate="" (submit)="onSearch($event)">
                                                                                     <div class="form-group search--input-search-criteria search--inline-control">
                                                                                         <label for="searchCriteria">Search
                                                                                             Criteria</label>
-                                                                                        <select class="form-control" formcontrolname="searchCriteria" id="PolicySearch_SearchCriteria">
+                                                                                        <select class="form-control" formcontrolname="searchCriteria" id="PolicySearch_SearchCriteria" [value]="searchCriteria()" (change)="onCriteriaChange($event)">
                                                                                             
                                                                                             <option value="Policy">
                                                                                                 Policy</option>
@@ -58,7 +60,7 @@
                                                                                     <div class="form-group search--input-reference-number search--inline-control">
                                                                                         <label for="PolicySearch_ReferenceNumber">Reference
                                                                                             Number</label>
-                                                                                        <input autocomplete="off" autofocus="" class="form-control" formcontrolname="referenceNumber" id="PolicySearch_ReferenceNumber" name="referenceNumber" style="text-transform: capitalize" type="input" value="80007" placeholder="Enter Policy Number">
+                                                                                        <input autocomplete="off" autofocus="" class="form-control" formcontrolname="referenceNumber" id="PolicySearch_ReferenceNumber" name="referenceNumber" style="text-transform: capitalize" type="input" [value]="referenceNumber()" (input)="onReferenceInput($event)" placeholder="Enter Policy Number">
                                                                                     </div>
                                                                                     <div>
                                                                                         <div class="row form-group" hidden="">
@@ -112,7 +114,12 @@
                                                                                             </div>
                                                                                         </div>
                                                                                     </div>
-                                                                                    <button class="btn btn-success full-width ui-btn--main-search" type="submit">Search</button>
+                                                                                    <button class="btn btn-success full-width ui-btn--main-search" type="submit" [disabled]="searching()">Search</button>
+                                                                                    @if (notFound()) {
+                                                                                    <p class="alp-search-no-match">No policy found for
+                                                                                        <strong>{{ notFoundTerm() }}</strong>.
+                                                                                    </p>
+                                                                                    }
                                                                                     <button class="btn btn-danger" id="PolicySearch_ClearButton" style="width: 30%" type="button" hidden="">Clear</button>
                                                                                 </form>
                                                                             </div>
@@ -121,21 +128,22 @@
                                                                 </li>
                                                                 </alpha-search-field>
                                                                 <ul class="reference-numbers-btn alp-recent-callers__list">
-                                                                    
+                                                                    @if (ctx.policy(); as policy) {
                                                                     <li class="detail-block-item selected-policy" style="margin-top:0;">
                                                                         
-                                                                        <span class="item-info-1" style="padding:15px;text-align: center;">80007</span>
-                                                                        <button class="remove"><i aria-hidden="true" class="fa fa-times"></i></button>
+                                                                        <span class="item-info-1" style="padding:15px;text-align: center;">{{ policy.number }}</span>
+                                                                        <button class="remove" type="button" (click)="clearSearch()"><i aria-hidden="true" class="fa fa-times"></i></button>
                                                                         <span class="policy-summay-nav">View
                                                                             Summary</span>
                                                                     </li>
 
                                                                     <li class="alp-recent-callers__item">
-                                                                        <!-- Recent Callers Component -->
-                                                                        <alpha-recent-callers (callerSelected)="callerSelector.onRecentCallerSelected($event)">
+                                                                        <!-- Recent Callers Component. Scoped to the policy that was
+                                                                             found, so callers from another policy cannot appear. -->
+                                                                        <alpha-recent-callers [policyNumber]="policy.number" (callerSelected)="onRecentCallerSelected($event)">
                                                                         </alpha-recent-callers>
                                                                     </li>
-                                                    
+                                                                    }
                                                                 </ul>
 
 
@@ -213,8 +221,11 @@
                 </div>
             </section>
 
-            <!-- Caller Selector -->
-            <alpha-caller-selector #callerSelector></alpha-caller-selector>
+            <!-- Caller Selector. Only once a policy has been found: who is calling
+                 is a question about that policy's clients. -->
+            @if (ctx.hasPolicy()) {
+            <alpha-caller-selector (callerSelected)="onCallerSelected($event)"></alpha-caller-selector>
+            }
 
             <!-- CALL-REP-SCRIPTS -->
 

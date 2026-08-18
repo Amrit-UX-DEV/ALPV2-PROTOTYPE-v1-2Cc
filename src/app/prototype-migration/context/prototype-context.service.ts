@@ -2,6 +2,8 @@ import { Injectable, computed, signal } from '@angular/core';
 
 import {
   ContextClient,
+  ContextIndex,
+  ContextIndexEntry,
   ContextScope,
   ContextSelection,
   PrototypeContext,
@@ -10,50 +12,60 @@ import {
 /** Where context files live. Adding a context means adding a file here. */
 export const CONTEXT_DATA_PATH = 'assets/data/contexts';
 
-/** Loaded when nothing else is requested. */
-export const DEFAULT_CONTEXT_ID = 'policy-80007';
+/** Lists the contexts a search can find. */
+export const CONTEXT_INDEX_FILE = `${CONTEXT_DATA_PATH}/index.json`;
 
 /**
- * Mirrors policy-80007.json.
+ * Where the app starts, and where it returns when a context is cleared.
  *
- * This exists only so the prototype never renders a blank header if the fetch
- * fails, for instance when a context file has not been deployed. In normal
- * operation loadContext() replaces it before the first render, so the JSON is
- * the thing to edit; this is the safety net, not the source of truth.
+ * Non context is a context, not a gap: nothing has been searched yet, so there
+ * is no policy to describe. Holding it as a real value rather than null is
+ * what keeps every consumer free of null checks, and it gives the header
+ * something to name.
  */
-const FALLBACK_CONTEXT: PrototypeContext = {
-  id: DEFAULT_CONTEXT_ID,
-  policy: {
-    number: '80007',
-    productName: 'Group Stakeholder Pen Plan Pre Nov 04',
-    company: 'HSBC (LifePen)',
-    policyType: 'Unit Linked',
-    status: 'In Force',
-    territory: 'Great Britain',
-    currency: { label: 'UK Sterling', symbol: '£' },
-    clients: [],
-  },
-  screen: { breadcrumbs: ['Search', 'Group Summary'], headingPrefix: 'Group Summary:' },
+export const NON_CONTEXT: PrototypeContext = {
+  id: 'non-context',
+  kind: 'none',
+  label: 'Non Context',
+  screen: { breadcrumbs: ['Search'], headingPrefix: 'Context:' },
 };
+
+/** What a search did, so a screen can tell "not searched" from "no match". */
+export type SearchState = 'idle' | 'found' | 'not-found';
 
 /**
  * Holds the context the prototype is currently demonstrating.
  *
  * Consumers read the computed accessors rather than the whole context, so a
- * template binds to ctx.policy().number instead of reaching through an
- * optional chain. The signal is never null, which keeps every consumer free of
- * null guards.
+ * template binds to ctx.policy() instead of reaching through an optional
+ * chain. The context signal itself is never null: before anything is searched
+ * it holds NON_CONTEXT, whose policy is absent, so a screen showing policy
+ * detail asks hasPolicy() once rather than guarding every field.
  */
 @Injectable({ providedIn: 'root' })
 export class PrototypeContextService {
-  private readonly current = signal<PrototypeContext>(FALLBACK_CONTEXT);
+  private readonly current = signal<PrototypeContext>(NON_CONTEXT);
 
   readonly context = this.current.asReadonly();
-  readonly policy = computed(() => this.current().policy);
   readonly screen = computed(() => this.current().screen);
 
-  /** The clients attached to the policy, in render order. */
-  readonly clients = computed(() => this.policy().clients);
+  /** Absent in non context. */
+  readonly policy = computed(() => this.current().policy);
+
+  /** Whether there is a policy to show. False before a search finds one. */
+  readonly hasPolicy = computed(() => this.policy() !== undefined);
+
+  /** 'none' until a context is activated, then whatever the context declares. */
+  readonly kind = computed(() => this.current().kind ?? 'policy');
+
+  /** What to call the current context where there is no policy to summarise. */
+  readonly label = computed(() => this.current().label ?? NON_CONTEXT.label!);
+
+  /** The journey this context runs, if it names one. */
+  readonly journey = computed(() => this.current().journey);
+
+  /** The clients attached to the policy, in render order. Empty in non context. */
+  readonly clients = computed(() => this.policy()?.clients ?? []);
 
   /** Clients flagged for extra care, i.e. those with at least one entry. */
   readonly extraCareClients = computed(() =>
@@ -101,18 +113,96 @@ export class PrototypeContextService {
     return selected?.scope === scope && selected.key === key;
   }
 
+  private readonly registry = signal<ContextIndexEntry[]>([]);
+
+  /** Every context a search can find. */
+  readonly contexts = this.registry.asReadonly();
+
+  private readonly lastSearch = signal<SearchState>('idle');
+
+  /** Whether the last search found something, found nothing, or never ran. */
+  readonly searchState = this.lastSearch.asReadonly();
+
   /**
-   * Replaces the current context. Awaited during bootstrap so the first render
-   * already has real data; on failure the fallback above stays in place and
-   * the prototype still renders.
+   * Loads the registry. Awaited during bootstrap so a search can resolve
+   * immediately; the app still starts in non context either way.
    */
-  async loadContext(id: string = DEFAULT_CONTEXT_ID): Promise<void> {
+  async loadIndex(): Promise<void> {
     try {
-      const response = await fetch(`${CONTEXT_DATA_PATH}/${id}.json?t=${Date.now()}`);
+      const response = await fetch(`${CONTEXT_INDEX_FILE}?t=${Date.now()}`);
       if (!response.ok) throw new Error(`HTTP ${response.status}`);
-      this.current.set(await response.json());
+      const index = (await response.json()) as ContextIndex;
+      this.registry.set(index.contexts ?? []);
     } catch (err) {
-      console.error(`Failed to load context '${id}', keeping the fallback:`, err);
+      console.error('Failed to load the context index, search will find nothing:', err);
+    }
+  }
+
+  /**
+   * Finds contexts matching what was keyed into a search form.
+   *
+   * A reference is matched exactly, ignoring case and surrounding space, because
+   * it is an identifier: keying 8000 should not find 80007. A client search
+   * matches on part of a name instead, which is how someone would actually
+   * search for a person.
+   */
+  search(criteria: string, term: string): ContextIndexEntry[] {
+    const needle = term.trim().toLowerCase();
+    if (!needle) return [];
+
+    return this.registry().filter((entry) => {
+      if (entry.criteria.toLowerCase() !== criteria.trim().toLowerCase()) return false;
+      if (criteria.toLowerCase() === 'client') {
+        return entry.clients.some((name) => name.toLowerCase().includes(needle));
+      }
+      return entry.reference.toLowerCase() === needle;
+    });
+  }
+
+  /**
+   * Searches, and activates the context when exactly one thing matches.
+   *
+   * Returns what happened so the caller can show its own not-found message
+   * without repeating the matching rules.
+   */
+  async searchAndActivate(criteria: string, term: string): Promise<SearchState> {
+    const matches = this.search(criteria, term);
+    if (matches.length === 0) {
+      this.lastSearch.set('not-found');
+      return 'not-found';
+    }
+
+    await this.activate(matches[0].id);
+    this.lastSearch.set('found');
+    return 'found';
+  }
+
+  /** Puts the app back into non context, as the search form's Clear does. */
+  clear(): void {
+    this.current.set(NON_CONTEXT);
+    this.currentSelection.set(null);
+    this.lastSearch.set('idle');
+  }
+
+  /**
+   * Loads a context by id and makes it current.
+   *
+   * A failed load leaves the app in non context rather than in a half state,
+   * so a missing file shows as "not found" instead of an empty policy.
+   */
+  async activate(id: string): Promise<void> {
+    const entry = this.registry().find((c) => c.id === id);
+    const file = entry?.file ?? `${id}.json`;
+
+    try {
+      const response = await fetch(`${CONTEXT_DATA_PATH}/${file}?t=${Date.now()}`);
+      if (!response.ok) throw new Error(`HTTP ${response.status}`);
+      const context = (await response.json()) as PrototypeContext;
+      this.current.set({ kind: entry?.kind ?? 'policy', ...context });
+      this.currentSelection.set(null);
+    } catch (err) {
+      console.error(`Failed to load context '${id}', staying in non context:`, err);
+      this.clear();
     }
   }
 }

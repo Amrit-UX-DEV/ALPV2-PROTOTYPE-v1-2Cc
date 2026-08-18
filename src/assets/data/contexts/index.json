@@ -1,0 +1,40 @@
+{
+  "version": "1.0",
+  "lastUpdated": "2026-08-17",
+  "contexts": [
+    {
+      "id": "policy-80007",
+      "file": "policy-80007.json",
+      "kind": "policy",
+      "criteria": "Policy",
+      "reference": "80007",
+      "label": "Group Stakeholder Pen Plan Pre Nov 04",
+      "company": "HSBC (LifePen)",
+      "clients": [
+        "Mr & Mrs Bloggs",
+        "Mr Joe Bloggs",
+        "Mrs Lucy Bloggs",
+        "Albert Wesker",
+        "Mr Luke Smith"
+      ],
+      "journey": "surrender-001"
+    },
+    {
+      "id": "policy-80008",
+      "file": "policy-80008.json",
+      "kind": "policy",
+      "criteria": "Policy",
+      "reference": "80008",
+      "label": "Group Stakeholder Pen Plan Pre Nov 04",
+      "company": "HSBC (LifePen)",
+      "clients": [
+        "Mr & Mrs Bloggs",
+        "Mr Joe Bloggs",
+        "Mrs Lucy Bloggs",
+        "Albert Wesker",
+        "Mr Luke Smith"
+      ],
+      "journey": "breach-cancellation-001"
+    }
+  ]
+}

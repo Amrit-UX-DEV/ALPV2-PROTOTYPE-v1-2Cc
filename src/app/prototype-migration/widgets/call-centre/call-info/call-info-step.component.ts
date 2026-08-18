@@ -1,9 +1,10 @@
-import { Component, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
+import { Component, inject, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
 import { CallInformationOptionsComponent } from '../components/call-information-options/call-information-options.component';
 import { CallActionOptionsComponent } from '../components/call-action-options/call-action-options.component';
 import { CallPensionOptionsComponent } from '../components/call-pension-options/call-pension-options.component';
+import { PrototypeContextService } from '../../../context/prototype-context.service';
 
 /**
  * Step 4 of the call centre journey: log the call information.
@@ -28,5 +29,8 @@ import { CallPensionOptionsComponent } from '../components/call-pension-options/
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
 })
 export class CallInfoStepComponent {
+  /** The policy the call is about, read in the template as ctx.policy(). */
+  protected readonly ctx = inject(PrototypeContextService);
+
   showDetails = false;
 }

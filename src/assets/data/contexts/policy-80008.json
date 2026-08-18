@@ -1,8 +1,8 @@
 {
-  "id": "policy-80007",
+  "id": "policy-80008",
   "kind": "policy",
   "policy": {
-    "number": "80007",
+    "number": "80008",
     "productName": "Group Stakeholder Pen Plan Pre Nov 04",
     "company": "HSBC (LifePen)",
     "policyType": "Unit Linked",
@@ -88,7 +88,7 @@
     "headingPrefix": "Group Summary:"
   },
   "journey": {
-    "scriptId": "surrender-001",
-    "title": "Surrender Request"
+    "scriptId": "breach-cancellation-001",
+    "title": "Breach of Contract & Cancellation"
   }
 }

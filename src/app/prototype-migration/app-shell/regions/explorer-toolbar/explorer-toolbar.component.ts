@@ -1,6 +1,8 @@
 import { Component, Input, Output, EventEmitter, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 
-export type AppView = 'group-summary' | 'work-plan';
+import { AppView } from '../../../ui/app-view.service';
+
+export type { AppView } from '../../../ui/app-view.service';
 
 /**
  * The left explorer: the always-visible icon rail and the slide-out search

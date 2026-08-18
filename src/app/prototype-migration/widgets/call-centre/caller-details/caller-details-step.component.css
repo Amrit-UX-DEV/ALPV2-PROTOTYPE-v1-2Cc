@@ -1,0 +1,11 @@
+/*
+ * Shown when a search matched nothing.
+ *
+ * The rep needs to see that the search ran and failed, otherwise a mistyped
+ * number looks the same as a screen that has not responded.
+ */
+.alp-search-no-match {
+  margin: 8px 0 0;
+  font-size: 13px;
+  color: #b00020;
+}

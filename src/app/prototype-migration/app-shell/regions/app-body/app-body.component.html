@@ -3,7 +3,16 @@
       <!-- GROUP SUMMARY HERE -->
       <!-- Content Area -->
     <div [ngSwitch]="currentView">
-        <alpha-group-summary *ngSwitchCase="'group-summary'"></alpha-group-summary>
+        <ng-container *ngSwitchCase="'group-summary'">
+            @if (ctx.hasPolicy()) {
+                <alpha-group-summary></alpha-group-summary>
+            } @else {
+                <div class="alp-no-context">
+                    <h2>{{ ctx.label() }}</h2>
+                    <p>Search for a policy to see its group summary.</p>
+                </div>
+            }
+        </ng-container>
         <wizard-shell *ngSwitchCase="'work-plan'" [configUrl]="'assets/data/wizard-configs/script-management.wizard.json'">
         </wizard-shell>
     </div>
