@@ -36,17 +36,23 @@
       <li class="alpha-accordion-parent" routerlinkactive="alpha-selected" alpha-data-inspector="NaN">
         <a title="Search"> <span>Search</span> <span class="alpha-openclose"></span>
         <span class="alpha-openclose"></span></a> <ul class="alpha-accordion-children"> <li>
-        <div class="container-fluid toolbar-searchform"> <form class="primary-field" novalidate="">
-        <div class="form-group"> <label for="searchCriteria">Search Criteria</label>
-        <select class="form-control" formcontrolname="searchCriteria" id="PolicySearch_SearchCriteria">
+        <div class="container-fluid toolbar-searchform"> <form class="primary-field" novalidate="" (submit)="onSearch($event)">
+        <div class="form-group"> <label for="MenuSearch_SearchCriteria">Search Criteria</label>
+        <select class="form-control" formcontrolname="searchCriteria" id="MenuSearch_SearchCriteria" [value]="search.criteria()" (change)="onCriteriaChange($event)">
         <!----> <option value="Policy">Policy</option> <option value="Agent">Agent</option>
         <option value="Client">Client</option> <option value="Company">Company</option>
-        <option value="Other">Other</option> </select> </div> <div class="form-group">
-        <label for="referenceNumber">Reference Number</label>
-        <input autocomplete="off" autofocus="" class="form-control" formcontrolname="referenceNumber" id="PolicySearch_ReferenceNumber" name="referenceNumber" type="input" placeholder="Enter Policy Number">
+        <option value="Other">Other</option>
+        <!-- Unallocated Payment is here to match the call centre form: both bind to
+             the one criteria, so a criteria missing from this list would show blank. -->
+        <option value="Unallocated Payment">Unallocated Payment</option> </select> </div> <div class="form-group">
+        <label for="MenuSearch_ReferenceNumber">Reference Number</label>
+        <input autocomplete="off" autofocus="" class="form-control" formcontrolname="referenceNumber" id="MenuSearch_ReferenceNumber" name="referenceNumber" type="input" placeholder="Enter Policy Number" [value]="search.term()" (input)="onReferenceInput($event)">
         </div>
-        <button class="btn btn-success policy-search-submit" id="PolicySearch_SearchButton" type="submit">Search</button>
-        <button class="btn btn-danger policy-search-clear" id="PolicySearch_ClearButton" type="button">Clear</button>
+        <button class="btn btn-success policy-search-submit" id="MenuSearch_SearchButton" type="submit" [disabled]="search.searching()">Search</button>
+        <button class="btn btn-danger policy-search-clear" id="MenuSearch_ClearButton" type="button" (click)="search.clear()">Clear</button>
+        @if (search.notFound()) {
+        <p class="alp-search-no-match">No {{ search.notFoundLabel() }} found for <strong>{{ search.notFoundTerm() }}</strong>.</p>
+        }
         </form> </div> </li> </ul>
       </li>
     </alpha-search-field>
