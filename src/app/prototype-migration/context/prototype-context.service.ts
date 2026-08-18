@@ -204,7 +204,12 @@ export class PrototypeContextService {
       if (!response.ok) throw new Error(`HTTP ${response.status}`);
       const context = (await response.json()) as PrototypeContext;
       this.current.set({ kind: entry?.kind ?? 'policy', ...context });
-      this.currentSelection.set(null);
+
+      // Activating a policy context selects that policy, so the group summary
+      // opens on the thing that was searched for rather than with nothing
+      // selected. Anything without a policy has nothing to select.
+      const policy = context.policy;
+      this.currentSelection.set(policy ? { scope: 'policy', key: policy.number } : null);
     } catch (err) {
       console.error(`Failed to load context '${id}', staying in no context:`, err);
       this.clear();

@@ -114,11 +114,11 @@
                                                                                             </div>
                                                                                         </div>
                                                                                     </div>
-                                                                                    <button class="btn btn-success full-width ui-btn--main-search" type="submit" [disabled]="search.searching()">Search</button>
+                                                                                    <button class="btn btn-success full-width ui-btn--main-search" type="submit" [disabled]="!search.canSearch()">Search</button>
                                                                                     @if (search.notFound()) {
                                                                                     <!-- The prototype's own error notification, the same block the review step
                                                                                          uses, so a failed search reads as a notification rather than loose text. -->
-                                                                                    <div class="notification-block status-error">
+                                                                                    <div class="notification-block status-warning mt-20">
                                                                                         <div class="notification-message">
                                                                                             <p>No {{ search.notFoundLabel() }} found for {{ search.notFoundTerm() }}</p>
                                                                                         </div>
