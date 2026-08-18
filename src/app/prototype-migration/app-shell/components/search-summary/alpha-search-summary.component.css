@@ -94,8 +94,10 @@
   background: var(--alp-color-background);
 }
 
+/* Well clear of the header, which fills the panel's width on hover and would
+   otherwise sit straight on top of the content. */
 .alp-search-summary__panel > *:not(summary) {
-  margin-top: var(--alp-space-3);
+  margin-top: var(--alp-space-5);
 }
 
 .alp-search-summary__panel--differs {
@@ -113,13 +115,33 @@
   background: var(--alp-color-slate-50);
 }
 
+/* The header reaches the panel's own edges, so its hover state reads as one
+   band across the whole width rather than a patch in the middle. It is pulled
+   out by the panel's padding and given the same amount back, which keeps
+   everything inside it aligned with the content below. */
 .alp-search-summary__panel-head {
   display: flex;
   flex-wrap: wrap;
   align-items: center;
   gap: var(--alp-space-3);
+  margin: calc(var(--alp-space-4) * -1) calc(var(--alp-space-4) * -1) 0;
+  padding: var(--alp-space-4);
+  /* The panel's radius less its border, so the corners sit inside it. */
+  border-radius: 11px 11px 0 0;
   cursor: pointer;
   list-style: none;
+}
+
+.alp-search-summary__panel--agrees .alp-search-summary__panel-head:hover {
+  background: var(--alp-color-green-100);
+}
+
+.alp-search-summary__panel--differs .alp-search-summary__panel-head:hover {
+  background: var(--alp-color-amber-100);
+}
+
+.alp-search-summary__panel--absent .alp-search-summary__panel-head:hover {
+  background: var(--alp-color-slate-100);
 }
 
 /* The default disclosure triangle comes off, since the header carries its own
@@ -241,16 +263,32 @@
 }
 
 /* Label above value, the same way round as everywhere else on the screen, so a
-   long value has the whole width of the tile to sit in. */
+   long value has the whole width of the tile to sit in.
+
+   Each side runs the full width of the tile, pulled out by the tile's padding
+   and given it back as its own, so a faint fill can tell the two apart and each
+   band reads as one thing rather than a line of text with a tint behind it. */
 .alp-search-summary__diff-value {
   display: flex;
   flex-direction: column;
   gap: 1px;
-  padding: var(--alp-space-2) 0;
+  margin: 0 calc(var(--alp-space-4) * -1);
+  padding: var(--alp-space-2) var(--alp-space-4);
 }
 
-.alp-search-summary__diff-value + .alp-search-summary__diff-value {
-  border-top: 1px solid var(--alp-color-border);
+.alp-search-summary__diff-value--theirs {
+  background: var(--alp-color-slate-100);
+}
+
+.alp-search-summary__diff-value--ours {
+  background: var(--alp-color-blue-50);
+}
+
+/* The last band closes the tile off, so it takes the tile's bottom corners. */
+.alp-search-summary__diff-value:last-child {
+  margin-bottom: calc(var(--alp-space-3) * -1);
+  padding-bottom: var(--alp-space-3);
+  border-radius: 0 0 7px 7px;
 }
 
 .alp-search-summary__diff-value dt {
@@ -325,15 +363,16 @@
   color: var(--alp-color-slate-700);
 }
 
-/* One side holding nothing where the other does reads as absent rather than as a
-   value: lighter and unemphasised, never italic. */
-.alp-search-summary__absent-value {
-  font-weight: var(--alp-font-weight-normal);
-  color: var(--alp-color-text-muted);
+/* A side holding nothing says so on a tag, the same way the group of fields
+   neither platform holds does, so it stands out as a state and not as text
+   somebody typed into the record. */
+.alp-search-summary__diff-value .alp-status-tag {
+  margin-top: 0;
 }
 
-.alp-search-summary__note {
-  margin: 0;
-  font-size: var(--alp-font-size-xs);
-  color: var(--alp-color-text-muted);
+/* The control sits above the groups it works on, without the standing top
+   margin the shared checkbox label carries for use inside a form. */
+.alp-search-summary__toggle-all {
+  align-self: flex-start;
+  margin-top: 0;
 }

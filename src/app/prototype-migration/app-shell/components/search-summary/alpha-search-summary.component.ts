@@ -1,5 +1,12 @@
 import { formatDate } from '@angular/common';
-import { ChangeDetectionStrategy, Component, LOCALE_ID, computed, inject } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  LOCALE_ID,
+  computed,
+  inject,
+  signal,
+} from '@angular/core';
 
 import {
   AlpPolicyTileComponent,
@@ -59,8 +66,6 @@ const DIALLING_CODES: Record<string, string> = { '44': 'GB' };
 export interface ComparisonSection {
   title: string;
   rows: ComparisonRow[];
-  /** Shown under the rows, where the fields need explaining. */
-  note?: string;
 }
 
 /**
@@ -228,21 +233,18 @@ export class AlphaSearchSummaryComponent {
   });
 
   /**
-   * The comparison, grouped as the rep reads it.
+   * Every field the comparison covers, in the order a rep reads them.
    *
-   * Sections with nothing in them are dropped rather than drawn empty, so a
-   * record holding no alternate surnames and no address simply shows fewer
-   * headings.
+   * A section with nothing in it is dropped rather than carried empty, so a
+   * record holding no alternate surnames and no address simply compares fewer
+   * fields. The sections themselves no longer appear on screen; each field
+   * carries its section's name onto its tile.
    */
   private readonly sections = computed<ComparisonSection[]>(() =>
     [
       { title: 'Identity', rows: this.identityRows() },
       { title: 'Alternate Surnames', rows: this.alternateSurnameRows() },
-      {
-        title: 'Contact',
-        rows: this.contactRows(),
-        note: 'The other platform sends match flags for the identity fields, the alternate surnames and the postcode, but not for these, so the two values are compared directly. Not Held means neither platform holds the field at all.',
-      },
+      { title: 'Contact', rows: this.contactRows() },
       { title: 'Address', rows: this.addressRows() },
     ].filter((section) => section.rows.length > 0),
   );
@@ -278,6 +280,28 @@ export class AlphaSearchSummaryComponent {
   );
 
   /**
+   * Which groups are open.
+   *
+   * Held here rather than left to the details elements, so one control can open
+   * and close all three and still agree with what is on screen: every group
+   * reports its own toggle back, including the ones the rep works by hand.
+   *
+   * What matched and what differs are open on arrival. What neither platform
+   * holds is not, because there is nothing in it to work through.
+   */
+  private readonly groups = signal<Record<ComparisonVerdict, boolean>>({
+    matched: true,
+    'not-matched': true,
+    'not-held': false,
+  });
+
+  protected readonly openGroups = this.groups.asReadonly();
+
+  protected readonly allOpen = computed(() => Object.values(this.groups()).every(Boolean));
+
+  protected readonly someOpen = computed(() => Object.values(this.groups()).some(Boolean));
+
+  /**
    * The fields in each group, named on its header.
    *
    * A closed group still has to say what is in it, or closing one hides the very
@@ -287,12 +311,24 @@ export class AlphaSearchSummaryComponent {
   protected readonly differenceLabels = computed(() => this.labels(this.differences()));
   protected readonly notHeldLabels = computed(() => this.labels(this.notHeld()));
 
-  /** What needs saying about how the comparison was made, once, at the end. */
-  protected readonly notes = computed(() =>
-    this.sections()
-      .map((section) => section.note)
-      .filter((note): note is string => note !== undefined),
-  );
+  /**
+   * A group opening or closing, however it happened.
+   *
+   * The details element owns its own state, so it is read back off the element
+   * rather than assumed, which keeps the expand-all control honest when a rep
+   * has been opening groups by hand.
+   */
+  protected onGroupToggle(group: ComparisonVerdict, event: Event): void {
+    const open = (event.target as HTMLDetailsElement).open;
+    if (this.groups()[group] === open) return;
+    this.groups.update((groups) => ({ ...groups, [group]: open }));
+  }
+
+  /** Opens or closes every group at once. */
+  protected setAllGroups(event: Event): void {
+    const open = (event.target as HTMLInputElement).checked;
+    this.groups.set({ matched: open, 'not-matched': open, 'not-held': open });
+  }
 
   /** The field names of a group, for its header to summarise it with. */
   private labels(fields: ComparisonField[]): string {

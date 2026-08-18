@@ -46,7 +46,12 @@ export class AlpPolicyTileComponent {
   /** Party counts to signpost. Empty means the tile signposts none. */
   readonly signposts = input<PolicyTileSignpost[]>([]);
 
-  /** Empty means no action, which is what makes the tile read-only. */
+  /**
+   * Empty means no action, which is what makes the tile read-only.
+   *
+   * The action takes the rep off this screen and onto the policy's own, which is
+   * why the button carries a forward chevron.
+   */
   readonly actionLabel = input('');
 
   /** Draws the tile as the current selection. */

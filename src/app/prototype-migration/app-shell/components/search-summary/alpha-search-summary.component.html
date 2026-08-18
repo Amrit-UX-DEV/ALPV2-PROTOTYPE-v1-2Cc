@@ -30,9 +30,23 @@
       ></alp-policy-tile>
     }
 
+    <label class="alp-checkbox-label alp-search-summary__toggle-all">
+      <input
+        type="checkbox"
+        [checked]="allOpen()"
+        [indeterminate]="someOpen() && !allOpen()"
+        (change)="setAllGroups($event)"
+      />
+      Expand all groups
+    </label>
+
     <div class="alp-search-summary__panels">
       @if (agreements().length) {
-        <details class="alp-search-summary__panel alp-search-summary__panel--agrees" open>
+        <details
+          class="alp-search-summary__panel alp-search-summary__panel--agrees"
+          [open]="openGroups().matched"
+          (toggle)="onGroupToggle('matched', $event)"
+        >
           <summary class="alp-search-summary__panel-head">
             <span class="alp-search-summary__panel-chip">Matched</span>
             <h3 class="alp-search-summary__panel-title">
@@ -59,7 +73,11 @@
       }
 
       @if (differences().length) {
-        <details class="alp-search-summary__panel alp-search-summary__panel--differs" open>
+        <details
+          class="alp-search-summary__panel alp-search-summary__panel--differs"
+          [open]="openGroups()['not-matched']"
+          (toggle)="onGroupToggle('not-matched', $event)"
+        >
           <summary class="alp-search-summary__panel-head">
             <span class="alp-search-summary__panel-chip">Not Matched</span>
             <h3 class="alp-search-summary__panel-title">
@@ -75,16 +93,24 @@
                 <p class="alp-search-summary__diff-section">{{ field.section }}</p>
                 <h4 class="alp-search-summary__diff-label">{{ field.label }}</h4>
                 <dl class="alp-search-summary__diff-values">
-                  <div class="alp-search-summary__diff-value">
+                  <div class="alp-search-summary__diff-value alp-search-summary__diff-value--theirs">
                     <dt>Other Platform</dt>
-                    <dd [class.alp-search-summary__absent-value]="field.theirs === noData">
-                      {{ field.theirs }}
+                    <dd>
+                      @if (field.theirs === noData) {
+                        <span class="alp-status-tag alp-status-tag--neutral">{{ noData }}</span>
+                      } @else {
+                        {{ field.theirs }}
+                      }
                     </dd>
                   </div>
-                  <div class="alp-search-summary__diff-value">
+                  <div class="alp-search-summary__diff-value alp-search-summary__diff-value--ours">
                     <dt>Our Record</dt>
-                    <dd [class.alp-search-summary__absent-value]="field.ours === noData">
-                      {{ field.ours }}
+                    <dd>
+                      @if (field.ours === noData) {
+                        <span class="alp-status-tag alp-status-tag--neutral">{{ noData }}</span>
+                      } @else {
+                        {{ field.ours }}
+                      }
                     </dd>
                   </div>
                 </dl>
@@ -95,7 +121,11 @@
       }
 
       @if (notHeld().length) {
-        <details class="alp-search-summary__panel alp-search-summary__panel--absent">
+        <details
+          class="alp-search-summary__panel alp-search-summary__panel--absent"
+          [open]="openGroups()['not-held']"
+          (toggle)="onGroupToggle('not-held', $event)"
+        >
           <summary class="alp-search-summary__panel-head">
             <span class="alp-search-summary__panel-chip">Not Held</span>
             <h3 class="alp-search-summary__panel-title">
@@ -113,10 +143,6 @@
         </details>
       }
     </div>
-
-    @for (note of notes(); track note) {
-      <p class="alp-search-summary__note">{{ note }}</p>
-    }
   } @else if (!matches.loading()) {
     <div class="notification-block status-warning">
       <div class="notification-message">
