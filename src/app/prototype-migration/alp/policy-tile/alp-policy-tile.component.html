@@ -6,17 +6,30 @@
   <div class="alp-policy-tile__head">
     <div class="alp-policy-tile__reference">
       <span class="alp-policy-tile__label">Policy Number</span>
-      <strong class="alp-policy-tile__number">{{ policy().number }}</strong>
-    </div>
-    <div class="alp-policy-tile__indicators">
-      <span class="alp-policy-tile__indicator alp-policy-tile__indicator--status">
-        {{ policy().status }}
-      </span>
-      @for (flag of flags(); track flag) {
-        <span class="alp-policy-tile__indicator alp-policy-tile__indicator--pension">{{ flag }}</span>
-      }
+      <div class="alp-policy-tile__number-line">
+        <strong class="alp-policy-tile__number">{{ policy().number }}</strong>
+        <div class="alp-policy-tile__indicators">
+          <span class="alp-policy-tile__indicator alp-policy-tile__indicator--status">
+            {{ policy().status }}
+          </span>
+          @for (flag of flags(); track flag) {
+            <span class="alp-policy-tile__indicator alp-policy-tile__indicator--pension">{{ flag }}</span>
+          }
+        </div>
+      </div>
     </div>
   </div>
+
+  @if (signposts().length) {
+    <div class="alp-policy-tile__signposts">
+      @for (signpost of signposts(); track signpost.label) {
+        <span class="alp-policy-tile__indicator alp-policy-tile__indicator--count">
+          <span class="alp-policy-tile__count-label">{{ signpost.label }}:</span>
+          <span class="alp-policy-tile__count-value">{{ signpost.value }}</span>
+        </span>
+      }
+    </div>
+  }
 
   <dl class="alp-policy-tile__facts">
     <div class="alp-policy-tile__fact">

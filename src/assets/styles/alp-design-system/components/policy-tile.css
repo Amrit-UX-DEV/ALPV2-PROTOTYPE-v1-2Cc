@@ -3,40 +3,56 @@
    A compact policy summary in alp- classes.
 
    The border and the indicators are the group summary policy
-   tile's own, to the value: a 0.1rem border on all four
-   sides, blue while the policy is anything else and green
-   while it is in force, with the corners rounded on the left
-   only. The layout inside is this tile's, on design tokens.
+   tile's own, to the value: a 0.1rem border on three sides,
+   blue while the policy is anything else and green while it
+   is in force, and the 6px blue edge the group summary draws
+   down the left of its policies. The indicators sit in line
+   after the policy number, where legacy puts them. The
+   layout inside is this tile's, on design tokens.
 
-   One deliberate difference, in the Life indicator's text.
-   Legacy sets white on #42aeb6, which is 2.64:1 and fails AA
-   for text this size. The fill is kept exactly and the label
-   is dark instead, which reads at 6.03:1 on the same colour.
+   Two deliberate differences, both to clear AA:
+   - In force reads #49a94f on the pale blue pill, 2.58:1.
+     Darkened within the hue to #2e6e33, which is 5.37:1.
+   - Life is white on #42aeb6, 2.64:1. The label stays white
+     as asked and the teal is darkened to #2a7f86, 4.69:1.
+   Swap either custom property back for the literal value.
    ========================================================= */
 
 .alp-policy-tile {
   --alp-policy-tile-border: #85b2e2;
   --alp-policy-tile-border-active: #49a94f;
+  --alp-policy-tile-edge: #85b2e2;
   --alp-policy-tile-surface: #fff;
   --alp-policy-tile-surface-selected: rgb(223, 231, 239);
   --alp-policy-tile-text: #222;
   --alp-policy-tile-status-bg: rgb(231, 240, 249);
   --alp-policy-tile-status-border: rgb(202, 224, 246);
-  --alp-policy-tile-pension-bg: #42aeb6;
+  --alp-policy-tile-status-text-active: #2e6e33;
+  --alp-policy-tile-pension-bg: #2a7f86;
+  --alp-policy-tile-pension-text: #fff;
+  --alp-policy-tile-count-bg: rgb(238, 238, 238);
+  --alp-policy-tile-count-border: rgb(215, 215, 215);
+  --alp-policy-tile-count-label: #393a3a;
+  --alp-policy-tile-count-value: #3c4981;
 
   display: flex;
   flex-direction: column;
   gap: var(--alp-space-4);
   padding: var(--alp-space-4);
   border: 0.1rem solid var(--alp-policy-tile-border);
+  border-left: 6px solid var(--alp-policy-tile-edge);
   border-radius: 6px 0 0 6px;
   background-color: var(--alp-policy-tile-surface);
   color: var(--alp-policy-tile-text);
 }
 
-/* What the legacy tile's state--ui-active does to its border. */
+/* What the legacy tile's state--ui-active does to its border. The left edge is
+   not part of that: on the group summary it belongs to the policies column, so
+   it stays blue whatever the policy's status. */
 .alp-policy-tile--active {
-  border-color: var(--alp-policy-tile-border-active);
+  border-top-color: var(--alp-policy-tile-border-active);
+  border-right-color: var(--alp-policy-tile-border-active);
+  border-bottom-color: var(--alp-policy-tile-border-active);
 }
 
 .alp-policy-tile--selected {
@@ -47,7 +63,6 @@
   display: flex;
   flex-wrap: wrap;
   align-items: center;
-  justify-content: space-between;
   gap: var(--alp-space-3);
 }
 
@@ -55,6 +70,14 @@
   display: flex;
   flex-direction: column;
   gap: 2px;
+}
+
+/* The indicators read as part of the policy number, so they share its line. */
+.alp-policy-tile__number-line {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--alp-space-3);
 }
 
 .alp-policy-tile__number {
@@ -96,9 +119,37 @@
   color: var(--alp-policy-tile-text);
 }
 
+/* Legacy colours the label from .active, not from the pill, so the status only
+   goes green while the policy is in force. */
+.alp-policy-tile--active .alp-policy-tile__indicator--status {
+  color: var(--alp-policy-tile-status-text-active);
+}
+
 .alp-policy-tile__indicator--pension {
   background-color: var(--alp-policy-tile-pension-bg);
-  color: var(--alp-policy-tile-text);
+  color: var(--alp-policy-tile-pension-text);
+}
+
+/* Party signposts, on the legacy party-count pill's colours: #393a3a label at
+   9.84:1 and #3c4981 count at 7.35:1, both on its own grey. */
+.alp-policy-tile__signposts {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+}
+
+.alp-policy-tile__indicator--count {
+  background-color: var(--alp-policy-tile-count-bg);
+  border-color: var(--alp-policy-tile-count-border);
+}
+
+.alp-policy-tile__count-label {
+  color: var(--alp-policy-tile-count-label);
+}
+
+.alp-policy-tile__count-value {
+  margin-left: 4px;
+  color: var(--alp-policy-tile-count-value);
 }
 
 /* Facts sit in a row on a wide tile and stack on a narrow one, which is what

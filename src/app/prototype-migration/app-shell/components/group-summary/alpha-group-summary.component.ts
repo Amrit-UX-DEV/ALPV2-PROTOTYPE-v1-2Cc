@@ -38,6 +38,18 @@ export class AlphaGroupSummaryComponent {
   );
 
   /**
+   * How many parties the policy holds, shown on the clients column, the group
+   * tile and the policy row's Interested Parties indicator.
+   *
+   * A party counts when it has a client id of its own. The joint holder entry
+   * is one representation of two of them, and a servicing agent services the
+   * policy rather than being party to it, so neither carries an id.
+   */
+  protected readonly memberCount = computed(
+    () => this.ctx.clients().filter((client) => client.id).length,
+  );
+
+  /**
    * The party a hand-authored tile shows.
    *
    * Several tiles are authored one per party and sit alongside entries that

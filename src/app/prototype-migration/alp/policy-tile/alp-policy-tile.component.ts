@@ -3,6 +3,17 @@ import { ChangeDetectionStrategy, Component, computed, input, output } from '@an
 import { ContextPolicy } from '../../context/prototype-context.model';
 
 /**
+ * A count signposted on the tile, e.g. Interested Parties 2.
+ *
+ * A label and a number rather than named inputs, because which parties are
+ * worth signposting is the screen's decision, not the tile's.
+ */
+export interface PolicyTileSignpost {
+  label: string;
+  value: number;
+}
+
+/**
  * A compact policy tile, in ALP design system classes.
  *
  * It mirrors what the legacy policy tile shows rather than reusing it: the
@@ -31,6 +42,9 @@ export class AlpPolicyTileComponent {
    * tile should not have to know the whole vocabulary.
    */
   readonly flags = input<string[]>([]);
+
+  /** Party counts to signpost. Empty means the tile signposts none. */
+  readonly signposts = input<PolicyTileSignpost[]>([]);
 
   /** Empty means no action, which is what makes the tile read-only. */
   readonly actionLabel = input('');

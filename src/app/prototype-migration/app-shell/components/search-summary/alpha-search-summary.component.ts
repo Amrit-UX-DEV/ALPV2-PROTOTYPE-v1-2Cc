@@ -1,6 +1,9 @@
 import { ChangeDetectionStrategy, Component, computed, inject } from '@angular/core';
 
-import { AlpPolicyTileComponent } from '../../../alp/policy-tile/alp-policy-tile.component';
+import {
+  AlpPolicyTileComponent,
+  PolicyTileSignpost,
+} from '../../../alp/policy-tile/alp-policy-tile.component';
 import { PossibleMatchService } from '../../../context/possible-match.service';
 import { hasValue } from '../../../context/possible-match.model';
 import { ContextClient } from '../../../context/prototype-context.model';
@@ -75,6 +78,22 @@ export class AlphaSearchSummaryComponent {
    * so the tile is not handed a new array on every check.
    */
   protected readonly policyFlags = ['Life'];
+
+  /**
+   * The parties signposted on the tile: who is party to the policy, and who
+   * only has an interest in it.
+   *
+   * Both are counted from the policy's own parties, so the tile cannot say two
+   * where the group summary lists three. A party to the policy has a client id
+   * of its own; the joint holder entry and the servicing agent do not.
+   */
+  protected readonly signposts = computed<PolicyTileSignpost[]>(() => {
+    const clients = this.ctx.clients();
+    return [
+      { label: 'Interested Parties', value: clients.filter((client) => client.id).length },
+      { label: 'Third Parties', value: clients.filter((client) => client.thirdParty).length },
+    ];
+  });
 
   /** The pension the reference resolved to, and the address held against it. */
   protected readonly detail = this.matches.detail;

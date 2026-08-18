@@ -66,6 +66,12 @@ export interface ContextClient {
    * members, and has no indicator to reveal.
    */
   linked?: boolean;
+  /**
+   * Whether the party has an interest in the policy without being party to it,
+   * e.g. a beneficiary. Held apart from the members because the two are
+   * signposted, and counted, separately.
+   */
+  thirdParty?: boolean;
   /** Absent or empty means this client is not flagged for extra care. */
   extraCare?: ExtraCareEntry[];
   /**
