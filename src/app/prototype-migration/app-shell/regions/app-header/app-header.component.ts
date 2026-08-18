@@ -1,6 +1,7 @@
-import { Component, CUSTOM_ELEMENTS_SCHEMA, inject } from '@angular/core';
+import { Component, CUSTOM_ELEMENTS_SCHEMA, computed, inject } from '@angular/core';
 
 import { PrototypeContextService } from '../../../context/prototype-context.service';
+import { AppViewService } from '../../../ui/app-view.service';
 
 /**
  * The application header strip: system date, the user and settings dropdown,
@@ -25,6 +26,12 @@ import { PrototypeContextService } from '../../../context/prototype-context.serv
  * resolved: a possible match holds a policy for DPA but is not on it yet, so its
  * context asks for the summary to be left off and the heading names the possible
  * match alone. Where a context has no policy at all, its label stands in.
+ *
+ * A view that no context describes names itself instead. A business process is
+ * not something a rep searched for, so on the work plan the heading reads
+ * 'Business Processes: Script Management' and the breadcrumb follows it, while
+ * the group summary and the possible match summary are still named by whatever
+ * context they are showing.
  */
 @Component({
   selector: 'div[alpha-app-header]',
@@ -33,6 +40,26 @@ import { PrototypeContextService } from '../../../context/prototype-context.serv
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
 })
 export class AppHeaderComponent {
-  /** Read directly in the template as ctx.policy(), ctx.screen() and so on. */
+  /** Read directly in the template as ctx.headerPolicy(), ctx.label() and so on. */
   protected readonly ctx = inject(PrototypeContextService);
+
+  private readonly views = inject(AppViewService);
+
+  /** The breadcrumb and prefix, from the view where it names itself. */
+  protected readonly screen = computed(() => this.views.screen() ?? this.ctx.screen());
+
+  /** No policy is summarised on a screen the context is not describing. */
+  protected readonly headerPolicy = computed(() =>
+    this.views.screen() ? undefined : this.ctx.headerPolicy(),
+  );
+
+  /**
+   * What follows the prefix where no policy does: the screen's own name, or the
+   * context's label where a context has no policy to summarise.
+   */
+  protected readonly label = computed(() => {
+    const view = this.views.screen();
+    if (view) return view.label;
+    return this.ctx.hasPolicy() ? '' : this.ctx.label();
+  });
 }
