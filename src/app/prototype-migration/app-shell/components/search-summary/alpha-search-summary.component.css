@@ -109,28 +109,14 @@
   color: var(--alp-color-text);
 }
 
-.alp-search-summary__flag {
-  display: inline-block;
-  padding: 2px var(--alp-space-2);
-  border-radius: var(--alp-radius-full);
-  font-size: var(--alp-font-size-xs);
-  font-weight: var(--alp-font-weight-semibold);
+/* The verdicts are the design system's status tags. They were this screen's own
+   before, on soft tints under the -text tokens, which are white because they are
+   meant for solid backgrounds: 1.13:1 for matched and 1.11:1 for not matched,
+   effectively invisible. The tags carry a top margin for where they usually sit,
+   under a heading, which comes off in a row that is already aligned. */
+.alp-search-summary__match .alp-status-tag {
+  margin-top: 0;
   white-space: nowrap;
-}
-
-.alp-search-summary__flag--matched {
-  background: var(--alp-color-success-soft);
-  color: var(--alp-color-success-text);
-}
-
-.alp-search-summary__flag--unmatched {
-  background: var(--alp-color-warning-soft);
-  color: var(--alp-color-warning-text);
-}
-
-.alp-search-summary__flag--unflagged {
-  background: var(--alp-color-neutral-soft);
-  color: var(--alp-color-neutral-text);
 }
 
 .alp-search-summary__note {

@@ -34,7 +34,8 @@
 
 .alp-script-journey__progress {
   font-size: var(--alp-font-size-md);
-  color: var(--alp-color-slate-500);
+  /* Slate 500 on this raised surface is 4.34:1, under AA for text this size. */
+  color: var(--alp-color-slate-600);
   background: var(--alp-color-surface-raised);
   padding: 6px 16px;
   border-radius: var(--alp-radius-full);
@@ -258,7 +259,9 @@ button.declaration-btn.declared::after {
   transition: all 0.2s ease;
   border-radius: 50px;
   padding: 5px 16px;
-  background-color: #5da4e0;
+  /* Was #5da4e0, which put white text at 2.67:1. Same blue, darkened to clear AA
+     at 5.56:1. */
+  background-color: #0f6cae;
   text-align: center;
   border: 2px solid rgba(255, 255, 255, 0.3);
   color: var(--alp-color-white);

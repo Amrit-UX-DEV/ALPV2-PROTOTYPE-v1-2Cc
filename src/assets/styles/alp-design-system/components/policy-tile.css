@@ -1,132 +1,95 @@
 /* =========================================================
    ALP DESIGN SYSTEM — POLICY TILE
-   A compact policy summary, in alp- classes, drawn to match
-   the group summary's policy tile.
+   A compact policy summary. Shows what the legacy policy
+   tile shows, in alp- classes and tokens, so screens can
+   summarise a policy without the legacy tile's behaviour.
 
-   The measurements and colours below are the legacy tile's
-   own: a 0.1rem border that turns green while the policy is
-   in force, corners rounded on the left only, a 10px inner
-   pad on an 80px minimum, and pill indicators sitting on the
-   top line beside the policy number. They are held as
-   custom properties on the block rather than scattered
-   through the rules, so that when the legacy palette becomes
-   tokens there is one place to change.
+   The border is 0.1rem, the same width the group summary's
+   policy tile carries, with the left edge picked out in the
+   brand colour. The indicators are the design system's
+   status tags rather than anything of this tile's own.
    ========================================================= */
 
 .alp-policy-tile {
-  --alp-policy-tile-border-active: #49a94f;
-  --alp-policy-tile-surface: #fff;
-  --alp-policy-tile-surface-selected: rgb(223, 231, 239);
-  --alp-policy-tile-text: #222;
-  --alp-policy-tile-status-bg: rgb(231, 240, 249);
-  --alp-policy-tile-status-border: rgb(202, 224, 246);
-  --alp-policy-tile-pension-bg: #42aeb6;
-
-  position: relative;
   display: flex;
   flex-direction: column;
-  max-width: 800px;
-  border: 0.1rem solid var(--alp-policy-tile-border-active);
-  border-radius: 6px 0 0 6px;
-  background-color: var(--alp-policy-tile-surface);
-  color: var(--alp-policy-tile-text);
-}
-
-/* The tick the legacy tile hangs outside its top right corner to say the policy
-   is in force. */
-.alp-policy-tile::after {
-  content: '\f058';
-  font-family: 'Font Awesome 5 Free';
-  font-weight: 900;
-  font-size: 0.8rem;
-  line-height: 0.95;
-  color: var(--alp-policy-tile-border-active);
-  position: absolute;
-  top: -4px;
-  right: -7px;
-  padding: 2px;
-  border-radius: 100%;
-  background-color: rgba(255, 255, 255, 0.8);
+  gap: var(--alp-space-4);
+  padding: var(--alp-space-4);
+  border: 0.1rem solid var(--alp-color-border);
+  border-left-color: var(--alp-color-brand);
+  border-radius: var(--alp-radius-md);
+  background: var(--alp-color-surface);
+  box-shadow: var(--alp-shadow-xs);
 }
 
 .alp-policy-tile--selected {
-  background-color: var(--alp-policy-tile-surface-selected);
+  border-color: var(--alp-color-selected);
+  background: var(--alp-color-selected-soft);
 }
 
-.alp-policy-tile__content {
+.alp-policy-tile__head {
   display: flex;
   flex-wrap: wrap;
-  flex: 1;
-  min-height: 80px;
-  padding: 10px;
-  text-align: left;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--alp-space-3);
 }
 
-.alp-policy-tile__block {
-  display: inline-block;
-  margin-bottom: 10px;
-  margin-right: 10px;
-  padding-right: 10px;
-}
-
-.alp-policy-tile__block--reference {
-  min-width: 120px;
-  margin-right: 0;
-}
-
-.alp-policy-tile__heading {
-  display: block;
-  font-size: 11px;
-}
-
-.alp-policy-tile__value {
-  display: block;
+.alp-policy-tile__reference {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
 }
 
 .alp-policy-tile__number {
-  display: block;
-  font-size: 14px;
+  font-size: var(--alp-font-size-lg);
+  font-weight: var(--alp-font-weight-bold);
+  color: var(--alp-color-text);
 }
 
-/* Sits on the same line as the policy number, lifted the way the legacy tile
-   lifts its top line indicators. */
 .alp-policy-tile__indicators {
-  display: inline-flex;
+  display: flex;
   flex-wrap: wrap;
-  flex: 1;
-  margin-top: 5px;
-  position: relative;
-  top: -8px;
+  align-items: center;
+  gap: var(--alp-space-2);
 }
 
-.alp-policy-tile__indicator {
-  display: inline-block;
-  min-width: 45px;
-  min-height: 28px;
-  margin-right: 5px;
-  margin-bottom: 5px;
-  padding: 4px 10px 3px;
-  border: 2px solid #ffffff4d;
-  border-radius: 100px;
-  font-size: 13px;
-  font-weight: 700;
-  text-align: center;
-  vertical-align: middle;
+/* Status tags carry a top margin for where they usually sit, under a heading.
+   Here they are centred against the policy number, so it comes off. */
+.alp-policy-tile__indicators .alp-status-tag {
+  margin-top: 0;
 }
 
-.alp-policy-tile__indicator--status {
-  background-color: var(--alp-policy-tile-status-bg);
-  border-color: var(--alp-policy-tile-status-border);
-  color: var(--alp-policy-tile-text);
+/* Facts sit in a row on a wide tile and stack on a narrow one, which is what
+   lets the same tile serve a full-width screen and a sidebar. */
+.alp-policy-tile__facts {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--alp-space-2) var(--alp-space-6);
+  margin: 0;
 }
 
-.alp-policy-tile__indicator--pension {
-  background-color: var(--alp-policy-tile-pension-bg);
-  color: #fff;
+.alp-policy-tile__fact {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 140px;
+}
+
+.alp-policy-tile__label {
+  font-size: var(--alp-font-size-xs);
+  font-weight: var(--alp-font-weight-normal);
+  color: var(--alp-color-text-muted);
+}
+
+.alp-policy-tile__value {
+  margin: 0;
+  font-size: var(--alp-font-size-sm);
+  font-weight: var(--alp-font-weight-semibold);
+  color: var(--alp-color-text);
 }
 
 .alp-policy-tile__actions {
   display: flex;
   justify-content: flex-end;
-  padding: 0 10px 10px;
 }

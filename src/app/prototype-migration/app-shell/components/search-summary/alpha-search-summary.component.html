@@ -54,17 +54,11 @@
             >
             <span class="alp-search-summary__match">
               @if (row.matched === true) {
-                <span class="alp-search-summary__flag alp-search-summary__flag--matched">
-                  Matched
-                </span>
+                <span class="alp-status-tag alp-status-tag--primary">Matched</span>
               } @else if (row.matched === false) {
-                <span class="alp-search-summary__flag alp-search-summary__flag--unmatched">
-                  Not Matched
-                </span>
+                <span class="alp-status-tag alp-status-tag--warning">Not Matched</span>
               } @else {
-                <span class="alp-search-summary__flag alp-search-summary__flag--unflagged">
-                  Not Compared
-                </span>
+                <span class="alp-status-tag alp-status-tag--neutral">Not Compared</span>
               }
             </span>
           </div>
