@@ -28,6 +28,23 @@ export interface ComparisonRow {
   theirs: string;
   ours: string;
   verdict: ComparisonVerdict;
+  /**
+   * The one value a matched field can be shown as, which is ours where we hold
+   * it. A field can be flagged as matching while only one side holds it, and
+   * printing 'No Data' as the agreed value would read as a mistake.
+   */
+  agreedValue: string;
+  /**
+   * Whether a matched field is nevertheless written differently on the two
+   * platforms. Their flags allow it, and a rep about to read a name back to a
+   * caller needs to see their spelling rather than only ours.
+   */
+  spellingsDiffer: boolean;
+}
+
+/** A field with the section it came from, since the panels group by verdict. */
+export interface ComparisonField extends ComparisonRow {
+  section: string;
 }
 
 /**
@@ -203,7 +220,7 @@ export class AlphaSearchSummaryComponent {
    * record holding no alternate surnames and no address simply shows fewer
    * headings.
    */
-  protected readonly sections = computed<ComparisonSection[]>(() =>
+  private readonly sections = computed<ComparisonSection[]>(() =>
     [
       { title: 'Identity', rows: this.identityRows() },
       { title: 'Alternate Surnames', rows: this.alternateSurnameRows() },
@@ -216,21 +233,42 @@ export class AlphaSearchSummaryComponent {
     ].filter((section) => section.rows.length > 0),
   );
 
+  /** Every field compared, each still knowing which section it belongs to. */
+  private readonly fields = computed<ComparisonField[]>(() =>
+    this.sections().flatMap((section) =>
+      section.rows.map((row) => ({ ...row, section: section.title })),
+    ),
+  );
+
+  protected readonly fieldCount = computed(() => this.fields().length);
+
   /**
-   * How the comparison came out, counted across every section.
+   * The comparison grouped by what it found rather than by section.
    *
-   * A rep wants to know whether this is a good match before reading any of it,
-   * and the answer is in how many fields differ. Counted from the same rows the
-   * cards are drawn from, so the tally cannot say three where four are showing.
+   * Field by field down a list, every row looks alike and the rep has to read
+   * all of them to find the three that matter. Grouped this way the differences
+   * are the first thing on the screen and each group can be shown at the
+   * density it deserves: a tile per difference, a line per agreement, and a name
+   * per field neither platform holds.
    */
-  protected readonly tally = computed(() => {
-    const fields = this.sections().flatMap((section) => section.rows);
-    return {
-      matched: fields.filter((field) => field.verdict === 'matched').length,
-      notMatched: fields.filter((field) => field.verdict === 'not-matched').length,
-      notHeld: fields.filter((field) => field.verdict === 'not-held').length,
-    };
-  });
+  protected readonly differences = computed(() =>
+    this.fields().filter((field) => field.verdict === 'not-matched'),
+  );
+
+  protected readonly agreements = computed(() =>
+    this.fields().filter((field) => field.verdict === 'matched'),
+  );
+
+  protected readonly notHeld = computed(() =>
+    this.fields().filter((field) => field.verdict === 'not-held'),
+  );
+
+  /** What needs saying about how the comparison was made, once, at the end. */
+  protected readonly notes = computed(() =>
+    this.sections()
+      .map((section) => section.note)
+      .filter((note): note is string => note !== undefined),
+  );
 
   /** Takes the rep into the group summary, where the call carries on. */
   protected openGroupSummary(): void {
@@ -270,6 +308,8 @@ export class AlphaSearchSummaryComponent {
       theirs: theyHold ? theirValue : NO_DATA,
       ours: weHold ? ourValue : NO_DATA,
       verdict,
+      agreedValue: weHold ? ourValue : theyHold ? theirValue : NO_DATA,
+      spellingsDiffer: theyHold && weHold && theirValue !== ourValue,
     };
   }
 

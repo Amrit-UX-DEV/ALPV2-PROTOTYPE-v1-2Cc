@@ -3,15 +3,10 @@
  * a design system component and the notification block is the prototype's, so
  * neither is restyled here.
  *
- * The comparison is a card per field rather than a table of rows. A table asks
- * the eye to travel a long way across a wide screen and collapses badly when the
- * window is brought in; a card keeps a field's two values and its verdict within
- * a couple of centimetres of each other, and the grid simply reflows to fewer
- * columns as the space narrows. There is no table markup here at all, so the
- * legacy grid can take this over as it stands once it arrives.
- *
- * Verdict shows three ways over, so it never rests on colour alone: a written
- * tag, a left edge, and the weight of the values themselves.
+ * The comparison is grouped by what it found rather than laid out field by
+ * field, because a rep reads it for one thing: what does not agree. There is no
+ * table markup anywhere here, so the legacy grid can take this over as it stands
+ * once it arrives.
  */
 .alp-search-summary {
   display: flex;
@@ -59,130 +54,223 @@
   color: var(--alp-color-text);
 }
 
-/* How the comparison came out, before reading any of it. */
-.alp-search-summary__tally {
+/* ---------------------------------------------------------------
+   THE COMPARISON
+
+   Grouped by what the comparison found, in the card language the work
+   plan screens use: a soft tinted panel, a solid uppercase chip naming
+   the group, and white tiles on a hairline border and the smallest
+   shadow inside it.
+
+   Each group is shown at the density it earns. A difference gets a tile
+   of its own with both values written out, because that is what the rep
+   works from. An agreement gets one line, since there is nothing to
+   weigh up. A field neither platform holds gets its name and nothing
+   else.
+
+   Every text pair here is AA: the chips are white on the 700-level
+   colours at 5.02:1 and 5.48:1, titles and values are slate-900 at
+   about 17:1 on every tint, and the small muted labels are 4.86:1 at
+   their worst. Nothing depends on the tints, which are far too pale to
+   carry meaning on their own; each group says what it is in words.
+   --------------------------------------------------------------- */
+.alp-search-summary__panels {
   display: flex;
-  flex-wrap: wrap;
-  gap: var(--alp-space-2);
+  flex-direction: column;
+  gap: var(--alp-space-4);
 }
 
-.alp-search-summary__tally .alp-status-tag {
-  margin-top: 0;
-}
-
-.alp-search-summary__section {
+.alp-search-summary__panel {
   display: flex;
   flex-direction: column;
   gap: var(--alp-space-3);
-}
-
-.alp-search-summary__group {
-  margin: 0;
-  padding-bottom: var(--alp-space-2);
-  border-bottom: 1px solid var(--alp-color-border);
-  font-size: var(--alp-font-size-xs);
-  font-weight: var(--alp-font-weight-semibold);
-  text-transform: uppercase;
-  letter-spacing: 0.04em;
-  color: var(--alp-color-text);
-}
-
-/* auto-fill rather than auto-fit, so a section with two fields keeps them at a
-   readable width instead of stretching them across the screen. */
-.alp-search-summary__grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(17rem, 1fr));
-  gap: var(--alp-space-3);
-}
-
-.alp-search-summary__card {
-  display: flex;
-  flex-direction: column;
-  gap: var(--alp-space-3);
-  padding: var(--alp-space-3) var(--alp-space-4);
+  padding: var(--alp-space-4);
   border: 1px solid var(--alp-color-border);
-  border-left: 6px solid var(--alp-color-neutral);
-  border-radius: var(--alp-radius-md);
-  background: var(--alp-color-surface);
+  border-radius: var(--alp-radius-lg);
+  background: var(--alp-color-background);
 }
 
-/* The edge colours are the status tokens the tags already use, so a card and its
-   tag cannot disagree. Each is a solid 700-level colour on white, well past the
-   3:1 that a non-text indicator needs. */
-.alp-search-summary__card--matched {
-  border-left-color: var(--alp-color-success);
+.alp-search-summary__panel--differs {
+  border-color: var(--alp-color-amber-200);
+  background: var(--alp-color-amber-50);
 }
 
-.alp-search-summary__card--not-matched {
-  border-left-color: var(--alp-color-warning);
+.alp-search-summary__panel--agrees {
+  border-color: var(--alp-color-green-200);
+  background: var(--alp-color-green-50);
 }
 
-/* Neutral rather than the faint border colour: at 1.48:1 on white that edge is
-   barely an indicator at all, where the neutral is 4.76:1. */
-.alp-search-summary__card--not-held {
-  border-left-color: var(--alp-color-neutral);
+.alp-search-summary__panel--absent {
+  border-color: var(--alp-color-slate-200);
+  background: var(--alp-color-slate-50);
 }
 
-.alp-search-summary__card-head {
+.alp-search-summary__panel-head {
   display: flex;
   flex-wrap: wrap;
   align-items: center;
-  justify-content: space-between;
-  gap: var(--alp-space-2);
+  gap: var(--alp-space-3);
 }
 
-.alp-search-summary__card-label {
+.alp-search-summary__panel-chip {
+  padding: 3px 9px;
+  border-radius: var(--alp-radius-sm);
+  font-size: var(--alp-font-size-xs);
+  font-weight: var(--alp-font-weight-bold);
+  text-transform: uppercase;
+  letter-spacing: var(--alp-letter-spacing-wide);
+  color: var(--alp-color-white);
+  background: var(--alp-color-neutral);
+}
+
+.alp-search-summary__panel--differs .alp-search-summary__panel-chip {
+  background: var(--alp-color-amber-700);
+}
+
+.alp-search-summary__panel--agrees .alp-search-summary__panel-chip {
+  background: var(--alp-color-green-700);
+}
+
+.alp-search-summary__panel--absent .alp-search-summary__panel-chip {
+  background: var(--alp-color-slate-600);
+}
+
+.alp-search-summary__panel-title {
   margin: 0;
-  font-size: var(--alp-font-size-sm);
+  font-size: var(--alp-font-size-md);
   font-weight: var(--alp-font-weight-semibold);
   color: var(--alp-color-text);
 }
 
-/* The tags carry a top margin for where they usually sit, under a heading, which
-   comes off on a line that is already aligned. */
-.alp-search-summary__card-head .alp-status-tag {
-  margin-top: 0;
-  white-space: nowrap;
+/* ---- Differences: a tile each ---- */
+.alp-search-summary__diffs {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(16rem, 1fr));
+  gap: var(--alp-space-3);
 }
 
-.alp-search-summary__sides {
+.alp-search-summary__diff {
   display: flex;
   flex-direction: column;
   gap: var(--alp-space-2);
+  padding: var(--alp-space-3) var(--alp-space-4);
+  border: 1px solid var(--alp-color-border);
+  border-radius: var(--alp-radius-md);
+  background: var(--alp-color-surface);
+  box-shadow: var(--alp-shadow-xs);
+}
+
+.alp-search-summary__diff-section {
+  margin: 0;
+  font-size: var(--alp-font-size-xs);
+  font-weight: var(--alp-font-weight-semibold);
+  text-transform: uppercase;
+  letter-spacing: var(--alp-letter-spacing-wider);
+  color: var(--alp-color-text-muted);
+}
+
+.alp-search-summary__diff-label {
+  margin: 0;
+  font-size: var(--alp-font-size-md);
+  font-weight: var(--alp-font-weight-semibold);
+  color: var(--alp-color-text);
+}
+
+.alp-search-summary__diff-values {
+  display: flex;
+  flex-direction: column;
   margin: 0;
 }
 
-.alp-search-summary__side {
-  display: flex;
-  flex-direction: column;
-  gap: 1px;
+/* A fixed label column, so the two values line up under each other and the
+   difference between them is the only thing moving. */
+.alp-search-summary__diff-value {
+  display: grid;
+  grid-template-columns: 6.5rem 1fr;
+  gap: var(--alp-space-2);
+  align-items: baseline;
+  padding: var(--alp-space-2) 0;
 }
 
-.alp-search-summary__side-label {
+.alp-search-summary__diff-value + .alp-search-summary__diff-value {
+  border-top: 1px solid var(--alp-color-border);
+}
+
+.alp-search-summary__diff-value dt {
   font-size: var(--alp-font-size-xs);
   color: var(--alp-color-text-muted);
 }
 
-/* anywhere rather than break-word, because an email or a long address has to be
-   able to break mid-token once the column is narrow. */
-.alp-search-summary__side-value {
+/* anywhere rather than break-word, because an email or an address has to be
+   able to break mid-token once the tile is narrow. */
+.alp-search-summary__diff-value dd {
   margin: 0;
   font-size: var(--alp-font-size-sm);
+  font-weight: var(--alp-font-weight-semibold);
   color: var(--alp-color-text);
   overflow-wrap: anywhere;
 }
 
-/* A field that differs is the one worth stopping at, so both of its values carry
-   the weight. */
-.alp-search-summary__card--not-matched .alp-search-summary__side-value {
-  font-weight: var(--alp-font-weight-semibold);
+/* ---- Agreements: a line each ---- */
+.alp-search-summary__agrees {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(14rem, 1fr));
+  gap: var(--alp-space-3) var(--alp-space-5);
+  margin: 0;
 }
 
-/* Nothing held reads as absent rather than as a value. */
-.alp-search-summary__side-value--empty {
+.alp-search-summary__agree {
+  display: flex;
+  flex-direction: column;
+}
+
+.alp-search-summary__agree-label {
+  font-size: var(--alp-font-size-xs);
+  font-weight: var(--alp-font-weight-semibold);
+  text-transform: uppercase;
+  letter-spacing: var(--alp-letter-spacing-wider);
   color: var(--alp-color-text-muted);
+}
+
+.alp-search-summary__agree-value {
+  margin: 0;
+  font-size: var(--alp-font-size-sm);
+  font-weight: var(--alp-font-weight-semibold);
+  color: var(--alp-color-text);
+  overflow-wrap: anywhere;
+}
+
+.alp-search-summary__agree-theirs {
+  margin: 0;
+  font-size: var(--alp-font-size-xs);
+  color: var(--alp-color-text-muted);
+}
+
+/* ---- Held by neither: a name each ---- */
+.alp-search-summary__absent {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--alp-space-2);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.alp-search-summary__absent-item {
+  padding: 3px 10px;
+  border: 1px solid var(--alp-color-border);
+  border-radius: var(--alp-radius-full);
+  background: var(--alp-color-surface);
+  font-size: var(--alp-font-size-sm);
+  color: var(--alp-color-slate-700);
+}
+
+/* One side holding nothing where the other does reads as absent rather than as
+   a value. */
+.alp-search-summary__absent-value {
   font-weight: var(--alp-font-weight-normal);
   font-style: italic;
+  color: var(--alp-color-text-muted);
 }
 
 .alp-search-summary__note {

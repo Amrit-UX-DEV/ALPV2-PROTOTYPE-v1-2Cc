@@ -30,69 +30,86 @@
       ></alp-policy-tile>
     }
 
-    <div class="alp-search-summary__tally">
-      <span class="alp-status-tag alp-status-tag--primary">Matched {{ tally().matched }}</span>
-      <span class="alp-status-tag alp-status-tag--warning"
-        >Not Matched {{ tally().notMatched }}</span
-      >
-      <span class="alp-status-tag alp-status-tag--neutral">Not Held {{ tally().notHeld }}</span>
-    </div>
+    <div class="alp-search-summary__panels">
+      @if (differences().length) {
+        <section class="alp-search-summary__panel alp-search-summary__panel--differs">
+          <div class="alp-search-summary__panel-head">
+            <span class="alp-search-summary__panel-chip">Not Matched</span>
+            <h3 class="alp-search-summary__panel-title">
+              {{ differences().length }} of {{ fieldCount() }} fields differ
+            </h3>
+          </div>
 
-    @for (section of sections(); track section.title) {
-      <section class="alp-search-summary__section">
-        <h3 class="alp-search-summary__group">{{ section.title }}</h3>
+          <div class="alp-search-summary__diffs">
+            @for (field of differences(); track field.label) {
+              <article class="alp-search-summary__diff">
+                <p class="alp-search-summary__diff-section">{{ field.section }}</p>
+                <h4 class="alp-search-summary__diff-label">{{ field.label }}</h4>
+                <dl class="alp-search-summary__diff-values">
+                  <div class="alp-search-summary__diff-value">
+                    <dt>Other Platform</dt>
+                    <dd [class.alp-search-summary__absent-value]="field.theirs === noData">
+                      {{ field.theirs }}
+                    </dd>
+                  </div>
+                  <div class="alp-search-summary__diff-value">
+                    <dt>Our Record</dt>
+                    <dd [class.alp-search-summary__absent-value]="field.ours === noData">
+                      {{ field.ours }}
+                    </dd>
+                  </div>
+                </dl>
+              </article>
+            }
+          </div>
+        </section>
+      }
 
-        <div class="alp-search-summary__grid">
-          @for (field of section.rows; track field.label) {
-            <article
-              class="alp-search-summary__card"
-              [class.alp-search-summary__card--matched]="field.verdict === 'matched'"
-              [class.alp-search-summary__card--not-matched]="field.verdict === 'not-matched'"
-              [class.alp-search-summary__card--not-held]="field.verdict === 'not-held'"
-            >
-              <div class="alp-search-summary__card-head">
-                <h4 class="alp-search-summary__card-label">{{ field.label }}</h4>
-                @switch (field.verdict) {
-                  @case ('matched') {
-                    <span class="alp-status-tag alp-status-tag--primary">Matched</span>
-                  }
-                  @case ('not-matched') {
-                    <span class="alp-status-tag alp-status-tag--warning">Not Matched</span>
-                  }
-                  @default {
-                    <span class="alp-status-tag alp-status-tag--neutral">Not Held</span>
-                  }
+      @if (agreements().length) {
+        <section class="alp-search-summary__panel alp-search-summary__panel--agrees">
+          <div class="alp-search-summary__panel-head">
+            <span class="alp-search-summary__panel-chip">Matched</span>
+            <h3 class="alp-search-summary__panel-title">
+              {{ agreements().length }} of {{ fieldCount() }} fields match
+            </h3>
+          </div>
+
+          <dl class="alp-search-summary__agrees">
+            @for (field of agreements(); track field.label) {
+              <div class="alp-search-summary__agree">
+                <dt class="alp-search-summary__agree-label">{{ field.label }}</dt>
+                <dd class="alp-search-summary__agree-value">{{ field.agreedValue }}</dd>
+                @if (field.spellingsDiffer) {
+                  <dd class="alp-search-summary__agree-theirs">
+                    Other platform: {{ field.theirs }}
+                  </dd>
                 }
               </div>
+            }
+          </dl>
+        </section>
+      }
 
-              <dl class="alp-search-summary__sides">
-                <div class="alp-search-summary__side">
-                  <dt class="alp-search-summary__side-label">Other Platform</dt>
-                  <dd
-                    class="alp-search-summary__side-value"
-                    [class.alp-search-summary__side-value--empty]="field.theirs === noData"
-                  >
-                    {{ field.theirs }}
-                  </dd>
-                </div>
-                <div class="alp-search-summary__side">
-                  <dt class="alp-search-summary__side-label">Our Record</dt>
-                  <dd
-                    class="alp-search-summary__side-value"
-                    [class.alp-search-summary__side-value--empty]="field.ours === noData"
-                  >
-                    {{ field.ours }}
-                  </dd>
-                </div>
-              </dl>
-            </article>
-          }
-        </div>
+      @if (notHeld().length) {
+        <section class="alp-search-summary__panel alp-search-summary__panel--absent">
+          <div class="alp-search-summary__panel-head">
+            <span class="alp-search-summary__panel-chip">Not Held</span>
+            <h3 class="alp-search-summary__panel-title">
+              {{ notHeld().length }} fields neither platform holds
+            </h3>
+          </div>
 
-        @if (section.note) {
-          <p class="alp-search-summary__note">{{ section.note }}</p>
-        }
-      </section>
+          <ul class="alp-search-summary__absent">
+            @for (field of notHeld(); track field.label) {
+              <li class="alp-search-summary__absent-item">{{ field.label }}</li>
+            }
+          </ul>
+        </section>
+      }
+    </div>
+
+    @for (note of notes(); track note) {
+      <p class="alp-search-summary__note">{{ note }}</p>
     }
   } @else if (!matches.loading()) {
     <div class="notification-block status-warning">
