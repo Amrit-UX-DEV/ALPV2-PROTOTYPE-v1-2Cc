@@ -687,11 +687,13 @@
         <span class="ui-data-value"> 
         <i aria-hidden="true" class="fa fa-user"></i> {{ memberCount() }}</span>
         </span>
+        @if (thirdPartyCount()) {
         <span class="indicator party-count">
         <span class="ui-text">Third Parties:</span>
         <span class="ui-data-value"> 
         <i aria-hidden="true" class="fa fa-user"></i> {{ thirdPartyCount() }}</span>
         </span>
+        }
         
         <span class="indicator warning"><i aria-hidden="true" class="fa fa-bell-o"></i> 2</span>
         

@@ -52,9 +52,9 @@ export class AlphaGroupSummaryComponent {
   /**
    * How many parties hold an interest in the policy without being party to it.
    *
-   * Signposted whatever the number, including none: a rep reading the row needs
-   * to know that the question has been answered, and an indicator that appears
-   * only sometimes leaves them checking elsewhere to be sure.
+   * Nought means the indicator is not drawn at all. The data decides: mark a
+   * party as a third party in the policy's JSON and both this row and the
+   * possible match summary start signposting them.
    */
   protected readonly thirdPartyCount = computed(
     () => this.ctx.clients().filter((client) => client.thirdParty).length,

@@ -105,13 +105,17 @@ export class AlphaSearchSummaryComponent {
    * Both are counted from the policy's own parties, so the tile cannot say two
    * where the group summary lists three. A party to the policy has a client id
    * of its own; the joint holder entry and the servicing agent do not.
+   *
+   * A count of none is dropped rather than shown as a nought, which is what the
+   * group summary does with the same indicators: the policy holds no third
+   * parties, so nothing on either screen mentions them.
    */
   protected readonly signposts = computed<PolicyTileSignpost[]>(() => {
     const clients = this.ctx.clients();
     return [
       { label: 'Interested Parties', value: clients.filter((client) => client.id).length },
       { label: 'Third Parties', value: clients.filter((client) => client.thirdParty).length },
-    ];
+    ].filter((signpost) => signpost.value > 0);
   });
 
   /** The pension the reference resolved to, and the address held against it. */
