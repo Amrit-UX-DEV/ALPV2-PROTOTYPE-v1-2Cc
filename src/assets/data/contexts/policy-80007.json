@@ -58,7 +58,9 @@
         "dateOfBirth": "1966-11-13",
         "niNumber": "RM439286P",
         "email": "j.bloggs@example.com",
+        "alternateEmail": "joe.bloggs@example.co.uk",
         "phoneNumber": "07700 900123",
+        "alternatePhoneNumber": "01926 555019",
         "address": {
           "lines": [
             "42 Chester Court",

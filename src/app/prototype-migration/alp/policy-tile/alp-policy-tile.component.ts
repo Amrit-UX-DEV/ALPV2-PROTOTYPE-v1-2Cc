@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, input, output } from '@angular/core';
+import { ChangeDetectionStrategy, Component, computed, input, output } from '@angular/core';
 
 import { ContextPolicy } from '../../context/prototype-context.model';
 
@@ -37,6 +37,15 @@ export class AlpPolicyTileComponent {
 
   /** Draws the tile as the current selection. */
   readonly selected = input(false);
+
+  /**
+   * Whether the policy is live, which is what turns the border green, the way
+   * state--ui-active does on the group summary's tile.
+   *
+   * Read from the status rather than passed in, so a screen showing a policy
+   * cannot describe it as live while its status says otherwise.
+   */
+  protected readonly active = computed(() => /in force|active/i.test(this.policy().status));
 
   /** What the action does is the caller's business, not the tile's. */
   readonly action = output<void>();

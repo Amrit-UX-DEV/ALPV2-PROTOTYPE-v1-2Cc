@@ -11,18 +11,28 @@ import { AppViewService } from '../../../ui/app-view.service';
 export const NO_DATA = 'No Data';
 
 /**
- * One field, as the other platform holds it and as we hold it.
+ * What a row's two values amount to.
  *
- * matched is optional because their record only flags some fields. Where it is
- * absent nothing is claimed either way, which is more honest than inferring a
- * match by comparing two strings ourselves.
+ * not-held is for a field neither platform holds. It is not a verdict on a
+ * comparison, it is the absence of one, and it is the only case where no
+ * comparison is possible: everything we hold is compared.
  */
+export type ComparisonVerdict = 'matched' | 'not-matched' | 'not-held';
+
+/** One field, as the other platform holds it and as we hold it. */
 export interface ComparisonRow {
   label: string;
   theirs: string;
   ours: string;
-  matched?: boolean;
+  verdict: ComparisonVerdict;
 }
+
+/**
+ * Their country code is a telephone dialling code, ours is an ISO country code,
+ * so the same country arrives spelled two ways. Mapped rather than compared as
+ * text, otherwise the one field both platforms agree on reads as a mismatch.
+ */
+const DIALLING_CODES: Record<string, string> = { '44': 'GB' };
 
 /** A named run of rows, e.g. the identity fields. */
 export interface ComparisonSection {
@@ -133,8 +143,9 @@ export class AlphaSearchSummaryComponent {
   });
 
   /**
-   * Contact fields, which their record carries no match flags for, so these
-   * rows compare the two values without claiming either way.
+   * Contact fields. Their record carries no flags for these, so the two values
+   * are compared here: we hold an email, a phone number and an address for every
+   * client, whether or not the group summary shows them.
    */
   private readonly contactRows = computed<ComparisonRow[]>(() => {
     const them = this.matches.record();
@@ -143,9 +154,9 @@ export class AlphaSearchSummaryComponent {
 
     return [
       this.compare('Email', them.email, us?.email),
-      this.compare('Alternate Email', them.alternameEmail, undefined),
+      this.compare('Alternate Email', them.alternameEmail, us?.alternateEmail),
       this.compare('Phone Number', them.phoneNumber, us?.phoneNumber),
-      this.compare('Alternate Phone Number', them.alternatePhoneNumber, undefined),
+      this.compare('Alternate Phone Number', them.alternatePhoneNumber, us?.alternatePhoneNumber),
     ];
   });
 
@@ -180,7 +191,7 @@ export class AlphaSearchSummaryComponent {
       {
         title: 'Contact',
         rows: this.contactRows(),
-        note: 'Not Compared means the other platform sent no match flag for that field, so nothing is claimed either way. They send flags for the identity fields, the alternate surnames and the postcode, but none for email or phone.',
+        note: 'The other platform sends match flags for the identity fields, the alternate surnames and the postcode, but not for these, so the two values are compared directly. Not Held means neither platform holds the field at all.',
       },
       { title: 'Address', rows: this.addressRows() },
     ].filter((section) => section.rows.length > 0),
@@ -191,17 +202,48 @@ export class AlphaSearchSummaryComponent {
     this.views.show('group-summary');
   }
 
+  /**
+   * One row of the comparison.
+   *
+   * Their record flags some fields and not others, but everything they send has a
+   * counterpart on our side, so where there is no flag the two values are
+   * compared here instead. A field neither platform holds is the only row with no
+   * comparison to make.
+   */
   private compare(
     label: string,
     theirs: string | undefined,
     ours: string | undefined,
-    matched?: boolean,
+    flag?: boolean,
   ): ComparisonRow {
+    const theirValue = (theirs ?? '').trim();
+    const ourValue = (ours ?? '').trim();
+    const theyHold = hasValue(theirValue);
+    const weHold = hasValue(ourValue);
+
+    let verdict: ComparisonVerdict;
+    if (!theyHold && !weHold) {
+      verdict = 'not-held';
+    } else if (flag !== undefined) {
+      verdict = flag ? 'matched' : 'not-matched';
+    } else {
+      verdict = theyHold && weHold && this.same(theirValue, ourValue) ? 'matched' : 'not-matched';
+    }
+
     return {
       label,
-      theirs: hasValue(theirs) ? (theirs ?? '').trim() : NO_DATA,
-      ours: hasValue(ours) ? (ours ?? '').trim() : NO_DATA,
-      matched,
+      theirs: theyHold ? theirValue : NO_DATA,
+      ours: weHold ? ourValue : NO_DATA,
+      verdict,
     };
+  }
+
+  /** Case and spacing are not differences worth reporting to a rep. */
+  private same(theirs: string, ours: string): boolean {
+    const normalise = (value: string) => {
+      const trimmed = value.trim();
+      return (DIALLING_CODES[trimmed] ?? trimmed).replace(/\s+/g, ' ').toLowerCase();
+    };
+    return normalise(theirs) === normalise(ours);
   }
 }

@@ -1,15 +1,19 @@
-<div class="alp-policy-tile" [class.alp-policy-tile--selected]="selected()">
+<div
+  class="alp-policy-tile"
+  [class.alp-policy-tile--active]="active()"
+  [class.alp-policy-tile--selected]="selected()"
+>
   <div class="alp-policy-tile__head">
     <div class="alp-policy-tile__reference">
       <span class="alp-policy-tile__label">Policy Number</span>
       <strong class="alp-policy-tile__number">{{ policy().number }}</strong>
     </div>
     <div class="alp-policy-tile__indicators">
-      <span class="alp-status-tag alp-status-tag--primary alp-status-tag--lg">
+      <span class="alp-policy-tile__indicator alp-policy-tile__indicator--status">
         {{ policy().status }}
       </span>
       @for (flag of flags(); track flag) {
-        <span class="alp-status-tag alp-status-tag--info alp-status-tag--lg">{{ flag }}</span>
+        <span class="alp-policy-tile__indicator alp-policy-tile__indicator--pension">{{ flag }}</span>
       }
     </div>
   </div>

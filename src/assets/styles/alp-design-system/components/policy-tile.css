@@ -1,30 +1,46 @@
 /* =========================================================
    ALP DESIGN SYSTEM — POLICY TILE
-   A compact policy summary. Shows what the legacy policy
-   tile shows, in alp- classes and tokens, so screens can
-   summarise a policy without the legacy tile's behaviour.
+   A compact policy summary in alp- classes.
 
-   The border is 0.1rem, the same width the group summary's
-   policy tile carries, with the left edge picked out in the
-   brand colour. The indicators are the design system's
-   status tags rather than anything of this tile's own.
+   The border and the indicators are the group summary policy
+   tile's own, to the value: a 0.1rem border on all four
+   sides, blue while the policy is anything else and green
+   while it is in force, with the corners rounded on the left
+   only. The layout inside is this tile's, on design tokens.
+
+   One deliberate difference, in the Life indicator's text.
+   Legacy sets white on #42aeb6, which is 2.64:1 and fails AA
+   for text this size. The fill is kept exactly and the label
+   is dark instead, which reads at 6.03:1 on the same colour.
    ========================================================= */
 
 .alp-policy-tile {
+  --alp-policy-tile-border: #85b2e2;
+  --alp-policy-tile-border-active: #49a94f;
+  --alp-policy-tile-surface: #fff;
+  --alp-policy-tile-surface-selected: rgb(223, 231, 239);
+  --alp-policy-tile-text: #222;
+  --alp-policy-tile-status-bg: rgb(231, 240, 249);
+  --alp-policy-tile-status-border: rgb(202, 224, 246);
+  --alp-policy-tile-pension-bg: #42aeb6;
+
   display: flex;
   flex-direction: column;
   gap: var(--alp-space-4);
   padding: var(--alp-space-4);
-  border: 0.1rem solid var(--alp-color-border);
-  border-left-color: var(--alp-color-brand);
-  border-radius: var(--alp-radius-md);
-  background: var(--alp-color-surface);
-  box-shadow: var(--alp-shadow-xs);
+  border: 0.1rem solid var(--alp-policy-tile-border);
+  border-radius: 6px 0 0 6px;
+  background-color: var(--alp-policy-tile-surface);
+  color: var(--alp-policy-tile-text);
+}
+
+/* What the legacy tile's state--ui-active does to its border. */
+.alp-policy-tile--active {
+  border-color: var(--alp-policy-tile-border-active);
 }
 
 .alp-policy-tile--selected {
-  border-color: var(--alp-color-selected);
-  background: var(--alp-color-selected-soft);
+  background-color: var(--alp-policy-tile-surface-selected);
 }
 
 .alp-policy-tile__head {
@@ -44,20 +60,45 @@
 .alp-policy-tile__number {
   font-size: var(--alp-font-size-lg);
   font-weight: var(--alp-font-weight-bold);
-  color: var(--alp-color-text);
+  color: var(--alp-policy-tile-text);
 }
 
+/* The indicators carry the legacy margins rather than a container gap, so the
+   spacing between them is the group summary's too. */
 .alp-policy-tile__indicators {
-  display: flex;
+  display: inline-flex;
   flex-wrap: wrap;
   align-items: center;
-  gap: var(--alp-space-2);
 }
 
-/* Status tags carry a top margin for where they usually sit, under a heading.
-   Here they are centred against the policy number, so it comes off. */
-.alp-policy-tile__indicators .alp-status-tag {
-  margin-top: 0;
+.alp-policy-tile__indicator {
+  display: inline-block;
+  min-width: 45px;
+  min-height: 28px;
+  margin-right: 5px;
+  margin-bottom: 5px;
+  padding: 4px 10px 3px 10px;
+  border: 2px solid #ffffff4d;
+  border-radius: 100px;
+  font-size: 13px;
+  font-weight: 700;
+  text-align: center;
+  vertical-align: middle;
+}
+
+.alp-policy-tile__indicator:last-child {
+  margin-right: 0;
+}
+
+.alp-policy-tile__indicator--status {
+  background-color: var(--alp-policy-tile-status-bg);
+  border-color: var(--alp-policy-tile-status-border);
+  color: var(--alp-policy-tile-text);
+}
+
+.alp-policy-tile__indicator--pension {
+  background-color: var(--alp-policy-tile-pension-bg);
+  color: var(--alp-policy-tile-text);
 }
 
 /* Facts sit in a row on a wide tile and stack on a narrow one, which is what
@@ -86,7 +127,7 @@
   margin: 0;
   font-size: var(--alp-font-size-sm);
   font-weight: var(--alp-font-weight-semibold);
-  color: var(--alp-color-text);
+  color: var(--alp-policy-tile-text);
 }
 
 .alp-policy-tile__actions {

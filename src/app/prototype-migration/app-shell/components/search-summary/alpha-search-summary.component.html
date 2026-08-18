@@ -53,12 +53,16 @@
               >{{ row.ours }}</span
             >
             <span class="alp-search-summary__match">
-              @if (row.matched === true) {
-                <span class="alp-status-tag alp-status-tag--primary">Matched</span>
-              } @else if (row.matched === false) {
-                <span class="alp-status-tag alp-status-tag--warning">Not Matched</span>
-              } @else {
-                <span class="alp-status-tag alp-status-tag--neutral">Not Compared</span>
+              @switch (row.verdict) {
+                @case ('matched') {
+                  <span class="alp-status-tag alp-status-tag--primary">Matched</span>
+                }
+                @case ('not-matched') {
+                  <span class="alp-status-tag alp-status-tag--warning">Not Matched</span>
+                }
+                @default {
+                  <span class="alp-status-tag alp-status-tag--neutral">Not Held</span>
+                }
               }
             </span>
           </div>

@@ -82,7 +82,9 @@ export interface ContextClient {
   dateOfBirth?: string;
   niNumber?: string;
   email?: string;
+  alternateEmail?: string;
   phoneNumber?: string;
+  alternatePhoneNumber?: string;
   address?: ContextAddress;
 }
 
