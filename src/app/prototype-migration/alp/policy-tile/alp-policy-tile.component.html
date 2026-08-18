@@ -1,31 +1,42 @@
 <div class="alp-policy-tile" [class.alp-policy-tile--selected]="selected()">
-  <div class="alp-policy-tile__head">
-    <div class="alp-policy-tile__reference">
-      <span class="alp-policy-tile__label">Policy Number</span>
-      <strong class="alp-policy-tile__number">{{ policy().number }}</strong>
+  <div class="alp-policy-tile__content">
+    <div class="alp-policy-tile__block alp-policy-tile__block--reference">
+      <span class="alp-policy-tile__heading">Policy Number:</span>
+      <span class="alp-policy-tile__number">
+        <strong>{{ policy().number }}</strong>
+      </span>
     </div>
+
     <div class="alp-policy-tile__indicators">
-      <span class="alp-policy-tile__status">{{ policy().status }}</span>
+      <span class="alp-policy-tile__indicator alp-policy-tile__indicator--status">
+        {{ policy().status }}
+      </span>
       @for (flag of flags(); track flag) {
-        <span class="alp-policy-tile__flag">{{ flag }}</span>
+        <span class="alp-policy-tile__indicator alp-policy-tile__indicator--pension">{{ flag }}</span>
       }
     </div>
-  </div>
 
-  <dl class="alp-policy-tile__facts">
-    <div class="alp-policy-tile__fact">
-      <dt class="alp-policy-tile__label">Company</dt>
-      <dd class="alp-policy-tile__value">{{ policy().company }}</dd>
+    <div class="alp-policy-tile__block">
+      <span class="alp-policy-tile__heading">Company</span>
+      <span class="alp-policy-tile__value">
+        <strong>{{ policy().company }}</strong>
+      </span>
     </div>
-    <div class="alp-policy-tile__fact">
-      <dt class="alp-policy-tile__label">Policy Type</dt>
-      <dd class="alp-policy-tile__value">{{ policy().policyType }}</dd>
+
+    <div class="alp-policy-tile__block">
+      <span class="alp-policy-tile__heading">Policy Type</span>
+      <span class="alp-policy-tile__value">
+        <strong>{{ policy().policyType }}</strong>
+      </span>
     </div>
-    <div class="alp-policy-tile__fact">
-      <dt class="alp-policy-tile__label">Product Description</dt>
-      <dd class="alp-policy-tile__value">{{ policy().productName }}</dd>
+
+    <div class="alp-policy-tile__block">
+      <span class="alp-policy-tile__heading">Product Description</span>
+      <span class="alp-policy-tile__value">
+        <strong>{{ policy().productName }}</strong>
+      </span>
     </div>
-  </dl>
+  </div>
 
   @if (actionLabel()) {
     <div class="alp-policy-tile__actions">

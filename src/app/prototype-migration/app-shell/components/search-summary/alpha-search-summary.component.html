@@ -29,27 +29,6 @@
       ></alp-policy-tile>
     }
 
-    <div
-      class="notification-block"
-      [class.status-success]="knownToUs()"
-      [class.status-warning]="!knownToUs()"
-    >
-      <div class="notification-message">
-        @if (ourClient(); as client) {
-          <p>
-            The reference resolves to <strong>{{ client.name }}</strong> on this policy. Their record
-            and ours are side by side below, so the gaps can be filled while the caller is on the
-            line.
-          </p>
-        } @else {
-          <p>
-            Nobody on this policy matches the name held against this reference, so there is nothing
-            on our side to compare. Everything below is what the other platform holds.
-          </p>
-        }
-      </div>
-    </div>
-
     <div class="alp-search-summary__compare">
       <div class="alp-search-summary__row alp-search-summary__row--head">
         <span class="alp-search-summary__field">Field</span>
@@ -84,7 +63,7 @@
                 </span>
               } @else {
                 <span class="alp-search-summary__flag alp-search-summary__flag--unflagged">
-                  Not Flagged
+                  Not Compared
                 </span>
               }
             </span>

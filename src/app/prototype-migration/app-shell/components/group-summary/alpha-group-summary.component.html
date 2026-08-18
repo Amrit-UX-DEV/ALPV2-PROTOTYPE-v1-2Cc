@@ -397,14 +397,16 @@
                     Date of Birth:
                 </span>
                 <span class="tile--data-strong tile--spacer">
-                    13 Nov 1966 (55)
+                    @if (client('MrJoeBloggs')?.dateOfBirth; as dob) {
+                    {{ dob | date: 'dd MMM yyyy' }} ({{ ageOf(dob) }})
+                    }
                 </span>
         
                 <span class="tile--data-heading">
                     National Insurance:
                 </span>
                 <span class="tile--data-strong tile--spacer">
-                    RM439286P
+                    {{ client('MrJoeBloggs')?.niNumber }}
                 </span>
         
                 <span class="ui-data-indicator ui-status active" style="
@@ -571,14 +573,16 @@
             Date of Birth:
         </span>
          <span class="tile--data-strong tile--spacer">
-            07 Feb 1985 (34)
+            @if (client('MrsLucyBloggs')?.dateOfBirth; as dob) {
+            {{ dob | date: 'dd MMM yyyy' }} ({{ ageOf(dob) }})
+            }
         </span>
         
         <span class="tile--data-heading">
             National Insurance:
         </span>
         <span class="tile--data-strong tile--spacer">
-            JP439286P
+            {{ client('MrsLucyBloggs')?.niNumber }}
         </span>
         
         

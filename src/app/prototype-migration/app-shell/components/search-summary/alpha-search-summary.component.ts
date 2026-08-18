@@ -91,9 +91,6 @@ export class AlphaSearchSummaryComponent {
     });
   });
 
-  /** Whether we hold the person at all, which is what the rep needs to know first. */
-  protected readonly knownToUs = computed(() => this.ourClient() !== undefined);
-
   /** The identity fields, in the order a rep would read them out. */
   private readonly identityRows = computed<ComparisonRow[]>(() => {
     const them = this.matches.record();
@@ -109,10 +106,14 @@ export class AlphaSearchSummaryComponent {
   });
 
   /**
-   * The alternate surnames they hold.
+   * All five alternate surnames, held or not.
    *
-   * Only those they actually sent are listed: five empty rows say nothing, and
-   * their record pads the ones it has nothing for.
+   * Every field the other platform sends is shown, including the ones they have
+   * nothing for: which of the five is empty is itself worth seeing, and hiding
+   * them would leave the rep unsure whether a field was absent or never sent.
+   *
+   * We hold no alternate surnames at all, so our side of these rows is empty by
+   * definition rather than by accident.
    */
   private readonly alternateSurnameRows = computed<ComparisonRow[]>(() => {
     const them = this.matches.record();
@@ -126,17 +127,9 @@ export class AlphaSearchSummaryComponent {
       [them.alternateSurname5, them.alternateSurname5Matched],
     ];
 
-    return alternates
-      .map(([value, matched], i) => ({ value, matched, position: i + 1 }))
-      .filter((alternate) => hasValue(alternate.value))
-      .map((alternate) =>
-        this.compare(
-          `Alternate Surname ${alternate.position}`,
-          alternate.value,
-          this.ourClient()?.surname,
-          alternate.matched,
-        ),
-      );
+    return alternates.map(([value, matched], i) =>
+      this.compare(`Alternate Surname ${i + 1}`, value, undefined, matched),
+    );
   });
 
   /**
@@ -187,7 +180,7 @@ export class AlphaSearchSummaryComponent {
       {
         title: 'Contact',
         rows: this.contactRows(),
-        note: 'The other platform sends no match flag for email or phone, so these are shown side by side without a verdict.',
+        note: 'Not Compared means the other platform sent no match flag for that field, so nothing is claimed either way. They send flags for the identity fields, the alternate surnames and the postcode, but none for email or phone.',
       },
       { title: 'Address', rows: this.addressRows() },
     ].filter((section) => section.rows.length > 0),

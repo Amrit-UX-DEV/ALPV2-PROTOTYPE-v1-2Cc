@@ -1,6 +1,7 @@
 import { Component, CUSTOM_ELEMENTS_SCHEMA, computed, inject, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { VulnerableClientActionComponent } from '../vulnerable-client-action/vulnerable-client-action.component';
+import { ageOn } from '../../../context/age';
 import { ContextClient } from '../../../context/prototype-context.model';
 import { PrototypeContextService } from '../../../context/prototype-context.service';
 import { OverlayService } from '../../../ui/overlay.service';
@@ -45,6 +46,16 @@ export class AlphaGroupSummaryComponent {
    */
   protected client(key: string): ContextClient | undefined {
     return this.ctx.clientByKey(key);
+  }
+
+  /**
+   * The age shown in brackets after a date of birth.
+   *
+   * Derived rather than written into the tile, which is how one of them came to
+   * say 55 for someone born in 1966.
+   */
+  protected ageOf(dateOfBirth: string): number | undefined {
+    return ageOn(dateOfBirth);
   }
 
   /** The linked-clients / policy-client-link spelling of a party's identity. */
