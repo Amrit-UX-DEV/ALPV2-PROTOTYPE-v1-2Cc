@@ -51,7 +51,11 @@
         <button class="btn btn-success policy-search-submit" id="MenuSearch_SearchButton" type="submit" [disabled]="search.searching()">Search</button>
         <button class="btn btn-danger policy-search-clear" id="MenuSearch_ClearButton" type="button" (click)="search.clear()">Clear</button>
         @if (search.notFound()) {
-        <p class="alp-search-no-match">No {{ search.notFoundLabel() }} found for <strong>{{ search.notFoundTerm() }}</strong>.</p>
+        <div class="notification-block status-error">
+          <div class="notification-message">
+            <p>No {{ search.notFoundLabel() }} found for {{ search.notFoundTerm() }}</p>
+          </div>
+        </div>
         }
         </form> </div> </li> </ul>
       </li>

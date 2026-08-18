@@ -10,7 +10,7 @@ export const appConfig: ApplicationConfig = {
     provideRouter(routes),
     provideHttpClient(),
     // Load the registry of searchable contexts, not a context. The app starts
-    // in non context and stays there until a search finds something, so this
+    // in no context and stays there until a search finds something, so this
     // only has to be ready before the first search, and having it before the
     // first render keeps that free of a loading state.
     provideAppInitializer(() => inject(PrototypeContextService).loadIndex()),

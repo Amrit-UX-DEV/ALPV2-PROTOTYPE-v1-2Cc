@@ -72,7 +72,7 @@ export class AlphaGroupSummaryComponent {
   /**
    * There is a policy whenever this screen is rendered, since the body only
    * shows the group summary once a search has found one, but the context type
-   * does not know that: before a search it holds non context and has no policy.
+   * does not know that: before a search it holds no context and has no policy.
    * Both of these check rather than assert, so the screen cannot fail if it is
    * ever shown without one.
    */

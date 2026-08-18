@@ -76,7 +76,7 @@ export class ContextSearchService {
     if (result === 'found') this.views.show('group-summary');
   }
 
-  /** Empties the search and returns the app to non context. */
+  /** Empties the search and returns the app to no context. */
   clear(): void {
     this.term.set('');
     this.clearMessage();

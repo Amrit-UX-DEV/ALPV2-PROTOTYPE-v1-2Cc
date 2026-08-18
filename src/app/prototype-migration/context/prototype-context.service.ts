@@ -18,16 +18,21 @@ export const CONTEXT_INDEX_FILE = `${CONTEXT_DATA_PATH}/index.json`;
 /**
  * Where the app starts, and where it returns when a context is cleared.
  *
- * Non context is a context, not a gap: nothing has been searched yet, so there
+ * No context is a context, not a gap: nothing has been searched yet, so there
  * is no policy to describe. Holding it as a real value rather than null is
  * what keeps every consumer free of null checks, and it gives the header
  * something to name.
+ *
+ * The heading prefix is deliberately empty. A real context names the screen it
+ * is showing, as in 'Group Summary: Policy 80007', but there is no screen and
+ * no policy to prefix here, so the header reads 'No Context' on its own rather
+ * than 'Context: No Context'.
  */
-export const NON_CONTEXT: PrototypeContext = {
-  id: 'non-context',
+export const NO_CONTEXT: PrototypeContext = {
+  id: 'no-context',
   kind: 'none',
-  label: 'Non Context',
-  screen: { breadcrumbs: ['Search'], headingPrefix: 'Context:' },
+  label: 'No Context',
+  screen: { breadcrumbs: ['Search'], headingPrefix: '' },
 };
 
 /** What a search did, so a screen can tell "not searched" from "no match". */
@@ -39,17 +44,17 @@ export type SearchState = 'idle' | 'found' | 'not-found';
  * Consumers read the computed accessors rather than the whole context, so a
  * template binds to ctx.policy() instead of reaching through an optional
  * chain. The context signal itself is never null: before anything is searched
- * it holds NON_CONTEXT, whose policy is absent, so a screen showing policy
+ * it holds NO_CONTEXT, whose policy is absent, so a screen showing policy
  * detail asks hasPolicy() once rather than guarding every field.
  */
 @Injectable({ providedIn: 'root' })
 export class PrototypeContextService {
-  private readonly current = signal<PrototypeContext>(NON_CONTEXT);
+  private readonly current = signal<PrototypeContext>(NO_CONTEXT);
 
   readonly context = this.current.asReadonly();
   readonly screen = computed(() => this.current().screen);
 
-  /** Absent in non context. */
+  /** Absent in no context. */
   readonly policy = computed(() => this.current().policy);
 
   /** Whether there is a policy to show. False before a search finds one. */
@@ -59,12 +64,12 @@ export class PrototypeContextService {
   readonly kind = computed(() => this.current().kind ?? 'policy');
 
   /** What to call the current context where there is no policy to summarise. */
-  readonly label = computed(() => this.current().label ?? NON_CONTEXT.label!);
+  readonly label = computed(() => this.current().label ?? NO_CONTEXT.label!);
 
   /** The journey this context runs, if it names one. */
   readonly journey = computed(() => this.current().journey);
 
-  /** The clients attached to the policy, in render order. Empty in non context. */
+  /** The clients attached to the policy, in render order. Empty in no context. */
   readonly clients = computed(() => this.policy()?.clients ?? []);
 
   /** Clients flagged for extra care, i.e. those with at least one entry. */
@@ -125,7 +130,7 @@ export class PrototypeContextService {
 
   /**
    * Loads the registry. Awaited during bootstrap so a search can resolve
-   * immediately; the app still starts in non context either way.
+   * immediately; the app still starts in no context either way.
    */
   async loadIndex(): Promise<void> {
     try {
@@ -177,9 +182,9 @@ export class PrototypeContextService {
     return 'found';
   }
 
-  /** Puts the app back into non context, as the search form's Clear does. */
+  /** Puts the app back into no context, as the search form's Clear does. */
   clear(): void {
-    this.current.set(NON_CONTEXT);
+    this.current.set(NO_CONTEXT);
     this.currentSelection.set(null);
     this.lastSearch.set('idle');
   }
@@ -187,7 +192,7 @@ export class PrototypeContextService {
   /**
    * Loads a context by id and makes it current.
    *
-   * A failed load leaves the app in non context rather than in a half state,
+   * A failed load leaves the app in no context rather than in a half state,
    * so a missing file shows as "not found" instead of an empty policy.
    */
   async activate(id: string): Promise<void> {
@@ -201,7 +206,7 @@ export class PrototypeContextService {
       this.current.set({ kind: entry?.kind ?? 'policy', ...context });
       this.currentSelection.set(null);
     } catch (err) {
-      console.error(`Failed to load context '${id}', staying in non context:`, err);
+      console.error(`Failed to load context '${id}', staying in no context:`, err);
       this.clear();
     }
   }

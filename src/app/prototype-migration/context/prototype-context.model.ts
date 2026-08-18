@@ -119,7 +119,7 @@ export interface ContextSelection {
  * What kind of context the app is in.
  *
  * 'none' is a context in its own right, not the absence of one: before
- * anything has been searched the app is in non context, and screens are
+ * anything has been searched the app is in no context, and screens are
  * expected to say so rather than render an empty policy. Every other kind
  * names the thing the context is about.
  */
@@ -154,12 +154,12 @@ export interface PrototypeContext {
    */
   kind?: ContextKind;
   /**
-   * What the header calls this context, e.g. 'Non Context'. Only needed where
+   * What the header calls this context, e.g. 'No Context'. Only needed where
    * there is no policy to summarise.
    */
   label?: string;
   /**
-   * Absent in non context. Screens that show policy detail check for it rather
+   * Absent in no context. Screens that show policy detail check for it rather
    * than rendering a blank policy.
    */
   policy?: ContextPolicy;

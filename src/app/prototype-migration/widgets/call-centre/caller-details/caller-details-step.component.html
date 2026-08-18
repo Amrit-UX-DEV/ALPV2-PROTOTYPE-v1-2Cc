@@ -116,9 +116,13 @@
                                                                                     </div>
                                                                                     <button class="btn btn-success full-width ui-btn--main-search" type="submit" [disabled]="search.searching()">Search</button>
                                                                                     @if (search.notFound()) {
-                                                                                    <p class="alp-search-no-match">No {{ search.notFoundLabel() }} found for
-                                                                                        <strong>{{ search.notFoundTerm() }}</strong>.
-                                                                                    </p>
+                                                                                    <!-- The prototype's own error notification, the same block the review step
+                                                                                         uses, so a failed search reads as a notification rather than loose text. -->
+                                                                                    <div class="notification-block status-error">
+                                                                                        <div class="notification-message">
+                                                                                            <p>No {{ search.notFoundLabel() }} found for {{ search.notFoundTerm() }}</p>
+                                                                                        </div>
+                                                                                    </div>
                                                                                     }
                                                                                     <button class="btn btn-danger" id="PolicySearch_ClearButton" style="width: 30%" type="button" hidden="">Clear</button>
                                                                                 </form>

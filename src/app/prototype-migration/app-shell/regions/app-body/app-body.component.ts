@@ -27,7 +27,7 @@ import { PrototypeContextService } from '../../../context/prototype-context.serv
  * also renders its own active state from it, so the shell owns it.
  *
  * The group summary is a view of a policy, so it is only rendered once a search
- * has found one. Before that the app is in non context and this says so, rather
+ * has found one. Before that the app is in no context and this says so, rather
  * than drawing a summary with nothing in it.
  */
 @Component({
