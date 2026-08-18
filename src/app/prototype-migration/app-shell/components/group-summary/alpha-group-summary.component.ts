@@ -69,13 +69,22 @@ export class AlphaGroupSummaryComponent {
     return this.ctx.isSelected(this.client(key)?.scope ?? 'client', key);
   }
 
+  /**
+   * There is a policy whenever this screen is rendered, since the body only
+   * shows the group summary once a search has found one, but the context type
+   * does not know that: before a search it holds non context and has no policy.
+   * Both of these check rather than assert, so the screen cannot fail if it is
+   * ever shown without one.
+   */
   protected selectPolicy(): void {
-    this.ctx.select('policy', this.ctx.policy().number);
+    const policy = this.ctx.policy();
+    if (policy) this.ctx.select('policy', policy.number);
   }
 
-  protected readonly policySelected = computed(() =>
-    this.ctx.isSelected('policy', this.ctx.policy().number),
-  );
+  protected readonly policySelected = computed(() => {
+    const policy = this.ctx.policy();
+    return policy !== undefined && this.ctx.isSelected('policy', policy.number);
+  });
 
   /**
    * The selected client in linked-clients spelling, or null when the selection
