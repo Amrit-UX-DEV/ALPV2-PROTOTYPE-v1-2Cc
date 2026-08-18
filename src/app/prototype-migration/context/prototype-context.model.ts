@@ -122,8 +122,13 @@ export interface ContextSelection {
  * anything has been searched the app is in no context, and screens are
  * expected to say so rather than render an empty policy. Every other kind
  * names the thing the context is about.
+ *
+ * 'possible-match' is not a scope, because nothing in it can be selected: it
+ * describes partial data held against a reference a caller has given, which may
+ * or may not turn out to be someone on the system. It has no policy of its own,
+ * so screens that read a policy must not be shown for it.
  */
-export type ContextKind = ContextScope | 'none';
+export type ContextKind = ContextScope | 'none' | 'possible-match';
 
 /**
  * The journey this context runs.
@@ -158,6 +163,14 @@ export interface PrototypeContext {
    * there is no policy to summarise.
    */
   label?: string;
+  /**
+   * What was keyed to find this context, e.g. 'PMR12345678910'.
+   *
+   * Held here so a screen can show the reference on its own. The label reads as
+   * a sentence for the header, and picking the reference back out of it would
+   * tie the screen to how the header happens to be worded.
+   */
+  reference?: string;
   /**
    * Absent in no context. Screens that show policy detail check for it rather
    * than rendering a blank policy.

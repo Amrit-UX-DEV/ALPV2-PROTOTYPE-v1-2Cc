@@ -1,0 +1,13 @@
+{
+  "id": "possible-match-pmr12345678910",
+  "kind": "possible-match",
+  "reference": "PMR12345678910",
+  "label": "Possible Match Reference PMR12345678910",
+  "screen": {
+    "breadcrumbs": [
+      "Search",
+      "Possible Match"
+    ],
+    "headingPrefix": "No Context:"
+  }
+}

@@ -44,23 +44,25 @@
                                                                                             
                                                                                             <option value="Policy">
                                                                                                 Policy</option>
-                                                                                            <option value="Agent">
+                                            <option value="Agent">
                                                                                                 Agent</option>
-                                                                                            <option value="Client">
+                                            <option value="Client">
                                                                                                 Client</option>
-                                                                                            <option value="Company">
+                                            <option value="Company">
                                                                                                 Company</option>
-                                                                                            <option value="Other">
-                                                                                                Other</option>
-                                                                                            <option value="Unallocated Payment">
+                                            <option value="Unallocated Payment">
                                                                                                 Unallocated
                                                                                                 Payment</option>
+                                            <option value="Possible Match">
+                                                                                                Possible Match</option>
+                                            <option value="Other">
+                                                                                                Other</option>
                                                                                         </select>
                                                                                     </div>
                                                                                     <div class="form-group search--input-reference-number search--inline-control">
                                                                                         <label for="PolicySearch_ReferenceNumber">Reference
                                                                                             Number</label>
-                                                                                        <input autocomplete="off" autofocus="" class="form-control" formcontrolname="referenceNumber" id="PolicySearch_ReferenceNumber" name="referenceNumber" style="text-transform: capitalize" type="input" [value]="search.term()" (input)="onReferenceInput($event)" placeholder="Enter Policy Number">
+                                                                                        <input autocomplete="off" autofocus="" class="form-control" formcontrolname="referenceNumber" id="PolicySearch_ReferenceNumber" name="referenceNumber" style="text-transform: capitalize" type="input" [value]="search.term()" (input)="onReferenceInput($event)" [placeholder]="search.referencePlaceholder()">
                                                                                     </div>
                                                                                     <div>
                                                                                         <div class="row form-group" hidden="">

@@ -39,14 +39,18 @@
         <div class="container-fluid toolbar-searchform"> <form class="primary-field" novalidate="" (submit)="onSearch($event)">
         <div class="form-group"> <label for="MenuSearch_SearchCriteria">Search Criteria</label>
         <select class="form-control" formcontrolname="searchCriteria" id="MenuSearch_SearchCriteria" [value]="search.criteria()" (change)="onCriteriaChange($event)">
-        <!----> <option value="Policy">Policy</option> <option value="Agent">Agent</option>
-        <option value="Client">Client</option> <option value="Company">Company</option>
-        <option value="Other">Other</option>
-        <!-- Unallocated Payment is here to match the call centre form: both bind to
-             the one criteria, so a criteria missing from this list would show blank. -->
-        <option value="Unallocated Payment">Unallocated Payment</option> </select> </div> <div class="form-group">
+        <!-- The same criteria as the call centre form, in the same order: both forms
+         bind to the one criteria, so a value missing here, or a different order,
+         would show as a blank or misleading dropdown. -->
+        <!----> <option value="Policy">Policy</option>
+        <option value="Agent">Agent</option>
+        <option value="Client">Client</option>
+        <option value="Company">Company</option>
+        <option value="Unallocated Payment">Unallocated Payment</option>
+        <option value="Possible Match">Possible Match</option>
+        <option value="Other">Other</option> </select> </div> <div class="form-group">
         <label for="MenuSearch_ReferenceNumber">Reference Number</label>
-        <input autocomplete="off" autofocus="" class="form-control" formcontrolname="referenceNumber" id="MenuSearch_ReferenceNumber" name="referenceNumber" type="input" placeholder="Enter Policy Number" [value]="search.term()" (input)="onReferenceInput($event)">
+        <input autocomplete="off" autofocus="" class="form-control" formcontrolname="referenceNumber" id="MenuSearch_ReferenceNumber" name="referenceNumber" type="input" [placeholder]="search.referencePlaceholder()" [value]="search.term()" (input)="onReferenceInput($event)">
         </div>
         <button class="btn btn-success policy-search-submit" id="MenuSearch_SearchButton" type="submit" [disabled]="!search.canSearch()">Search</button>
         <button class="btn btn-danger policy-search-clear" id="MenuSearch_ClearButton" type="button" (click)="search.clear()">Clear</button>

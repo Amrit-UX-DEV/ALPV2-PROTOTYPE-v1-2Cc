@@ -34,6 +34,25 @@ export class ContextSearchService {
    */
   readonly canSearch = computed(() => this.term().trim().length > 0 && !this.searching());
 
+  /**
+   * What the reference field prompts for, following the criteria.
+   *
+   * A rep who has switched to Agent should not be told to enter a policy number.
+   * Both forms bind to this, so the prompt cannot say one thing in the left menu
+   * and another in the widget.
+   *
+   * Most criteria are answered with a number of their own name. The two that are
+   * not say what they actually take: Client is matched on part of a name rather
+   * than on a reference, and "Enter Other Number" would be nonsense.
+   */
+  readonly referencePlaceholder = computed(() => {
+    const criteria = this.criteria();
+    if (criteria === 'Client') return 'Enter Client Name';
+    if (criteria === 'Possible Match') return 'Enter Possible Match Number';
+    if (criteria === 'Other') return 'Enter Reference Number';
+    return `Enter ${criteria} Number`;
+  });
+
   private readonly missed = signal(false);
   private readonly missedTerm = signal('');
   private readonly missedCriteria = signal('');
@@ -82,7 +101,12 @@ export class ContextSearchService {
     this.missedTerm.set(failed ? term : '');
     this.missedCriteria.set(failed ? criteria : '');
 
-    if (result === 'found') this.views.show('group-summary');
+    if (result === 'found') {
+      // Which screen answers a search depends on what was found, not on which
+      // form ran it: a policy has a group summary, a possible match has only
+      // the partial data held against the reference.
+      this.views.show(this.ctx.kind() === 'possible-match' ? 'search-summary' : 'group-summary');
+    }
   }
 
   /** Empties the search and returns the app to no context. */
