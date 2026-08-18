@@ -67,7 +67,7 @@
   --alp-color-green-800: #065f46;
   --alp-color-green-900: #064e3b;
 
-  /* Amber / Orange */
+  /* Amber */
   --alp-color-amber-50: #fffbeb;
   --alp-color-amber-100: #fef3c7;
   --alp-color-amber-200: #fde68a;
@@ -78,6 +78,19 @@
   --alp-color-amber-700: #b45309;
   --alp-color-amber-800: #92400e;
   --alp-color-amber-900: #78350f;
+
+  /* Orange — the warm side of amber, which runs gold at its light end and is
+     wanted here for edges and fills that have to read as orange */
+  --alp-color-orange-50: #fff7ed;
+  --alp-color-orange-100: #ffedd5;
+  --alp-color-orange-200: #fed7aa;
+  --alp-color-orange-300: #fdba74;
+  --alp-color-orange-400: #fb923c;
+  --alp-color-orange-500: #f97316;
+  --alp-color-orange-600: #ea580c;
+  --alp-color-orange-700: #c2410c;
+  --alp-color-orange-800: #9a3412;
+  --alp-color-orange-900: #7c2d12;
 
   /* Red */
   --alp-color-red-50: #fef2f2;

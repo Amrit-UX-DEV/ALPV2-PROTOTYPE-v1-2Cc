@@ -276,7 +276,10 @@
   grid-template-rows: auto auto 1fr;
   gap: var(--alp-space-2);
   padding: var(--alp-space-3) var(--alp-space-4);
-  border: 1px solid var(--alp-color-border);
+  /* An orange tint, so a tile that holds a difference is edged in the warm
+     colour of the group it sits in rather than the standing grey. It carries no
+     meaning on its own; the group, the chip and the labels all say what this is. */
+  border: 1px solid var(--alp-color-border-warning);
   border-radius: var(--alp-radius-md);
   background: var(--alp-color-surface);
   box-shadow: var(--alp-shadow-xs);
@@ -321,12 +324,16 @@
   padding: var(--alp-space-2) var(--alp-space-4);
 }
 
-.alp-search-summary__diff-value--theirs {
-  background: var(--alp-color-slate-100);
+/* Both sides on the same fill, so neither is set above the other: the labels say
+   whose value it is, and a hairline between them keeps them as two bands rather
+   than one block of text. */
+.alp-search-summary__diff-value--theirs,
+.alp-search-summary__diff-value--ours {
+  background: var(--alp-color-slate-50);
 }
 
 .alp-search-summary__diff-value--ours {
-  background: var(--alp-color-blue-50);
+  border-top: 1px solid var(--alp-color-border);
 }
 
 /* The last band closes the tile off, so it takes the tile's bottom corners. */

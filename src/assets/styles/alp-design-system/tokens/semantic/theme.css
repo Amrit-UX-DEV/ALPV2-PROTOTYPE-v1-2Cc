@@ -22,6 +22,9 @@
   --alp-color-border: var(--alp-color-slate-200);
   --alp-color-border-strong: var(--alp-color-slate-300);
   --alp-color-border-focus: var(--alp-color-brand-600);
+  /* An edge on something that wants attention without raising an alarm: a tint
+     rather than a signal, and never the only thing saying so. */
+  --alp-color-border-warning: var(--alp-color-orange-300);
 
   /* Text */
   --alp-color-text: var(--alp-color-slate-900);
