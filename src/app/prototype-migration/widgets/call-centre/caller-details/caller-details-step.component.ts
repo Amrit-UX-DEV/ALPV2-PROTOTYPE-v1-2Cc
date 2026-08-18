@@ -2,9 +2,8 @@ import { Component, ViewChild, CUSTOM_ELEMENTS_SCHEMA, inject, signal } from '@a
 
 import { CallerSelectorComponent } from '../components/caller-selector/caller-selector.component';
 import { RecentCallersComponent, RecentCaller } from '../components/recent-callers/recent-callers.component';
-import { TransferCallPopoverComponent } from '../components/transfer-call-popover/transfer-call-popover.component';
 import { PrototypeContextService } from '../../../context/prototype-context.service';
-import { AppViewService } from '../../../ui/app-view.service';
+import { ContextSearchService } from '../../../context/context-search.service';
 
 /**
  * Step 1 of the call centre journey: find the policy, then identify the caller.
@@ -22,7 +21,7 @@ import { AppViewService } from '../../../ui/app-view.service';
 @Component({
   selector: 'li[alpha-caller-details-step]',
   standalone: true,
-  imports: [CallerSelectorComponent, RecentCallersComponent, TransferCallPopoverComponent],
+  imports: [CallerSelectorComponent, RecentCallersComponent],
   templateUrl: './caller-details-step.component.html',
   styleUrl: './caller-details-step.component.css',
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
@@ -31,76 +30,40 @@ export class CallerDetailsStepComponent {
   /** Read in the template as ctx.policy() and ctx.hasPolicy(). */
   protected readonly ctx = inject(PrototypeContextService);
 
-  private readonly views = inject(AppViewService);
-
   /**
-   * Both are absent while the caller details section is hidden, so neither can
-   * be asserted as always present.
+   * The search this form drives, shared with the left menu search.
+   *
+   * The form binds to the service rather than to its own signals, so a search
+   * run from the left menu shows here and a search run here shows there.
    */
-  @ViewChild(RecentCallersComponent) recentCallersComponent?: RecentCallersComponent;
+  protected readonly search = inject(ContextSearchService);
+
+  /** Absent while the caller details section is hidden, so it cannot be asserted. */
   @ViewChild(CallerSelectorComponent) callerSelector?: CallerSelectorComponent;
-
-  showTransferPopover = false;
-
-  /** Matches the Search Criteria dropdown, which opens on Policy. */
-  protected readonly searchCriteria = signal('Policy');
-
-  /** Empty until the rep keys something in. */
-  protected readonly referenceNumber = signal('');
-
-  protected readonly searching = signal(false);
-
-  /** Set only after a search that matched nothing, so the form starts silent. */
-  protected readonly notFound = signal(false);
-
-  /** What was keyed for the search that failed, for the message. */
-  protected readonly notFoundTerm = signal('');
 
   /** Whoever the rep picked, for the collapsed step summary. */
   protected readonly selectedCaller = signal<{ name: string; role: string } | null>(null);
 
   protected onCriteriaChange(event: Event): void {
-    this.searchCriteria.set((event.target as HTMLSelectElement).value);
+    this.search.setCriteria((event.target as HTMLSelectElement).value);
   }
 
   protected onReferenceInput(event: Event): void {
-    this.referenceNumber.set((event.target as HTMLInputElement).value);
-    this.notFound.set(false);
+    this.search.setTerm((event.target as HTMLInputElement).value);
   }
 
-  /**
-   * Resolves what was keyed against the context registry.
-   *
-   * A hit becomes the app's context, which is what makes the group summary show
-   * the same policy: both read the one context rather than passing a number
-   * between them.
-   */
   protected async onSearch(event?: Event): Promise<void> {
     event?.preventDefault();
+    await this.search.run();
 
-    const term = this.referenceNumber().trim();
-    if (!term) return;
-
-    this.searching.set(true);
-    const result = await this.ctx.searchAndActivate(this.searchCriteria(), term);
-    this.searching.set(false);
-
-    this.notFound.set(result === 'not-found');
-    this.notFoundTerm.set(result === 'not-found' ? term : '');
-
-    if (result === 'found') {
-      this.selectedCaller.set(null);
-      this.views.show('group-summary');
-    }
+    // A different policy means a different set of people to identify.
+    if (this.ctx.hasPolicy()) this.selectedCaller.set(null);
   }
 
   /** The cross on the policy tile: drops the policy and everything under it. */
   protected clearSearch(): void {
-    this.referenceNumber.set('');
-    this.notFound.set(false);
-    this.notFoundTerm.set('');
     this.selectedCaller.set(null);
-    this.ctx.clear();
+    this.search.clear();
   }
 
   /**
@@ -117,13 +80,5 @@ export class CallerDetailsStepComponent {
 
   protected onCallerSelected(caller: { name: string; role: string } | null): void {
     this.selectedCaller.set(caller);
-  }
-
-  handleTransferCall(data: { reason: string; notes: string }) {
-    if (this.recentCallersComponent) {
-      this.recentCallersComponent.transferCallWithReason(data.reason, data.notes);
-    } else {
-      console.warn('RecentCallersComponent not found');
-    }
   }
 }

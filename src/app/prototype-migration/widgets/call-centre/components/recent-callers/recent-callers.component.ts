@@ -1,5 +1,7 @@
-import { Component, Output, EventEmitter, OnInit, signal, computed, input } from '@angular/core';
+import { Component, Output, EventEmitter, OnInit, inject, signal, computed, input } from '@angular/core';
 import { CommonModule } from '@angular/common';
+
+import { CallTransferService, TransferredCall } from '../../call-transfer.service';
 
 export interface RecentCaller {
   id: string;
@@ -15,6 +17,8 @@ export interface RecentCaller {
   templateUrl: './recent-callers.component.html'
 })
 export class RecentCallersComponent implements OnInit {
+
+  private readonly transfers = inject(CallTransferService);
 
   /**
    * The policy these callers belong to.
@@ -46,8 +50,12 @@ export class RecentCallersComponent implements OnInit {
   readonly currentIndex = signal(0);
   readonly showFullList = signal(false);
 
-  // === NEW: Transferred Calls ===
-  readonly transferredCalls = signal<any[]>([]);
+  /**
+   * Transferred calls belong to the service, not to this component: they are
+   * started from the contact information and call information steps and only
+   * displayed here.
+   */
+  readonly transferredCalls = this.transfers.calls;
 
   readonly currentCaller = computed(() => {
     const callers = this.recentCallers();
@@ -60,10 +68,7 @@ export class RecentCallersComponent implements OnInit {
 
   readonly totalCallers = computed(() => this.recentCallers().length);
 
-  // New: Check if any transferred call needs DPA (after 2 minutes)
-  readonly needsDpa = computed(() => {
-    return this.transferredCalls().some(call => call.elapsedSeconds() >= 120);
-  });
+  readonly needsDpa = this.transfers.needsDpa;
 
   async ngOnInit() {
     try {
@@ -78,37 +83,6 @@ export class RecentCallersComponent implements OnInit {
     }
   }
 
-  // ==================== TRANSFER CALL WITH REASON (from popover) ====================
-  transferCallWithReason(reason: string, notes: string = '') {
-    if (this.transferredCalls().length > 0) {
-      console.log('Only one transferred call allowed at a time.');
-      return;
-    }
-
-    const newTransferred = {
-      id: Date.now().toString(),
-      name: 'Mr Joe Bloggs',
-      role: 'Policy Holder, Life 1',
-      type: 'transferred',
-      reason: reason,
-      notes: notes,
-      transferredAt: new Date(),
-      elapsedSeconds: signal(0),        // Count UP
-      status: 'active'
-    };
-
-    this.transferredCalls.set([newTransferred]);
-    this.startElapsedTimer(newTransferred);
-    
-    console.log('✅ Transferred call with reason:', reason);
-  }
-
-  private startElapsedTimer(call: any) {
-    const interval = setInterval(() => {
-      call.elapsedSeconds.update((secs: number) => secs + 1);
-    }, 1000);
-  }
-
   // Format elapsed time (minutes ago, hours ago, days ago...)
   getElapsedTime(seconds: number): string {
     if (seconds < 60) return `${seconds} seconds ago`;
@@ -118,12 +92,11 @@ export class RecentCallersComponent implements OnInit {
     return days === 1 ? '1 day ago' : `${days} days ago`;
   }
 
-  bailoutTransferredCall(call: any) {
-    this.transferredCalls.update(calls => calls.filter(c => c.id !== call.id));
-    console.log('Bailout: Transferred call removed');
+  bailoutTransferredCall(call: TransferredCall) {
+    this.transfers.bailout(call);
   }
 
-  resumeTransferredCall(call: any) {
+  resumeTransferredCall(call: TransferredCall) {
     this.callerSelected.emit({
       id: call.id,
       name: call.name,
@@ -182,8 +155,7 @@ export class RecentCallersComponent implements OnInit {
     );
   }
 
-    // Simple wrapper for backward compatibility (your main demo button)
     transferCall() {
-      this.transferCallWithReason('General Transfer');
+      this.transfers.transfer('General Transfer');
     }
 }
