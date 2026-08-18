@@ -20,6 +20,11 @@ import { PrototypeContextService } from '../../../context/prototype-context.serv
  * the policy number, status, product, territory, currency and the Extra Care
  * indicator all come from the context JSON now. The rest of the region is
  * still static markup with 20 alpha-ui-* hooks that jQuery binds after render.
+ *
+ * The heading reads the policy the context says to show, not simply the one it
+ * resolved: a possible match holds a policy for DPA but is not on it yet, so its
+ * context asks for the summary to be left off and the heading names the possible
+ * match alone. Where a context has no policy at all, its label stands in.
  */
 @Component({
   selector: 'div[alpha-app-header]',

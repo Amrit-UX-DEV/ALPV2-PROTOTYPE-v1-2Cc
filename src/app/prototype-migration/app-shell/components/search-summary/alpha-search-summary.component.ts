@@ -344,8 +344,16 @@ export class AlphaSearchSummaryComponent {
     return fields.map((field) => field.label).join(' · ');
   }
 
-  /** Takes the rep into the group summary, where the call carries on. */
-  protected openGroupSummary(): void {
+  /**
+   * Takes the rep into the group summary, where the call carries on.
+   *
+   * The possible match is left behind rather than carried along: deciding this
+   * record is the caller is deciding to work their policy, so the app moves into
+   * that policy's own context and the reference, the heading, the breadcrumb and
+   * the other platform's record all go with the context that held them.
+   */
+  protected async openGroupSummary(): Promise<void> {
+    await this.ctx.activatePolicy(this.ctx.pensionReference());
     this.views.show('group-summary');
   }
 

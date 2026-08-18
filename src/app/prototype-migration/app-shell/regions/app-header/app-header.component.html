@@ -130,14 +130,15 @@
   </nav>
   <div class="app-page--heading">
     <h1>
-      {{ ctx.screen().headingPrefix }} @if (ctx.policy(); as policy) { <span class="context-info">
+      {{ ctx.screen().headingPrefix }} @if (ctx.headerPolicy(); as policy) { <span class="context-info">
         <span>Policy {{ policy.number }}</span>
         <span class="ui-data-indicator ui-status active">{{ policy.status }}</span>, <span>
           {{ policy.productName }} </span> <span>{{ policy.territory }},</span>
         <span class="ui-data-indicator ui-app-currency ui-status active">{{ policy.currency.label }}
           <span class="ui-currency-icon">{{ policy.currency.symbol }}</span></span>
         @if (ctx.hasExtraCareClient()) { <span class="ui-data-indicator vulnerable"> Extra Care Client
-        </span> } </span> } @else { <span class="context-info"> <span>{{ ctx.label() }}</span> </span> }
+        </span> } </span> } @else if (!ctx.hasPolicy()) { <span class="context-info">
+        <span>{{ ctx.label() }}</span> </span> }
     </h1>
   </div>
 </div>

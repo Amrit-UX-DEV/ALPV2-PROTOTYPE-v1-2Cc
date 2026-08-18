@@ -10,6 +10,15 @@
    after the policy number, where legacy puts them. The
    layout inside is this tile's, on design tokens.
 
+   The structure is legacy's too. .ui-policy-tile--long is a
+   flex row of a bordered body and a 50px full-height button
+   at its end, which is why the body's radius is 6px on the
+   left only: the button carries the right corners. The
+   button's colours, width and 22px icon are
+   button.ui-policy-open's own values, and the icon reads
+   3.6:1 at rest and 3.02:1 hovered, so it clears the 3:1 a
+   graphical object needs without being changed.
+
    Two deliberate differences, both to clear AA:
    - In force reads #49a94f on the pale blue pill, 2.58:1.
      Darkened within the hue to #2e6e33, which is 5.37:1.
@@ -34,29 +43,81 @@
   --alp-policy-tile-count-border: rgb(215, 215, 215);
   --alp-policy-tile-count-label: #393a3a;
   --alp-policy-tile-count-value: #3c4981;
+  --alp-policy-tile-open-bg: #f7fafd;
+  --alp-policy-tile-open-bg-hover: rgb(223, 231, 239);
+  --alp-policy-tile-open-border: #3f86d3;
+  --alp-policy-tile-open-divider: #f0f0f0;
+  --alp-policy-tile-open-icon: #3f86d3;
 
   display: flex;
+  align-items: stretch;
+  color: var(--alp-policy-tile-text);
+}
+
+/* The bordered part of the tile. The action button is its own bordered box at
+   the end of the row, so the radius here is on the left corners only. */
+.alp-policy-tile__body {
+  display: flex;
+  flex: 1;
   flex-direction: column;
   gap: var(--alp-space-4);
+  min-width: 0;
   padding: var(--alp-space-4);
   border: 0.1rem solid var(--alp-policy-tile-border);
   border-left: 6px solid var(--alp-policy-tile-edge);
   border-radius: 6px 0 0 6px;
   background-color: var(--alp-policy-tile-surface);
-  color: var(--alp-policy-tile-text);
+}
+
+/* No action, no button to carry the right corners, so the tile closes itself.
+   Legacy does the same for a row with nothing to open. */
+.alp-policy-tile__body:only-child {
+  border-radius: 6px;
 }
 
 /* What the legacy tile's state--ui-active does to its border. The left edge is
    not part of that: on the group summary it belongs to the policies column, so
    it stays blue whatever the policy's status. */
-.alp-policy-tile--active {
+.alp-policy-tile--active .alp-policy-tile__body {
   border-top-color: var(--alp-policy-tile-border-active);
   border-right-color: var(--alp-policy-tile-border-active);
   border-bottom-color: var(--alp-policy-tile-border-active);
 }
 
-.alp-policy-tile--selected {
+.alp-policy-tile--selected .alp-policy-tile__body {
   background-color: var(--alp-policy-tile-surface-selected);
+}
+
+/* The action, as the group summary does it: a fixed 50px column the full height
+   of the tile, with the chevron and nothing else. The label it would have
+   carried is its accessible name and its tooltip instead, which is what lets it
+   stay this narrow. */
+.alp-policy-tile__open {
+  display: flex;
+  flex: 0 0 50px;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  border: 0.1rem solid var(--alp-policy-tile-open-border);
+  border-left: 2px solid var(--alp-policy-tile-open-divider);
+  border-radius: 0 6px 6px 0;
+  background-color: var(--alp-policy-tile-open-bg);
+  color: var(--alp-policy-tile-open-icon);
+  cursor: pointer;
+}
+
+.alp-policy-tile__open:hover {
+  background-color: var(--alp-policy-tile-open-bg-hover);
+}
+
+.alp-policy-tile__open:focus-visible {
+  outline: 2px solid var(--alp-color-border-focus);
+  outline-offset: 2px;
+}
+
+/* 22px, which is the size legacy sets on the chevron in its own button. */
+.alp-policy-tile__open i {
+  font-size: 22px;
 }
 
 .alp-policy-tile__head {
@@ -174,9 +235,4 @@
   font-size: var(--alp-font-size-sm);
   font-weight: var(--alp-font-weight-semibold);
   color: var(--alp-policy-tile-text);
-}
-
-.alp-policy-tile__actions {
-  display: flex;
-  justify-content: flex-end;
 }

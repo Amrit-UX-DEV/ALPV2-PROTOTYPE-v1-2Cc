@@ -3,50 +3,55 @@
   [class.alp-policy-tile--active]="active()"
   [class.alp-policy-tile--selected]="selected()"
 >
-  <div class="alp-policy-tile__head">
-    <div class="alp-policy-tile__reference">
-      <span class="alp-policy-tile__label">Policy Number</span>
-      <div class="alp-policy-tile__number-line">
-        <strong class="alp-policy-tile__number">{{ policy().number }}</strong>
-        <div class="alp-policy-tile__indicators">
-          <span class="alp-policy-tile__indicator alp-policy-tile__indicator--status">
-            {{ policy().status }}
-          </span>
-          @for (flag of flags(); track flag) {
-            <span class="alp-policy-tile__indicator alp-policy-tile__indicator--pension">{{ flag }}</span>
-          }
-          @for (signpost of signposts(); track signpost.label) {
-            <span class="alp-policy-tile__indicator alp-policy-tile__indicator--count">
-              <span class="alp-policy-tile__count-label">{{ signpost.label }}:</span>
-              <span class="alp-policy-tile__count-value">{{ signpost.value }}</span>
+  <div class="alp-policy-tile__body">
+    <div class="alp-policy-tile__head">
+      <div class="alp-policy-tile__reference">
+        <span class="alp-policy-tile__label">Policy Number</span>
+        <div class="alp-policy-tile__number-line">
+          <strong class="alp-policy-tile__number">{{ policy().number }}</strong>
+          <div class="alp-policy-tile__indicators">
+            <span class="alp-policy-tile__indicator alp-policy-tile__indicator--status">
+              {{ policy().status }}
             </span>
-          }
+            @for (flag of flags(); track flag) {
+              <span class="alp-policy-tile__indicator alp-policy-tile__indicator--pension">{{ flag }}</span>
+            }
+            @for (signpost of signposts(); track signpost.label) {
+              <span class="alp-policy-tile__indicator alp-policy-tile__indicator--count">
+                <span class="alp-policy-tile__count-label">{{ signpost.label }}:</span>
+                <span class="alp-policy-tile__count-value">{{ signpost.value }}</span>
+              </span>
+            }
+          </div>
         </div>
       </div>
     </div>
+
+    <dl class="alp-policy-tile__facts">
+      <div class="alp-policy-tile__fact">
+        <dt class="alp-policy-tile__label">Company</dt>
+        <dd class="alp-policy-tile__value">{{ policy().company }}</dd>
+      </div>
+      <div class="alp-policy-tile__fact">
+        <dt class="alp-policy-tile__label">Policy Type</dt>
+        <dd class="alp-policy-tile__value">{{ policy().policyType }}</dd>
+      </div>
+      <div class="alp-policy-tile__fact">
+        <dt class="alp-policy-tile__label">Product Description</dt>
+        <dd class="alp-policy-tile__value">{{ policy().productName }}</dd>
+      </div>
+    </dl>
   </div>
 
-  <dl class="alp-policy-tile__facts">
-    <div class="alp-policy-tile__fact">
-      <dt class="alp-policy-tile__label">Company</dt>
-      <dd class="alp-policy-tile__value">{{ policy().company }}</dd>
-    </div>
-    <div class="alp-policy-tile__fact">
-      <dt class="alp-policy-tile__label">Policy Type</dt>
-      <dd class="alp-policy-tile__value">{{ policy().policyType }}</dd>
-    </div>
-    <div class="alp-policy-tile__fact">
-      <dt class="alp-policy-tile__label">Product Description</dt>
-      <dd class="alp-policy-tile__value">{{ policy().productName }}</dd>
-    </div>
-  </dl>
-
   @if (actionLabel()) {
-    <div class="alp-policy-tile__actions">
-      <button type="button" class="alp-btn alp-btn--primary" (click)="action.emit()">
-        {{ actionLabel() }}
-        <i aria-hidden="true" class="fa fa-chevron-right"></i>
-      </button>
-    </div>
+    <button
+      type="button"
+      class="alp-policy-tile__open"
+      [attr.aria-label]="actionLabel()"
+      [title]="actionLabel()"
+      (click)="action.emit()"
+    >
+      <i aria-hidden="true" class="fas fa-chevron-right"></i>
+    </button>
   }
 </div>

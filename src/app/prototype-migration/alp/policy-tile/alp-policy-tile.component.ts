@@ -49,8 +49,10 @@ export class AlpPolicyTileComponent {
   /**
    * Empty means no action, which is what makes the tile read-only.
    *
-   * The action takes the rep off this screen and onto the policy's own, which is
-   * why the button carries a forward chevron.
+   * The label is not drawn: the action is the group summary's own full-height
+   * chevron button at the end of the tile, and the label becomes its accessible
+   * name and its tooltip. So it still has to read as an instruction, e.g. 'View
+   * Group Summary', for anyone hearing it rather than seeing the chevron.
    */
   readonly actionLabel = input('');
 
