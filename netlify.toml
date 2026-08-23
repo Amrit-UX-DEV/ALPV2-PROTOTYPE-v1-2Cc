@@ -1,7 +1,11 @@
+# Kept while Netlify is still wired up. The build command is the same npm
+# script every host runs, so no provider has its own idea of how to build this.
 [build]
-command = "npx ng build --configuration production"
+command = "npm run build"
 publish = "dist/demo/browser"
 
+# Cloudflare reads src/_redirects, which the build copies into the output and
+# which says the same thing as the rule below.
 [[redirects]]
   from = "/*"
   to = "/index.html"

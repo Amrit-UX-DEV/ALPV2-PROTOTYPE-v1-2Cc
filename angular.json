@@ -9,6 +9,7 @@
       "architect": {
         "build": {
           "builder": "@angular/build:application",
+          "defaultConfiguration": "production",
           "configurations": {
             "development": {
               "extractLicenses": false,
@@ -31,7 +32,12 @@
               "src/scripts",
               "src/documents",
               "src/assets/data",
-              "src/data/call-rep-scripts"
+              "src/data/call-rep-scripts",
+              {
+                "glob": "_redirects",
+                "input": "src",
+                "output": "/"
+              }
             ],
             "index": "src/index.html",
             "browser": "src/main.ts",
