@@ -1,0 +1,918 @@
+/* ------------------------------------------------------ */
+/* UI GRID -- Ver 01 */
+/* ------------------------------------------------------ */
+
+.ui-grid-container {
+    font-family: "Helvetica Neue",sans-serif;
+    display: grid;
+    font-size:11.7px;
+    overflow: auto;
+  }
+  
+  .ui-grid-header,
+  .ui-grid-body,
+  .ui-grid-footer,
+  .ui-row{
+    display:contents;
+  }
+  
+  /* UI Grid Content Shelf */
+  /* ------------------------------------------------------ */
+  
+  section.ui-row--content-shelf {
+    grid-column-start:1;
+    grid-column-end:-1;
+    grid-template-columns:inherit;
+    margin:0;
+  }
+  
+  section.ui-row--content-shelf.shelf-closed{
+    max-height:0;
+    overflow:hidden;
+  }
+  
+  section.ui-row--content-shelf.shelf-open{
+    max-height: 9999px;
+    overflow:hidden;
+  }
+  
+  /* UI Grid Items */
+  /* ------------------------------------------------------ */
+  
+  .ui-grid-header .ui-row .ui-grid-item{
+    display: flex;
+    align-items: center;
+  }
+  
+  .ui-grid-header .ui-row .ui-grid-item{
+    position:sticky;
+    top:0;
+    z-index: 2;
+  }
+  
+  .ui-grid-header .ui-row alpha-grid-filter{
+    display: contents;
+  }
+  
+  .ui-grid-header .ui-row alpha-grid-filter .ui-grid-item{
+    position:sticky;
+    top:0;
+    z-index: 3;
+  }
+  
+  .ui-grid-footer .ui-row .ui-grid-item{
+    display: flex;
+    align-items: center;
+  }
+  
+  .ui-grid-footer .ui-row .ui-grid-item{
+    position:sticky;
+    bottom:-1px;
+    z-index:2;
+  }
+  
+  /* UI Grid Action Bar */
+  /* ------------------------------------------------------ */
+  
+  .ui-grid-header.with-action-bar .ui-action-bar,
+  .ui-grid-footer.with-action-bar .ui-action-bar{
+    display: flex;
+    grid-column-start:1;
+    grid-column-end:-1;
+    position: sticky;
+    z-index:2;
+    height:38px;
+  }
+  
+  .ui-grid-header.with-action-bar .ui-action-bar{
+    top: 0;
+  }
+  
+  .ui-grid-header.with-action-bar .ui-grid-item{
+    top:38px;
+  }
+  
+  .ui-grid-footer.with-action-bar .ui-action-bar{
+    bottom: 0;
+    z-index: 3;
+  }
+  
+  .ui-grid-footer.with-action-bar .ui-grid-item{
+    bottom:38px;
+    margin-bottom: 0;
+  }
+  
+  /* UI Grid Utility Helpers */
+  /* ------------------------------------------------------ */
+  
+  /* Scroll Rules */
+  .grid-no-scroll{
+    overflow:initial;
+  }
+  
+  /* Text Align Rules */
+  .grid-text--left{
+    text-align: left;
+  }
+  
+  .grid-text--center{
+    text-align: center;
+  }
+  
+  .grid-text--right{
+    text-align: right;
+  }
+  
+  /* Flex Position Rules */
+  [class*="grid-flex--"]{
+    display:flex;
+  }
+  
+  /* Flex Justify */
+  .grid-flex--justify-left{
+    justify-content:left;
+  }
+  
+  .grid-flex--justify-center{
+    justify-content:center;
+  }
+  
+  .grid-flex--justify-right{
+    justify-content:right;
+  }
+  
+  /* Flex Align */
+  .grid-flex--align-left{
+    align-items:left;
+  }
+  
+  .grid-flex--align-center{
+    align-items:center;
+  }
+  
+  .grid-flex--align-right{
+    align-items:right;
+  }
+  
+  /* UI Grid Template Break */
+  /* ------------------------------------------------------ */
+  
+  .ui-row--template-break {
+    display: grid;
+    grid-column-start: 1;
+    grid-column-end: -1;
+    grid-template-columns: inherit;
+    margin: 0;
+  }
+  
+  /* Grid Feedback */
+  .ui-grid-feedback {
+    display: flex;
+    padding: 30px;
+    font-size: 16px;
+    align-items: center;
+    justify-content: center;
+  }
+  
+  /* UI Grid Column Set Up (Equal Spacing Fractions) */
+  /* ------------------------------------------------------ */
+  
+  .grid-col-02{
+    grid-template-columns: repeat(2, 1fr);
+  }
+  
+  .grid-col-03{
+    grid-template-columns: repeat(3, 1fr);
+  }
+  
+  .grid-col-04{
+    grid-template-columns: repeat(4, 1fr);
+  }
+  
+  .grid-col-05{
+    grid-template-columns: repeat(5, 1fr);
+  }
+  
+  .grid-col-06{
+    grid-template-columns: repeat(6, 1fr);
+  }
+  
+  .grid-col-07{
+    grid-template-columns: repeat(7, 1fr);
+  }
+  
+  .grid-col-08{
+    grid-template-columns: repeat(8, 1fr);
+  }
+  
+  .grid-col-09{
+    grid-template-columns: repeat(9, 1fr);
+  }
+  
+  .grid-col-10{
+    grid-template-columns: repeat(10, 1fr);
+  }
+  
+  .grid-col-11{
+    grid-template-columns: repeat(11, 1fr);
+  }
+  
+  .grid-col-12{
+    grid-template-columns: repeat(12, 1fr);
+  }
+  
+  .grid-col-13{
+    grid-template-columns: repeat(13, 1fr);
+  }
+  
+  .grid-col-14{
+    grid-template-columns: repeat(14, 1fr);
+  }
+  
+  .grid-col-15{
+    grid-template-columns: repeat(15, 1fr);
+  }
+  
+  .grid-col-16{
+    grid-template-columns: repeat(16, 1fr);
+  }
+  
+  .grid-col-17{
+    grid-template-columns: repeat(17, 1fr);
+  }
+  
+  .grid-col-18{
+    grid-template-columns: repeat(18, 1fr);
+  }
+  
+  .grid-col-19{
+    grid-template-columns: repeat(19, 1fr);
+  }
+  
+  .grid-col-20{
+    grid-template-columns: repeat(20, 1fr);
+  }
+  
+  /* UI Grid Column Spans */
+  /* ------------------------------------------------------ */
+  .grid-col-span-01
+  {
+    grid-column:span 1;
+  }
+  
+  .grid-col-span-02
+  {
+    grid-column:span 2;
+  }
+  
+  .grid-col-span-03
+  {
+    grid-column:span 3;
+  }
+  
+  .grid-col-span-04
+  {
+    grid-column:span 4;
+  }
+  
+  .grid-col-span-05
+  {
+    grid-column:span 5;
+  }
+  
+  .grid-col-span-06
+  {
+    grid-column:span 6;
+  }
+  
+  .grid-col-span-07
+  {
+    grid-column:span 7;
+  }
+  
+  .grid-col-span-08
+  {
+    grid-column:span 8;
+  }
+  
+  .grid-col-span-09
+  {
+    grid-column:span 9;
+  }
+  
+  .grid-col-span-10
+  {
+    grid-column:span 10;
+  }
+  
+  .grid-col-span-11
+  {
+    grid-column:span 11;
+  }
+  
+  .grid-col-span-12
+  {
+    grid-column:span 12;
+  }
+  
+  .grid-col-span-13
+  {
+    grid-column:span 13;
+  }
+  
+  .grid-col-span-14
+  {
+    grid-column:span 14;
+  }
+  
+  .grid-col-span-15
+  {
+    grid-column:span 15;
+  }
+  
+  .grid-col-span-16
+  {
+    grid-column:span 16;
+  }
+  
+  .grid-col-span-17
+  {
+    grid-column:span 17;
+  }
+  
+  .grid-col-span-18
+  {
+    grid-column:span 18;
+  }
+  
+  .grid-col-span-19
+  {
+    grid-column:span 19;
+  }
+  
+  .grid-col-span-20
+  {
+    grid-column:span 20;
+  }
+  
+  
+  /* UI Grid Height */
+  /* ------------------------------------------------------ */
+  
+  .grid-height-small
+  {
+    max-height:200px;
+    overflow:auto;
+  }
+  
+  .grid-height-medium
+  {
+    max-height:300px;
+    overflow:auto;
+  }
+  
+  .grid-height-large
+  {
+    max-height:400px;
+    overflow:auto;
+  }
+  
+  .grid-height-xlarge
+  {
+    max-height:600px;
+    overflow:auto;
+  }
+  
+  .grid-height-calendar-year
+  {
+    max-height:540px;
+    overflow:auto;
+  }
+  
+  /* UI Grid Filter */
+  /* ------------------------------------------------------ */
+  
+  /* Main Filter Container*/
+  .ui-grid-filter {
+    position:relative;
+    z-index: 1;
+    margin-left: auto;
+  }
+  .ui-grid-filter:has(.filter-open) {
+    z-index: 1001;
+  }
+  .ui-grid-header .ui-row:has(.filter-open) alpha-grid-filter .ui-grid-item {
+    z-index: 1;
+  }
+  .ui-grid-header .ui-row:has(.filter-open) alpha-grid-filter:has(.filter-open) .ui-grid-item {
+    z-index: 1002;
+  }
+  
+  /* Filter Button */
+  button.ui-grid-filter--menu-btn {
+    outline: 0px dashed #222;
+    border-radius: 30px;
+    display: flex;
+    box-shadow: 0px 4px 5px -4px rgb(0 0 0 / 40%);
+    color: #222;
+    font-weight: normal;
+    border: 0.1rem solid #85b2e2;
+    background-color: #fff;
+    position: relative;
+    cursor: pointer;
+    text-align: center;
+    height:26px;
+    width:26px;
+    z-index:1;
+    align-items: center;
+    justify-content: center;
+    font-size: 13px;
+    user-select:none;
+    padding-top:2px;
+    padding-right:0;
+    padding-bottom:0;
+    padding-left:0;
+  }
+  
+  /* Hover State */
+  button.ui-grid-filter--menu-btn:hover {
+    transition: all 0.15s ease-in-out;
+    transform: scale(0.97);
+    background-color: rgb(223, 231, 239);
+  }
+  
+  /* Focus State */
+  button.ui-grid-filter--menu-btn:focus:after {
+    outline: 6px solid #f6c754;
+    content: "";
+    position: absolute;
+    top:0;
+    left:0;
+    width: 100%;
+    height: 100%;
+    z-index: 1;
+  }
+  
+  /* Filter Visibility */
+  button.ui-grid-filter--menu-btn.filter-open + alpha-grid-column-filter .ui-grid-filter--options-container {
+    display:block;
+  }
+  
+  /* Filter Options Container */
+  .ui-grid-filter--options-container {
+    position: absolute;
+    z-index: 10;
+    width: 220px;
+    right: 33%;
+    top:100%;
+    border: 1px solid #85b2e2;
+    border-top: 4px solid #3c4981;
+    background-color: #fff;
+    border-radius: 4px;
+    box-shadow: 3px 4px 4px 0px rgb(34 34 34 / 23%);
+    overflow:hidden;
+    display:none;
+  }
+  
+  .ui-grid-filter--options-container.filter-fixed {
+    position: fixed;
+    z-index: 10;
+    top: initial;
+    right: initial;
+    left: initial;
+    bottom: initial;
+  }
+  
+  /* Filter Options Header */
+  .ui-grid-filter--options-header {
+    padding:7px;
+    display: flex;
+    border-bottom: 1px dashed #85b2e2;
+  }
+  
+  /* Filter Free Text Container */
+  .ui-grid-filter--free-text {
+    flex: 1;
+    display: flex;
+  }
+  
+  /* Filter Free Text Input */
+  input.ui-grid-filter--free-text-input {
+    border:1px solid #85b2e2;
+    box-shadow: inset 0 1px 2px rgb(20 65 92 / 33%), 0 -1px 1px #fff, 0 1px 0 #fff;
+    border-radius: 4px;
+    color: #222;
+    padding: 6px 10px;
+    flex: 1;
+    font-size:inherit;
+  }
+  
+  /* Filter Options Body */
+  .ui-grid-filter--options-body {
+    overflow-x: hidden;
+    overflow-y: auto;
+    max-height: 120px;
+  }
+  
+  /* Filter Option */
+  .ui-grid-filter--option {
+    display: flex;
+  }
+  
+  /* Filter Option Button*/
+  button.ui-grid-filter--option-btn {
+    cursor:pointer;
+    background:transparent;
+    border:0;
+    color: #222;
+    display:flex;
+    text-align:left;
+    padding-top:5px;
+    padding-right:7px;
+    padding-bottom:5px;
+    padding-left:7px;
+    flex: 1;
+    outline:0;
+  }
+  
+  /* Filter Option Button / Hover State */
+  button.ui-grid-filter--option-btn:hover {
+    background-color: rgb(223, 231, 239);
+  }
+  
+  /* Filter Option Button / Select State */
+  button.ui-grid-filter--option-btn .ui-grid-filter--select-state {
+    border:1px solid #222;
+    width:15px;
+    height:15px;
+    display:inline-block;
+    margin-right:5px;
+    flex-shrink:0;
+    border:1px solid #85b2e2;
+    background-color:#fff;
+    border-radius: 2px;
+    position:relative;
+  }
+  
+  /* Focus State */
+  button.ui-grid-filter--option-btn:focus .ui-grid-filter--select-state:after {
+    outline: 4px solid #f6c754;
+    content: "";
+    position: absolute;
+    top:0;
+    left:0;
+    width: 100%;
+    height: 100%;
+    z-index: 1;
+  }
+  
+  /* Filter Option Button / Select State */
+  button.ui-grid-filter--option-btn.option-selected  .ui-grid-filter--select-state:before{
+    font-family:"Font Awesome 5 Free";
+    font-weight:600;
+    content:"\f00c";
+  }
+  
+  
+  /* Filter Option Button / Option Name */
+  button.ui-grid-filter--option-btn .ui-grid-filter--option-name {
+    font-size:inherit;
+  }
+  
+  
+  /* Filter Option Active*/
+  .ui-grid-item.filter-active {
+    position:relative;
+    box-shadow: inset 0 -4px 0 0 #c93ef0;
+  }
+  
+  .ui-grid-item.filter-active:before{
+    font-family:"Font Awesome 5 Free";
+    content:"\f0b0";
+    margin-right:5px;
+    font-weight:bold;
+    color:#c93ef0;
+  }
+  
+  /* UI Grid Theme -- Basic */
+  /* ------------------------------------------------------ */
+  
+  /* Main */
+  .grid-theme--basic{
+    grid-gap: 1px;
+  }
+  
+  /* Grid Items */
+  .grid-theme--basic .ui-grid-item{
+    background-color:#eee;
+    border:1px solid #ddd;
+    padding:10px;
+  }
+  
+  /* UI Grid Theme -- Default */
+  /* ------------------------------------------------------ */
+  
+  /* Main */
+  .grid-theme--default{
+    border:1px solid #9a9a9a;
+    background-color:#fff;
+    border-radius:6px;
+    box-shadow: 0px 4px 5px 1px rgb(34 34 34 / 20%);
+    border-top:6px solid #3c4981;
+    margin:15px 0;
+  }
+  
+  /* Theme Grid Items */
+  .grid-theme--default .ui-grid-item{
+    border-left:1px solid #bbbbbb;
+    padding:10px;
+    min-height: 28px;
+    position: relative;
+  }
+  
+  .grid-theme--default .ui-row >:first-child{
+    border-left:0;
+  }
+  
+  .grid-theme--default .ui-row > alpha-grid-filter:first-child .ui-grid-item{
+    border-left:0;
+  }
+  
+  .grid-theme--default .ui-grid-header .ui-row .ui-grid-item{
+    background: linear-gradient(0deg, #c8cbd9 0, #FFFFFF 100%);
+    border-top:none;
+  }
+  
+  .grid-theme--default .ui-grid-body .ui-row .ui-grid-item{
+    border-bottom: 1px solid #e3e3e3;
+  }
+  
+  .grid-theme--default.default-banding .ui-grid-body .ui-row:nth-of-type(even) .ui-grid-item{
+    background-color:rgb(235 234 234 / 0.6);
+  }
+  
+  .grid-theme--default .ui-grid-footer .ui-row .ui-grid-item{
+    background: linear-gradient(0deg, #e3e3e3 0, #e1e1e1 100%);
+  }
+  
+  /* Theme Grid Content Shelf */
+  .grid-theme--default .ui-row--content-shelf {
+    background: linear-gradient(0deg, #7a7b81 0, #c8cbd9 100%);
+    transition: all 0.7s ease-in-out;
+  }
+  
+  /* Theme Grid Action Bar */
+  .grid-theme--default .ui-grid-header .ui-action-bar {
+    background-color: #d9dbe1;
+    padding:5px 15px;
+    border-bottom: 1px solid #eee;
+  }
+  
+  .grid-theme--default .ui-grid-footer .ui-action-bar {
+    background-color: #d9dbe1;
+    padding:5px 15px;
+    border-top: 1px solid #eee;
+  }
+  
+  /* Theme Grid Inputs */
+  .grid-theme--default .ui-grid-body .ui-row .grid-input,
+  .grid-theme--default.no-banding .ui-grid-body .ui-row .grid-input{
+    padding:0;
+    display:grid;
+    border:1px solid transparent;
+    border-bottom: 1px solid #ddd;
+    box-shadow: inset 0 1px 4px rgb(20 65 92 / 33%), 0 -1px 1px #fff, 0 1px 0 #fff;
+  }
+  
+  /* Theme Grid Inputs -- Text Inputs */
+  .grid-theme--default .grid-input input{
+    padding:0 10px 10px 10px;
+  }
+  .grid-theme--default .grid-input textarea{
+    padding:10px;
+    resize: none;
+  }
+  
+  .grid-theme--default .grid-input input,
+  .grid-theme--default .grid-input textarea{
+    border:0;
+    background-color:transparent;
+    font-weight:bold;
+    user-select: none;
+    color: #0a5cb5;
+    text-overflow:ellipsis;
+  }
+  
+  /* Focus State */
+  .grid-theme--default .grid-input input:focus,
+  .grid-theme--default .grid-input textarea:focus{
+    outline:6px solid #f6c754;
+    z-index:1;
+    background-color: #fff;
+  }
+  
+  /* Theme Grid Groups */
+  .grid-theme--default.ui-grid-container.with-grid-groups .ui-row.grid-group--01 .ui-grid-item {
+    background-color: #d3d3d3 !important;
+  }
+  
+  .grid-theme--default.ui-grid-container.with-grid-groups .ui-row.grid-group--02 .ui-grid-item {
+    background-color: #fff !important;
+  }
+  
+  /* Theme Grid Inputs -- Buttons */
+  button.ui-grid-button {
+    outline: 0px dashed #222;
+    border-radius: 30px;
+    display: inline-flex;
+    box-shadow: 0px 4px 5px -4px rgb(0 0 0 / 40%);
+    color: #222;
+    font-weight: normal;
+    border: 0.1rem solid #85b2e2;
+    flex: 1;
+    background-color: #fff;
+    position: relative;
+    cursor: pointer;
+    text-align: left;
+    padding: 5px 10px;
+    z-index:1;
+  }
+  
+  /* Hover State */
+  button.ui-grid-button:hover {
+    transition: all 0.15s ease-in-out;
+    transform: scale(0.97);
+    background-color: rgb(223, 231, 239);
+  }
+  
+  /* Focus State */
+  button.ui-grid-button:focus:after {
+    outline: 6px solid #f6c754;
+    content: "";
+    position: absolute;
+    top:0;
+    left:0;
+    width: 100%;
+    height: 100%;
+    z-index: 1;
+  }
+  
+  /* Theme Grid Selection States */
+  .grid-theme--default .ui-grid-body .ui-row.grid-selected--row .ui-grid-item,
+  .grid-theme--default:not(.no-banding) .ui-grid-body .ui-row.grid-selected--row .ui-grid-item{
+    background-color: rgba(33, 150, 243, .3);
+  }
+  
+  .grid-theme--default .ui-grid-body .ui-row .ui-grid-item.grid-selected--item,
+  .grid-theme--default:not(.no-banding) .ui-grid-body .ui-row .ui-grid-item.grid-selected--item{
+    outline: 6px solid #f6c754;
+    z-index:1;
+  }
+  
+  /* Theme Grid Input Helper Interactions */
+  .grid-theme--default .grid-input-helper{
+    position: absolute;
+    top: 0;
+    left: 0;
+  }
+  
+  .grid-theme--default .grid-input input:focus,
+  .grid-theme--default .grid-input textarea:focus{
+    outline:6px solid #f6c754;
+    z-index:1;
+    background-color: #fff;
+  }
+  
+  .grid-theme--default .grid-input input:focus ~ .grid-input-helper,
+  .grid-theme--default .grid-input textarea:focus ~ .grid-input-helper{
+    box-shadow: rgb(246 199 84 / 20%) 0px 3px 0 10000px;
+    height:100%;
+    width:100%;
+    clip-path: inset(0 -10000px 0 -10000px);
+  }
+  
+  .grid-theme--default button.ui-grid-button:focus ~ .grid-input-helper{
+    box-shadow: rgb(246 199 84 / 20%) 0px 3px 0 10000px;
+    background-color:rgb(246 199 84 / 20%);
+    height:100%;
+    width:100%;
+    clip-path: inset(0 -10000px 0 -10000px);
+  }
+  
+  
+  /* UI Custom Grid Templates */
+  /* ------------------------------------------------------ */
+  
+  /* Client Details Default */
+  .ui-grid-container.grid-template--client-details {
+    grid-template-columns:
+            minmax(auto, 95px)
+            minmax(auto, 70px)
+            max-content
+            minmax(200px, 1fr)
+            110px
+            minmax(auto, 130px)
+            minmax(auto, 70px);
+  }
+  
+  /* Client Details Alt 01 */
+  .ui-grid-container.grid-template--client-details-alt01 {
+    grid-template-columns:
+            minmax(auto, 70px)
+            max-content
+            minmax(200px, 1fr)
+            110px
+            minmax(auto, 130px)
+            minmax(auto, 70px);
+  }
+  
+  .ui-grid-container.grid-template--client-details-alt01 .ui-row .ui-grid-item{
+    text-align:left;
+  }
+  
+  /* Example 02 - Content Shelf */
+  .ui-grid-container.grid-template--example-02 {
+    grid-template-columns:
+            minmax(auto, 70px)
+            max-content
+            minmax(200px, 1fr)
+            140px
+            minmax(auto, 130px)
+            125px
+  }
+  
+  /* Example 03 - Transformation Example 1 */
+  .ui-grid-container.grid-template--example-03 {
+    grid-template-columns:
+            max-content
+            max-content
+            125px
+            minmax(auto, 130px)
+            125px
+            minmax(max-content, 1fr)
+            85px
+  }
+  
+  /* Grid Transform -- Client Tile 01 */
+  /* ------------------------------------------------------ */
+  
+  .ui-grid-container.grid-transform--client-tile-01.transformed {
+    background-color:transparent;
+    box-shadow:none;
+    grid-template-columns: repeat(auto-fill, minmax(190px, 1fr));
+  }
+  
+  .ui-grid-container.grid-transform--client-tile-01.transformed .ui-grid-header .ui-grid-item,
+  .ui-grid-container.grid-transform--client-tile-01.transformed .ui-grid-footer .ui-grid-item{
+    display:none;
+  }
+  
+  .ui-grid-container.grid-transform--client-tile-01.transformed .ui-grid-body{
+    padding:15px;
+    display: grid;
+    grid-column-start:1;
+    grid-column-end:-1;
+    grid-template-columns:inherit;
+    grid-gap: 15px;
+  }
+  
+  .ui-grid-container.grid-transform--client-tile-01.transformed .ui-grid-body .ui-row {
+    display:inline-grid;
+    border:0.1rem solid #222;
+    border-left:6px solid #222;
+    border-radius:6px;
+    background-color:#fff;
+    box-shadow: 0px 5px 10px -4px rgba(0, 0, 0, 0.2);
+    border-color: rgba(60, 73, 129, 1);
+    padding:10px 10px;
+    font-size:13px;
+  }
+  
+  /* Tile Spacing Resets */
+  .ui-grid-container.grid-transform--client-tile-01.transformed .ui-grid-body .ui-row .ui-grid-item {
+    border:0;
+    min-height:auto;
+    padding:0;
+  }
+  
+  /* Tile Data Vertical Spacing */
+  .ui-grid-container.grid-transform--client-tile-01.transformed .ui-grid-body .ui-row .ui-grid-item:nth-child(2),
+  .ui-grid-container.grid-transform--client-tile-01.transformed .ui-grid-body .ui-row .ui-grid-item:nth-child(3),
+  .ui-grid-container.grid-transform--client-tile-01.transformed .ui-grid-body .ui-row .ui-grid-item:nth-child(4),
+  .ui-grid-container.grid-transform--client-tile-01.transformed .ui-grid-body .ui-row .ui-grid-item:nth-child(5),
+  .ui-grid-container.grid-transform--client-tile-01.transformed .ui-grid-body .ui-row .ui-grid-item:nth-child(6)
+  {
+    margin-bottom:10px;
+  }
+  
+  /* Tile Font Rules */
+  .ui-grid-container.grid-transform--client-tile-01.transformed .ui-grid-body .ui-row .ui-grid-item:nth-child(2) strong{
+    font-weight:normal;
+  }
+  
+  /* Reveal Additional Data Info */
+  .ui-grid-container.grid-transform--client-tile-01.transformed .ui-grid-body .ui-row .ui-grid-item:before {
+    content:attr(data-item-additional-info);
+    font-size:11px;
+  }
+  
