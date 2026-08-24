@@ -8,7 +8,8 @@
     <button class="ui-menu-action tier-0" alpha-ui-event="click" alpha-ui-attr-toggle=".ux-toolbar-example ,extended">
     <span class="details"><i class="fa fa-search" aria-hidden="true"></i> </span>
     <span class="tooltip">Search ALPHA</span> </button>
-  </div>
+  </div>
+
   <div class="ui-menu-action-block group-summary">
     <button class="ui-menu-action tier-0" [class.active]="currentView === 'group-summary'" (click)="switchView('group-summary')">
     <span class="details"><i class="fa fa-users" aria-hidden="true"></i> </span>
@@ -22,7 +23,27 @@
     <button class="ui-menu-action tier-0" [class.active]="currentView === 'work-plan'" (click)="switchView('work-plan')">
     <span class="details"><i class="fas fa-clipboard-list toolbar-icon--clipboard"></i> </span>
     <span class="tooltip">Business Processes</span> </button>
-  </div>
+  </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 </div>
 <!-- ===== Slide-out search panel: toggled by the rail's search button ===== -->
 <div class="ui-action-menu-extended">
@@ -52,6 +73,16 @@
         <label for="MenuSearch_ReferenceNumber">Reference Number</label>
         <input autocomplete="off" autofocus="" class="form-control" formcontrolname="referenceNumber" id="MenuSearch_ReferenceNumber" name="referenceNumber" type="input" [placeholder]="search.referencePlaceholder()" [value]="search.term()" (input)="onReferenceInput($event)">
         </div>
+        <!-- Under the field it is about, so it is read before anything is keyed
+             rather than after a search has already failed. Both search forms
+             show the same hint, from the one service. -->
+        @if (search.criteriaHint(); as hint) {
+        <div class="notification-block status-info">
+          <div class="notification-message">
+            <p>{{ hint }}</p>
+          </div>
+        </div>
+        }
         <button class="btn btn-success policy-search-submit" id="MenuSearch_SearchButton" type="submit" [disabled]="!search.canSearch()">Search</button>
         <button class="btn btn-danger policy-search-clear" id="MenuSearch_ClearButton" type="button" (click)="search.clear()">Clear</button>
         @if (search.notFound()) {

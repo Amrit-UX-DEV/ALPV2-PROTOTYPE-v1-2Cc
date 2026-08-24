@@ -253,19 +253,18 @@
 }
 
 /* ---- Differences: a tile each ----
-   Two to a row, so a full address or an email has the width to sit on one or two
-   lines rather than wrapping to four. One to a row once the region is too narrow
-   to give each of them that width. */
+   As many to a row as will hold their width, which is what a full address or an
+   email needs to sit on one or two lines rather than wrapping to four.
+
+   auto-fit does this off the width this grid actually has, so nothing here
+   depends on the size of the window. A viewport breakpoint would be measuring
+   the wrong thing: the dock opening takes real estate away from this region
+   without the window changing at all, and the region is nested deeply enough
+   that no breakpoint could be right for every combination. */
 .alp-search-summary__diffs {
   display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(28rem, 1fr));
   gap: var(--alp-space-3);
-}
-
-@media (max-width: 60rem) {
-  .alp-search-summary__diffs {
-    grid-template-columns: minmax(0, 1fr);
-  }
 }
 
 /* Grid rather than a flex column, and every tile the same three rows: the
@@ -306,46 +305,55 @@
   color: var(--alp-color-text);
 }
 
-/* At the end of the row it was given, so the bands close the tile off and line
-   up with the tile beside them. */
+/* The two values, side by side and half the tile each, and stacked once half a
+   tile is no longer enough to read a value in.
+
+   That is auto-fit with a minimum, and it needs no query of any kind. A media
+   query would answer the wrong question, since the window can stay exactly as
+   it is while the dock takes half this region away, and a container query would
+   answer the right one at the cost of naming a breakpoint that has to be kept
+   in step with the width below. This asks for two columns, takes one when two
+   will not fit, and follows whatever the tile is actually given.
+
+   The bands sit at the end of the tile, so they close it off and line up with
+   the tile beside them, and the gap between them shows the background through
+   as a hairline, which works whichever way round they are. */
 .alp-search-summary__diff-values {
   display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(13rem, 1fr));
   grid-template-rows: auto auto;
+  gap: 1px;
   align-self: end;
-  margin: 0;
+  margin: 0 calc(var(--alp-space-4) * -1) calc(var(--alp-space-3) * -1);
+  border-radius: 0 0 7px 7px;
+  background: var(--alp-color-border);
+  overflow: hidden;
 }
 
-/* Label above value, the same way round as everywhere else on the screen, so a
-   long value has the whole width of the tile to sit in.
-
-   Each side runs the full width of the tile, pulled out by the tile's padding
-   and given it back as its own, so a faint fill can tell the two apart and each
-   band reads as one thing rather than a line of text with a tint behind it. */
+/* Label above value, the same way round as everywhere else on the screen.
+   Both bands take the same two rows of the tile, on a subgrid, so the labels
+   sit on one line and the values on another however either of them wraps.
+   Same padding and the same gap in both, so the rhythm inside one band is the
+   rhythm inside the other. */
 .alp-search-summary__diff-value {
   display: grid;
-  grid-template-columns: minmax(0, 1fr);
-  gap: 1px;
-  margin: 0 calc(var(--alp-space-4) * -1);
-  padding: var(--alp-space-2) var(--alp-space-4);
+  grid-row: span 2;
+  grid-template-rows: subgrid;
+  gap: var(--alp-space-1);
+  margin: 0;
+  padding: var(--alp-space-3) var(--alp-space-4);
 }
 
-/* Both sides on the same fill, so neither is set above the other: the labels say
-   whose value it is, and a hairline between them keeps them as two bands rather
-   than one block of text. */
-.alp-search-summary__diff-value--theirs,
-.alp-search-summary__diff-value--ours {
+.alp-search-summary__diff-value--theirs {
   background: var(--alp-color-slate-50);
 }
 
+/* Ours is the record being worked on, so it is the one that stands out: the
+   fill the group's own header takes under the pointer, which puts it in the
+   same warm colour as the group without inventing another. Slate 900 holds
+   14.33:1 on it, and the No Data tag stands 4.16:1 clear of it. */
 .alp-search-summary__diff-value--ours {
-  border-top: 1px solid var(--alp-color-border);
-}
-
-/* The last band closes the tile off, so it takes the tile's bottom corners. */
-.alp-search-summary__diff-value:last-child {
-  margin-bottom: calc(var(--alp-space-3) * -1);
-  padding-bottom: var(--alp-space-3);
-  border-radius: 0 0 7px 7px;
+  background: var(--alp-color-amber-200);
 }
 
 .alp-search-summary__diff-value dt {
@@ -354,9 +362,25 @@
   color: var(--alp-color-text-muted);
 }
 
+/* Our record's label is not a caption for a value somebody else holds, it names
+   the record the rep is about to change, so it is set in the same near-black as
+   the value under it. Muted would also have failed on the warmer fill, at
+   4.11:1 against the 4.5 AA needs. */
+.alp-search-summary__diff-value--ours dt {
+  color: var(--alp-color-text);
+}
+
 /* anywhere rather than break-word, because an email or an address has to be
-   able to break mid-token once the tile is narrow. */
+   able to break mid-token once the tile is narrow.
+
+   A value is a line of text on one side and a tag on the other, and those are
+   not the same height. Each sits in a box of the same minimum height and is
+   centred in it, so the two read as one line across the tile rather than one
+   value sitting slightly above the other. */
 .alp-search-summary__diff-value dd {
+  display: flex;
+  align-items: center;
+  min-height: 1.5rem;
   margin: 0;
   font-size: var(--alp-font-size-sm);
   font-weight: var(--alp-font-weight-semibold);

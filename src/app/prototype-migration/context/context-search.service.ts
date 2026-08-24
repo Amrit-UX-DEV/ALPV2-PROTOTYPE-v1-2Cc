@@ -53,6 +53,24 @@ export class ContextSearchService {
     return `Enter ${criteria} Number`;
   });
 
+  /**
+   * A word of help for criteria whose reference a rep may never have keyed.
+   *
+   * Every other criteria takes a number the rep already has in front of them. A
+   * possible match reference does not come from us at all: it is read off the
+   * pension dashboard, and it carries a prefix, so the field is the one place
+   * somebody can be told what one looks like before they guess at it.
+   *
+   * Empty for everything else, which is what both forms show it on: a hint
+   * standing under a field that does not need one is noise, and by the second
+   * search it is noise nobody reads.
+   */
+  readonly criteriaHint = computed(() =>
+    this.criteria() === 'Possible Match'
+      ? 'Enter the reference from the possible matches screen on the pension dashboard, for example PMR12345678910.'
+      : '',
+  );
+
   private readonly missed = signal(false);
   private readonly missedTerm = signal('');
   private readonly missedCriteria = signal('');
