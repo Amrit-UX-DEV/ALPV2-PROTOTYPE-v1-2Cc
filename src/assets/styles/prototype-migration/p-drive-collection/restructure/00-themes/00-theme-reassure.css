@@ -1,7 +1,8 @@
 /* -----------------------                      --- */
 /* THEME: REASSURE                                  */
 /* -----------------------                      --- */
-:root {
+@scope (.alp-theme-reassure) {
+	:scope {
     /* CORE COLOURS */
     /*-----------------------------------------------------------------*/
     /*REASSURE BLUE*/
@@ -122,4 +123,54 @@
     /* UI / TOOLTIPS */
     /*-----------------------------------------------------------------*/
     --theme-tooltip--truncate:var(--theme-primary);/*REASSURE BLUE*/
+    }
+}
+
+@scope (.alp-theme-aviva) {
+	:scope {
+    --alpha-toolbar-brand-logo: url(/Images/brand-aviva-logo.gif);
+    --alpha-landing-watermark: url(/Images/aviva-wm.png);
+    --alpha-landing-watermark-background-size: 300px;
+    --brand-primary: #ffd900;
+    --brand-primary-mild: #ffeb7a;
+    --brand-secondary: #004fb6;
+    --brand-secondary-mild: #002185;
+    --brand-border-primary: #ffc100;
+    --brand-border-secondary: #222;
+    --brand-border-active: #ffffff;
+    --brand-text-primary: #222;
+    --brand-text-secondary: #ffffff;
+  
+    --brand-border-tertiary: #ccc;
+    --brand-border-context: rgba(255, 255, 255, 0.8);
+    --brand-aviva-bg-1: #eee;
+  
+    --brand-gradient: linear-gradient(-45deg, rgb(21, 23, 34) 0%, rgb(72, 79, 112) 71%, rgb(4, 24, 44) 100%);
+  
+    --header-context-primary: #222;
+    --header-currency-bg:rgba(255, 255, 255, 0.5);
+  }
+  
+  /* Header Changes */
+
+  .app-branding--block{
+    width: 90px !important;
+    overflow: hidden;
+    display: flex;
+    justify-content: center;
+  }
+  
+  .app-branding--block img{
+    margin: 5px 10px 5px 10px !important;
+    object-fit: contain;
+    width: 66%;
+  }
+
+  .context-brand-logo {
+    content: var(--alpha-toolbar-brand-logo);
+  }
+
+  .app-page--heading h1{
+    color:#222 !important;
+  }
 }
