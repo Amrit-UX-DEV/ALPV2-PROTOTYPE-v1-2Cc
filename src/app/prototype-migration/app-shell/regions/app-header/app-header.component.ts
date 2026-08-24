@@ -2,6 +2,7 @@ import { Component, CUSTOM_ELEMENTS_SCHEMA, computed, inject } from '@angular/co
 
 import { PrototypeContextService } from '../../../context/prototype-context.service';
 import { AppViewService } from '../../../ui/app-view.service';
+import { ThemeService } from '../../../ui/theme.service';
 
 /**
  * The application header strip: system date, the user and settings dropdown,
@@ -44,6 +45,12 @@ export class AppHeaderComponent {
   protected readonly ctx = inject(PrototypeContextService);
 
   private readonly views = inject(AppViewService);
+
+  /**
+   * The branding block shows whatever the active theme's stylesheet swaps in,
+   * so the alt text is read from the theme rather than written in the markup.
+   */
+  protected readonly theme = inject(ThemeService);
 
   /** The breadcrumb and prefix, from the view where it names itself. */
   protected readonly screen = computed(() => this.views.screen() ?? this.ctx.screen());

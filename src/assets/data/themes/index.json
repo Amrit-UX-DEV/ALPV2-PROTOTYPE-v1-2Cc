@@ -1,0 +1,17 @@
+{
+  "active": "aviva",
+  "themes": [
+    {
+      "id": "reassure",
+      "name": "ReAssure",
+      "class": "alp-theme-reassure",
+      "logoAlt": "ReAssure"
+    },
+    {
+      "id": "aviva",
+      "name": "Aviva",
+      "class": "alp-theme-aviva",
+      "logoAlt": "Aviva"
+    }
+  ]
+}

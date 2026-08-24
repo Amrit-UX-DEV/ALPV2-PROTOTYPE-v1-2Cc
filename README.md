@@ -44,6 +44,40 @@ Deep links need a rewrite to `index.html`. `src/_redirects` carries it and the
 build copies it into the output, which is what Cloudflare Pages reads;
 `netlify.toml` says the same thing for Netlify.
 
+## Themes
+
+Every theme ships in every build and costs nothing until it is switched on,
+because each one is wrapped in `@scope (.alp-theme-<id>)`. One JSON file
+decides which is worn:
+
+```jsonc
+// src/assets/data/themes/index.json
+{
+  "active": "aviva",     // "reassure", "aviva", or "" for none
+  "themes": [ /* ... */ ]
+}
+```
+
+Change `active`, reload. Nothing else moves, and no markup mentions a brand:
+`ThemeService` reads the file during bootstrap, before the first paint, and
+puts the active theme's class on `<body>`. An `active` of `""` turns theming
+off, which leaves the ReAssure brand tokens that `src/index.css` sets at
+`:root`. An id nothing matches does the same and says so in the console.
+
+This is how a release cut gets its brand. Set `active` for the audience the
+cut is for, commit, then branch.
+
+Adding a theme is three steps:
+
+1. Add `src/assets/styles/.../restructure/00-themes/00-theme-<id>.css`, with
+   everything inside `@scope (.alp-theme-<id>) { :scope { /* tokens */ } }`.
+2. Import it in `p-drive-collection/_index.css` under `/* Themes */`.
+3. Add its entry to `index.json`.
+
+A theme overrides the `--brand-*` and `--alpha-*` tokens that `src/index.css`
+defines at `:root`. Anything it leaves out keeps the ReAssure default, so a
+theme only has to state its differences.
+
 ### Branches
 
 - `develop` is the working trunk. Everything lands here. Never published.

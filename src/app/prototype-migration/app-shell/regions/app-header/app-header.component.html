@@ -115,7 +115,10 @@
     <!----> </button>
 </div>
 <div class="app-branding--block">
-  <img src="Images/Reassure-logo-77.png" alt="ReAssure" class="context-brand-logo">
+  <!-- The active theme swaps the image itself, through content: on
+       .context-brand-logo, so the alt text has to follow it or a screen reader
+       announces the wrong brand. src is the unthemed default. -->
+  <img src="Images/Reassure-logo-77.png" [alt]="theme.logoAlt()" class="context-brand-logo">
 </div>
 <!-- Driven by the prototype context. Edit
                                  src/assets/data/contexts/policy-80007.json rather than this markup.

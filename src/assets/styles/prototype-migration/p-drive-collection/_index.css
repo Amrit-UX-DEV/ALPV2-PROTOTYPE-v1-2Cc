@@ -49,8 +49,10 @@
 @import './style-stack-update-ver04/34-notification-blocks.css';
 @import './css-stack/pt-diagram-structure-2.css';
 
-/* Themes */
+/* Themes. Every theme ships; assets/data/themes/index.json picks the one that
+   applies, and each is scoped to its own class so the others cost nothing. */
 @import './restructure/00-themes/00-theme-reassure.css';
+@import './restructure/00-themes/00-theme-aviva.css';
 
 /* Restructure & Helpers */
 @import './restructure/00-layout/00-layout-presentation.css';
