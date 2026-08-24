@@ -49,6 +49,10 @@
 @import './style-stack-update-ver04/34-notification-blocks.css';
 @import './css-stack/pt-diagram-structure-2.css';
 
+/* Grid. The live app's grid component: structure, themes and helpers, but no
+   column widths. Each screen that uses it declares its own template class. */
+@import './grid-component/grid--ver01.css';
+
 /* Themes. Every theme ships; assets/data/themes/index.json picks the one that
    applies, and each is scoped to its own class so the others cost nothing. */
 @import './restructure/00-themes/00-theme-reassure.css';

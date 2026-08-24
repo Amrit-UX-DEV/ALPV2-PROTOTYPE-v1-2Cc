@@ -3,10 +3,14 @@
  * a design system component and the notification block is the prototype's, so
  * neither is restyled here.
  *
- * The comparison is grouped by what it found rather than laid out field by
- * field, because a rep reads it for one thing: what does not agree. There is no
- * table markup anywhere here, so the legacy grid can take this over as it stands
- * once it arrives.
+ * The comparison has two layouts and the rep picks between them. Grouped by
+ * what the comparison found, because a rep reads it for one thing: what does
+ * not agree. Or as a table on the live app's grid component, field by field,
+ * for reading a record back or checking one value.
+ *
+ * Neither is markup the other could not produce: both are built from the same
+ * fields with the same verdicts, so nothing can be true in one and not the
+ * other.
  */
 /* Deeper at the foot than at the head, so the last group clears the bottom of
    the region instead of ending flush against it, where a scroll can look
@@ -419,9 +423,60 @@
   margin-top: 0;
 }
 
-/* The one control that works all three groups sits at the end of the row above
-   them, on the same side as the chevrons it turns. */
+/* The layout switch sits at the start of the row, and the control that opens
+   and closes the groups at the end, on the same side as the chevrons it turns.
+   With the table showing there is nothing to open, so the switch is left on its
+   own at the start rather than moving. */
 .alp-search-summary__controls {
   display: flex;
-  justify-content: flex-end;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--alp-space-4);
+}
+
+/* ---------------------------------------------------------------
+   THE COMPARISON AS A TABLE
+
+   The grid component brings everything but the column widths: structure,
+   the default theme, the sticky header, the section break row. Widths are
+   the one thing it cannot know, since they belong to what is in the
+   columns, so each screen using the grid declares its own template class.
+   This is that class for this screen, kept here beside the markup rather
+   than added to the shared grid file, so the next screen to use a grid
+   writes its own instead of bending this one.
+
+   Four columns. The field name takes what it needs up to a cap; the two
+   value columns split what is left evenly, because an address on one
+   platform should not squeeze the same address on the other; the verdict
+   is a tag of known width.
+   --------------------------------------------------------------- */
+.ui-grid-container.grid-template--match-comparison {
+  grid-template-columns:
+    minmax(140px, 220px)
+    minmax(180px, 1fr)
+    minmax(180px, 1fr)
+    minmax(auto, 150px);
+  /* The grid inherits its colour from the region it sits in. Stated here so the
+     cells are known to be slate 900: 17.4:1 on the white body rows and 10.6:1
+     at the palest end of the header's gradient. */
+  color: var(--alp-color-text);
+}
+
+/* The section's own row, which the grid spans across the full width for us. It
+   names what follows and is not a column heading, so it is filled a step darker
+   than the body and left unbold at the size the grid sets. */
+.alp-comparison__section .ui-grid-item {
+  background: var(--alp-color-slate-100);
+  font-weight: var(--alp-font-weight-semibold);
+  border-left: 0;
+}
+
+.alp-comparison__field {
+  font-weight: var(--alp-font-weight-semibold);
+}
+
+/* A tag in a cell is the whole content of that cell, so it drops the margin it
+   carries when it follows something. */
+.ui-grid-item .alp-status-tag {
+  margin-top: 0;
 }

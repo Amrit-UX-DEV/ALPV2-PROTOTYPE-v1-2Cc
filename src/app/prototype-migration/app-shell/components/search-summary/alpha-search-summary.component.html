@@ -31,120 +31,215 @@
     }
 
     <div class="alp-search-summary__controls">
-      <button type="button" class="alp-btn alp-btn--ghost" (click)="toggleAllGroups()">
-        {{ anyOpen() ? 'Collapse all groups' : 'Expand all groups' }}
-        <i
-          aria-hidden="true"
-          class="fas"
-          [class.fa-angle-double-up]="anyOpen()"
-          [class.fa-angle-double-down]="!anyOpen()"
-        ></i>
-      </button>
+      <div class="alp-view-switch" role="group" aria-label="Comparison layout">
+        <button
+          type="button"
+          class="alp-view-switch__option"
+          [class.is-selected]="view() === 'grouped'"
+          [attr.aria-pressed]="view() === 'grouped'"
+          (click)="showView('grouped')"
+        >
+          <i aria-hidden="true" class="fas fa-layer-group"></i>
+          Grouped
+        </button>
+        <button
+          type="button"
+          class="alp-view-switch__option"
+          [class.is-selected]="view() === 'table'"
+          [attr.aria-pressed]="view() === 'table'"
+          (click)="showView('table')"
+        >
+          <i aria-hidden="true" class="fas fa-table"></i>
+          Table
+        </button>
+      </div>
+
+      <!-- Only the grouped layout has anything to open and close. -->
+      @if (view() === 'grouped') {
+        <button type="button" class="alp-btn alp-btn--ghost" (click)="toggleAllGroups()">
+          {{ anyOpen() ? 'Collapse all groups' : 'Expand all groups' }}
+          <i
+            aria-hidden="true"
+            class="fas"
+            [class.fa-angle-double-up]="anyOpen()"
+            [class.fa-angle-double-down]="!anyOpen()"
+          ></i>
+        </button>
+      }
     </div>
 
-    <div class="alp-search-summary__panels">
-      @if (notHeld().length) {
-        <details
-          class="alp-search-summary__panel alp-search-summary__panel--absent"
-          [open]="openGroups()['not-held']"
-          (toggle)="onGroupToggle('not-held', $event)"
-        >
-          <summary class="alp-search-summary__panel-head">
-            <span class="alp-search-summary__panel-chip">Not Held</span>
-            <h3 class="alp-search-summary__panel-title">
-              {{ notHeld().length }} fields neither platform holds
-            </h3>
-            <span class="alp-search-summary__panel-fields">{{ notHeldLabels() }}</span>
-            <i aria-hidden="true" class="alp-search-summary__panel-chevron fa fa-chevron-down"></i>
-          </summary>
+    @if (view() === 'grouped') {
+      <div class="alp-search-summary__panels">
+        @if (agreements().length) {
+          <details
+            class="alp-search-summary__panel alp-search-summary__panel--agrees"
+            [open]="openGroups().matched"
+            (toggle)="onGroupToggle('matched', $event)"
+          >
+            <summary class="alp-search-summary__panel-head">
+              <span class="alp-search-summary__panel-chip">Matched</span>
+              <h3 class="alp-search-summary__panel-title">
+                {{ agreements().length }} of {{ fieldCount() }} fields match
+              </h3>
+              <span class="alp-search-summary__panel-fields">{{ agreementLabels() }}</span>
+              <i aria-hidden="true" class="alp-search-summary__panel-chevron fa fa-chevron-down"></i>
+            </summary>
 
-          <ul class="alp-search-summary__absent">
-            @for (field of notHeld(); track field.label) {
-              <li class="alp-search-summary__absent-item">{{ field.label }}</li>
-            }
-          </ul>
-        </details>
-      }
-      @if (agreements().length) {
-        <details
-          class="alp-search-summary__panel alp-search-summary__panel--agrees"
-          [open]="openGroups().matched"
-          (toggle)="onGroupToggle('matched', $event)"
-        >
-          <summary class="alp-search-summary__panel-head">
-            <span class="alp-search-summary__panel-chip">Matched</span>
-            <h3 class="alp-search-summary__panel-title">
-              {{ agreements().length }} of {{ fieldCount() }} fields match
-            </h3>
-            <span class="alp-search-summary__panel-fields">{{ agreementLabels() }}</span>
-            <i aria-hidden="true" class="alp-search-summary__panel-chevron fa fa-chevron-down"></i>
-          </summary>
+            <dl class="alp-search-summary__agrees">
+              @for (field of agreements(); track field.label) {
+                <div class="alp-search-summary__agree">
+                  <dt class="alp-search-summary__agree-label">{{ field.label }}</dt>
+                  <dd class="alp-search-summary__agree-value">{{ field.agreedValue }}</dd>
+                  @if (field.spellingsDiffer) {
+                    <dd class="alp-search-summary__agree-theirs">
+                      Dashboard Data: {{ field.theirs }}
+                    </dd>
+                  }
+                </div>
+              }
+            </dl>
+          </details>
+        }
 
-          <dl class="alp-search-summary__agrees">
-            @for (field of agreements(); track field.label) {
-              <div class="alp-search-summary__agree">
-                <dt class="alp-search-summary__agree-label">{{ field.label }}</dt>
-                <dd class="alp-search-summary__agree-value">{{ field.agreedValue }}</dd>
-                @if (field.spellingsDiffer) {
-                  <dd class="alp-search-summary__agree-theirs">
-                    Other platform: {{ field.theirs }}
-                  </dd>
-                }
+        @if (differences().length) {
+          <details
+            class="alp-search-summary__panel alp-search-summary__panel--differs"
+            [open]="openGroups()['not-matched']"
+            (toggle)="onGroupToggle('not-matched', $event)"
+          >
+            <summary class="alp-search-summary__panel-head">
+              <span class="alp-search-summary__panel-chip">Not Matched</span>
+              <h3 class="alp-search-summary__panel-title">
+                {{ differences().length }} of {{ fieldCount() }} fields differ
+              </h3>
+              <span class="alp-search-summary__panel-fields">{{ differenceLabels() }}</span>
+              <i aria-hidden="true" class="alp-search-summary__panel-chevron fa fa-chevron-down"></i>
+            </summary>
+
+            <div class="alp-search-summary__diffs">
+              @for (field of differences(); track field.label) {
+                <article class="alp-search-summary__diff">
+                  <p class="alp-search-summary__diff-section">{{ field.section }}</p>
+                  <h4 class="alp-search-summary__diff-label">{{ field.label }}</h4>
+                  <dl class="alp-search-summary__diff-values">
+                    <div class="alp-search-summary__diff-value alp-search-summary__diff-value--theirs">
+                      <dt>Dashboard Data</dt>
+                      <dd>
+                        @if (field.theirs === noData) {
+                          <span class="alp-status-tag alp-status-tag--absent">{{ noData }}</span>
+                        } @else {
+                          {{ field.theirs }}
+                        }
+                      </dd>
+                    </div>
+                    <div class="alp-search-summary__diff-value alp-search-summary__diff-value--ours">
+                      <dt>Our Record</dt>
+                      <dd>
+                        @if (field.ours === noData) {
+                          <span class="alp-status-tag alp-status-tag--absent">{{ noData }}</span>
+                        } @else {
+                          {{ field.ours }}
+                        }
+                      </dd>
+                    </div>
+                  </dl>
+                </article>
+              }
+            </div>
+          </details>
+        }
+
+        @if (notHeld().length) {
+          <details
+            class="alp-search-summary__panel alp-search-summary__panel--absent"
+            [open]="openGroups()['not-held']"
+            (toggle)="onGroupToggle('not-held', $event)"
+          >
+            <summary class="alp-search-summary__panel-head">
+              <span class="alp-search-summary__panel-chip">Not Held</span>
+              <h3 class="alp-search-summary__panel-title">
+                {{ notHeld().length }} fields neither platform holds
+              </h3>
+              <span class="alp-search-summary__panel-fields">{{ notHeldLabels() }}</span>
+              <i aria-hidden="true" class="alp-search-summary__panel-chevron fa fa-chevron-down"></i>
+            </summary>
+
+            <ul class="alp-search-summary__absent">
+              @for (field of notHeld(); track field.label) {
+                <li class="alp-search-summary__absent-item">{{ field.label }}</li>
+              }
+            </ul>
+          </details>
+        }
+      </div>
+    } @else {
+      <!--
+        The same comparison as a table, on the live app's grid component. The
+        grid brings its structure and its theme; the column widths are this
+        screen's own business, so grid-template--match-comparison lives in this
+        component's stylesheet, beside the markup that uses it.
+
+        Divs rather than table elements, because that is what the grid styles,
+        and because display: contents is how the cells reach the container's
+        columns. The roles put the semantics back, so it is still read as a
+        table with a header row and four columns.
+
+        Ordered by section rather than by verdict. The grouped layout answers
+        what needs doing; this one answers what the record says, field by field
+        in the order the sections arrive.
+      -->
+      <div
+        class="ui-grid-container grid-theme--default grid-template--match-comparison"
+        role="table"
+        aria-label="Possible match comparison"
+      >
+        <div class="ui-grid-header" role="rowgroup">
+          <div class="ui-row" role="row">
+            <div class="ui-grid-item" role="columnheader">Field</div>
+            <div class="ui-grid-item" role="columnheader">Dashboard Data</div>
+            <div class="ui-grid-item" role="columnheader">Our Record</div>
+            <div class="ui-grid-item" role="columnheader">Result</div>
+          </div>
+        </div>
+
+        <div class="ui-grid-body" role="rowgroup">
+          @for (section of sections(); track section.title) {
+            <div class="ui-row ui-row--template-break alp-comparison__section" role="row">
+              <div class="ui-grid-item grid-col-span-04" role="cell" aria-colspan="4">
+                {{ section.title }}
+              </div>
+            </div>
+
+            @for (row of section.rows; track row.label) {
+              <div class="ui-row" role="row">
+                <div class="ui-grid-item alp-comparison__field" role="rowheader">
+                  {{ row.label }}
+                </div>
+                <div class="ui-grid-item" role="cell">
+                  @if (row.theirs === noData) {
+                    <span class="alp-status-tag alp-status-tag--absent">{{ noData }}</span>
+                  } @else {
+                    {{ row.theirs }}
+                  }
+                </div>
+                <div class="ui-grid-item" role="cell">
+                  @if (row.ours === noData) {
+                    <span class="alp-status-tag alp-status-tag--absent">{{ noData }}</span>
+                  } @else {
+                    {{ row.ours }}
+                  }
+                </div>
+                <div class="ui-grid-item" role="cell">
+                  <span [class]="'alp-status-tag ' + verdictTags[row.verdict]">
+                    {{ verdictLabels[row.verdict] }}
+                  </span>
+                </div>
               </div>
             }
-          </dl>
-        </details>
-      }
-
-      @if (differences().length) {
-        <details
-          class="alp-search-summary__panel alp-search-summary__panel--differs"
-          [open]="openGroups()['not-matched']"
-          (toggle)="onGroupToggle('not-matched', $event)"
-        >
-          <summary class="alp-search-summary__panel-head">
-            <span class="alp-search-summary__panel-chip">Not Matched</span>
-            <h3 class="alp-search-summary__panel-title">
-              {{ differences().length }} of {{ fieldCount() }} fields differ
-            </h3>
-            <span class="alp-search-summary__panel-fields">{{ differenceLabels() }}</span>
-            <i aria-hidden="true" class="alp-search-summary__panel-chevron fa fa-chevron-down"></i>
-          </summary>
-
-          <div class="alp-search-summary__diffs">
-            @for (field of differences(); track field.label) {
-              <article class="alp-search-summary__diff">
-                <p class="alp-search-summary__diff-section">{{ field.section }}</p>
-                <h4 class="alp-search-summary__diff-label">{{ field.label }}</h4>
-                <dl class="alp-search-summary__diff-values">
-                  <div class="alp-search-summary__diff-value alp-search-summary__diff-value--theirs">
-                    <dt>Other Platform</dt>
-                    <dd>
-                      @if (field.theirs === noData) {
-                        <span class="alp-status-tag alp-status-tag--absent">{{ noData }}</span>
-                      } @else {
-                        {{ field.theirs }}
-                      }
-                    </dd>
-                  </div>
-                  <div class="alp-search-summary__diff-value alp-search-summary__diff-value--ours">
-                    <dt>Our Record</dt>
-                    <dd>
-                      @if (field.ours === noData) {
-                        <span class="alp-status-tag alp-status-tag--absent">{{ noData }}</span>
-                      } @else {
-                        {{ field.ours }}
-                      }
-                    </dd>
-                  </div>
-                </dl>
-              </article>
-            }
-          </div>
-        </details>
-      }
-
-    </div>
+          }
+        </div>
+      </div>
+    }
   } @else if (!matches.loading()) {
     <div class="notification-block status-warning">
       <div class="notification-message">

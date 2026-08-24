@@ -30,6 +30,37 @@ export const NO_DATA = 'No Data';
  */
 export type ComparisonVerdict = 'matched' | 'not-matched' | 'not-held';
 
+/**
+ * How the comparison is laid out.
+ *
+ * Grouped answers "what do I need to do something about", which is the question
+ * a rep opens the screen with. Table answers "what does the record say", field
+ * by field in the order the sections arrive, which is what somebody reading a
+ * record back or checking one field wants. Same fields, same verdicts, same
+ * values: only the arrangement differs.
+ */
+export type ComparisonView = 'grouped' | 'table';
+
+/** What each verdict is called on screen. */
+export const VERDICT_LABELS: Record<ComparisonVerdict, string> = {
+  matched: 'Matched',
+  'not-matched': 'Not Matched',
+  'not-held': 'Not Held',
+};
+
+/**
+ * The tag each verdict wears in the table's result column.
+ *
+ * All three are design system variants that already clear AA: green 700 and
+ * amber 700 carry white at 5.48:1 and 5.02:1, and neutral is slate 700 on
+ * slate 200 at 8.4:1.
+ */
+export const VERDICT_TAGS: Record<ComparisonVerdict, string> = {
+  matched: 'alp-status-tag--primary',
+  'not-matched': 'alp-status-tag--warning',
+  'not-held': 'alp-status-tag--neutral',
+};
+
 /** One field, as the other platform holds it and as we hold it. */
 export interface ComparisonRow {
   label: string;
@@ -96,6 +127,24 @@ export class AlphaSearchSummaryComponent {
   private readonly locale = inject(LOCALE_ID);
 
   protected readonly noData = NO_DATA;
+  protected readonly verdictLabels = VERDICT_LABELS;
+  protected readonly verdictTags = VERDICT_TAGS;
+
+  /**
+   * Which layout the comparison is in.
+   *
+   * Held on the component rather than in a service: it is how one rep is
+   * reading one screen at one moment, not something another screen has any
+   * business knowing, and coming back to the comparison fresh should show it
+   * the way it is meant to be read first.
+   */
+  private readonly currentView = signal<ComparisonView>('grouped');
+
+  protected readonly view = this.currentView.asReadonly();
+
+  protected showView(view: ComparisonView): void {
+    this.currentView.set(view);
+  }
 
   /**
    * The badge the legacy policy tile carries beside the status. Held as a field
@@ -240,7 +289,7 @@ export class AlphaSearchSummaryComponent {
    * fields. The sections themselves no longer appear on screen; each field
    * carries its section's name onto its tile.
    */
-  private readonly sections = computed<ComparisonSection[]>(() =>
+  protected readonly sections = computed<ComparisonSection[]>(() =>
     [
       { title: 'Identity', rows: this.identityRows() },
       { title: 'Alternate Surnames', rows: this.alternateSurnameRows() },
@@ -286,7 +335,7 @@ export class AlphaSearchSummaryComponent {
    * reports its own toggle back, including the ones the rep works by hand.
    *
    * What matched and what differs are open on arrival. What neither platform
-   * holds sits above them closed: it is the group with nothing in it to work
+   * holds sits last and closed: it is the group with nothing in it to work
    * through, so it says its piece in its header and stays out of the way.
    */
   private readonly groups = signal<Record<ComparisonVerdict, boolean>>({

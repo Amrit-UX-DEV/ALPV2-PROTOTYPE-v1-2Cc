@@ -1,0 +1,60 @@
+/* =========================================================
+   ALP DESIGN SYSTEM — VIEW SWITCH
+
+   A segmented control for choosing between layouts of the same data,
+   where the choice is a way of looking rather than a filter: nothing
+   appears or disappears, so nothing needs a count or a confirmation.
+
+   One option is always selected, which is why it is a group of pressed
+   buttons rather than checkboxes, and why the unselected option is a
+   real button rather than a dimmed one.
+
+   Selected is white on blue 700 at 8.72:1, unselected is slate 700 at
+   10.3:1 on the surface and 9.6:1 on the hover fill, so both states
+   are AA. Selection is not carried by the fill alone; aria-pressed says
+   the same thing to anything not reading the screen.
+
+   The border is slate 500 rather than the standing border colour, which
+   is 1.48:1 on white. This one holds 4.76:1, so the control's own edge
+   clears the 3:1 that non-text needs instead of relying on the labels
+   inside it to imply where it starts.
+   ========================================================= */
+
+.alp-view-switch {
+  display: inline-flex;
+  gap: 2px;
+  padding: 2px;
+  border: 1px solid var(--alp-color-slate-500);
+  border-radius: var(--alp-radius-full);
+  background: var(--alp-color-surface);
+}
+
+.alp-view-switch__option {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--alp-space-2);
+  padding: 6px 14px;
+  border: none;
+  border-radius: var(--alp-radius-full);
+  background: transparent;
+  color: var(--alp-color-slate-700);
+  font-family: inherit;
+  font-size: var(--alp-font-size-sm);
+  font-weight: var(--alp-font-weight-medium);
+  cursor: pointer;
+  transition: background 0.15s ease, color 0.15s ease;
+}
+
+.alp-view-switch__option:hover:not(.is-selected) {
+  background: var(--alp-color-surface-hover);
+}
+
+.alp-view-switch__option.is-selected {
+  background: var(--alp-color-blue-700);
+  color: var(--alp-color-white);
+}
+
+.alp-view-switch__option:focus-visible {
+  outline: 2px solid var(--alp-color-border-focus);
+  outline-offset: 2px;
+}
