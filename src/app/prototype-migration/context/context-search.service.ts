@@ -4,6 +4,20 @@ import { PrototypeContextService } from './prototype-context.service';
 import { AppViewService } from '../ui/app-view.service';
 
 /**
+ * A field's help, in the three parts it has to be shown in.
+ *
+ * The example is kept apart from the sentence around it because it cannot be
+ * allowed to break: in a 230px menu panel the browser was breaking the line
+ * after "e.g." and leaving the reference stranded on the next one, which is the
+ * one thing in the sentence somebody is reading it for.
+ */
+export interface SearchCriteriaHint {
+  lead: string;
+  example: string;
+  tail: string;
+}
+
+/**
  * The one search the prototype has, shared by every form that offers it.
  *
  * There are two search boxes, the left menu and the call centre widget, and a
@@ -65,10 +79,14 @@ export class ContextSearchService {
    * standing under a field that does not need one is noise, and by the second
    * search it is noise nobody reads.
    */
-  readonly criteriaHint = computed(() =>
+  readonly criteriaHint = computed<SearchCriteriaHint | null>(() =>
     this.criteria() === 'Possible Match'
-      ? 'Enter reference number (e.g. PMR12345678910) to find pension dashboard possible matches.'
-      : '',
+      ? {
+          lead: 'Enter reference number',
+          example: '(e.g. PMR12345678910)',
+          tail: 'to find pension dashboard possible matches.',
+        }
+      : null,
   );
 
   private readonly missed = signal(false);
@@ -100,39 +118,56 @@ export class ContextSearchService {
   private readonly possibleMatchPrefix = 'PMR';
 
   /**
-   * What came of using the field, said in the same block as the field's help.
+   * Whether what has been keyed cannot be a possible match reference.
    *
-   * Two different answers, and a rep needs to know which they have got: a
-   * reference in the wrong shape has not been looked for at all and wants
-   * re-keying, while one in the right shape has been looked for and is not
-   * there, which is the end of that line of enquiry.
+   * Not a failed search: nothing has been looked for. A reference that does not
+   * start with the prefix is the wrong thing entirely, and the sooner that is
+   * said the less time a rep spends waiting on a search that was never going to
+   * find anything.
    *
-   * The format is only judged once there is enough keyed to judge it. Checked
-   * from the first character, a rep is told they are wrong while typing the P of
-   * a reference that is about to be perfectly correct.
+   * Judged against as much as has been keyed rather than the whole prefix, so it
+   * is said at the first character that rules the reference out and not before:
+   * P and PM are both still on their way to PMR, while anything else, at any
+   * length, is already wrong. What follows the prefix is not checked at all; the
+   * dashboard's own numbering is its business.
    *
    * Empty for every other criteria, whose references we do not issue and cannot
    * vouch for the shape of.
    */
-  readonly criteriaNote = computed(() => {
+  readonly formatWarning = computed(() => {
     if (this.criteria() !== 'Possible Match') return '';
 
-    const term = this.term().trim();
-    const prefix = this.possibleMatchPrefix;
-    if (term.length >= prefix.length && !term.toUpperCase().startsWith(prefix)) {
-      return 'Incorrect format entered';
-    }
+    const keyed = this.term().trim().toUpperCase();
+    if (!keyed) return '';
 
-    return this.notFound() ? 'No match found' : '';
+    const prefix = this.possibleMatchPrefix;
+    const sofar = keyed.slice(0, prefix.length);
+    return prefix.startsWith(sofar) ? '' : 'Invalid format entered';
   });
+
+  /**
+   * What came of the search, said in the same block as the field's help.
+   *
+   * Only ever the one thing, and only for a reference in the right shape: it was
+   * looked for, and it is not there. A reference in the wrong shape is answered
+   * by the warning above the field instead, which is a different thing to say
+   * and is said about the field rather than about the search.
+   */
+  readonly criteriaNote = computed(() =>
+    this.criteria() === 'Possible Match' && !this.formatWarning() && this.notFound()
+      ? 'No match found'
+      : '',
+  );
 
   /**
    * Whether a failed search still needs its own block.
    *
-   * Where the note has said it, saying it again underneath is two messages about
-   * one search, which reads as two things having gone wrong.
+   * Where the field has already said it, saying it again underneath is two
+   * messages about one search, which reads as two things having gone wrong.
    */
-  readonly showNotFoundBlock = computed(() => this.notFound() && this.criteriaNote() === '');
+  readonly showNotFoundBlock = computed(
+    () => this.notFound() && !this.criteriaNote() && !this.formatWarning(),
+  );
 
   setCriteria(criteria: string): void {
     this.criteria.set(criteria);

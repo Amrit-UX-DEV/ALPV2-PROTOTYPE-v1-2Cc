@@ -49,7 +49,12 @@
 <div class="ui-action-menu-extended">
   <div class="header-block">
     <span class="app-toolbar--heading">
-    <img src="../../images/alpha-icon-72.png" class="app-icon" alt="Alpha"><strong>Search</strong>
+    <!-- The app icon this heading carried, alpha-icon-72.png, is not in the
+         repo, and the path it was asked for by is not one this app serves
+         either: images are served from /Images, and this was a relative walk up
+         from the component's own folder. Nothing renders it but the browser's
+         broken-image glyph, so it is out until the asset arrives. -->
+    <strong>Search</strong>
     </span>
   </div>
   <ul>
@@ -71,8 +76,18 @@
         <option value="Possible Match">Possible Match</option>
         <option value="Other">Other</option> </select> </div> <div class="form-group">
         <label for="MenuSearch_ReferenceNumber">Reference Number</label>
-        <input autocomplete="off" autofocus="" class="form-control" formcontrolname="referenceNumber" id="MenuSearch_ReferenceNumber" name="referenceNumber" type="input" [placeholder]="search.referencePlaceholder()" [value]="search.term()" (input)="onReferenceInput($event)" [attr.aria-describedby]="search.criteriaHint() ? 'MenuSearch_ReferenceHelp' : null">
+        <input autocomplete="off" autofocus="" class="form-control" formcontrolname="referenceNumber" id="MenuSearch_ReferenceNumber" name="referenceNumber" type="input" [placeholder]="search.referencePlaceholder()" [value]="search.term()" (input)="onReferenceInput($event)" [class.alp-field--invalid]="!!search.formatWarning()" [attr.aria-invalid]="search.formatWarning() ? 'true' : null" aria-describedby="MenuSearch_ReferenceWarning MenuSearch_ReferenceHelp">
         </div>
+        <!-- What is wrong with the field comes first, against the field itself,
+             and the standing help under it. A missing id in aria-describedby is
+             ignored, so the field can name both and be described by whichever is
+             actually there. -->
+        @if (search.formatWarning(); as warning) {
+        <div class="alp-notice alp-notice--warning" id="MenuSearch_ReferenceWarning" role="alert">
+          <i aria-hidden="true" class="alp-notice__icon fas fa-exclamation-triangle"></i>
+          <strong class="alp-notice__text">{{ warning }}</strong>
+        </div>
+        }
         <!-- Under the field it is about, so it is read before anything is keyed
              rather than after a search has already failed. Both search forms
              show the same hint, from the one service.
@@ -83,7 +98,11 @@
         @if (search.criteriaHint(); as hint) {
         <div class="alp-notice alp-notice--info" id="MenuSearch_ReferenceHelp">
           <i aria-hidden="true" class="alp-notice__icon fas fa-info-circle"></i>
-          <p class="alp-notice__text">{{ hint }}</p>
+          <p class="alp-notice__text">
+            {{ hint.lead }}
+            <span class="alp-notice__example">{{ hint.example }}</span>
+            {{ hint.tail }}
+          </p>
           <strong class="alp-notice__note" [class.is-shown]="!!search.criteriaNote()" aria-live="polite">{{ search.criteriaNote() }}</strong>
         </div>
         }

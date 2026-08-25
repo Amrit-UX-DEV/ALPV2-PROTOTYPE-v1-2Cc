@@ -127,3 +127,33 @@ select.alp-input {
   color: var(--alp-color-text-muted);
   margin-top: var(--alp-space-1);
 }
+
+/* ---- A field the form has something to say about ----
+
+   Paired with a warning notice under the field: the notice says what is wrong
+   and this says which field it is about, which a notice on its own cannot do in
+   a form of several.
+
+   Amber 600, the same colour as that notice's edge, and two pixels of it so that
+   it reads as a state rather than as the standing hairline. It holds 3.19:1
+   against the field's own white fill and 4.28:1 against the near-black search
+   panel, so the boundary is seen wherever the field is.
+
+   Specific enough to beat the legacy .form-control rules, which are what these
+   inputs are otherwise wearing, without resorting to !important.
+
+   Bootstrap takes the outline off a focused .form-control and shows focus by
+   recolouring the border instead, which this rule has just taken over. So the
+   focused state puts an outline back: a flagged field a keyboard user cannot
+   see they are in would be a worse problem than the one being flagged. */
+input.form-control.alp-field--invalid,
+select.form-control.alp-field--invalid {
+  border: 2px solid var(--alp-color-amber-600);
+}
+
+input.form-control.alp-field--invalid:focus,
+select.form-control.alp-field--invalid:focus {
+  border-color: var(--alp-color-amber-600);
+  outline: 2px solid var(--alp-color-border-focus);
+  outline-offset: 1px;
+}

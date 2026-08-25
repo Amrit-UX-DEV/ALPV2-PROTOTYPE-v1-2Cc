@@ -20,10 +20,15 @@
    what stops the sentence wrapping underneath it: the text has the left
    column and only the left column, however many lines it runs to.
 
+   Two kinds. Info is the standing help, in blue. Warning is what the
+   field has to say about what is in it, in amber, and it goes above the
+   help rather than below it so that it sits against the field it is about.
+
    It carries its own fill rather than inheriting one, which is what lets
    it sit on the white body and inside the near-black search panel and
-   read the same in both. Slate 900 on blue 50 is 16.40:1, the icon is
-   blue 700 at 8.01:1, and the note is red 800 at 7.64:1.
+   read the same in both. Slate 900 is 16.40:1 on blue 50 and 17.22:1 on
+   amber 50, the icons are blue 700 at 8.01:1 and amber 700 at 4.84:1, and
+   the note is red 800 at 7.64:1.
 
    The edge is blue 500 because it has to be seen on both of those, and it
    is the only step on the scale that is: blue 300 holds 1.80:1 on the
@@ -57,7 +62,7 @@
   grid-column: 2;
   grid-row: 1;
   justify-self: end;
-  font-size: var(--alp-font-size-md);
+  font-size: var(--alp-font-size-lg);
   line-height: 1.35;
   color: var(--alp-color-blue-700);
 }
@@ -103,4 +108,30 @@
 .alp-notice--info {
   border-color: var(--alp-color-blue-500);
   background: var(--alp-color-blue-50);
+}
+
+/* The example, which is the one part of the sentence somebody is reading it for
+   and the one part that must not be broken across two lines. Bold, and kept
+   whole: a 230px panel was breaking the line after "e.g." and leaving the
+   reference on its own underneath.
+
+   nowrap on the whole parenthetical rather than on the reference alone, so the
+   "e.g." cannot be separated from what it is an example of either. */
+.alp-notice__example {
+  font-weight: var(--alp-font-weight-bold);
+  white-space: nowrap;
+}
+
+/* Something is wrong with what is in the field, which is a different thing from
+   a note about what came back, and it is shown above the help so that it is the
+   first thing under the field it is about. Amber 600 on the edge because it has
+   to be seen on the white body at 3.19:1 and on the near-black panel at 4.28:1,
+   and its own fill stands 13.16:1 clear of that panel. */
+.alp-notice--warning {
+  border-color: var(--alp-color-amber-600);
+  background: var(--alp-color-amber-50);
+}
+
+.alp-notice--warning .alp-notice__icon {
+  color: var(--alp-color-amber-700);
 }
