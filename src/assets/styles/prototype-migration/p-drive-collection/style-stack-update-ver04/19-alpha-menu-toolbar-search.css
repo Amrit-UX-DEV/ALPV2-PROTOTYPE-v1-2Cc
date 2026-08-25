@@ -63,20 +63,3 @@ alpha-menu .toolbar-searchform .col-md-5 {
 
 alpha-menu .toolbar-searchform .col-md-7 {
   padding-right: 0.7rem; }
-
-/* The menu's search panel is dark, which the status styles do not know: they
-   are written for the white body, where their #222 text is right. Inside here
-   it would be 1.1:1 and effectively invisible, so a notification shown in this
-   panel takes white text, as the labels beside it already do.
-
-   Only the info style, whose fill is transparent. The others carry a pale fill
-   of their own and are legible on it wherever they are shown.
-
-   Its edge lightens for the same reason: the blue it is given holds 2.69:1
-   here, under the 3:1 non-text wants, and the panel's own lighter blue takes
-   that to 6.15:1. */
-alpha-search-field .toolbar-searchform .notification-block.status-info {
-  border-color: #85b2e2; }
-
-alpha-search-field .toolbar-searchform .notification-block.status-info p {
-  color: #ffffff; }

@@ -184,9 +184,10 @@
         columns. The roles put the semantics back, so it is still read as a
         table with a header row and four columns.
 
-        Ordered by section rather than by verdict. The grouped layout answers
-        what needs doing; this one answers what the record says, field by field
-        in the order the sections arrive.
+        In the same three groups as the panels, in the same order, so the two
+        layouts differ in how much they show rather than in what they say. Each
+        group is announced by a row the grid spans across every column, and the
+        field's own section rides along beside its name.
       -->
       <div
         class="ui-grid-container grid-theme--default grid-template--match-comparison"
@@ -203,17 +204,23 @@
         </div>
 
         <div class="ui-grid-body" role="rowgroup">
-          @for (section of sections(); track section.title) {
-            <div class="ui-row ui-row--template-break alp-comparison__section" role="row">
+          @for (group of verdictGroups(); track group.verdict) {
+            <div class="ui-row ui-row--template-break alp-comparison__group" role="row">
               <div class="ui-grid-item grid-col-span-04" role="cell" aria-colspan="4">
-                {{ section.title }}
+                <span [class]="'alp-status-tag ' + verdictTags[group.verdict]">
+                  {{ verdictLabels[group.verdict] }}
+                </span>
+                <span class="alp-comparison__group-count">
+                  {{ group.fields.length }} of {{ fieldCount() }} fields
+                </span>
               </div>
             </div>
 
-            @for (row of section.rows; track row.label) {
+            @for (row of group.fields; track row.label) {
               <div class="ui-row" role="row">
                 <div class="ui-grid-item alp-comparison__field" role="rowheader">
                   {{ row.label }}
+                  <span class="alp-comparison__field-section">{{ row.section }}</span>
                 </div>
                 <div class="ui-grid-item" role="cell">
                   @if (row.theirs === noData) {

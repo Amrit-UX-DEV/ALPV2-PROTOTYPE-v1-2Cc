@@ -328,6 +328,27 @@ export class AlphaSearchSummaryComponent {
   );
 
   /**
+   * The same three groups the panels are in, for the table to run through.
+   *
+   * The table used to run by section, which put a field that matched next to
+   * one that did not and left the rep reading the result column to sort them
+   * out. Grouped, the two layouts answer the same question in the same order
+   * and differ only in how much they show at once.
+   *
+   * A group with nothing in it is dropped rather than left as a heading with no
+   * rows under it.
+   */
+  protected readonly verdictGroups = computed(() =>
+    (
+      [
+        { verdict: 'matched', fields: this.agreements() },
+        { verdict: 'not-matched', fields: this.differences() },
+        { verdict: 'not-held', fields: this.notHeld() },
+      ] as const
+    ).filter((group) => group.fields.length > 0),
+  );
+
+  /**
    * Which groups are open.
    *
    * Held here rather than left to the details elements, so one control can open

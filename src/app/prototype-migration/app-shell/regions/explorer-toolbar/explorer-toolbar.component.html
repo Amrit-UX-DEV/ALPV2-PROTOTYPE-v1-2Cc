@@ -77,10 +77,9 @@
              rather than after a search has already failed. Both search forms
              show the same hint, from the one service. -->
         @if (search.criteriaHint(); as hint) {
-        <div class="notification-block status-info">
-          <div class="notification-message">
-            <p>{{ hint }}</p>
-          </div>
+        <div class="alp-notice alp-notice--info">
+          <i aria-hidden="true" class="alp-notice__icon fas fa-info-circle"></i>
+          <p class="alp-notice__text">{{ hint }}</p>
         </div>
         }
         <button class="btn btn-success policy-search-submit" id="MenuSearch_SearchButton" type="submit" [disabled]="!search.canSearch()">Search</button>

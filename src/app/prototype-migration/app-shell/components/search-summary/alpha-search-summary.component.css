@@ -486,17 +486,34 @@
   color: var(--alp-color-text);
 }
 
-/* The section's own row, which the grid spans across the full width for us. It
-   names what follows and is not a column heading, so it is filled a step darker
-   than the body and left unbold at the size the grid sets. */
-.alp-comparison__section .ui-grid-item {
+/* The group's own row, which the grid spans across every column for us. It
+   carries the same tag the group's panel wears, so the two layouts name a group
+   the same way, and a count beside it, and it is filled a step darker than the
+   body so it reads as a break rather than as another row of data. */
+.alp-comparison__group .ui-grid-item {
+  display: flex;
+  align-items: center;
+  gap: var(--alp-space-2);
   background: var(--alp-color-slate-100);
-  font-weight: var(--alp-font-weight-semibold);
   border-left: 0;
 }
 
+.alp-comparison__group-count {
+  color: var(--alp-color-slate-700);
+}
+
+/* The field's name, with the section it came from under it. Grouping by verdict
+   is what a rep wants first, but it costs the section grouping the table had, so
+   each field carries its own: 4.86:1 on the row it sits on, and the same
+   near-black name above it. */
 .alp-comparison__field {
   font-weight: var(--alp-font-weight-semibold);
+}
+
+.alp-comparison__field-section {
+  display: block;
+  font-weight: var(--alp-font-weight-normal);
+  color: var(--alp-color-text-muted);
 }
 
 /* A tag in a cell is the whole content of that cell, so it drops the margin it

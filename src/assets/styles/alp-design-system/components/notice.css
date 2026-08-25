@@ -1,0 +1,61 @@
+/* =========================================================
+   ALP DESIGN SYSTEM — NOTICE
+
+   A short standing message about the thing beside it: what a field
+   takes, what a screen is for. Not an alert. Nothing has happened, so
+   there is nothing to dismiss and nothing to act on.
+
+   The legacy notification block does the same job with a 6px bar down
+   one side, a full-height icon well and 10px of padding all round, which
+   is a lot of room to give a sentence when the space it has to live in is
+   a 230px menu panel. This is the same idea in less: one even border, a
+   light fill, and an icon in a column of its own.
+
+   Two columns, so the text cannot wrap back underneath the icon: the
+   icon takes what it needs and the sentence takes the rest, hanging in
+   its own column however many lines it runs to.
+
+   It carries its own fill rather than inheriting one, which is what lets
+   it sit on the white body and inside the near-black search panel and
+   read the same in both. Slate 900 on blue 50 is 16.40:1 and the icon is
+   blue 700 on the same fill at 8.01:1.
+
+   The edge is blue 500 because it has to be seen on both of those, and it
+   is the only step on the scale that is: blue 300 holds 1.80:1 on the
+   white body, where the fill is a fifth of a stop off white and the edge
+   is all there is to say the block is a block. Two steps darker and it
+   would go the other way, 2.64:1 on the panel.
+   ========================================================= */
+
+.alp-notice {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  gap: var(--alp-space-2);
+  align-items: start;
+  padding: var(--alp-space-2) var(--alp-space-3);
+  border: 1px solid var(--alp-color-blue-500);
+  border-radius: var(--alp-radius-md);
+  background: var(--alp-color-blue-50);
+}
+
+/* Sized and nudged to sit on the first line of the text rather than above
+   it, which is where a glyph on a smaller line box would otherwise land. */
+.alp-notice__icon {
+  font-size: var(--alp-font-size-md);
+  line-height: 1.35;
+  color: var(--alp-color-blue-700);
+}
+
+.alp-notice__text {
+  margin: 0;
+  font-size: var(--alp-font-size-sm);
+  line-height: 1.35;
+  color: var(--alp-color-text);
+}
+
+/* Info is the standing case, and the only one so far. Named all the same, so
+   the next kind is a modifier beside it rather than a second block. */
+.alp-notice--info {
+  border-color: var(--alp-color-blue-500);
+  background: var(--alp-color-blue-50);
+}

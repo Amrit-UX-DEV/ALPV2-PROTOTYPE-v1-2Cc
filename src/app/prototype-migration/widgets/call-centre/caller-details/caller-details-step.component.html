@@ -67,10 +67,9 @@
                                                                                     <!-- The same hint as the left menu's, from the one service, under the
                                                                                          field it is about. -->
                                                                                     @if (search.criteriaHint(); as hint) {
-                                                                                    <div class="notification-block status-info mt-20">
-                                                                                        <div class="notification-message">
-                                                                                            <p>{{ hint }}</p>
-                                                                                        </div>
+                                                                                    <div class="alp-notice alp-notice--info mt-20">
+                                                                                        <i aria-hidden="true" class="alp-notice__icon fas fa-info-circle"></i>
+                                                                                        <p class="alp-notice__text">{{ hint }}</p>
                                                                                     </div>
                                                                                     }
                                                                                     <div>
