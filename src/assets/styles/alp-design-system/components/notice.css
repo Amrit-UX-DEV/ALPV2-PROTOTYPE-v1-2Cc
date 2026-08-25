@@ -1,15 +1,8 @@
 /* =========================================================
    ALP DESIGN SYSTEM — NOTICE
 
-   A short standing message about the thing beside it: what a field
-   takes, what a screen is for. Not an alert. Nothing has happened when
-   it appears, so there is nothing to dismiss and nothing to act on.
-
-   It can go on to carry one, though. A note sits under the sentence, on
-   its own line, for what came back when the field was used: a format
-   that cannot be right, or a search that found nothing. Same block, so a
-   rep reads the field's help and the field's answer in one place rather
-   than one above the form and the other below it.
+   A short message about the thing beside it: what a field takes, what a
+   screen is for, or what the field has to say about what is in it.
 
    Shaped after the legacy notification block it replaces, less what did
    not fit a 230px menu panel: it keeps the 6px bar down its left side, so
@@ -20,15 +13,17 @@
    what stops the sentence wrapping underneath it: the text has the left
    column and only the left column, however many lines it runs to.
 
-   Two kinds. Info is the standing help, in blue. Warning is what the
-   field has to say about what is in it, in amber, and it goes above the
-   help rather than below it so that it sits against the field it is about.
+   Two kinds, and they are shown one above the other rather than one
+   inside the other. Info is the standing help, in blue, under the field.
+   Warning is what came of using the field, in amber, above the help and
+   hard against the field it is about, so that what has just happened is
+   never a line hidden inside the paragraph that was already there.
 
    It carries its own fill rather than inheriting one, which is what lets
    it sit on the white body and inside the near-black search panel and
    read the same in both. Slate 900 is 16.40:1 on blue 50 and 17.22:1 on
-   amber 50, the icons are blue 700 at 8.01:1 and amber 700 at 4.84:1, and
-   the note is red 800 at 7.64:1.
+   amber 50, and the icons are blue 700 at 8.01:1 and amber 700 at
+   4.84:1.
 
    The edge is blue 500 because it has to be seen on both of those, and it
    is the only step on the scale that is: blue 300 holds 1.80:1 on the
@@ -74,33 +69,6 @@
   font-size: var(--alp-font-size-sm);
   line-height: 1.35;
   color: var(--alp-color-text);
-}
-
-/* The note runs the full width under both columns, and takes the whole line to
-   itself: it is a different thing being said, not the end of the sentence above
-   it.
-   
-   It stays in the DOM empty so that it is a live region already on the page when
-   something is put into it, which is what gets it announced without moving
-   anybody's focus. Empty it has no line box and no space of its own, so it takes
-   up nothing and shows nothing; the state class rather than :empty decides that,
-   since an interpolation leaves a text node behind either way.
-
-   A strong element, because it is the important part of what the block says, and
-   because one element holding the text is one element that can be empty: an
-   inner wrapper would leave a line box behind with nothing in it. */
-.alp-notice__note {
-  display: block;
-  grid-column: 1 / -1;
-  margin: 0;
-  font-size: var(--alp-font-size-sm);
-  font-weight: var(--alp-font-weight-bold);
-  line-height: 1.35;
-  color: var(--alp-color-red-800);
-}
-
-.alp-notice__note.is-shown {
-  padding-top: var(--alp-space-2);
 }
 
 /* Info is the standing case, and the only one so far. Named all the same, so

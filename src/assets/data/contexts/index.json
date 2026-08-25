@@ -40,9 +40,9 @@
       "id": "possible-match-pmr12345678910",
       "file": "possible-match-pmr12345678910.json",
       "kind": "possible-match",
-      "criteria": "Possible Match",
+      "criteria": "Dashboard Reference",
       "reference": "PMR12345678910",
-      "label": "Possible match, partial client data",
+      "label": "Dashboard reference, partial client data",
       "company": "",
       "clients": []
     }

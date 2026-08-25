@@ -53,8 +53,8 @@
                                             <option value="Unallocated Payment">
                                                                                                 Unallocated
                                                                                                 Payment</option>
-                                            <option value="Possible Match">
-                                                                                                Possible Match</option>
+                                            <option value="Dashboard Reference">
+                                                                                                Dashboard Reference</option>
                                             <option value="Other">
                                                                                                 Other</option>
                                                                                         </select>
@@ -62,25 +62,24 @@
                                                                                     <div class="form-group search--input-reference-number search--inline-control">
                                                                                         <label for="PolicySearch_ReferenceNumber">Reference
                                                                                             Number</label>
-                                                                                        <input autocomplete="off" autofocus="" class="form-control" formcontrolname="referenceNumber" id="PolicySearch_ReferenceNumber" name="referenceNumber" style="text-transform: capitalize" type="input" [class.alp-field--invalid]="!!search.formatWarning()" [attr.aria-invalid]="search.formatWarning() ? 'true' : null" aria-describedby="PolicySearch_ReferenceWarning PolicySearch_ReferenceHelp" [value]="search.term()" (input)="onReferenceInput($event)" [placeholder]="search.referencePlaceholder()">
+                                                                                        <input autocomplete="off" autofocus="" class="form-control" formcontrolname="referenceNumber" id="PolicySearch_ReferenceNumber" name="referenceNumber" style="text-transform: capitalize" type="input" [class.alp-field--invalid]="!!search.fieldWarning()" [attr.aria-invalid]="search.fieldWarning() ? 'true' : null" aria-describedby="PolicySearch_ReferenceWarning PolicySearch_ReferenceHelp" [value]="search.term()" (input)="onReferenceInput($event)" [placeholder]="search.referencePlaceholder()">
                                                                                     </div>
                                                                                     <!-- The same hint as the left menu's, from the one service, under the
                                                                                          field it is about. -->
-                                                                                    @if (search.formatWarning(); as warning) {
+                                                                                    @if (search.fieldWarning(); as warning) {
                                                                                     <div class="alp-notice alp-notice--warning mt-20" id="PolicySearch_ReferenceWarning" role="alert">
                                                                                         <i aria-hidden="true" class="alp-notice__icon fas fa-exclamation-triangle"></i>
                                                                                         <strong class="alp-notice__text">{{ warning }}</strong>
                                                                                     </div>
                                                                                     }
                                                                                     @if (search.criteriaHint(); as hint) {
-                                                                                    <div class="alp-notice alp-notice--info" [class.mt-20]="!search.formatWarning()" id="PolicySearch_ReferenceHelp">
+                                                                                    <div class="alp-notice alp-notice--info" [class.mt-20]="!search.fieldWarning()" id="PolicySearch_ReferenceHelp">
                                                                                         <i aria-hidden="true" class="alp-notice__icon fas fa-info-circle"></i>
                                                                                         <p class="alp-notice__text">
                                                                                             {{ hint.lead }}
                                                                                             <span class="alp-notice__example">{{ hint.example }}</span>
                                                                                             {{ hint.tail }}
                                                                                         </p>
-                                                                                        <strong class="alp-notice__note" [class.is-shown]="!!search.criteriaNote()" aria-live="polite">{{ search.criteriaNote() }}</strong>
                                                                                     </div>
                                                                                     }
                                                                                     <div>

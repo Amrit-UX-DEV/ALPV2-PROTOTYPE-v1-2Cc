@@ -2,15 +2,15 @@
   "id": "possible-match-pmr12345678910",
   "kind": "possible-match",
   "reference": "PMR12345678910",
-  "label": "Possible Match Reference PMR12345678910",
+  "label": "Dashboard Reference PMR12345678910",
   "pensionReference": "80007",
   "record": "pmr12345678910.json",
   "screen": {
     "breadcrumbs": [
       "Search",
-      "Possible Match"
+      "Dashboard Reference"
     ],
-    "headingPrefix": "Possible Match PMR12345678910",
+    "headingPrefix": "Dashboard Reference PMR12345678910",
     "policyDetail": false
   }
 }

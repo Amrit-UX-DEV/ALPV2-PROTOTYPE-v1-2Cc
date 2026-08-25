@@ -4,6 +4,16 @@ import { PrototypeContextService } from './prototype-context.service';
 import { AppViewService } from '../ui/app-view.service';
 
 /**
+ * The criteria whose reference format we know, because it is not ours: these are
+ * issued by the pension dashboard and read off it.
+ *
+ * Named once. It is matched against the dropdown's own value and against the
+ * context registry's, so the three have to agree exactly, and the screen it
+ * opens has been renamed once already.
+ */
+const DASHBOARD_REFERENCE = 'Dashboard Reference';
+
+/**
  * A field's help, in the three parts it has to be shown in.
  *
  * The example is kept apart from the sentence around it because it cannot be
@@ -62,7 +72,6 @@ export class ContextSearchService {
   readonly referencePlaceholder = computed(() => {
     const criteria = this.criteria();
     if (criteria === 'Client') return 'Enter Client Name';
-    if (criteria === 'Possible Match') return 'Enter Possible Match Number';
     if (criteria === 'Other') return 'Enter Reference Number';
     return `Enter ${criteria} Number`;
   });
@@ -71,16 +80,16 @@ export class ContextSearchService {
    * A word of help for criteria whose reference a rep may never have keyed.
    *
    * Every other criteria takes a number the rep already has in front of them. A
-   * possible match reference does not come from us at all: it is read off the
-   * pension dashboard, and it carries a prefix, so the field is the one place
-   * somebody can be told what one looks like before they guess at it.
+   * dashboard reference does not come from us at all: it is read off the pension
+   * dashboard, and it carries a prefix, so the field is the one place somebody
+   * can be told what one looks like before they guess at it.
    *
    * Empty for everything else, which is what both forms show it on: a hint
    * standing under a field that does not need one is noise, and by the second
    * search it is noise nobody reads.
    */
   readonly criteriaHint = computed<SearchCriteriaHint | null>(() =>
-    this.criteria() === 'Possible Match'
+    this.criteria() === DASHBOARD_REFERENCE
       ? {
           lead: 'Enter reference number',
           example: '(e.g. PMR12345678910)',
@@ -109,16 +118,15 @@ export class ContextSearchService {
   readonly notFoundLabel = computed(() => this.missedCriteria().toLowerCase());
 
   /**
-   * The prefix every possible match reference carries.
+   * The prefix every dashboard reference carries.
    *
-   * The one criteria whose format we know, because the format is not ours: the
-   * pension dashboard issues these, and a reference read off it without this in
-   * front of it was mis-heard or mis-keyed rather than not found.
+   * A reference read off the dashboard without this in front of it was mis-heard
+   * or mis-keyed rather than not found.
    */
-  private readonly possibleMatchPrefix = 'PMR';
+  private readonly dashboardReferencePrefix = 'PMR';
 
   /**
-   * Whether what has been keyed cannot be a possible match reference.
+   * Whether what has been keyed cannot be a dashboard reference.
    *
    * Not a failed search: nothing has been looked for. A reference that does not
    * start with the prefix is the wrong thing entirely, and the sooner that is
@@ -134,30 +142,37 @@ export class ContextSearchService {
    * Empty for every other criteria, whose references we do not issue and cannot
    * vouch for the shape of.
    */
-  readonly formatWarning = computed(() => {
-    if (this.criteria() !== 'Possible Match') return '';
+  private readonly formatWarning = computed(() => {
+    if (this.criteria() !== DASHBOARD_REFERENCE) return '';
 
     const keyed = this.term().trim().toUpperCase();
     if (!keyed) return '';
 
-    const prefix = this.possibleMatchPrefix;
+    const prefix = this.dashboardReferencePrefix;
     const sofar = keyed.slice(0, prefix.length);
     return prefix.startsWith(sofar) ? '' : 'Invalid format entered';
   });
 
   /**
-   * What came of the search, said in the same block as the field's help.
+   * What the field has to say about what is in it, on its own block above the
+   * field's help.
    *
-   * Only ever the one thing, and only for a reference in the right shape: it was
-   * looked for, and it is not there. A reference in the wrong shape is answered
-   * by the warning above the field instead, which is a different thing to say
-   * and is said about the field rather than about the search.
+   * Two things it can be, and they are not the same thing. A reference in the
+   * wrong shape has not been looked for at all and wants re-keying. One in the
+   * right shape has been looked for and is not there, which is the end of that
+   * line of enquiry. The shape is answered first, since a reference that cannot
+   * be right was never going to be found either.
+   *
+   * Both are about what is in the field rather than about the form, which is why
+   * they are shown against the field and why the field is marked while either
+   * stands.
    */
-  readonly criteriaNote = computed(() =>
-    this.criteria() === 'Possible Match' && !this.formatWarning() && this.notFound()
-      ? 'No match found'
-      : '',
-  );
+  readonly fieldWarning = computed(() => {
+    const format = this.formatWarning();
+    if (format) return format;
+
+    return this.criteria() === DASHBOARD_REFERENCE && this.notFound() ? 'No match found' : '';
+  });
 
   /**
    * Whether a failed search still needs its own block.
@@ -165,9 +180,7 @@ export class ContextSearchService {
    * Where the field has already said it, saying it again underneath is two
    * messages about one search, which reads as two things having gone wrong.
    */
-  readonly showNotFoundBlock = computed(
-    () => this.notFound() && !this.criteriaNote() && !this.formatWarning(),
-  );
+  readonly showNotFoundBlock = computed(() => this.notFound() && !this.fieldWarning());
 
   setCriteria(criteria: string): void {
     this.criteria.set(criteria);
