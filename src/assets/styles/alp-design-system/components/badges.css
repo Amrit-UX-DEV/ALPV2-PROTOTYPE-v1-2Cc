@@ -113,6 +113,14 @@
   color: var(--alp-color-slate-700);
 }
 
+/* Neutral, for where it has to hold its own against a fill of its own kind.
+   Slate 200 is legible in itself but sits close enough to a tinted row to
+   disappear into it, and a tag nobody sees names nothing. Solid slate 600 keeps
+   white text at 7.58:1 and stands 6.9:1 clear of the palest tints. */
+.alp-status-tag--neutral-strong {
+  background: var(--alp-color-slate-600);
+}
+
 /* A field one side simply does not hold. Neutral put it on slate 200, which is
    all but invisible against the pale fills a value sits on, and a state nobody
    notices is not a state. Orange 700 keeps white text at 5.18:1 and the tag

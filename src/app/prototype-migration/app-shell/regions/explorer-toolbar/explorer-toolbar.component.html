@@ -71,20 +71,25 @@
         <option value="Possible Match">Possible Match</option>
         <option value="Other">Other</option> </select> </div> <div class="form-group">
         <label for="MenuSearch_ReferenceNumber">Reference Number</label>
-        <input autocomplete="off" autofocus="" class="form-control" formcontrolname="referenceNumber" id="MenuSearch_ReferenceNumber" name="referenceNumber" type="input" [placeholder]="search.referencePlaceholder()" [value]="search.term()" (input)="onReferenceInput($event)">
+        <input autocomplete="off" autofocus="" class="form-control" formcontrolname="referenceNumber" id="MenuSearch_ReferenceNumber" name="referenceNumber" type="input" [placeholder]="search.referencePlaceholder()" [value]="search.term()" (input)="onReferenceInput($event)" [attr.aria-describedby]="search.criteriaHint() ? 'MenuSearch_ReferenceHelp' : null">
         </div>
         <!-- Under the field it is about, so it is read before anything is keyed
              rather than after a search has already failed. Both search forms
-             show the same hint, from the one service. -->
+             show the same hint, from the one service.
+
+             The note is left in the block empty so that it is a live region
+             already on the page when a message goes into it, which is what has
+             it read out without taking focus off the field. -->
         @if (search.criteriaHint(); as hint) {
-        <div class="alp-notice alp-notice--info">
+        <div class="alp-notice alp-notice--info" id="MenuSearch_ReferenceHelp">
           <i aria-hidden="true" class="alp-notice__icon fas fa-info-circle"></i>
           <p class="alp-notice__text">{{ hint }}</p>
+          <strong class="alp-notice__note" [class.is-shown]="!!search.criteriaNote()" aria-live="polite">{{ search.criteriaNote() }}</strong>
         </div>
         }
         <button class="btn btn-success policy-search-submit" id="MenuSearch_SearchButton" type="submit" [disabled]="!search.canSearch()">Search</button>
         <button class="btn btn-danger policy-search-clear" id="MenuSearch_ClearButton" type="button" (click)="search.clear()">Clear</button>
-        @if (search.notFound()) {
+        @if (search.showNotFoundBlock()) {
         <div class="notification-block status-warning">
           <div class="notification-message">
             <p>No {{ search.notFoundLabel() }} found for {{ search.notFoundTerm() }}</p>

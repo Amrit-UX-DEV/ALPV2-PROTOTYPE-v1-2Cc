@@ -4,6 +4,10 @@
 
 :root {
   --alp-radius-none: 0px;
+  /* The gentlest corner that still reads as one. Small was the smallest step
+     there was, and on a wide block that has to sit tight against a form it is
+     already more curve than the shape wants. */
+  --alp-radius-xs: 4px;
   --alp-radius-sm: 6px;
   --alp-radius-md: 8px;
   --alp-radius-lg: 12px;

@@ -2,23 +2,28 @@
    ALP DESIGN SYSTEM — NOTICE
 
    A short standing message about the thing beside it: what a field
-   takes, what a screen is for. Not an alert. Nothing has happened, so
-   there is nothing to dismiss and nothing to act on.
+   takes, what a screen is for. Not an alert. Nothing has happened when
+   it appears, so there is nothing to dismiss and nothing to act on.
 
-   The legacy notification block does the same job with a 6px bar down
-   one side, a full-height icon well and 10px of padding all round, which
-   is a lot of room to give a sentence when the space it has to live in is
-   a 230px menu panel. This is the same idea in less: one even border, a
-   light fill, and an icon in a column of its own.
+   It can go on to carry one, though. A note sits under the sentence, on
+   its own line, for what came back when the field was used: a format
+   that cannot be right, or a search that found nothing. Same block, so a
+   rep reads the field's help and the field's answer in one place rather
+   than one above the form and the other below it.
 
-   Two columns, so the text cannot wrap back underneath the icon: the
-   icon takes what it needs and the sentence takes the rest, hanging in
-   its own column however many lines it runs to.
+   Shaped after the legacy notification block it replaces, less what did
+   not fit a 230px menu panel: it keeps the 6px bar down its left side, so
+   the two read as the same family, and loses the full-height icon well
+   and the 10px all round.
+
+   The icon sits in the top right corner in a column of its own, which is
+   what stops the sentence wrapping underneath it: the text has the left
+   column and only the left column, however many lines it runs to.
 
    It carries its own fill rather than inheriting one, which is what lets
    it sit on the white body and inside the near-black search panel and
-   read the same in both. Slate 900 on blue 50 is 16.40:1 and the icon is
-   blue 700 on the same fill at 8.01:1.
+   read the same in both. Slate 900 on blue 50 is 16.40:1, the icon is
+   blue 700 at 8.01:1, and the note is red 800 at 7.64:1.
 
    The edge is blue 500 because it has to be seen on both of those, and it
    is the only step on the scale that is: blue 300 holds 1.80:1 on the
@@ -29,28 +34,68 @@
 
 .alp-notice {
   display: grid;
-  grid-template-columns: auto minmax(0, 1fr);
-  gap: var(--alp-space-2);
+  grid-template-columns: minmax(0, 1fr) auto;
+  /* No row gap: the note is a row of its own and pays for its own space when it
+     has something in it, so an empty one costs nothing. */
+  gap: 0 var(--alp-space-3);
   align-items: start;
+  /* It explains the control under it, so it needs to be clear of that control's
+     own actions: flush against a Search button the two read as one lump, and
+     the vertical rhythm of the form breaks at exactly the point a rep is
+     reading. */
+  margin: 0 0 var(--alp-space-4);
   padding: var(--alp-space-2) var(--alp-space-3);
   border: 1px solid var(--alp-color-blue-500);
-  border-radius: var(--alp-radius-md);
+  border-left-width: 6px;
+  border-radius: var(--alp-radius-xs);
   background: var(--alp-color-blue-50);
 }
 
-/* Sized and nudged to sit on the first line of the text rather than above
-   it, which is where a glyph on a smaller line box would otherwise land. */
+/* Second column, first row, whatever the markup order, so the icon is in the
+   corner and the text is never laid out around it. */
 .alp-notice__icon {
+  grid-column: 2;
+  grid-row: 1;
+  justify-self: end;
   font-size: var(--alp-font-size-md);
   line-height: 1.35;
   color: var(--alp-color-blue-700);
 }
 
 .alp-notice__text {
+  grid-column: 1;
+  grid-row: 1;
   margin: 0;
   font-size: var(--alp-font-size-sm);
   line-height: 1.35;
   color: var(--alp-color-text);
+}
+
+/* The note runs the full width under both columns, and takes the whole line to
+   itself: it is a different thing being said, not the end of the sentence above
+   it.
+   
+   It stays in the DOM empty so that it is a live region already on the page when
+   something is put into it, which is what gets it announced without moving
+   anybody's focus. Empty it has no line box and no space of its own, so it takes
+   up nothing and shows nothing; the state class rather than :empty decides that,
+   since an interpolation leaves a text node behind either way.
+
+   A strong element, because it is the important part of what the block says, and
+   because one element holding the text is one element that can be empty: an
+   inner wrapper would leave a line box behind with nothing in it. */
+.alp-notice__note {
+  display: block;
+  grid-column: 1 / -1;
+  margin: 0;
+  font-size: var(--alp-font-size-sm);
+  font-weight: var(--alp-font-weight-bold);
+  line-height: 1.35;
+  color: var(--alp-color-red-800);
+}
+
+.alp-notice__note.is-shown {
+  padding-top: var(--alp-space-2);
 }
 
 /* Info is the standing case, and the only one so far. Named all the same, so

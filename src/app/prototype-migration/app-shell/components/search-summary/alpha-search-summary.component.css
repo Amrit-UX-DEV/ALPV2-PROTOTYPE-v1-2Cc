@@ -449,8 +449,8 @@
 
 /* The layout switch sits at the start of the row, and the control that opens
    and closes the groups at the end, on the same side as the chevrons it turns.
-   With the table showing there is nothing to open, so the switch is left on its
-   own at the start rather than moving. */
+   Both layouts have the same three groups and both open and close them, so the
+   control stays where it is when the layout changes. */
 .alp-search-summary__controls {
   display: flex;
   align-items: center;
@@ -469,17 +469,19 @@
    than added to the shared grid file, so the next screen to use a grid
    writes its own instead of bending this one.
 
-   Four columns. The field name takes what it needs up to a cap; the two
-   value columns split what is left evenly, because an address on one
-   platform should not squeeze the same address on the other; the verdict
-   is a tag of known width.
+   Three columns. The field name takes what it needs up to a cap, and the
+   two value columns split what is left evenly, because an address on one
+   platform should not squeeze the same address on the other.
+
+   There was a fourth for the verdict, which went when the rows were
+   grouped: inside a group every row carries the group's verdict, so the
+   column spent a fifth of the table repeating the heading above it.
    --------------------------------------------------------------- */
 .ui-grid-container.grid-template--match-comparison {
   grid-template-columns:
     minmax(140px, 220px)
     minmax(180px, 1fr)
-    minmax(180px, 1fr)
-    minmax(auto, 150px);
+    minmax(180px, 1fr);
   /* The grid inherits its colour from the region it sits in. Stated here so the
      cells are known to be slate 900: 17.4:1 on the white body rows and 10.6:1
      at the palest end of the header's gradient. */
@@ -487,19 +489,79 @@
 }
 
 /* The group's own row, which the grid spans across every column for us. It
-   carries the same tag the group's panel wears, so the two layouts name a group
-   the same way, and a count beside it, and it is filled a step darker than the
-   body so it reads as a break rather than as another row of data. */
+   carries the same tag its panel wears in the grouped layout and says the same
+   thing, and it is tinted in its group's own colour, a step up from the panel
+   heads: green for what matched, amber for what did not, grey for what neither
+   platform holds. The colour is never the only thing saying which group this is.
+
+   The whole row is the control, so the cell is padded by the button inside it
+   rather than by the grid. */
 .alp-comparison__group .ui-grid-item {
-  display: flex;
-  align-items: center;
-  gap: var(--alp-space-2);
-  background: var(--alp-color-slate-100);
+  padding: 0;
   border-left: 0;
 }
 
-.alp-comparison__group-count {
+/* A row of the grid, so it fills the cell it is in and looks like a band rather
+   than a button sitting in one. Tag, title, chevron: the chevron pushed to the
+   far end, on the same side as the panels' own. */
+.alp-comparison__group-toggle {
+  display: flex;
+  align-items: center;
+  gap: var(--alp-space-2);
+  width: 100%;
+  padding: var(--alp-space-2) var(--alp-space-3);
+  border: 0;
+  background: var(--alp-color-slate-100);
+  font: inherit;
+  color: var(--alp-color-text);
+  text-align: left;
+  cursor: pointer;
+  transition: background 0.15s ease;
+}
+
+.alp-comparison__group[data-verdict='matched'] .alp-comparison__group-toggle {
+  background: var(--alp-color-green-100);
+}
+
+.alp-comparison__group[data-verdict='matched'] .alp-comparison__group-toggle:hover {
+  background: var(--alp-color-green-200);
+}
+
+.alp-comparison__group[data-verdict='not-matched'] .alp-comparison__group-toggle {
+  background: var(--alp-color-amber-100);
+}
+
+.alp-comparison__group[data-verdict='not-matched'] .alp-comparison__group-toggle:hover {
+  background: var(--alp-color-amber-200);
+}
+
+.alp-comparison__group[data-verdict='not-held'] .alp-comparison__group-toggle:hover {
+  background: var(--alp-color-slate-200);
+}
+
+.alp-comparison__group-toggle:focus-visible {
+  outline: 2px solid var(--alp-color-border-focus);
+  outline-offset: -2px;
+}
+
+/* The grid sets a smaller type size than the screen around it, and a group's
+   header is not a row of data, so it is read at the size the panels' headers
+   are read at. Slate 700 holds 9.3:1 at worst on the three tints. */
+.alp-comparison__group-title {
+  font-size: var(--alp-font-size-sm);
+  font-weight: var(--alp-font-weight-semibold);
   color: var(--alp-color-slate-700);
+}
+
+.alp-comparison__group-chevron {
+  margin-left: auto;
+  font-size: var(--alp-font-size-sm);
+  color: var(--alp-color-slate-700);
+  transition: transform 0.15s ease;
+}
+
+.alp-comparison__group-toggle.is-open .alp-comparison__group-chevron {
+  transform: rotate(180deg);
 }
 
 /* The field's name, with the section it came from under it. Grouping by verdict
@@ -514,6 +576,14 @@
   display: block;
   font-weight: var(--alp-font-weight-normal);
   color: var(--alp-color-text-muted);
+}
+
+/* Our record, in the group that does not agree: the same fill it takes on the
+   difference tiles, so the cell a rep is going to change is the same colour in
+   both layouts. Slate 900 holds 14.33:1 on it and a No Data tag stands 4.16:1
+   clear of it. */
+.alp-comparison__ours--differs {
+  background: var(--alp-color-amber-200);
 }
 
 /* A tag in a cell is the whole content of that cell, so it drops the margin it

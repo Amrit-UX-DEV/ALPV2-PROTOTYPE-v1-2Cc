@@ -54,18 +54,17 @@
         </button>
       </div>
 
-      <!-- Only the grouped layout has anything to open and close. -->
-      @if (view() === 'grouped') {
-        <button type="button" class="alp-btn alp-btn--ghost" (click)="toggleAllGroups()">
-          {{ anyOpen() ? 'Collapse all groups' : 'Expand all groups' }}
-          <i
-            aria-hidden="true"
-            class="fas"
-            [class.fa-angle-double-up]="anyOpen()"
-            [class.fa-angle-double-down]="!anyOpen()"
-          ></i>
-        </button>
-      }
+      <!-- Both layouts group the same three groups, and both open and close them,
+           so the one control serves either. -->
+      <button type="button" class="alp-btn alp-btn--ghost" (click)="toggleAllGroups()">
+        {{ anyOpen() ? 'Collapse all groups' : 'Expand all groups' }}
+        <i
+          aria-hidden="true"
+          class="fas"
+          [class.fa-angle-double-up]="anyOpen()"
+          [class.fa-angle-double-down]="!anyOpen()"
+        ></i>
+      </button>
     </div>
 
     @if (view() === 'grouped') {
@@ -79,7 +78,7 @@
             <summary class="alp-search-summary__panel-head">
               <span class="alp-search-summary__panel-chip">Matched</span>
               <h3 class="alp-search-summary__panel-title">
-                {{ agreements().length }} of {{ fieldCount() }} fields match
+                {{ groupTitles().matched }}
               </h3>
               <span class="alp-search-summary__panel-fields">{{ agreementLabels() }}</span>
               <i aria-hidden="true" class="alp-search-summary__panel-chevron fa fa-chevron-down"></i>
@@ -110,7 +109,7 @@
             <summary class="alp-search-summary__panel-head">
               <span class="alp-search-summary__panel-chip">Not Matched</span>
               <h3 class="alp-search-summary__panel-title">
-                {{ differences().length }} of {{ fieldCount() }} fields differ
+                {{ groupTitles()['not-matched'] }}
               </h3>
               <span class="alp-search-summary__panel-fields">{{ differenceLabels() }}</span>
               <i aria-hidden="true" class="alp-search-summary__panel-chevron fa fa-chevron-down"></i>
@@ -158,7 +157,7 @@
             <summary class="alp-search-summary__panel-head">
               <span class="alp-search-summary__panel-chip">Not Held</span>
               <h3 class="alp-search-summary__panel-title">
-                {{ notHeld().length }} fields neither platform holds
+                {{ groupTitles()['not-held'] }}
               </h3>
               <span class="alp-search-summary__panel-fields">{{ notHeldLabels() }}</span>
               <i aria-hidden="true" class="alp-search-summary__panel-chevron fa fa-chevron-down"></i>
@@ -182,12 +181,17 @@
         Divs rather than table elements, because that is what the grid styles,
         and because display: contents is how the cells reach the container's
         columns. The roles put the semantics back, so it is still read as a
-        table with a header row and four columns.
+        table with a header row and three columns.
 
-        In the same three groups as the panels, in the same order, so the two
-        layouts differ in how much they show rather than in what they say. Each
-        group is announced by a row the grid spans across every column, and the
-        field's own section rides along beside its name.
+        In the same three groups as the panels, in the same order, wearing the
+        same chips and saying the same thing in their headers, so the two layouts
+        differ in how much they show rather than in what they say. Each group is
+        announced by a row the grid spans across every column, which opens and
+        closes it, and the field's own section rides along beside its name.
+
+        No result column. Every row in a group has the group's verdict, so the
+        column repeated its own heading on every line: the same three words per
+        row, in the space a value could have had.
       -->
       <div
         class="ui-grid-container grid-theme--default grid-template--match-comparison"
@@ -199,49 +203,70 @@
             <div class="ui-grid-item" role="columnheader">Field</div>
             <div class="ui-grid-item" role="columnheader">Dashboard Data</div>
             <div class="ui-grid-item" role="columnheader">Our Record</div>
-            <div class="ui-grid-item" role="columnheader">Result</div>
           </div>
         </div>
 
         <div class="ui-grid-body" role="rowgroup">
           @for (group of verdictGroups(); track group.verdict) {
-            <div class="ui-row ui-row--template-break alp-comparison__group" role="row">
-              <div class="ui-grid-item grid-col-span-04" role="cell" aria-colspan="4">
-                <span [class]="'alp-status-tag ' + verdictTags[group.verdict]">
-                  {{ verdictLabels[group.verdict] }}
-                </span>
-                <span class="alp-comparison__group-count">
-                  {{ group.fields.length }} of {{ fieldCount() }} fields
-                </span>
+            <div
+              class="ui-row ui-row--template-break alp-comparison__group"
+              [attr.data-verdict]="group.verdict"
+              role="row"
+            >
+              <div class="ui-grid-item grid-col-span-03" role="cell" aria-colspan="3">
+                <!-- The whole break row is the control, so a group is opened by
+                     pressing the thing that names it. A button rather than a
+                     details element: the rows it opens are the grid's own, and a
+                     details element wrapped around them would take them out of
+                     the grid and out of their columns. -->
+                <button
+                  type="button"
+                  class="alp-comparison__group-toggle"
+                  [class.is-open]="openGroups()[group.verdict]"
+                  [attr.aria-expanded]="openGroups()[group.verdict]"
+                  (click)="toggleGroup(group.verdict)"
+                >
+                  <span [class]="'alp-status-tag ' + verdictTags[group.verdict]">
+                    {{ verdictLabels[group.verdict] }}
+                  </span>
+                  <span class="alp-comparison__group-title">
+                    {{ groupTitles()[group.verdict] }}
+                  </span>
+                  <i aria-hidden="true" class="alp-comparison__group-chevron fa fa-chevron-down"></i>
+                </button>
               </div>
             </div>
 
-            @for (row of group.fields; track row.label) {
-              <div class="ui-row" role="row">
-                <div class="ui-grid-item alp-comparison__field" role="rowheader">
-                  {{ row.label }}
-                  <span class="alp-comparison__field-section">{{ row.section }}</span>
+            @if (openGroups()[group.verdict]) {
+              @for (row of group.fields; track row.label) {
+                <div class="ui-row" role="row">
+                  <div class="ui-grid-item alp-comparison__field" role="rowheader">
+                    {{ row.label }}
+                    <span class="alp-comparison__field-section">{{ row.section }}</span>
+                  </div>
+                  <div class="ui-grid-item" role="cell">
+                    @if (row.theirs === noData) {
+                      <span class="alp-status-tag alp-status-tag--absent">{{ noData }}</span>
+                    } @else {
+                      {{ row.theirs }}
+                    }
+                  </div>
+                  <!-- Ours is the record being worked on, and in the group that
+                       does not agree it is the one about to be changed, so it
+                       takes the same warm fill it takes on the tiles. -->
+                  <div
+                    class="ui-grid-item"
+                    [class.alp-comparison__ours--differs]="row.verdict === 'not-matched'"
+                    role="cell"
+                  >
+                    @if (row.ours === noData) {
+                      <span class="alp-status-tag alp-status-tag--absent">{{ noData }}</span>
+                    } @else {
+                      {{ row.ours }}
+                    }
+                  </div>
                 </div>
-                <div class="ui-grid-item" role="cell">
-                  @if (row.theirs === noData) {
-                    <span class="alp-status-tag alp-status-tag--absent">{{ noData }}</span>
-                  } @else {
-                    {{ row.theirs }}
-                  }
-                </div>
-                <div class="ui-grid-item" role="cell">
-                  @if (row.ours === noData) {
-                    <span class="alp-status-tag alp-status-tag--absent">{{ noData }}</span>
-                  } @else {
-                    {{ row.ours }}
-                  }
-                </div>
-                <div class="ui-grid-item" role="cell">
-                  <span [class]="'alp-status-tag ' + verdictTags[row.verdict]">
-                    {{ verdictLabels[row.verdict] }}
-                  </span>
-                </div>
-              </div>
+              }
             }
           }
         </div>

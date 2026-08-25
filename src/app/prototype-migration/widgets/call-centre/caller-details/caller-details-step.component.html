@@ -62,14 +62,15 @@
                                                                                     <div class="form-group search--input-reference-number search--inline-control">
                                                                                         <label for="PolicySearch_ReferenceNumber">Reference
                                                                                             Number</label>
-                                                                                        <input autocomplete="off" autofocus="" class="form-control" formcontrolname="referenceNumber" id="PolicySearch_ReferenceNumber" name="referenceNumber" style="text-transform: capitalize" type="input" [value]="search.term()" (input)="onReferenceInput($event)" [placeholder]="search.referencePlaceholder()">
+                                                                                        <input autocomplete="off" autofocus="" class="form-control" formcontrolname="referenceNumber" id="PolicySearch_ReferenceNumber" name="referenceNumber" style="text-transform: capitalize" type="input" [attr.aria-describedby]="search.criteriaHint() ? 'PolicySearch_ReferenceHelp' : null" [value]="search.term()" (input)="onReferenceInput($event)" [placeholder]="search.referencePlaceholder()">
                                                                                     </div>
                                                                                     <!-- The same hint as the left menu's, from the one service, under the
                                                                                          field it is about. -->
                                                                                     @if (search.criteriaHint(); as hint) {
-                                                                                    <div class="alp-notice alp-notice--info mt-20">
+                                                                                    <div class="alp-notice alp-notice--info mt-20" id="PolicySearch_ReferenceHelp">
                                                                                         <i aria-hidden="true" class="alp-notice__icon fas fa-info-circle"></i>
                                                                                         <p class="alp-notice__text">{{ hint }}</p>
+                                                                                        <strong class="alp-notice__note" [class.is-shown]="!!search.criteriaNote()" aria-live="polite">{{ search.criteriaNote() }}</strong>
                                                                                     </div>
                                                                                     }
                                                                                     <div>
@@ -125,7 +126,7 @@
                                                                                         </div>
                                                                                     </div>
                                                                                     <button class="btn btn-success full-width ui-btn--main-search" type="submit" [disabled]="!search.canSearch()">Search</button>
-                                                                                    @if (search.notFound()) {
+                                                                                    @if (search.showNotFoundBlock()) {
                                                                                     <!-- The prototype's own error notification, the same block the review step
                                                                                          uses, so a failed search reads as a notification rather than loose text. -->
                                                                                     <div class="notification-block status-warning mt-20">

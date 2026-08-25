@@ -34,10 +34,11 @@ export type ComparisonVerdict = 'matched' | 'not-matched' | 'not-held';
  * How the comparison is laid out.
  *
  * Grouped answers "what do I need to do something about", which is the question
- * a rep opens the screen with. Table answers "what does the record say", field
- * by field in the order the sections arrive, which is what somebody reading a
- * record back or checking one field wants. Same fields, same verdicts, same
- * values: only the arrangement differs.
+ * a rep opens the screen with, one group at a time and at the density each group
+ * earns. Table answers "what does the record say", every field on one line with
+ * both values side by side, which is what somebody reading a record back or
+ * checking one value wants. Same fields, same groups, same order, same verdicts:
+ * only how much of each is shown differs.
  */
 export type ComparisonView = 'grouped' | 'table';
 
@@ -49,16 +50,18 @@ export const VERDICT_LABELS: Record<ComparisonVerdict, string> = {
 };
 
 /**
- * The tag each verdict wears in the table's result column.
+ * The tag each verdict wears on its group's row in the table, which is the same
+ * chip its panel wears in the grouped layout.
  *
- * All three are design system variants that already clear AA: green 700 and
- * amber 700 carry white at 5.48:1 and 5.02:1, and neutral is slate 700 on
- * slate 200 at 8.4:1.
+ * All three carry white text on a 600 or 700 level colour: green 5.48:1, amber
+ * 5.02:1, slate 7.58:1. Not held used to be the neutral variant, slate 700 on
+ * slate 200, which was legible in itself but all but disappeared into the tinted
+ * row it sits on. Solid slate stands 6.9:1 clear of that row.
  */
 export const VERDICT_TAGS: Record<ComparisonVerdict, string> = {
   matched: 'alp-status-tag--primary',
   'not-matched': 'alp-status-tag--warning',
-  'not-held': 'alp-status-tag--neutral',
+  'not-held': 'alp-status-tag--neutral-strong',
 };
 
 /** One field, as the other platform holds it and as we hold it. */
@@ -349,11 +352,36 @@ export class AlphaSearchSummaryComponent {
   );
 
   /**
-   * Which groups are open.
+   * What each group's header says, in both layouts.
+   *
+   * One wording, read from one place, because the two layouts are two views of
+   * the same comparison: a panel saying four of sixteen fields match and a table
+   * row saying something else about the same four would be a bug the rep has to
+   * work out for themselves.
+   *
+   * Not held is counted but not compared, so it is not "of sixteen": nothing was
+   * weighed up, and putting it in the same proportion as the other two would
+   * suggest it was.
+   */
+  protected readonly groupTitles = computed<Record<ComparisonVerdict, string>>(() => {
+    const total = this.fieldCount();
+    return {
+      matched: `${this.agreements().length} of ${total} fields match`,
+      'not-matched': `${this.differences().length} of ${total} fields differ`,
+      'not-held': `${this.notHeld().length} fields neither platform holds`,
+    };
+  });
+
+  /**
+   * Which groups are open, in whichever layout is showing.
    *
    * Held here rather than left to the details elements, so one control can open
    * and close all three and still agree with what is on screen: every group
    * reports its own toggle back, including the ones the rep works by hand.
+   *
+   * Shared by both layouts on purpose. Closing what matched to get it out of the
+   * way is a decision about the comparison, not about the panels, so switching
+   * to the table should not quietly undo it.
    *
    * What matched and what differs are open on arrival. What neither platform
    * holds sits last and closed: it is the group with nothing in it to work
@@ -395,6 +423,14 @@ export class AlphaSearchSummaryComponent {
     const open = (event.target as HTMLDetailsElement).open;
     if (this.groups()[group] === open) return;
     this.groups.update((groups) => ({ ...groups, [group]: open }));
+  }
+
+  /**
+   * A group opened or closed from the table, where there is no details element
+   * to own the state: the row is a button and this is what it does.
+   */
+  protected toggleGroup(group: ComparisonVerdict): void {
+    this.groups.update((groups) => ({ ...groups, [group]: !groups[group] }));
   }
 
   /**

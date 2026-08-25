@@ -67,7 +67,7 @@ export class ContextSearchService {
    */
   readonly criteriaHint = computed(() =>
     this.criteria() === 'Possible Match'
-      ? 'Enter the reference from the possible matches screen on the pension dashboard, for example PMR12345678910.'
+      ? 'Enter reference number (e.g. PMR12345678910) to find pension dashboard possible matches.'
       : '',
   );
 
@@ -89,6 +89,50 @@ export class ContextSearchService {
    * something that was never searched for.
    */
   readonly notFoundLabel = computed(() => this.missedCriteria().toLowerCase());
+
+  /**
+   * The prefix every possible match reference carries.
+   *
+   * The one criteria whose format we know, because the format is not ours: the
+   * pension dashboard issues these, and a reference read off it without this in
+   * front of it was mis-heard or mis-keyed rather than not found.
+   */
+  private readonly possibleMatchPrefix = 'PMR';
+
+  /**
+   * What came of using the field, said in the same block as the field's help.
+   *
+   * Two different answers, and a rep needs to know which they have got: a
+   * reference in the wrong shape has not been looked for at all and wants
+   * re-keying, while one in the right shape has been looked for and is not
+   * there, which is the end of that line of enquiry.
+   *
+   * The format is only judged once there is enough keyed to judge it. Checked
+   * from the first character, a rep is told they are wrong while typing the P of
+   * a reference that is about to be perfectly correct.
+   *
+   * Empty for every other criteria, whose references we do not issue and cannot
+   * vouch for the shape of.
+   */
+  readonly criteriaNote = computed(() => {
+    if (this.criteria() !== 'Possible Match') return '';
+
+    const term = this.term().trim();
+    const prefix = this.possibleMatchPrefix;
+    if (term.length >= prefix.length && !term.toUpperCase().startsWith(prefix)) {
+      return 'Incorrect format entered';
+    }
+
+    return this.notFound() ? 'No match found' : '';
+  });
+
+  /**
+   * Whether a failed search still needs its own block.
+   *
+   * Where the note has said it, saying it again underneath is two messages about
+   * one search, which reads as two things having gone wrong.
+   */
+  readonly showNotFoundBlock = computed(() => this.notFound() && this.criteriaNote() === '');
 
   setCriteria(criteria: string): void {
     this.criteria.set(criteria);
