@@ -373,34 +373,50 @@ export class AlphaSearchSummaryComponent {
   });
 
   /**
-   * Which groups are open, in whichever layout is showing.
+   * Which groups are open, kept per layout.
    *
    * Held here rather than left to the details elements, so one control can open
    * and close all three and still agree with what is on screen: every group
    * reports its own toggle back, including the ones the rep works by hand.
    *
-   * Shared by both layouts on purpose. Closing what matched to get it out of the
-   * way is a decision about the comparison, not about the panels, so switching
-   * to the table should not quietly undo it.
+   * Two records rather than one, because opening a group means something
+   * different in each. Closing what matched in the panels puts three lines of
+   * agreement away; closing it in the table puts a dozen rows away. A rep who
+   * has arranged one layout to read it has not asked for the other to be
+   * arranged the same, and coming back to it changed is a small surprise nobody
+   * needs.
    *
    * What matched and what differs are open on arrival. What neither platform
    * holds sits last and closed: it is the group with nothing in it to work
    * through, so it says its piece in its header and stays out of the way.
    */
-  private readonly groups = signal<Record<ComparisonVerdict, boolean>>({
-    matched: true,
-    'not-matched': true,
-    'not-held': false,
+  private readonly groups = signal<Record<ComparisonView, Record<ComparisonVerdict, boolean>>>({
+    grouped: { matched: true, 'not-matched': true, 'not-held': false },
+    table: { matched: true, 'not-matched': true, 'not-held': false },
   });
 
-  protected readonly openGroups = this.groups.asReadonly();
+  /** The open groups of the layout on screen, which is the only one that can be read. */
+  protected readonly openGroups = computed(() => this.groups()[this.currentView()]);
 
   /**
    * Whether anything is open, which is what the one control works from: with a
    * group open there is something to collapse, and with all of them closed the
    * only useful thing it can do is open them.
    */
-  protected readonly anyOpen = computed(() => Object.values(this.groups()).some(Boolean));
+  protected readonly anyOpen = computed(() => Object.values(this.openGroups()).some(Boolean));
+
+  /**
+   * What the control says, which is what it will do and what it will do it to.
+   *
+   * It acts on the layout showing, so it names it: a rep who has collapsed
+   * everything in the table and switched to the panels needs to see that the
+   * button is now talking about the panels, or pressing it looks broken.
+   */
+  protected readonly groupToggleLabel = computed(() => {
+    const action = this.anyOpen() ? 'Collapse' : 'Expand';
+    const layout = this.currentView() === 'table' ? 'table' : 'grid';
+    return `${action} all ${layout} groups`;
+  });
 
   /**
    * The fields in each group, named on its header.
@@ -421,8 +437,8 @@ export class AlphaSearchSummaryComponent {
    */
   protected onGroupToggle(group: ComparisonVerdict, event: Event): void {
     const open = (event.target as HTMLDetailsElement).open;
-    if (this.groups()[group] === open) return;
-    this.groups.update((groups) => ({ ...groups, [group]: open }));
+    if (this.openGroups()[group] === open) return;
+    this.setGroup(group, open);
   }
 
   /**
@@ -430,7 +446,7 @@ export class AlphaSearchSummaryComponent {
    * to own the state: the row is a button and this is what it does.
    */
   protected toggleGroup(group: ComparisonVerdict): void {
-    this.groups.update((groups) => ({ ...groups, [group]: !groups[group] }));
+    this.setGroup(group, !this.openGroups()[group]);
   }
 
   /**
@@ -442,7 +458,20 @@ export class AlphaSearchSummaryComponent {
    */
   protected toggleAllGroups(): void {
     const open = !this.anyOpen();
-    this.groups.set({ matched: open, 'not-matched': open, 'not-held': open });
+    const view = this.currentView();
+    this.groups.update((groups) => ({
+      ...groups,
+      [view]: { matched: open, 'not-matched': open, 'not-held': open },
+    }));
+  }
+
+  /** One group of the layout showing, leaving the other layout as the rep left it. */
+  private setGroup(group: ComparisonVerdict, open: boolean): void {
+    const view = this.currentView();
+    this.groups.update((groups) => ({
+      ...groups,
+      [view]: { ...groups[view], [group]: open },
+    }));
   }
 
   /** The field names of a group, for its header to summarise it with. */

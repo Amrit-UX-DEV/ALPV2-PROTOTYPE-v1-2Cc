@@ -54,10 +54,11 @@
         </button>
       </div>
 
-      <!-- Both layouts group the same three groups, and both open and close them,
-           so the one control serves either. -->
+      <!-- Both layouts group the same three groups and both open and close them,
+           but not together: the control acts on the layout showing, and says
+           which one that is. -->
       <button type="button" class="alp-btn alp-btn--ghost" (click)="toggleAllGroups()">
-        {{ anyOpen() ? 'Collapse all groups' : 'Expand all groups' }}
+        {{ groupToggleLabel() }}
         <i
           aria-hidden="true"
           class="fas"
@@ -201,8 +202,8 @@
         <div class="ui-grid-header" role="rowgroup">
           <div class="ui-row" role="row">
             <div class="ui-grid-item" role="columnheader">Field</div>
-            <div class="ui-grid-item" role="columnheader">Dashboard Data</div>
-            <div class="ui-grid-item" role="columnheader">Our Record</div>
+            <div class="ui-grid-item alp-comparison__theirs" role="columnheader">Dashboard Data</div>
+            <div class="ui-grid-item alp-comparison__ours" role="columnheader">Our Record</div>
           </div>
         </div>
 
@@ -239,26 +240,22 @@
 
             @if (openGroups()[group.verdict]) {
               @for (row of group.fields; track row.label) {
-                <div class="ui-row" role="row">
+                <div class="ui-row alp-comparison__row" role="row">
                   <div class="ui-grid-item alp-comparison__field" role="rowheader">
                     {{ row.label }}
                     <span class="alp-comparison__field-section">{{ row.section }}</span>
                   </div>
-                  <div class="ui-grid-item" role="cell">
+                  <div class="ui-grid-item alp-comparison__theirs" role="cell">
                     @if (row.theirs === noData) {
                       <span class="alp-status-tag alp-status-tag--absent">{{ noData }}</span>
                     } @else {
                       {{ row.theirs }}
                     }
                   </div>
-                  <!-- Ours is the record being worked on, and in the group that
-                       does not agree it is the one about to be changed, so it
-                       takes the same warm fill it takes on the tiles. -->
-                  <div
-                    class="ui-grid-item"
-                    [class.alp-comparison__ours--differs]="row.verdict === 'not-matched'"
-                    role="cell"
-                  >
+                  <!-- Ours is the record being worked on, so its values are the
+                       ones set in bold. Both value columns carry a class of their
+                       own, which is where a fill for either of them goes. -->
+                  <div class="ui-grid-item alp-comparison__ours" role="cell">
                     @if (row.ours === noData) {
                       <span class="alp-status-tag alp-status-tag--absent">{{ noData }}</span>
                     } @else {

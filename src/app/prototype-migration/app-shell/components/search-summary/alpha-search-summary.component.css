@@ -449,8 +449,9 @@
 
 /* The layout switch sits at the start of the row, and the control that opens
    and closes the groups at the end, on the same side as the chevrons it turns.
-   Both layouts have the same three groups and both open and close them, so the
-   control stays where it is when the layout changes. */
+   Both layouts have the same three groups and both open and close them, and the
+   control acts on whichever is showing, so it stays where it is when the layout
+   changes and says which layout it is talking about. */
 .alp-search-summary__controls {
   display: flex;
   align-items: center;
@@ -486,13 +487,24 @@
      cells are known to be slate 900: 17.4:1 on the white body rows and 10.6:1
      at the palest end of the header's gradient. */
   color: var(--alp-color-text);
+  /* The grid component sets 11.7px, which is smaller than anything else on the
+     screen and smaller than a record read off a screen on a call ought to be.
+     13px, the same size the values take on the tiles, and a line height stated
+     with it so that a tag standing in for a value can be given exactly the line
+     box a value takes. */
+  font-size: var(--alp-font-size-sm);
+  line-height: 1.35;
 }
 
 /* The group's own row, which the grid spans across every column for us. It
    carries the same tag its panel wears in the grouped layout and says the same
-   thing, and it is tinted in its group's own colour, a step up from the panel
-   heads: green for what matched, amber for what did not, grey for what neither
-   platform holds. The colour is never the only thing saying which group this is.
+   thing.
+
+   One neutral fill for all three, for now. The tints each group's own colour
+   brought were doing the same work as the tag beside them, and the table is
+   about to be coloured by column instead; two colour systems in one table would
+   be arguing with each other. The row keeps its data-verdict attribute, so a
+   tint per group is one rule away if it is wanted back.
 
    The whole row is the control, so the cell is padded by the button inside it
    rather than by the grid. */
@@ -519,23 +531,8 @@
   transition: background 0.15s ease;
 }
 
-.alp-comparison__group[data-verdict='matched'] .alp-comparison__group-toggle {
-  background: var(--alp-color-green-100);
-}
-
-.alp-comparison__group[data-verdict='matched'] .alp-comparison__group-toggle:hover {
-  background: var(--alp-color-green-200);
-}
-
-.alp-comparison__group[data-verdict='not-matched'] .alp-comparison__group-toggle {
-  background: var(--alp-color-amber-100);
-}
-
-.alp-comparison__group[data-verdict='not-matched'] .alp-comparison__group-toggle:hover {
-  background: var(--alp-color-amber-200);
-}
-
-.alp-comparison__group[data-verdict='not-held'] .alp-comparison__group-toggle:hover {
+/* One step darker under the pointer, so the row that can be pressed says so. */
+.alp-comparison__group-toggle:hover {
   background: var(--alp-color-slate-200);
 }
 
@@ -544,9 +541,9 @@
   outline-offset: -2px;
 }
 
-/* The grid sets a smaller type size than the screen around it, and a group's
-   header is not a row of data, so it is read at the size the panels' headers
-   are read at. Slate 700 holds 9.3:1 at worst on the three tints. */
+/* A group's header is not a row of data, so it is set at the weight of one of the
+   panels' headers rather than the weight of a cell. Slate 700 holds 9.45:1 on the
+   row's fill. */
 .alp-comparison__group-title {
   font-size: var(--alp-font-size-sm);
   font-weight: var(--alp-font-weight-semibold);
@@ -566,7 +563,7 @@
 
 /* The field's name, with the section it came from under it. Grouping by verdict
    is what a rep wants first, but it costs the section grouping the table had, so
-   each field carries its own: 4.86:1 on the row it sits on, and the same
+   each field carries its own: 5.12:1 on the row it sits on, and the same
    near-black name above it. */
 .alp-comparison__field {
   font-weight: var(--alp-font-weight-semibold);
@@ -578,12 +575,44 @@
   color: var(--alp-color-text-muted);
 }
 
-/* Our record, in the group that does not agree: the same fill it takes on the
-   difference tiles, so the cell a rep is going to change is the same colour in
-   both layouts. Slate 900 holds 14.33:1 on it and a No Data tag stands 4.16:1
-   clear of it. */
-.alp-comparison__ours--differs {
-  background: var(--alp-color-amber-200);
+/* ---- The two value columns ----
+
+   A class each, on the header cell and on every cell under it, so the two can be
+   told apart and filled independently: what the other platform holds is one
+   thing to look at and what we hold is another, and they are read across, not
+   down. No fill on either yet; these are where it goes.
+
+   Ours is the record being worked on, so its values are the ones set in bold.
+   Weight only, nothing that changes a line box, so the two columns still line up
+   line for line. */
+.alp-comparison__theirs {
+  background: transparent;
+}
+
+.alp-comparison__ours {
+  background: transparent;
+}
+
+.alp-comparison__row .alp-comparison__ours {
+  font-weight: var(--alp-font-weight-bold);
+}
+
+/* A field's name, both of its values and a tag standing in for one of them all
+   have to sit on the same line, and the cells take care of most of that
+   themselves: each starts its content under the grid's own padding, so the first
+   line of every cell in a row is level and the section caption hangs under the
+   name without pushing anything down.
+
+   The exception is a tag, which is a box rather than a line, and was standing a
+   couple of pixels out of step with the text either side of it. Given exactly the
+   line box a line of text takes in these cells, it sits on the same line: the
+   line height stated on the table, and no padding of its own above or below to
+   put it back out. */
+.alp-comparison__row .alp-status-tag {
+  min-height: 1.35em;
+  padding-top: 0;
+  padding-bottom: 0;
+  line-height: 1.35;
 }
 
 /* A tag in a cell is the whole content of that cell, so it drops the margin it
