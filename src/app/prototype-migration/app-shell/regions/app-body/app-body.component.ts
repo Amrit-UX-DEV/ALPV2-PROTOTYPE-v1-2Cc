@@ -3,9 +3,11 @@ import { CommonModule } from '@angular/common';
 
 import { AlphaGroupSummaryComponent } from '../../components/group-summary/alpha-group-summary.component';
 import { AlphaSearchSummaryComponent } from '../../components/search-summary/alpha-search-summary.component';
+import { AlphaWorkPlanHubComponent } from '../../components/work-plans/alpha-work-plan-hub.component';
 import { WizardShellComponent } from '../../../wizard';
 import { AppView } from '../explorer-toolbar/explorer-toolbar.component';
 import { PrototypeContextService } from '../../../context/prototype-context.service';
+import { WorkPlanService } from '../../../work-plans/work-plan.service';
 
 /**
  * The main body: whichever view the explorer rail last selected.
@@ -29,9 +31,14 @@ import { PrototypeContextService } from '../../../context/prototype-context.serv
  *
  * The group summary is a view of a policy, so it is only rendered once a search
  * has found one. Before that the app is in no context and this says so, rather
- * than drawing a summary with nothing in it. The possible match summary follows
- * the same rule against its own kind of context, so neither screen can be
- * reached by switching view without having searched.
+ * than drawing a summary with nothing in it. The dashboard reference summary
+ * follows the same rule against its own kind of context, so neither screen can
+ * be reached by switching view without having searched.
+ *
+ * The business processes are two views rather than one: the hub, which lists the
+ * work plans, and the wizard shell running whichever one was opened. The shell
+ * is handed a config rather than importing one, so a third plan is a JSON file
+ * and an entry in the index with nothing to change here.
  */
 @Component({
   selector: 'div[alpha-app-body]',
@@ -40,6 +47,7 @@ import { PrototypeContextService } from '../../../context/prototype-context.serv
     CommonModule,
     AlphaGroupSummaryComponent,
     AlphaSearchSummaryComponent,
+    AlphaWorkPlanHubComponent,
     WizardShellComponent,
   ],
   templateUrl: './app-body.component.html',
@@ -47,7 +55,10 @@ import { PrototypeContextService } from '../../../context/prototype-context.serv
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
 })
 export class AppBodyComponent {
-  @Input() currentView: AppView = 'work-plan';
+  @Input() currentView: AppView = 'group-summary';
 
   protected readonly ctx = inject(PrototypeContextService);
+
+  /** Which work plan the hub opened, which is the config the shell loads. */
+  protected readonly plans = inject(WorkPlanService);
 }

@@ -38,7 +38,7 @@ export class ExplorerToolbarComponent {
   /** Read in the template as search.criteria(), search.term() and so on. */
   protected readonly search = inject(ContextSearchService);
 
-  @Input() currentView: AppView = 'work-plan';
+  @Input() currentView: AppView = 'group-summary';
   @Output() viewChange = new EventEmitter<AppView>();
 
   switchView(view: AppView) {

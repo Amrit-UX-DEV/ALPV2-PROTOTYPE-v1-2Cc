@@ -103,3 +103,16 @@
 .alp-notice--warning .alp-notice__icon {
   color: var(--alp-color-amber-700);
 }
+
+/* Something the rep did came off, which is the third thing one of these has to
+   be able to say. Green 600 on the edge holds 3.77:1 on the white body, which is
+   what AA asks of a boundary, and its own fill leaves slate 900 at 16.95:1 and
+   the icon's green 700 at 5.21:1. */
+.alp-notice--success {
+  border-color: var(--alp-color-green-600);
+  background: var(--alp-color-green-50);
+}
+
+.alp-notice--success .alp-notice__icon {
+  color: var(--alp-color-green-700);
+}

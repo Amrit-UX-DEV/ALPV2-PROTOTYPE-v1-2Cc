@@ -1,0 +1,111 @@
+/* =========================================================
+   ALP DESIGN SYSTEM — CHOICE
+
+   A tick box or a radio and what it means, on a surface big enough
+   to be pressed. Used wherever a rep is asked to declare something:
+   what was supplied on a call, which of two outcomes happened.
+
+   The label wraps the control, so the whole tile is the target and
+   nothing depends on matching an id to a for attribute. The state is
+   the control's own, and the tile follows it with :has(), so what is
+   drawn cannot disagree with what the form holds.
+
+   Every pair is AA. The label is slate 900 at 17.85:1 on white and
+   15.97:1 on the brand 50 a chosen one takes; the hint under it is
+   muted at 5.12:1 and 4.57:1 on the same two.
+   ========================================================= */
+
+.alp-choice-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(15rem, 1fr));
+  gap: var(--alp-space-2);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+/* Two answers to one question, side by side and equal, since neither is the
+   suggested one. */
+.alp-choice-list--split {
+  grid-template-columns: repeat(auto-fit, minmax(16rem, 1fr));
+}
+
+.alp-choice-list__item {
+  display: flex;
+  min-width: 0;
+}
+
+/* Across every column: an answer to the whole question rather than one of the
+   things being answered about. */
+.alp-choice-list__item--wide {
+  grid-column: 1 / -1;
+}
+
+.alp-choice {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--alp-space-2);
+  width: 100%;
+  margin: 0;
+  padding: var(--alp-space-2) var(--alp-space-3);
+  border: 1px solid var(--alp-color-border);
+  border-radius: var(--alp-radius-sm);
+  background: var(--alp-color-surface);
+  cursor: pointer;
+  transition:
+    border-color 0.15s ease,
+    background 0.15s ease;
+}
+
+.alp-choice:hover {
+  border-color: var(--alp-color-border-strong);
+  background: var(--alp-color-surface-hover);
+}
+
+/* Chosen, which the border and the fill say together with the control itself.
+   Brand 600 on the edge holds 7.80:1 against the white beside it. */
+.alp-choice:has(.alp-choice__input:checked) {
+  border-color: var(--alp-color-brand);
+  background: var(--alp-color-brand-50);
+}
+
+/* The focus ring belongs on the tile rather than on the control inside it,
+   since the tile is what a click lands on and what a tab stop reaches. */
+.alp-choice:has(.alp-choice__input:focus-visible) {
+  outline: 2px solid var(--alp-color-border-focus);
+  outline-offset: 2px;
+}
+
+.alp-choice:has(.alp-choice__input:disabled) {
+  opacity: 0.55;
+  cursor: not-allowed;
+}
+
+/* Level with the first line of the label, whatever that line's height, and left
+   at the size the browser draws it so it is still recognisably a tick box. */
+.alp-choice__input {
+  flex: 0 0 auto;
+  width: 16px;
+  height: 16px;
+  margin: 2px 0 0;
+  accent-color: var(--alp-color-brand);
+}
+
+.alp-choice__text {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 0;
+}
+
+.alp-choice__label {
+  font-size: var(--alp-font-size-sm);
+  font-weight: var(--alp-font-weight-semibold);
+  color: var(--alp-color-text);
+}
+
+.alp-choice__hint {
+  font-size: var(--alp-font-size-xs);
+  line-height: 1.35;
+  color: var(--alp-color-text-muted);
+}

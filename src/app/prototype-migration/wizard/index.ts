@@ -5,6 +5,8 @@ import { WizardRegistryService } from './services/wizard-registry.service';
 import { ScriptSetupComponent } from '../app-shell/components/script-management/script-setup.component';
 import { ScriptBuilderComponent } from '../app-shell/components/call-rep-scripts/script-builder/script-builder.component';
 import { ScriptPreviewComponent } from '../app-shell/components/call-rep-scripts/script-builder/preview/script-preview.component';
+import { DashboardReferenceConfirmationComponent } from '../app-shell/components/dashboard-reference-plan/dashboard-reference-confirmation.component';
+import { DashboardReferenceOutcomeComponent } from '../app-shell/components/dashboard-reference-plan/dashboard-reference-outcome.component';
 import { WizardConfirmationComponent } from './components/wizard-confirmation/wizard-confirmation.component';
 
 /**
@@ -20,6 +22,8 @@ export function registerWizardComponents(registry: WizardRegistryService): void 
   registry.register('alpha-script-builder', ScriptBuilderComponent);
   registry.register('alpha-script-preview', ScriptPreviewComponent);
   registry.register('wizard-confirmation', WizardConfirmationComponent);
+  registry.register('dashboard-reference-outcome', DashboardReferenceOutcomeComponent);
+  registry.register('dashboard-reference-confirmation', DashboardReferenceConfirmationComponent);
 }
 
 // Re-export key types and services

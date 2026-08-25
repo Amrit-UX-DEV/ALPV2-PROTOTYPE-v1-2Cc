@@ -1,5 +1,7 @@
 import {
   Component,
+  EventEmitter,
+  Output,
   computed,
   inject,
   input,
@@ -41,6 +43,14 @@ export class WizardShellComponent implements OnInit {
   /** Path to the wizard JSON config (relative to assets root). */
   readonly configUrl = input<string>('');
 
+  /**
+   * The rep is done with this wizard, by exiting it or by finishing it.
+   *
+   * The shell does not know where they should go next, since it is the same
+   * shell for every wizard; whatever hosted it does.
+   */
+  @Output() readonly exit = new EventEmitter<void>();
+
   /* ── Internal state ──────────────────────────────────────────── */
 
   private readonly http = inject(HttpClient);
@@ -58,6 +68,31 @@ export class WizardShellComponent implements OnInit {
   readonly currentStep = computed(() => this.steps()[this.currentStepIndex()]);
   readonly isLastStep = computed(() => this.currentStepIndex() === this.steps().length - 1);
   readonly isFirstStep = computed(() => this.currentStepIndex() === 0);
+
+  /**
+   * Whether the step on screen has been given what it asks for.
+   *
+   * Read off the data the step has already reported, rather than asked of the
+   * step component: the shell holds no reference to it, and a step that reports
+   * what it has is a step whose progress the rail and the buttons can both see.
+   *
+   * An empty array counts as nothing, so a list of what was supplied with
+   * nothing ticked does not pass for an answer.
+   */
+  readonly canAdvance = computed(() => {
+    const step = this.currentStep();
+    const required = step?.requires ?? [];
+    if (required.length === 0) return true;
+
+    const data = this.wizardContext.stepData()[step.id] as Record<string, unknown> | undefined;
+    if (!data) return false;
+
+    return required.every((name) => {
+      const value = data[name];
+      if (Array.isArray(value)) return value.length > 0;
+      return value !== undefined && value !== null && value !== '';
+    });
+  });
 
   /* ── Lifecycle ────────────────────────────────────────────────── */
 
@@ -92,6 +127,8 @@ export class WizardShellComponent implements OnInit {
   }
 
   nextStep(): void {
+    if (!this.canAdvance()) return;
+
     const next = this.currentStepIndex() + 1;
     if (next >= this.steps().length) return;
     this.currentStepIndex.set(next);
@@ -107,7 +144,7 @@ export class WizardShellComponent implements OnInit {
   }
 
   exitWizard(): void {
-    console.log('[WizardShell] Exit clicked');
+    this.exit.emit();
   }
 
   resetWizard(): void {

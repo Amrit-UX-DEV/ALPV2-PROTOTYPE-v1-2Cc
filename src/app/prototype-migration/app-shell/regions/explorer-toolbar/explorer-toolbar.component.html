@@ -20,7 +20,10 @@
     </span> <span class="tooltip">Enquiry</span> </button>
   </div>
   <div class="ui-menu-action-block business-processes">
-    <button class="ui-menu-action tier-0" [class.active]="currentView === 'work-plan'" (click)="switchView('work-plan')">
+    <!-- The hub, not a plan: there is more than one business process now, so the
+         rail offers them rather than picking one. Lit for the hub and for
+         whatever plan was opened from it, since both are where this leads. -->
+    <button class="ui-menu-action tier-0" [class.active]="currentView === 'work-plans' || currentView === 'work-plan'" (click)="switchView('work-plans')">
     <span class="details"><i class="fas fa-clipboard-list toolbar-icon--clipboard"></i> </span>
     <span class="tooltip">Business Processes</span> </button>
   </div>

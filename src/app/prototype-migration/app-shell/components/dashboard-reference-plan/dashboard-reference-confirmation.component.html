@@ -1,0 +1,47 @@
+<div class="alp-plan-step">
+  <div class="alp-notice alp-notice--success" role="status">
+    <i aria-hidden="true" class="alp-notice__icon fas fa-circle-check"></i>
+    <p class="alp-notice__text">
+      <strong>Your action has been saved.</strong>
+      The decision and what was supplied have been recorded against this dashboard reference.
+    </p>
+  </div>
+
+  @if (outcome(); as saved) {
+    <section class="alp-plan-step__block">
+      <h4 class="alp-plan-step__heading">What was saved</h4>
+      <dl class="alp-plan-step__facts">
+        <div class="alp-plan-step__fact">
+          <dt>Dashboard Reference</dt>
+          <dd><strong>{{ saved.reference }}</strong></dd>
+        </div>
+        @if (saved.pensionReference) {
+          <div class="alp-plan-step__fact">
+            <dt>Pension Reference</dt>
+            <dd><strong>{{ saved.pensionReference }}</strong></dd>
+          </div>
+        }
+        @if (saved.record) {
+          <div class="alp-plan-step__fact">
+            <dt>Dashboard Record</dt>
+            <dd>{{ saved.record }}</dd>
+          </div>
+        }
+        <div class="alp-plan-step__fact">
+          <dt>Decision</dt>
+          <dd>
+            <span [class]="'alp-status-tag ' + decisionTag()">{{ decisionLabel() }}</span>
+          </dd>
+        </div>
+        <div class="alp-plan-step__fact alp-plan-step__fact--wide">
+          <dt>Supplied On This Call</dt>
+          <dd>{{ suppliedText() }}</dd>
+        </div>
+        <div class="alp-plan-step__fact">
+          <dt>Saved</dt>
+          <dd>{{ savedAt }}</dd>
+        </div>
+      </dl>
+    </section>
+  }
+</div>

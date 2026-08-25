@@ -1,0 +1,33 @@
+{
+  "id": "dashboard-reference",
+  "title": "Available Steps for Dashboard Reference",
+  "exitLabel": "Exit",
+  "steps": [
+    {
+      "id": "step-1",
+      "label": "Confirm and Record",
+      "componentId": "dashboard-reference-outcome",
+      "output": "outcome",
+      "inputs": {
+        "initial": "step-1"
+      },
+      "requires": ["decision"],
+      "navigation": {
+        "saveLabel": "Save and Continue",
+        "requiresHint": "Select Matched or Not Matched to save this work plan."
+      }
+    },
+    {
+      "id": "step-2",
+      "label": "Confirmation",
+      "componentId": "dashboard-reference-confirmation",
+      "inputs": {
+        "outcome": "step-1"
+      },
+      "navigation": {
+        "finishLabel": "Finish",
+        "previousLabel": "Previous"
+      }
+    }
+  ]
+}

@@ -488,3 +488,114 @@
 .alp-script-status-tile__text strong {
   color: var(--alp-color-slate-800);
 }
+
+/* =========================================================
+   LAUNCH TILE
+
+   One named thing off a short list of them: a business process to
+   work through, and whatever the next list of this shape turns out
+   to be. Pressing it goes somewhere, so it is a button that looks
+   like a card rather than a card with a button in it, and the whole
+   surface is the target.
+
+   Icon on the left in a tinted well, the name and what it does in
+   the middle, and a chevron at the end saying it leads somewhere.
+
+   Every pair is AA on white: the name is slate 900 at 17.85:1, the
+   sentence under it slate 700 at 10.35:1, and the meta line muted at
+   5.12:1. Under the pointer the fill is brand 50, where those become
+   15.97:1, 9.26:1 and 4.57:1.
+   ========================================================= */
+
+.alp-launch-tile {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--alp-space-4);
+  width: 100%;
+  padding: var(--alp-space-4);
+  border: 1px solid var(--alp-color-border);
+  border-radius: var(--alp-radius-md);
+  background: var(--alp-color-surface);
+  box-shadow: var(--alp-shadow-xs);
+  text-align: left;
+  cursor: pointer;
+  transition:
+    border-color 0.15s ease,
+    background 0.15s ease,
+    box-shadow 0.15s ease;
+}
+
+.alp-launch-tile:hover {
+  border-color: var(--alp-color-brand);
+  background: var(--alp-color-brand-50);
+  box-shadow: var(--alp-shadow-sm);
+}
+
+.alp-launch-tile:focus-visible {
+  outline: 2px solid var(--alp-color-border-focus);
+  outline-offset: 2px;
+}
+
+/* The icon sits in a well of its own so it stays a fixed block whatever the
+   sentence beside it does. */
+.alp-launch-tile__icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex: 0 0 auto;
+  width: 40px;
+  height: 40px;
+  border-radius: var(--alp-radius-sm);
+  background: var(--alp-color-brand-50);
+  font-size: var(--alp-font-size-lg);
+  color: var(--alp-color-brand);
+}
+
+.alp-launch-tile__body {
+  display: flex;
+  flex: 1 1 auto;
+  flex-direction: column;
+  gap: var(--alp-space-1);
+  min-width: 0;
+}
+
+.alp-launch-tile__name {
+  font-size: var(--alp-font-size-md);
+  font-weight: var(--alp-font-weight-semibold);
+  color: var(--alp-color-text);
+}
+
+.alp-launch-tile__desc {
+  font-size: var(--alp-font-size-sm);
+  line-height: 1.4;
+  color: var(--alp-color-slate-700);
+}
+
+.alp-launch-tile__meta {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--alp-space-1) var(--alp-space-3);
+  margin-top: var(--alp-space-1);
+  font-size: var(--alp-font-size-xs);
+  color: var(--alp-color-text-muted);
+}
+
+.alp-launch-tile__note {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--alp-space-1);
+}
+
+/* Centred against the icon well rather than the first line of text, so it sits
+   level with the block it belongs to however the sentence wraps. */
+.alp-launch-tile__chevron {
+  align-self: center;
+  flex: 0 0 auto;
+  font-size: var(--alp-font-size-sm);
+  color: var(--alp-color-slate-500);
+}
+
+.alp-launch-tile:hover .alp-launch-tile__chevron {
+  color: var(--alp-color-brand);
+}

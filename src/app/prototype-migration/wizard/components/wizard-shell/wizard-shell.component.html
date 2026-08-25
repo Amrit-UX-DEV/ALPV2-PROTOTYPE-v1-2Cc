@@ -81,9 +81,17 @@
                               <button
                                 type="button"
                                 class="ui-btn stepNext"
+                                [disabled]="!canAdvance()"
                                 (click)="nextStep()">
                                 {{ step.navigation?.saveLabel ?? step.navigation?.nextLabel ?? 'Next' }}
                               </button>
+                              <!-- A button that cannot be pressed has to say why,
+                                   beside itself, or the step looks broken. -->
+                              @if (!canAdvance() && step.navigation?.requiresHint) {
+                                <p class="wizard-navigation__hint">
+                                  {{ step.navigation?.requiresHint }}
+                                </p>
+                              }
                             }
                             @if (isLastStep()) {
                               <button

@@ -25,6 +25,17 @@ export interface WizardStepConfig {
    */
   output?: string;
 
+  /**
+   * Keys of this step's own captured data that must hold something before the
+   * step can be left. An empty array, or none at all, is a step that can always
+   * be continued from.
+   *
+   * A step that records a decision has to have one recorded; without this the
+   * confirmation at the end of a wizard can be reached saying an action was
+   * saved when nothing was decided.
+   */
+  requires?: string[];
+
   /** Navigation button labels and visibility. */
   navigation?: WizardStepNavigation;
 }
@@ -35,6 +46,8 @@ export interface WizardStepNavigation {
   previousLabel?: string;
   finishLabel?: string;
   showReset?: boolean;
+  /** What is still outstanding, shown while `requires` is not satisfied. */
+  requiresHint?: string;
 }
 
 /**

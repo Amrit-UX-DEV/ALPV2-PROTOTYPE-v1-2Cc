@@ -565,3 +565,25 @@ button.exit-wizard{
   color: #222;
   border-left: 7px solid #3c4981;
 }
+/* ═══════════════════════════════════════════════════════════════ */
+/* A STEP THAT IS NOT FINISHED WITH                                   */
+/* A step can declare what it has to be given before it can be left,  */
+/* and until it has been the button that leaves it is inert. An inert */
+/* button that says nothing is a broken one, so the reason stands     */
+/* beside it, in the bar, where the press was aimed.                  */
+/* ═══════════════════════════════════════════════════════════════ */
+
+.wizard-navigation .ui-btn:disabled,
+.wizard-navigation .ui-btn:disabled:hover {
+  opacity: 0.55;
+  transform: scale(0.9);
+  cursor: not-allowed;
+}
+
+/* Slate 700 on the bar's own #eff2f7: 9.23:1. */
+.wizard-navigation__hint {
+  margin: 0 0 8px;
+  padding: 0 10px;
+  font-size: 0.8rem;
+  color: #334155;
+}

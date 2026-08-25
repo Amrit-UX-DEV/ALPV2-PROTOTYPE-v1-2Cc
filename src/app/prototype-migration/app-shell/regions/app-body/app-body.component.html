@@ -21,7 +21,11 @@
                 </div>
             }
         </ng-container>
-        <wizard-shell *ngSwitchCase="'work-plan'" [configUrl]="'assets/data/wizard-configs/script-management.wizard.json'">
+        <alpha-work-plan-hub *ngSwitchCase="'work-plans'"></alpha-work-plan-hub>
+        <!-- Whichever plan the hub opened, and the same shell for all of them.
+             Exiting or finishing goes back to the hub, because the shell cannot
+             know where a rep came from and the hub is the only way in. -->
+        <wizard-shell *ngSwitchCase="'work-plan'" [configUrl]="plans.configUrl()" (exit)="plans.close()">
         </wizard-shell>
     </div>
 

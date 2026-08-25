@@ -348,12 +348,12 @@
   background: var(--alp-color-slate-50);
 }
 
-/* Ours is the record being worked on, so it is the one that stands out: the same
-   grey as the band beside it, two steps darker, which separates the two by weight
-   rather than by hue and leaves the group's own colour to the group. Slate 900
-   holds 14.48:1 on it and the No Data tag stands 4.2:1 clear of it. */
+/* Ours is the record being worked on, so it is the one that stands out: the
+   fill the group's own header takes under the pointer, which puts it in the
+   same warm colour as the group without inventing another. Slate 900 holds
+   14.33:1 on it, and the No Data tag stands 4.16:1 clear of it. */
 .alp-search-summary__diff-value--ours {
-  background: var(--alp-color-slate-200);
+  background: var(--alp-color-amber-200);
 }
 
 .alp-search-summary__diff-value dt {
@@ -364,8 +364,8 @@
 
 /* Our record's label is not a caption for a value somebody else holds, it names
    the record the rep is about to change, so it is set in the same near-black as
-   the value under it. Muted would also have failed on the darker fill, at 4.15:1
-   against the 4.5 AA needs. */
+   the value under it. Muted would also have failed on the warmer fill, at
+   4.11:1 against the 4.5 AA needs. */
 .alp-search-summary__diff-value--ours dt {
   color: var(--alp-color-text);
 }
@@ -447,6 +447,15 @@
   margin-top: 0;
 }
 
+/* The controls and the comparison they act on are one block, held closer
+   together than the screen's own spacing so the switch and the collapse control
+   read as belonging to what is under them rather than to the tile above. */
+.alp-search-summary__comparison {
+  display: flex;
+  flex-direction: column;
+  gap: var(--alp-space-2);
+}
+
 /* The layout switch sits at the start of the row, and the control that opens
    and closes the groups at the end, on the same side as the chevrons it turns.
    Both layouts have the same three groups and both open and close them, and the
@@ -479,6 +488,10 @@
    column spent a fifth of the table repeating the heading above it.
    --------------------------------------------------------------- */
 .ui-grid-container.grid-template--match-comparison {
+  /* The theme carries 15px above and below, which is spacing for a grid standing
+     on its own. This one is the second half of a block that starts with the
+     controls, so the block's own gap is the only spacing above it. */
+  margin: 0;
   grid-template-columns:
     minmax(140px, 220px)
     minmax(180px, 1fr)
@@ -502,10 +515,8 @@
 
    Tinted in its group's own colour, a step up from the panel heads: green for
    what matched, amber for what did not, grey for what neither platform holds.
-   Read down, that is the only colour in the table that means a verdict; the two
-   value columns are greys, which say which side of the comparison a cell is on
-   and nothing about whether it agrees. The colour is never the only thing saying
-   which group this is either, since the tag says it in words.
+   It is the only colour in the table, and the tag beside it says the same thing
+   in words, so nothing here is carried by colour alone.
 
    The whole row is the control, so the cell is padded by the button inside it
    rather than by the grid. */
@@ -596,24 +607,20 @@
 
 /* ---- The two value columns ----
 
-   A class each, on the header cell and on every cell under it, so the two are
-   filled independently: the same two greys the bands on a difference tile take,
-   in the same order, so a rep switching layouts finds the dashboard's record and
-   ours on the same colours in both.
-
-   The fills are on the body rows only. The header keeps the grid theme's own
-   gradient, which is what makes it read as a header, and the two columns are
-   already named in it.
+   A class each, on the header cell and on every cell under it, so either column
+   can be filled without touching the other. Neither is filled: the table reads
+   as a record, and the only colour in it is on the group rows, where it stands
+   for what the comparison found.
 
    Ours is the record being worked on, so its values are the ones set in bold.
    Weight only, nothing that changes a line box, so the two columns still line up
    line for line. */
-.alp-comparison__row .alp-comparison__theirs {
-  background: var(--alp-color-slate-50);
+.alp-comparison__theirs,
+.alp-comparison__ours {
+  background: transparent;
 }
 
 .alp-comparison__row .alp-comparison__ours {
-  background: var(--alp-color-slate-200);
   font-weight: var(--alp-font-weight-bold);
 }
 
