@@ -362,29 +362,6 @@
    Grid tiles for selecting a transfer reason.
    ========================================================= */
 
-.alp-transfer-reason-tile {
-  padding: 14px;
-  border: 2px solid var(--alp-color-border);
-  border-radius: var(--alp-radius-md);
-  background: var(--alp-color-surface);
-  text-align: center;
-  font-weight: var(--alp-font-weight-medium);
-  cursor: pointer;
-  transition: all 0.2s;
-}
-
-.alp-transfer-reason-tile:hover {
-  border-color: var(--alp-color-purple-600);
-  background: #f8f5ff;
-}
-
-.alp-transfer-reason-tile.selected {
-  border-color: var(--alp-color-purple-600);
-  background: #ede9fe;
-  color: var(--alp-color-purple-700);
-  font-weight: var(--alp-font-weight-semibold);
-}
-
 /* =========================================================
    RECENT CALLERS TILES
    Caller tile surfaces with transferred / expired / DPA variants.
@@ -403,7 +380,7 @@
 /* ---- Transferred call tile variants ---- */
 .alp-recent-callers__tile--transferred {
   border-left: 6px solid var(--alp-color-purple-600);
-  background: #f8f5ff;
+  background: var(--alp-color-purple-50);
   position: relative;
 }
 
@@ -416,7 +393,7 @@
 .alp-recent-callers__tile--transferred .timer {
   font-size: var(--alp-font-size-sm);
   font-weight: var(--alp-font-weight-medium);
-  color: #6b21a8;
+  color: var(--alp-color-purple-700);
 }
 
 /* Weight rather than italic, which is not used anywhere in this system. */
@@ -425,31 +402,13 @@
   font-weight: var(--alp-font-weight-bold);
 }
 
-/* Make sure main button still takes full space */
-.alp-recent-callers__tile--transferred .alp-recent-callers__main-btn {
-  padding-bottom: 58px; /* space for View Details button */
-}
-
-/* View Details button positioning for transferred tiles */
-.alp-recent-callers__tile--transferred .alp-recent-callers__view-details-btn {
-  position: absolute;
-  bottom: var(--alp-space-3);
-  right: var(--alp-space-3);
-  background: #e0d4ff;
-  color: var(--alp-color-purple-700);
-  border: 1px solid var(--alp-color-purple-300);
-}
-
-.alp-recent-callers__tile--transferred .alp-recent-callers__view-details-btn:hover {
-  background: #d1c4ff;
-}
-
 .alp-recent-callers__tile--transferred.dpa-required {
   border-left-color: var(--alp-color-red-500);
   background: var(--alp-color-red-50);
 }
 
-/* Override: reduce bottom padding when no view-details button is shown */
+/* A transferred tile carries its actions in a row of its own rather than a
+   details button over the corner, so the main button keeps no room for one. */
 .alp-recent-callers__tile--transferred .alp-recent-callers__main-btn {
   padding-bottom: var(--alp-space-5);
 }

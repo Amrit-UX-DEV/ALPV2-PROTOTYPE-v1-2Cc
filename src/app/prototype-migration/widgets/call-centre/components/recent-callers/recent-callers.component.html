@@ -26,13 +26,15 @@
     </button>
 
     <div class="alp-recent-callers__actions">
-      <button type="button" 
-              class="alp-recent-callers__resume-btn"
+      <button type="button"
+              class="alp-btn alp-btn--sm alp-btn--primary"
               (click)="resumeTransferredCall(call); $event.stopPropagation()">
-        <i class="fas fa-play"></i> Resume Call
+        <i aria-hidden="true" class="fas fa-play"></i> Resume Call
       </button>
-      <button type="button" 
-              class="alp-recent-callers__bailout-btn"
+      <!-- Abandoning the call rather than taking it, which is why it is drawn as
+           the destructive one of the two. -->
+      <button type="button"
+              class="alp-btn alp-btn--sm alp-btn--danger-outline"
               (click)="bailoutTransferredCall(call); $event.stopPropagation()">
         Bailout
       </button>
@@ -44,7 +46,7 @@
   <div class="alp-recent-callers__compact">
     <div class="alp-recent-callers__header">
       <span class="alp-recent-callers__title">Recent Calls</span>
-      <button type="button" class="alp-recent-callers__expand-btn" (click)="openFullList()">
+      <button type="button" class="alp-btn alp-btn--sm alp-btn--ghost" (click)="openFullList()">
         View All
       </button>
     </div>
@@ -66,21 +68,25 @@
           </div>
         </button>
 
-        <!-- Secondary Button -->
-        <button type="button" 
-                class="alp-recent-callers__view-details-btn"
+        <!-- Over the corner of the tile, in the room the main button leaves. -->
+        <button type="button"
+                class="alp-btn alp-btn--sm alp-btn--secondary alp-recent-callers__view-details"
                 (click)="viewDetails(currentCaller()!); $event.stopPropagation()">
           View Details
         </button>
       </div>
 
       <div class="alp-recent-callers__nav">
-        <button (click)="previous()" [disabled]="currentIndex() === 0">
-          <i class="fas fa-chevron-left"></i>
+        <button type="button" class="alp-btn alp-btn--icon alp-btn--secondary"
+                aria-label="Previous caller"
+                (click)="previous()" [disabled]="currentIndex() === 0">
+          <i aria-hidden="true" class="fas fa-chevron-left"></i>
         </button>
         <span>{{ currentIndex() + 1 }} / {{ totalCallers() }}</span>
-        <button (click)="next()" [disabled]="currentIndex() === totalCallers() - 1">
-          <i class="fas fa-chevron-right"></i>
+        <button type="button" class="alp-btn alp-btn--icon alp-btn--secondary"
+                aria-label="Next caller"
+                (click)="next()" [disabled]="currentIndex() === totalCallers() - 1">
+          <i aria-hidden="true" class="fas fa-chevron-right"></i>
         </button>
       </div>
     }
@@ -92,7 +98,10 @@
       <div class="alp-recent-callers__popover" (click)="$event.stopPropagation()">
         <div class="alp-recent-callers__popover-header">
           <h4>Recent Callers (Last 30 Days)</h4>
-          <button (click)="closeFullList()"><i class="fas fa-times"></i></button>
+          <button type="button" class="alp-btn alp-btn--icon alp-btn--ghost"
+                  aria-label="Close" (click)="closeFullList()">
+            <i aria-hidden="true" class="fas fa-times"></i>
+          </button>
         </div>
 
         <div class="alp-recent-callers__full-list">
@@ -105,7 +114,8 @@
                 <span class="date">{{ caller.callDateTime | date:'dd MMM yyyy, HH:mm' }} ({{ getDaysAgo(caller.callDateTime) }})</span>
               </button>
 
-              <button type="button" class="alp-recent-callers__view-details-btn" 
+              <button type="button"
+                      class="alp-btn alp-btn--sm alp-btn--secondary alp-recent-callers__view-details"
                       (click)="viewDetails(caller); $event.stopPropagation()">
                 View Details
               </button>

@@ -40,7 +40,8 @@ export class TransferCallPopoverComponent {
     );
   });
 
-  readonly notesLength = computed(() => this.notes().length);
+  /** Counted down rather than up, which is what a limit is asking about. */
+  readonly notesRemaining = computed(() => this.maxNotesLength - this.notes().length);
 
   selectReason(reason: TransferReason) {
     this.selectedReason.set(reason);

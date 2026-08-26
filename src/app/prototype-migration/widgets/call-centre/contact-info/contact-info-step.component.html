@@ -178,19 +178,22 @@
 
                                 <div class="row hide-from-tile">
                                     <div class="col">
-                                        <div class="form-group form-content-center flex-content">
+                                        <div class="form-group alp-action-row">
                                             <!-- The call can also be transferred from the log call information step, so
                                                  a rep can hand it on at either point rather than only at the end. -->
-                                            <button type="button" class="alp-transfer-call-btn" (click)="showTransferPopover.set(true)">
+                                            <button type="button" class="alp-btn alp-btn--secondary" (click)="showTransferPopover.set(true)">
                                                 <i class="fas fa-exchange-alt"></i> Transfer Call
                                             </button>
-                                            @if (showTransferPopover()) {
-                                            <alpha-transfer-call-popover (transfer)="onTransferCall($event)" (close)="showTransferPopover.set(false)">
-                                            </alpha-transfer-call-popover>
-                                            }
-                                            <button class="ui-btn fill-space" onclick="toggleAppStep('.ui-app-header-contact-info','.ui-app-header-call-info');">  Continue Call Journey  <i class="fa fa-check" aria-hidden="true"></i></button>
+                                            <button type="button" class="alp-btn alp-btn--primary" onclick="toggleAppStep('.ui-app-header-contact-info','.ui-app-header-call-info');">  Continue Call Journey  <i class="fa fa-check" aria-hidden="true"></i></button>
 
                                         </div>
+                                        <!-- The transfer dialog is a modal rather than one of the row's actions,
+                                             so it sits outside it: as a flex item it took a gap of its own and
+                                             pushed the two buttons apart. -->
+                                        @if (showTransferPopover()) {
+                                          <alpha-transfer-call-popover (transfer)="onTransferCall($event)" (close)="showTransferPopover.set(false)">
+                                          </alpha-transfer-call-popover>
+                                        }
                                     </div>
                                 </div>
                             </div>

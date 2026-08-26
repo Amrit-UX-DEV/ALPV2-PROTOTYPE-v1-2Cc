@@ -4,52 +4,77 @@
     <!-- Header -->
     <div class="alp-transfer-popover__header">
       <h3>Transfer Call</h3>
-      <button class="close-btn" (click)="cancel()">
-        <i class="fas fa-times"></i>
+      <button
+        type="button"
+        class="alp-btn alp-btn--icon alp-btn--ghost"
+        aria-label="Close"
+        (click)="cancel()">
+        <i aria-hidden="true" class="fas fa-times"></i>
       </button>
     </div>
 
     <!-- Search -->
     <div class="alp-transfer-popover__search">
-      <input 
-        type="text" 
+      <label class="alp-label" for="TransferCall_Search">Search reasons</label>
+      <input
+        class="alp-input"
+        id="TransferCall_Search"
+        type="text"
         placeholder="Search transfer reason..."
         [value]="searchTerm()"
         (input)="searchTerm.set($any($event.target).value)">
     </div>
 
-    <!-- Reason Tiles -->
-    <div class="alp-transfer-popover__reasons">
-      @for (reason of filteredReasons(); track reason.id) {
-        <button 
-          type="button"
-          class="alp-transfer-reason-tile"
-          [class.selected]="selectedReason()?.id === reason.id"
-          (click)="selectReason(reason)">
-          {{ reason.label }}
-        </button>
+    <!-- Reasons. One of a short list of named things, which is the same control
+         a work plan asks its questions with: a radio in a tile, its state its
+         own rather than a class the template has to keep in step. -->
+    <fieldset class="alp-transfer-popover__group">
+      <legend class="alp-label">Transfer reason</legend>
+      <div class="alp-transfer-popover__reasons">
+        @for (reason of filteredReasons(); track reason.id) {
+          <label class="alp-choice">
+            <input
+              class="alp-choice__input"
+              type="radio"
+              name="transfer-reason"
+              [value]="reason.label"
+              [checked]="selectedReason()?.id === reason.id"
+              (change)="selectReason(reason)">
+            <span class="alp-choice__text">
+              <span class="alp-choice__label">{{ reason.label }}</span>
+            </span>
+          </label>
+        }
+      </div>
+      @if (!filteredReasons().length) {
+        <div class="alp-notice alp-notice--info">
+          <i aria-hidden="true" class="alp-notice__icon fas fa-info-circle"></i>
+          <p class="alp-notice__text">No transfer reason matches that search.</p>
+        </div>
       }
-    </div>
+    </fieldset>
 
     <!-- Notes -->
     <div class="alp-transfer-popover__notes">
-      <label>Additional notes (optional)</label>
-      <textarea 
+      <label class="alp-label" for="TransferCall_Notes">Additional notes (optional)</label>
+      <textarea
+        class="alp-textarea"
+        id="TransferCall_Notes"
+        rows="3"
         placeholder="Add any extra context for the receiving agent..."
+        [attr.maxlength]="maxNotesLength"
         [value]="notes()"
         (input)="updateNotes($any($event.target).value)">
       </textarea>
-      <div class="char-count">
-        {{ notesLength() }} / {{ maxNotesLength }}
-      </div>
+      <p class="char-count">{{ notesRemaining() }} of {{ maxNotesLength }} characters remaining</p>
     </div>
 
     <!-- Actions -->
     <div class="alp-transfer-popover__actions">
-      <button type="button" class="btn-secondary" (click)="cancel()">Cancel</button>
-      <button 
-        type="button" 
-        class="btn-primary"
+      <button type="button" class="alp-btn alp-btn--ghost" (click)="cancel()">Cancel</button>
+      <button
+        type="button"
+        class="alp-btn alp-btn--primary"
         [disabled]="!selectedReason()"
         (click)="confirmTransfer()">
         Transfer Call

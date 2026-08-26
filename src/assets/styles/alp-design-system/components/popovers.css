@@ -256,11 +256,21 @@
   padding: var(--alp-space-4) var(--alp-space-5) var(--alp-space-2);
 }
 
+/* The reasons are a group of one question, so they are a fieldset. Its border
+   and padding come off: the popover already frames them. */
+.alp-transfer-popover__group {
+  margin: 0;
+  padding: 0 var(--alp-space-5) var(--alp-space-4);
+  border: 0;
+}
+
+/* Two to a row, which is this dialog's decision rather than the control's: the
+   reasons are two or three words each and a single column of six would be
+   taller than the dialog. */
 .alp-transfer-popover__reasons {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
-  gap: 10px;
-  padding: 0 var(--alp-space-5) var(--alp-space-4);
+  gap: var(--alp-space-2);
 }
 
 .alp-transfer-popover__notes {
@@ -272,7 +282,7 @@
   justify-content: flex-end;
   gap: var(--alp-space-3);
   padding: var(--alp-space-4) var(--alp-space-5);
-  background: #f9fafb;
+  background: var(--alp-color-slate-50);
   border-top: 1px solid var(--alp-color-border);
 }
 

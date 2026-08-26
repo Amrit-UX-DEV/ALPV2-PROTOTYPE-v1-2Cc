@@ -15,6 +15,35 @@
   justify-content: center;
   gap: var(--alp-space-2);
   font-family: inherit;
+  /* Two words on a button are one label. Left to wrap, a button beside a
+     wider one breaks across two lines while there is still room on the row,
+     which reads as though it has been squeezed out. */
+  white-space: nowrap;
+}
+
+/* Buttons side by side, wrapping as whole buttons once the row genuinely runs
+   out of width rather than being squeezed one at a time.
+
+   Each keeps its own width: nothing here stretches to fill the row, because a
+   button as wide as the panel is a banner, and it takes the room the button
+   next to it needed. */
+.alp-action-row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  gap: var(--alp-space-3);
+}
+
+.alp-action-row > .alp-btn {
+  flex: 0 0 auto;
+}
+
+/* A button acting on a tile or a row rather than on the screen, where the
+   full size would outweigh the thing it belongs to. */
+.alp-btn--sm {
+  padding: 6px var(--alp-space-3);
+  font-size: var(--alp-font-size-sm);
 }
 
 /* A button carrying an icon needs less room on that side than a word does.
@@ -45,10 +74,13 @@
   background-color: var(--alp-color-brand-hover);
 }
 
+/* Slate 500 rather than 400, and no transparency over it: at slate 400 with
+   0.7 opacity the label sat at 2.56:1, so the one button on a step that says
+   what is still missing was the hardest one on it to read. This holds 4.76:1
+   and is still plainly not the live navy. */
 .alp-btn--primary:disabled {
-  background: var(--alp-color-slate-400);
+  background: var(--alp-color-slate-500);
   cursor: not-allowed;
-  opacity: 0.7;
 }
 
 .alp-btn--outline,
@@ -81,6 +113,27 @@
 
 .alp-btn--danger-outline:hover {
   background: var(--alp-color-danger-soft);
+}
+
+/* An outline button that cannot be pressed loses its colour rather than its
+   contrast: greyed to slate 500, which reads at 4.76:1 for both the label and
+   the edge. Slate 400 would have been the lighter, more obviously inert grey,
+   but its edge sits at 2.56:1 against the fill and the edge is the whole shape
+   of an outline button. */
+.alp-btn--outline:disabled,
+.alp-btn--secondary:disabled,
+.alp-btn--danger-outline:disabled {
+  border-color: var(--alp-color-slate-500);
+  color: var(--alp-color-slate-500);
+  background: var(--alp-color-surface);
+  cursor: not-allowed;
+}
+
+.alp-btn--outline:disabled:hover,
+.alp-btn--secondary:disabled:hover,
+.alp-btn--danger-outline:disabled:hover {
+  background: var(--alp-color-surface);
+  color: var(--alp-color-slate-500);
 }
 
 .alp-btn--icon {
@@ -172,8 +225,11 @@
 
 /* =========================================================
    RECENT CALLERS BUTTONS
-   Main clickable tile button, view-details, resume, bailout,
-   and navigation buttons (scoped under .alp-recent-callers).
+
+   The tile surface itself, which is a button because pressing
+   anywhere on it selects the caller, and the slot the details
+   button sits in. What those buttons look like is the design
+   system's own alp-btn, so only their place is here.
    ========================================================= */
 
 .alp-recent-callers__main-btn {
@@ -191,75 +247,14 @@
   background-color: var(--alp-color-slate-50);
 }
 
-.alp-recent-callers__view-details-btn {
+/* Over the bottom-right of the tile, which the main button leaves clear. */
+.alp-recent-callers__view-details {
   position: absolute;
   bottom: var(--alp-space-3);
   right: var(--alp-space-3);
-  padding: 6px 14px;
-  background: var(--alp-color-slate-100);
-  color: var(--alp-color-slate-600);
-  border: 1px solid var(--alp-color-border-strong);
-  border-radius: 50px;
-  font-size: var(--alp-font-size-sm);
-  cursor: pointer;
-  z-index: 2;
-  transition: all 0.2s ease;
-}
-
-.alp-recent-callers__view-details-btn:hover {
-  background: var(--alp-color-brand-100);
-  color: var(--alp-color-blue-700);
-  border-color: var(--alp-color-slate-400);
-}
-
-.alp-recent-callers__nav button {
-  background: var(--alp-color-surface);
-  border: 1px solid var(--alp-color-border-strong);
-  width: var(--alp-space-8);
-  height: var(--alp-space-8);
-  border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  cursor: pointer;
-}
-
-.alp-recent-callers__nav button:disabled {
-  opacity: 0.4;
-  cursor: not-allowed;
-}
-
-.alp-recent-callers__resume-btn {
-  background: var(--alp-color-brand);
-  color: var(--alp-color-white);
-  border: none;
-  padding: 6px 14px;
-  border-radius: 50px;
-  font-size: var(--alp-font-size-sm);
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  gap: 6px;
   z-index: 2;
 }
 
-.alp-recent-callers__resume-btn:hover {
-  background: var(--alp-color-green-600);
-}
-
-.alp-recent-callers__bailout-btn {
-  background: var(--alp-color-brand);
-  color: var(--alp-color-white);
-  border: none;
-  padding: 6px var(--alp-space-3);
-  border-radius: 50px;
-  font-size: var(--alp-font-size-sm);
-  cursor: pointer;
-}
-
-.alp-recent-callers__bailout-btn:hover {
-  background: var(--alp-color-red-600);
-}
 
 .alp-recent-callers__full-main-btn {
   display: flex;
@@ -272,27 +267,6 @@
   padding: var(--alp-space-3) var(--alp-space-4) 44px var(--alp-space-4);
 }
 
-/* =========================================================
-   TRANSFER CALL BUTTON
-   ========================================================= */
-
-.alp-transfer-call-btn {
-  background: var(--alp-color-brand);
-  color: var(--alp-color-white);
-  border: none;
-  padding: 10px var(--alp-space-5);
-  border-radius: var(--alp-radius-full);
-  font-weight: var(--alp-font-weight-medium);
-  cursor: pointer;
-  display: inline-flex;
-  align-items: center;
-  gap: var(--alp-space-2);
-  transition: all 0.2s;
-}
-
-.alp-transfer-call-btn:hover {
-  background: var(--alp-color-brand-700);
-}
 
 .alp-script-status-tile__run-btn {
   padding: 10px var(--alp-space-5);

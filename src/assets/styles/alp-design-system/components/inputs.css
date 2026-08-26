@@ -33,7 +33,12 @@ select.alp-input {
   line-height: 1.45;
 }
 
+/* Also used on a legend, where the thing being labelled is a group of controls.
+   A legend floats in the border it no longer has and sizes itself to its
+   fieldset, so both are answered here rather than at each call site. */
 .alp-label {
+  float: none;
+  width: auto;
   display: block;
   font-size: 12px;
   font-weight: var(--alp-font-weight-semibold);
@@ -93,32 +98,6 @@ select.alp-input {
    TRANSFER POPOVER INPUTS
    Search input, notes textarea, and notes label.
    ========================================================= */
-
-.alp-transfer-popover__search input {
-  width: 100%;
-  padding: 10px 14px;
-  border: 1px solid var(--alp-color-border-strong);
-  border-radius: var(--alp-radius-md);
-  font-size: 14px;
-}
-
-.alp-transfer-popover__notes textarea {
-  width: 100%;
-  height: 90px;
-  padding: 10px;
-  border: 1px solid var(--alp-color-border-strong);
-  border-radius: var(--alp-radius-md);
-  resize: vertical;
-  font-size: 14px;
-}
-
-.alp-transfer-popover__notes label {
-  display: block;
-  font-size: var(--alp-font-size-sm);
-  font-weight: var(--alp-font-weight-medium);
-  margin-bottom: 6px;
-  color: var(--alp-color-slate-700);
-}
 
 /* Character count helper for notes textarea */
 .char-count {
