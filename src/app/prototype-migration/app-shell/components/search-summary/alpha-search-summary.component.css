@@ -22,12 +22,13 @@
   padding: var(--alp-space-5) var(--alp-space-5) var(--alp-space-10);
 }
 
+/* The heading and the one fact that qualifies it, stacked: the reference is
+   what the screen is about, and how long it stays valid is a note on it rather
+   than a second thing to read across from it. */
 .alp-search-summary__head {
   display: flex;
-  flex-wrap: wrap;
-  align-items: baseline;
-  justify-content: space-between;
-  gap: var(--alp-space-4);
+  flex-direction: column;
+  gap: var(--alp-space-1);
 }
 
 .alp-search-summary__title {
@@ -35,29 +36,24 @@
   font-size: var(--alp-font-size-xl);
   font-weight: var(--alp-font-weight-semibold);
   color: var(--alp-color-text);
+  overflow-wrap: anywhere;
 }
 
-.alp-search-summary__refs {
-  display: flex;
-  flex-wrap: wrap;
-  gap: var(--alp-space-2) var(--alp-space-6);
+/* The reference carries the weight in the heading it shares, the same way the
+   work plan's first step sets the reference above what it asks about. */
+.alp-search-summary__title strong {
+  font-weight: var(--alp-font-weight-bold);
+}
+
+.alp-search-summary__validity {
   margin: 0;
-}
-
-.alp-search-summary__ref {
-  display: flex;
-  flex-direction: column;
-  gap: 2px;
-}
-
-.alp-search-summary__ref dt {
-  font-size: var(--alp-font-size-xs);
+  font-size: var(--alp-font-size-sm);
   color: var(--alp-color-text-muted);
 }
 
-.alp-search-summary__ref dd {
-  margin: 0;
-  font-size: var(--alp-font-size-sm);
+/* The date is the part of the sentence anyone is reading it for. */
+.alp-search-summary__validity strong {
+  font-weight: var(--alp-font-weight-semibold);
   color: var(--alp-color-text);
 }
 
@@ -454,6 +450,11 @@
   display: flex;
   flex-direction: column;
   gap: var(--alp-space-2);
+  /* Away from the policy tile above it by more than the screen's own rhythm.
+     The tile is one record and this is a comparison of two, and at the same
+     spacing as everything else the switch above the panels reads as part of
+     the tile rather than as the head of what follows. */
+  margin-top: var(--alp-space-4);
 }
 
 /* The layout switch sits at the start of the row, and the control that opens

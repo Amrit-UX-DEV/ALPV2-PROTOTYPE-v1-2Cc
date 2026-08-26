@@ -1,22 +1,17 @@
 <div class="alp-search-summary">
+  <!-- The screen is about one dashboard reference, so the reference is in the
+       heading rather than repeated in a corner of it. The pension reference
+       that used to sit beside it is the policy number, which the tile below
+       already gives its own line. -->
   <div class="alp-search-summary__head">
-    <h2 class="alp-search-summary__title">Dashboard Reference</h2>
-    <dl class="alp-search-summary__refs">
-      <div class="alp-search-summary__ref">
-        <dt>Dashboard Reference</dt>
-        <dd><strong>{{ ctx.reference() }}</strong></dd>
-      </div>
-      @if (detail(); as pension) {
-        <div class="alp-search-summary__ref">
-          <dt>Pension Reference</dt>
-          <dd><strong>{{ pension.pensionReference }}</strong></dd>
-        </div>
-        <div class="alp-search-summary__ref">
-          <dt>Valid Until</dt>
-          <dd>{{ validUntil() }}</dd>
-        </div>
-      }
-    </dl>
+    <h2 class="alp-search-summary__title">
+      Dashboard Reference: <strong>{{ ctx.reference() }}</strong>
+    </h2>
+    @if (validUntil()) {
+      <p class="alp-search-summary__validity">
+        Valid until <strong>{{ validUntil() }}</strong>
+      </p>
+    }
   </div>
 
   @if (matches.record()) {
