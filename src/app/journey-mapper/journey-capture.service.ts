@@ -1,6 +1,6 @@
 import { Injectable, computed, signal } from '@angular/core';
 
-import { Journey, JourneyAction, JourneyStep } from './journey.model';
+import { Journey, JourneyAction, JourneyFrame, JourneyStep } from './journey.model';
 
 /** Where a completed run is kept so it can survive the reload that follows it. */
 const STORAGE_KEY = 'jm.frames';
@@ -18,6 +18,13 @@ const SETTLE_MS = 300;
  */
 const MAX_STORED_CHARS = 3_000_000;
 
+/**
+ * A ceiling on a frame's measured size. Something parked off-screen at a large
+ * offset, which the legacy stack does in a few places, would otherwise report a
+ * frame thousands of pixels wide and shrink the picture to nothing.
+ */
+const MAX_FRAME_PX = 2400;
+
 export type CaptureStatus = 'idle' | 'capturing' | 'ready' | 'failed';
 
 interface StoredRun {
@@ -25,7 +32,7 @@ interface StoredRun {
   /** The steps the run was taken from, so a rewritten journey is not reused. */
   fingerprint: string;
   capturedAt: number;
-  frames: Record<string, string>;
+  frames: Record<string, JourneyFrame>;
 }
 
 /**
@@ -54,7 +61,7 @@ export class JourneyCaptureService {
   private readonly state = signal<CaptureStatus>('idle');
   readonly status = this.state.asReadonly();
 
-  private readonly captured = signal<Record<string, string>>({});
+  private readonly captured = signal<Record<string, JourneyFrame>>({});
   private readonly at = signal(0);
   /** When the frames on screen were taken, so a stale set can be spotted. */
   readonly capturedAt = this.at.asReadonly();
@@ -82,9 +89,9 @@ export class JourneyCaptureService {
 
   private running = false;
 
-  /** The frame for a step, empty where that step has none. */
-  frame(stepId: string): string {
-    return this.captured()[stepId] ?? '';
+  /** The frame for a step, absent where that step has none. */
+  frame(stepId: string): JourneyFrame | undefined {
+    return this.captured()[stepId];
   }
 
   /**
@@ -132,14 +139,14 @@ export class JourneyCaptureService {
     this.done.set(0);
     this.problems.set([]);
 
-    const frames: Record<string, string> = {};
+    const frames: Record<string, JourneyFrame> = {};
 
     try {
       for (const [index, step] of journey.steps.entries()) {
         this.done.set(index);
 
         const scope = (await this.find(root, step.capture)) ?? root;
-        frames[step.id] = this.snapshot(scope);
+        frames[step.id] = this.snapshot(scope, root);
 
         await this.perform(root, step);
       }
@@ -261,38 +268,119 @@ export class JourneyCaptureService {
   }
 
   /**
-   * The picture: the element as it stands, deep cloned and written out.
+   * The picture: the element as it stands, with everything above it that its
+   * stylesheets are looking for.
    *
-   * Two things have to be put right on the way out. What a rep has keyed sits
-   * in a property and not in an attribute, so a copy of the markup shows an
-   * empty field unless the values are written into it. And scripts come along
+   * A subtree on its own comes out wrong, and wrong in a way that is hard to
+   * see at first. Nearly every rule in the legacy stack is a descendant
+   * selector: the rail is dark because it is inside .alpha-explorer-toolbar,
+   * and lifted out of it, it is a white box. So the chain from the root down
+   * to the subject is rebuilt around it, one empty element per ancestor with
+   * its classes and its attributes kept. Nothing of the ancestors is drawn --
+   * they are neutralised in the stylesheet -- but every selector that reaches
+   * through them still matches.
+   *
+   * Two more things have to be put right on the way out. What a rep has keyed
+   * sits in a property and not in an attribute, so a copy of the markup shows
+   * an empty field unless the values are written in. And scripts come along
    * with anything cloned, which is no use in a picture.
    *
-   * The clone keeps Angular's own scoping attributes, which is deliberate: it
-   * is what lets component stylesheets draw the frame the same way they draw
-   * the screen it was taken from.
+   * Angular's own scoping attributes are kept, which is what lets component
+   * stylesheets draw the frame the same way they drew the screen.
    */
-  private snapshot(scope: Element): string {
-    const copy = scope.cloneNode(true) as HTMLElement;
+  private snapshot(scope: Element, root: HTMLElement): JourneyFrame {
+    const subject = scope.cloneNode(true) as HTMLElement;
 
     const live = scope.querySelectorAll('input, textarea, select');
-    const drawn = copy.querySelectorAll('input, textarea, select');
+    const drawn = subject.querySelectorAll('input, textarea, select');
     live.forEach((field, index) => this.writeValue(field, drawn[index]));
 
-    for (const script of Array.from(copy.querySelectorAll('script'))) {
+    for (const script of Array.from(subject.querySelectorAll('script'))) {
       script.remove();
     }
 
     // A ring the shell left on the live screen is not part of the screen. The
     // frame draws its own from the step's selector.
-    for (const rung of Array.from(copy.querySelectorAll('.jm-target'))) {
+    for (const rung of Array.from(subject.querySelectorAll('.jm-target'))) {
       rung.classList.remove('jm-target');
     }
-    copy.classList.remove('jm-target');
+    subject.classList.remove('jm-target');
 
-    return copy.outerHTML;
+    // An absolutely positioned subject has nothing to be positioned against
+    // once it is out of the app: whatever held it is a neutralised shell now,
+    // so it would fly off to a corner of the frame. It is laid out in flow
+    // instead, which is where a picture of it belongs.
+    const position = getComputedStyle(scope).position;
+    if (position === 'absolute' || position === 'fixed') {
+      subject.style.position = 'static';
+    }
+
+    // The box the subject had, written onto it. Without this it is laid out
+    // again inside the frame against whatever room the frame has, and a screen
+    // measured against a different width is a picture of something nobody saw:
+    // a full-height rail becomes a stub, and a panel hung off the bottom of it
+    // goes with it.
+    const host = scope as HTMLElement;
+    if (host.offsetWidth) subject.style.width = `${host.offsetWidth}px`;
+    if (host.offsetHeight) subject.style.height = `${host.offsetHeight}px`;
+    subject.style.boxSizing = 'border-box';
+
+    subject.setAttribute('data-jm-subject', '');
+
+    let outermost: HTMLElement = subject;
+    for (let ancestor = scope.parentElement; ancestor; ancestor = ancestor.parentElement) {
+      const shell = ancestor.cloneNode(false) as HTMLElement;
+      shell.setAttribute('data-jm-shell', '');
+      shell.appendChild(outermost);
+      outermost = shell;
+      if (ancestor === root) break;
+    }
+
+    const { width, height } = this.extent(scope);
+    return { html: outermost.outerHTML, width, height };
   }
 
+  /**
+   * How much room the subject takes, including anything of it that hangs
+   * outside its own box.
+   *
+   * The box on its own is not the answer. The explorer toolbar is fifty pixels
+   * wide and its search panel is positioned out to the right of that, so a
+   * frame cut to the box would be a sliver of rail and no panel.
+   *
+   * Measured in layout pixels rather than screen ones. The prototype is drawn
+   * inside a scaled box, so what a rect reports is the app after the shell has
+   * shrunk it, and the frame wants the size the app believes it is.
+   */
+  private extent(scope: Element): { width: number; height: number } {
+    const rect = scope.getBoundingClientRect();
+    const laid = (scope as HTMLElement).offsetWidth;
+    const zoom = laid > 0 ? rect.width / laid : 1;
+    const scale = zoom > 0 ? zoom : 1;
+
+    let right = rect.right;
+    let bottom = rect.bottom;
+
+    for (const child of Array.from(scope.querySelectorAll('*'))) {
+      const box = child.getBoundingClientRect();
+      if (!box.width && !box.height) continue;
+      if (box.right > right) right = box.right;
+      if (box.bottom > bottom) bottom = box.bottom;
+    }
+
+    return {
+      width: Math.min(MAX_FRAME_PX, Math.ceil((right - rect.left) / scale)),
+      height: Math.min(MAX_FRAME_PX, Math.ceil((bottom - rect.top) / scale)),
+    };
+  }
+
+  /**
+   * What a rep keyed, chose or ticked, written into the copy as an attribute.
+   *
+   * A property is not an attribute. The markup of a filled-in form is the
+   * markup of an empty one, and a frame taken without this shows a rep about
+   * to press Search on a field with nothing in it.
+   */
   private writeValue(live: Element, drawn: Element | undefined): void {
     if (!drawn) return;
 
@@ -344,7 +432,7 @@ export class JourneyCaptureService {
   }
 
   /** True where the run is safely written down and can be read back. */
-  private write(journeyId: string, fingerprint: string, frames: Record<string, string>): boolean {
+  private write(journeyId: string, fingerprint: string, frames: Record<string, JourneyFrame>): boolean {
     const run: StoredRun = { journeyId, fingerprint, capturedAt: Date.now(), frames };
     const raw = JSON.stringify(run);
     if (raw.length > MAX_STORED_CHARS) return false;

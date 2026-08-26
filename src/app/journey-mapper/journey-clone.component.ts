@@ -1,21 +1,32 @@
 import {
   ChangeDetectionStrategy,
   Component,
+  DestroyRef,
   ElementRef,
+  afterNextRender,
+  computed,
   effect,
+  inject,
   input,
+  signal,
   viewChild,
 } from '@angular/core';
 
 /**
  * A photograph of part of the prototype, drawn but not working.
  *
- * The markup came off the running app, so it is in the app's own classes and
- * carries Angular's own scoping attributes, and the page already holds every
- * stylesheet. A clone is therefore drawn by exactly the rules that drew the
- * thing it is a picture of. Nothing is copied into this component but the
- * markup: no components are created, no services are touched, and no state
- * exists behind it.
+ * The markup came off the running app, so it is in the app's own classes, it
+ * carries Angular's own scoping attributes, and it brings the chain of
+ * ancestors its stylesheets look for. It is put in the same document as the
+ * app, which already holds every stylesheet, so the frame is drawn by exactly
+ * the rules that drew the thing it is a picture of. Nothing is copied into this
+ * component but the markup: no components are created, no services are touched,
+ * and no state exists behind it.
+ *
+ * It is laid out at the width the subject had on screen and then scaled down to
+ * fit the frame. Letting it reflow into whatever room the map has would be a
+ * picture of a screen nobody was looking at: a three-column comparison folded
+ * into one column says the layout is wrong when it is only narrow.
  *
  * It is inert, which takes the whole subtree out of pointer events, out of the
  * tab order and out of the accessibility tree in one attribute. A clone that
@@ -33,8 +44,14 @@ import {
   selector: 'journey-clone',
   standalone: true,
   template: `
-    <div class="jm-clone">
-      <div #surface class="jm-clone__surface" inert></div>
+    <div #box class="jm-clone" [style.height.px]="boxHeight() || null">
+      <div
+        #surface
+        class="jm-clone__surface"
+        inert
+        [style.width.px]="width() || null"
+        [style.transform]="transform()"
+      ></div>
     </div>
   `,
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -42,6 +59,15 @@ import {
 export class JourneyCloneComponent {
   /** The captured markup. Empty draws nothing rather than an empty box. */
   readonly html = input.required<string>();
+
+  /** The width the picture came to on screen. 0 lets the frame decide. */
+  readonly width = input(0);
+
+  /**
+   * The height it came to, which is not always the subject's own: a panel
+   * positioned outside its parent's box is still part of the picture.
+   */
+  readonly height = input(0);
 
   /**
    * The selector of the thing the step acts on, rung inside the clone.
@@ -53,7 +79,26 @@ export class JourneyCloneComponent {
    */
   readonly target = input<string | undefined>(undefined);
 
+  private readonly box = viewChild<ElementRef<HTMLElement>>('box');
   private readonly surface = viewChild<ElementRef<HTMLElement>>('surface');
+
+  private readonly destroyRef = inject(DestroyRef);
+
+  private readonly fit = signal(1);
+  private readonly drawnHeight = signal(0);
+
+  protected readonly transform = computed(() => {
+    const fit = this.fit();
+    return fit < 1 ? `scale(${fit.toFixed(4)})` : null;
+  });
+
+  /**
+   * A scaled element still takes up its full size in the layout around it, so
+   * the box it sits in is told what the picture actually comes to.
+   */
+  protected readonly boxHeight = computed(() =>
+    Math.round(Math.max(this.drawnHeight(), this.height()) * this.fit()),
+  );
 
   constructor() {
     effect(() => {
@@ -62,7 +107,42 @@ export class JourneyCloneComponent {
 
       host.innerHTML = this.html();
       this.ring(host, this.target());
+      this.measure();
     });
+
+    afterNextRender(() => this.watch());
+  }
+
+  /**
+   * Both boxes are watched: the outer one because the room a frame has changes
+   * with the window, and the inner one because a picture's own height is not
+   * known until it has been drawn.
+   */
+  private watch(): void {
+    const box = this.box()?.nativeElement;
+    const surface = this.surface()?.nativeElement;
+    if (!box || !surface || typeof ResizeObserver === 'undefined') return;
+
+    const observer = new ResizeObserver(() => this.measure());
+    observer.observe(box);
+    observer.observe(surface);
+    this.destroyRef.onDestroy(() => observer.disconnect());
+  }
+
+  private measure(): void {
+    const box = this.box()?.nativeElement;
+    const surface = this.surface()?.nativeElement;
+    if (!box || !surface) return;
+
+    const room = box.clientWidth;
+    const natural = this.width() || surface.scrollWidth;
+    const fit = room > 0 && natural > 0 ? Math.min(1, room / natural) : 1;
+
+    // Ignoring a hair's difference is what keeps this from oscillating. The
+    // frame's height follows the scale, a taller frame can bring a scrollbar,
+    // and a scrollbar takes width back off the scale it came from.
+    if (Math.abs(fit - this.fit()) > 0.005) this.fit.set(fit);
+    this.drawnHeight.set(surface.offsetHeight);
   }
 
   /**
@@ -74,14 +154,12 @@ export class JourneyCloneComponent {
     for (const rung of Array.from(host.querySelectorAll('.jm-target'))) {
       rung.classList.remove('jm-target');
     }
+    if (!target) return;
 
-    let found: Element | null = null;
     try {
-      found = target ? host.querySelector(target) : null;
+      host.querySelector(target)?.classList.add('jm-target');
     } catch {
       console.error(`Journey clone: '${target}' is not a selector this browser understands.`);
     }
-
-    found?.classList.add('jm-target');
   }
 }

@@ -1,18 +1,19 @@
 /* =========================================================
    EXPERIMENTAL — JOURNEY MAPPER (GLOBAL)
 
-   Two things the journey mapper needs that its components
-   cannot style themselves.
+   What the journey mapper needs that its components cannot
+   style themselves.
 
-   The ring goes on elements the mapper does not own: a real
-   element in the running prototype, or an element inside a
-   clone written straight into the DOM. Neither carries the
-   scoping attribute Angular puts on a component's own markup,
-   so neither can be reached from a component stylesheet.
+   Frames are markup taken off the running app and written
+   into the page, and the ring goes on elements the mapper
+   does not own: a real element in the running prototype, or
+   an element inside a frame. None of it carries the scoping
+   attribute Angular puts on a component's own markup, so none
+   of it can be reached from a component stylesheet.
 
    Loaded after the design system so that it has the last word
-   over the legacy stack, which sets outlines and shadows on a
-   good deal of what a step is likely to point at.
+   over the legacy stack, which sets outlines, shadows and
+   layout on a good deal of what a frame contains.
    ========================================================= */
 
 /* ---------------------------------------------------------
@@ -41,19 +42,30 @@
 }
 
 /* ---------------------------------------------------------
-   THE CLONE
+   THE FRAME
 
-   The fragment is drawn by the same stylesheets as the app,
-   so almost nothing is set here: what a clone looks like is
-   the app's business. What is set is that it is a picture.
+   A frame is the subject of a step with the chain of elements
+   that stood above it in the app rebuilt around it, because
+   the stylesheets are nearly all descendant selectors and a
+   subtree lifted out of its place is drawn by almost none of
+   them.
+
+   Those ancestors are scaffolding. They are there to be
+   matched by selectors, not to be seen: whatever they held,
+   how they were positioned and how much room they took is the
+   business of the screen they came from, and inside a frame
+   all of it gets in the way. So they are flattened, and the
+   subject is left to be drawn exactly as it was.
    --------------------------------------------------------- */
 
 .jm-clone {
   display: block;
   max-width: 100%;
+  overflow: hidden;
 }
 
 .jm-clone__surface {
+  transform-origin: top left;
   /* Inert already takes it out of pointer events, the tab order and the
      accessibility tree. This is for the cursor, which would otherwise still
      turn into a hand over something that cannot be pressed. */
@@ -65,11 +77,52 @@
   cursor: default !important;
 }
 
-/* A snapshot is a still. Anything that was going to move in it is stopped, so
-   a frame looks the same the whole time it is being read. */
+/* A frame is a still. Anything that was going to move in it is stopped, so it
+   looks the same the whole time it is being read. */
 .jm-clone__surface *,
 .jm-clone__surface *::before,
 .jm-clone__surface *::after {
   animation: none !important;
   transition: none !important;
+}
+
+/* The scaffolding. Everything that makes an element take part in a layout is
+   taken off it, and everything that would draw it is taken off too. What is
+   left is a box in the right place in the tree with the right classes on it,
+   which is all a selector needs. */
+[data-jm-shell] {
+  display: block !important;
+  position: static !important;
+  float: none !important;
+  width: auto !important;
+  min-width: 0 !important;
+  max-width: none !important;
+  height: auto !important;
+  min-height: 0 !important;
+  max-height: none !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  border: 0 !important;
+  border-radius: 0 !important;
+  background: none !important;
+  box-shadow: none !important;
+  overflow: visible !important;
+  transform: none !important;
+  filter: none !important;
+  opacity: 1 !important;
+  flex: none !important;
+  grid-area: auto !important;
+}
+
+/* A shell drawing nothing should take up no room either, and a good many of
+   them are pseudo-element decorations in the legacy stack. */
+[data-jm-shell]::before,
+[data-jm-shell]::after {
+  content: none !important;
+}
+
+/* The subject is drawn as it was, and fills the width the frame was laid out
+   at, which is the width it had on screen. */
+[data-jm-subject] {
+  max-width: none;
 }

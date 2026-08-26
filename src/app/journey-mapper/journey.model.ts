@@ -13,6 +13,24 @@
  * template changed, and wrong silently.
  */
 
+/**
+ * One frame: a photograph of part of the running app.
+ *
+ * The markup is the subject with the chain of ancestors above it rebuilt as
+ * empty shells, because the app's stylesheets are nearly all descendant
+ * selectors and a subtree lifted out of its place is drawn by almost none of
+ * them.
+ *
+ * The size is the room the subject took on screen, in the app's own layout
+ * pixels. A frame is laid out at that width and then scaled to fit, so it
+ * reflows exactly as far as the real thing did and no further.
+ */
+export interface JourneyFrame {
+  html: string;
+  width: number;
+  height: number;
+}
+
 /** How a step is carried out on the running prototype. */
 export type JourneyActionType =
   /** Press it. The default where a step names a target and nothing else. */

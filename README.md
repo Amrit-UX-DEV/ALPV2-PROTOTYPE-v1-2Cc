@@ -199,13 +199,43 @@ Each journey file is a name, a summary and a list of steps:
 An entry in `do` is `{ "type": "click" | "type" | "select" | "none", "target": "...", "value": "..." }`.
 Both `type` and `target` have defaults: a click, on the step's own target.
 
+Point a step at what it means rather than at where it sits. The work plan hub
+lists whatever the index holds in the order it holds it, so
+`.alp-launch-tile[data-plan='dashboard-reference']` is a plan and
+`.alp-work-plans__item:first-child` is a position that will one day belong to
+something else.
+
 `target` is used twice from the one place. In the prototype view it rings the
 element on the live screen; in a frame it rings the same selector inside the
 photograph. A step cannot point at one thing in the map and another in the app.
 
+### Why a frame looks like the app
+
+A frame is markup the app produced, mounted in the same document, so the
+stylesheets already on the page draw it. Three things make that work rather
+than nearly work.
+
+The chain comes with it. Nearly every rule in the legacy stack is a descendant
+selector, so a subtree lifted out of its place is drawn by almost none of them:
+the rail is dark because it sits inside `.alpha-explorer-toolbar`. Each ancestor
+from the capture root down to the subject is cloned empty, classes and
+attributes kept, and rebuilt around it. Those shells are flattened by
+`journey-mapper.css` so they are matched by selectors and never seen.
+
+Angular's scoping attributes are kept, so component stylesheets draw the frame
+the same way they drew the screen.
+
+The box comes with it. The subject is written out at the width and height it
+had on screen and the frame is laid out at that size, then scaled down to fit.
+A screen re-measured against the width of a panel is a picture of something
+nobody saw.
+
 Frames are `inert`, which takes them out of pointer events, out of the tab
-order and out of the accessibility tree. Nothing runs behind them: they are
-markup the app produced, with its scripts stripped and its scoping attributes
-kept, so the app's own stylesheets draw them.
+order and out of the accessibility tree. Nothing runs behind them, and their
+scripts are stripped on the way out.
+
+Pick a `capture` root that is a whole layout unit rather than a fragment of
+one: `.alpha-explorer-toolbar` rather than the search panel positioned against
+it, `.alpha-wizard` rather than the step inside its card.
 
 Adding a journey is a file and an index entry. Nothing in `src/app` changes.

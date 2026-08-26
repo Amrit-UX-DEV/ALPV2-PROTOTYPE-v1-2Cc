@@ -18,8 +18,13 @@
       "action": "Set Search Criteria to Dashboard Reference.",
       "result": "The field below changes what it expects: the placeholder becomes a dashboard reference and the hint under it says what one looks like.",
       "target": "#MenuSearch_SearchCriteria",
-      "do": [{ "type": "select", "value": "Dashboard Reference" }],
-      "capture": ".ui-action-menu-extended",
+      "do": [
+        {
+          "type": "select",
+          "value": "Dashboard Reference"
+        }
+      ],
+      "capture": ".alpha-explorer-toolbar",
       "notes": "The criteria and the hint are the same data the call centre search reads, so the two forms cannot ask for different things."
     },
     {
@@ -28,8 +33,13 @@
       "action": "Type PMR12345678910.",
       "result": "Search becomes pressable. A reference that does not match the shape of one is flagged on the field rather than after the search.",
       "target": "#MenuSearch_ReferenceNumber",
-      "do": [{ "type": "type", "value": "PMR12345678910" }],
-      "capture": ".ui-action-menu-extended"
+      "do": [
+        {
+          "type": "type",
+          "value": "PMR12345678910"
+        }
+      ],
+      "capture": ".alpha-explorer-toolbar"
     },
     {
       "id": "search",
@@ -37,7 +47,7 @@
       "action": "Press Search.",
       "result": "The dashboard reference screen opens: the reference in the heading, the policy it resolved to, and the comparison underneath.",
       "target": "#MenuSearch_SearchButton",
-      "capture": ".ui-action-menu-extended",
+      "capture": ".alpha-explorer-toolbar",
       "settleMs": 600
     },
     {
@@ -66,7 +76,7 @@
       "result": "Three groups: what disagrees, what agrees, and what neither platform holds. Differences are open on arrival because they are the reason the screen exists.",
       "target": ".alp-search-summary__comparison",
       "do": [],
-      "capture": ".alp-search-summary__comparison",
+      "capture": ".alp-search-summary",
       "notes": "Grouped by what the comparison found rather than field by field, so a rep is not reading forty identical rows to find the three that matter."
     },
     {
@@ -75,8 +85,12 @@
       "action": "Press Table on the layout switch.",
       "result": "The same three groups, the same order, laid out as rows against columns for Dashboard Data and Our Record.",
       "target": ".alp-search-summary__controls .alp-view-switch",
-      "do": [{ "target": ".alp-search-summary__controls .alp-view-switch__option:last-child" }],
-      "capture": ".alp-search-summary__comparison"
+      "do": [
+        {
+          "target": ".alp-search-summary__controls .alp-view-switch__option:last-child"
+        }
+      ],
+      "capture": ".alp-search-summary"
     },
     {
       "id": "open-processes",
@@ -84,7 +98,7 @@
       "action": "Press Business Processes on the rail.",
       "result": "On a build that shows the hub, the work plans this build offers. On a build cut to one plan, the Dashboard Reference plan opens directly.",
       "target": ".ui-menu-action-block.business-processes .ui-menu-action",
-      "capture": ".ui-action-rail",
+      "capture": ".alpha-explorer-toolbar",
       "notes": "The button is only on the rail once there is a plan that can be run. A plan about a dashboard reference cannot run without one."
     },
     {
@@ -92,7 +106,7 @@
       "title": "Open the Dashboard Reference plan",
       "action": "Press the Dashboard Reference tile.",
       "result": "Step one opens, headed by the reference the whole plan is about.",
-      "target": ".alp-work-plans__item:first-child .alp-launch-tile",
+      "target": ".alp-launch-tile[data-plan='dashboard-reference']",
       "capture": ".alp-work-plans",
       "notes": "There is no hub on a build cut down to one plan, and the rail opens the plan itself. This step is the hub's."
     },
@@ -102,7 +116,7 @@
       "action": "Answer 'Was this a match?' with Matched.",
       "result": "A second question appears asking what the decision required. Not Matched would ask nothing further: there is nothing to record against a reference that is not this person.",
       "target": "input[name='dashboard-reference-decision'][value='matched']",
-      "capture": ".alp-plan-step",
+      "capture": ".alpha-wizard",
       "notes": "One question at a time, and the next only once the last has an answer."
     },
     {
@@ -111,7 +125,7 @@
       "action": "Answer Actions Required.",
       "result": "The categories appear. No Actions Required would end the step here.",
       "target": "input[name='dashboard-reference-actions'][value='actions']",
-      "capture": ".alp-plan-step"
+      "capture": ".alpha-wizard"
     },
     {
       "id": "categorise",
@@ -120,15 +134,19 @@
       "result": "The note field appears with Other, and the step has everything it needs.",
       "target": ".alp-plan-step__block:last-of-type",
       "do": [
-        { "target": ".alp-choice-list:not(.alp-choice-list--inline) .alp-choice-list__item:first-child .alp-choice__input" },
-        { "target": ".alp-choice-list:not(.alp-choice-list--inline) .alp-choice-list__item:last-child .alp-choice__input" },
+        {
+          "target": ".alp-choice-list:not(.alp-choice-list--inline) .alp-choice-list__item:first-child .alp-choice__input"
+        },
+        {
+          "target": ".alp-choice-list:not(.alp-choice-list--inline) .alp-choice-list__item:last-child .alp-choice__input"
+        },
         {
           "type": "type",
           "target": "#DashboardReferenceOther",
           "value": "Dashboard holds a second forename we do not."
         }
       ],
-      "capture": ".alp-plan-step",
+      "capture": ".alpha-wizard",
       "notes": "By category rather than by field. The comparison is field by field because that is how the other platform sends it, but a given name, a surname and five alternate surnames are one change of name to everything downstream."
     },
     {

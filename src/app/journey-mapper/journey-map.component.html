@@ -51,8 +51,13 @@
       <!-- The picture: the markup the prototype itself rendered at this point in
            the journey, drawn by the same stylesheets and doing nothing. -->
       <div class="jm-frame__stage">
-        @if (capture.frame(step.id); as html) {
-          <journey-clone [html]="html" [target]="step.target"></journey-clone>
+        @if (capture.frame(step.id); as frame) {
+          <journey-clone
+            [html]="frame.html"
+            [width]="frame.width"
+            [height]="frame.height"
+            [target]="step.target"
+          ></journey-clone>
         } @else if (capture.status() === 'capturing') {
           <p class="jm-frame__no-clone">Capturing.</p>
         } @else {

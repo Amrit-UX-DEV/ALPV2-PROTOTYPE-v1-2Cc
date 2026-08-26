@@ -10,7 +10,11 @@
     <ul class="alp-work-plans__list">
       @for (plan of plans.eligible(); track plan.id) {
         <li class="alp-work-plans__item">
-          <button type="button" class="alp-launch-tile" (click)="plans.open(plan)">
+          <!-- The plan's own id on the tile. What is listed here is whatever the
+               index holds, in the order it holds it, so nothing outside can
+               point at a plan by counting: the second tile today is the first
+               tile on a build with one plan turned off. -->
+          <button type="button" class="alp-launch-tile" [attr.data-plan]="plan.id" (click)="plans.open(plan)">
             <span class="alp-launch-tile__icon">
               <i aria-hidden="true" [class]="plan.icon"></i>
             </span>
