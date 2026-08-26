@@ -1,11 +1,13 @@
 <div class="alp-work-plans">
   <h2 class="alp-work-plans__title">{{ plans.heading() }}</h2>
 
-  @if (plans.plans().length) {
+  @if (plans.eligible().length) {
     <!-- A list, because that is what it is: two work plans now, and the next one
-         is an entry in the index rather than a change here. -->
+         is an entry in the index rather than a change here. What is listed is
+         what can be run: a plan needing a dashboard reference is not offered
+         until one has been searched for. -->
     <ul class="alp-work-plans__list">
-      @for (plan of plans.plans(); track plan.id) {
+      @for (plan of plans.eligible(); track plan.id) {
         <li class="alp-work-plans__item">
           <button type="button" class="alp-launch-tile" (click)="plans.open(plan)">
             <span class="alp-launch-tile__icon">
@@ -18,9 +20,15 @@
       }
     </ul>
   } @else {
-    <div class="alp-notice alp-notice--warning" role="alert">
-      <i aria-hidden="true" class="alp-notice__icon fas fa-exclamation-triangle"></i>
-      <strong class="alp-notice__text">No work plans could be read.</strong>
+    <!-- Either the index could not be read or nothing in it can be run yet.
+         Both leave a rep on an empty screen, so it says what would change it
+         rather than reporting a failure they cannot act on. -->
+    <div class="alp-notice alp-notice--info">
+      <i aria-hidden="true" class="alp-notice__icon fas fa-info-circle"></i>
+      <p class="alp-notice__text">
+        No work plans are available. Search for a policy or a dashboard reference to
+        see the plans that work on one.
+      </p>
     </div>
   }
 </div>

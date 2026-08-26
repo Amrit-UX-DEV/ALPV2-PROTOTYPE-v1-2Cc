@@ -1,32 +1,52 @@
-<!-- ===== Icon rail: always-visible button strip ===== -->
+<!-- ===== Icon rail: the buttons this build offers that lead somewhere =====
+
+     A button is drawn when the build offers it and there is something behind
+     it. Home and search always are. The group summary needs a context that has
+     one, and business processes needs a work plan that can be run, so with
+     nothing searched the rail is the two that always work. What each build
+     offers is assets/data/navigation/rail.json; what is reachable right now is
+     worked out from the context. -->
 <div class="ui-action-rail">
+  @if (rail.home()) {
   <div class="ui-menu-action-block search">
     <button class="ui-menu-action tier-0"> <span class="details"><i class="fa fa-home" aria-hidden="true"></i>
     </span> <span class="tooltip">Home</span> </button>
   </div>
+  }
+  @if (rail.search()) {
   <div class="ui-menu-action-block search ui-menu-action-block--divider">
     <button class="ui-menu-action tier-0" alpha-ui-event="click" alpha-ui-attr-toggle=".ux-toolbar-example ,extended">
     <span class="details"><i class="fa fa-search" aria-hidden="true"></i> </span>
     <span class="tooltip">Search ALPHA</span> </button>
   </div>
+  }
 
-  <div class="ui-menu-action-block group-summary">
+  <!-- The divider belongs to whichever of these two is last, since it is what
+       separates them from business processes. -->
+  @if (rail.groupSummary()) {
+  <div class="ui-menu-action-block group-summary" [class.ui-menu-action-block--divider]="!rail.enquiry()">
     <button class="ui-menu-action tier-0" [class.active]="currentView === 'group-summary'" (click)="switchView('group-summary')">
     <span class="details"><i class="fa fa-users" aria-hidden="true"></i> </span>
     <span class="tooltip">Group Summary </span> </button>
   </div>
+  }
+  @if (rail.enquiry()) {
   <div class="ui-menu-action-block group-summary ui-menu-action-block--divider">
     <button class="ui-menu-action tier-0"> <span class="details"><i class="fa fa-bars" aria-hidden="true"></i>
     </span> <span class="tooltip">Enquiry</span> </button>
   </div>
+  }
+  @if (rail.businessProcesses()) {
   <div class="ui-menu-action-block business-processes">
-    <!-- The hub, not a plan: there is more than one business process now, so the
-         rail offers them rather than picking one. Lit for the hub and for
-         whatever plan was opened from it, since both are where this leads. -->
-    <button class="ui-menu-action tier-0" [class.active]="currentView === 'work-plans' || currentView === 'work-plan'" (click)="switchView('work-plans')">
+    <!-- Where this leads is the work plan service's decision, not the rail's:
+         the hub where there is a choice to make, and straight into the one plan
+         where a build has been cut down to one. Lit for both, since both are
+         where this button goes. -->
+    <button class="ui-menu-action tier-0" [class.active]="currentView === 'work-plans' || currentView === 'work-plan'" (click)="openBusinessProcesses()">
     <span class="details"><i class="fas fa-clipboard-list toolbar-icon--clipboard"></i> </span>
     <span class="tooltip">Business Processes</span> </button>
   </div>
+  }
 
 
 

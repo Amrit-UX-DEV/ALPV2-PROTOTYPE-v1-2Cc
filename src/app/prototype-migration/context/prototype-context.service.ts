@@ -61,6 +61,18 @@ export class PrototypeContextService {
   /** Absent in no context. */
   readonly policy = computed(() => this.current().policy);
 
+  /**
+   * Whether this context has a group summary behind it.
+   *
+   * Every context the prototype holds is something with a group around it: a
+   * policy summarises its own group, and a dashboard reference leads to the
+   * policy it turned out to be. No context has nothing to summarise, which is
+   * why the rail does not offer the screen before anything has been searched.
+   * A future kind with no group behind it should say so here rather than
+   * anywhere that draws a button.
+   */
+  readonly hasGroupSummary = computed(() => this.kind() !== 'none');
+
   /** Whether there is a policy to show. False before a search finds one. */
   readonly hasPolicy = computed(() => this.policy() !== undefined);
 

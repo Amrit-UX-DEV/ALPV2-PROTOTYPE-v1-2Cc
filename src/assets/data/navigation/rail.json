@@ -1,0 +1,10 @@
+{
+  "note": "Which rail buttons this build offers. develop shows everything a build can show; a release branch turns off what its audience should not see. A button set to true can still be held back by what is in play: the group summary needs a context that has one, and business processes needs a work plan whose context is in play.",
+  "items": {
+    "home": { "show": true },
+    "search": { "show": true },
+    "group-summary": { "show": true },
+    "enquiry": { "show": false },
+    "business-processes": { "show": true }
+  }
+}

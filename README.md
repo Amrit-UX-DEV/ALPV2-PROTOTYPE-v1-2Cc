@@ -78,6 +78,39 @@ A theme overrides the `--brand-*` and `--alpha-*` tokens that `src/index.css`
 defines at `:root`. Anything it leaves out keeps the ReAssure default, so a
 theme only has to state its differences.
 
+## What a build shows
+
+Two JSON files decide what a build offers, so cutting a release for a
+particular audience is an edit to data rather than to code. `develop` shows
+everything; a release branch turns off what its audience has no use for.
+
+`src/assets/data/navigation/rail.json` holds one switch per rail button:
+
+```json
+{ "items": { "enquiry": { "show": false } } }
+```
+
+`src/assets/data/work-plans/index.json` holds the work plans and the hub:
+
+```json
+{
+  "hub": { "alwaysShow": true },
+  "plans": [{ "id": "dashboard-reference", "show": true, "requiresContext": "possible-match" }]
+}
+```
+
+- `show: false` drops a button or a plan from the build entirely.
+- `requiresContext` is the context a plan needs before it can be run. Leave it
+  out for a plan that runs from anywhere, as script management does.
+- `hub.alwaysShow: false` skips the hub where only one plan can be run, so the
+  rail's business processes button opens that plan directly.
+
+A button set to `show: true` still only appears when it leads somewhere: the
+group summary needs a context that has one, and business processes needs a
+plan that can be run. That part is worked out from the current context and is
+not configurable, because a button that opens an empty screen teaches a rep to
+stop trusting the rail.
+
 ### Branches
 
 - `develop` is the working trunk. Everything lands here. Never published.

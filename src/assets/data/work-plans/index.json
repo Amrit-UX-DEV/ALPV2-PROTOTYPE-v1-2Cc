@@ -1,17 +1,23 @@
 {
   "heading": "Prototype Work Plan Flows",
+  "hub": {
+    "alwaysShow": true
+  },
   "plans": [
     {
       "id": "script-management",
       "name": "Script Management",
       "icon": "fas fa-file-lines",
-      "configUrl": "assets/data/wizard-configs/script-management.wizard.json"
+      "configUrl": "assets/data/wizard-configs/script-management.wizard.json",
+      "show": true
     },
     {
       "id": "dashboard-reference",
       "name": "Dashboard Reference",
       "icon": "fas fa-clipboard-check",
-      "configUrl": "assets/data/wizard-configs/dashboard-reference.wizard.json"
+      "configUrl": "assets/data/wizard-configs/dashboard-reference.wizard.json",
+      "show": true,
+      "requiresContext": "possible-match"
     }
   ]
 }
