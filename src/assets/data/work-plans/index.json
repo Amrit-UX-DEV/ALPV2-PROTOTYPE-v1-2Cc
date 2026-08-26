@@ -1,7 +1,7 @@
 {
   "heading": "Prototype Work Plan Flows",
   "hub": {
-    "alwaysShow": true
+    "alwaysShow": false
   },
   "plans": [
     {
@@ -9,7 +9,7 @@
       "name": "Script Management",
       "icon": "fas fa-file-lines",
       "configUrl": "assets/data/wizard-configs/script-management.wizard.json",
-      "show": true
+      "show": false
     },
     {
       "id": "dashboard-reference",
