@@ -1,123 +1,69 @@
 <div class="alp-plan-step">
-  @if (record()) {
-    <!-- What the rest of the step is about. Shown rather than asked about: the
-         rep has just been working this record, and a checkbox saying they have
-         read the number they read out is a tick nobody reads. -->
-    <section class="alp-plan-step__block">
-      <h4 class="alp-plan-step__heading">Confirm the policy</h4>
-      <p class="alp-plan-step__lead">
-        Check this is the dashboard reference and the policy you have been working on this call.
-      </p>
-      <dl class="alp-plan-step__facts">
-        <div class="alp-plan-step__fact">
-          <dt>Dashboard Reference</dt>
-          <dd><strong>{{ reference() }}</strong></dd>
-        </div>
-        @if (detail(); as pension) {
-          <div class="alp-plan-step__fact">
-            <dt>Pension Reference</dt>
-            <dd><strong>{{ pension.pensionReference }}</strong></dd>
-          </div>
-        }
-        @if (policy(); as held) {
-          <div class="alp-plan-step__fact">
-            <dt>Policy</dt>
-            <dd>{{ held.number }}, {{ held.productName }}</dd>
-          </div>
-          <div class="alp-plan-step__fact">
-            <dt>Status</dt>
-            <dd>{{ held.status }}</dd>
-          </div>
-        }
-        <div class="alp-plan-step__fact">
-          <dt>Dashboard Record</dt>
-          <dd>{{ recordName() }}</dd>
-        </div>
-        @if (validUntil()) {
-          <div class="alp-plan-step__fact">
-            <dt>Valid Until</dt>
-            <dd>{{ validUntil() }}</dd>
-          </div>
-        }
-      </dl>
-    </section>
+  <!-- The reference the whole step is about, and one sentence saying what is
+       being decided about it. Nothing else of the policy is repeated: the rep
+       has just come off the comparison. -->
+  <header class="alp-plan-step__head">
+    <p class="alp-plan-step__label">Dashboard Reference</p>
+    <h4 class="alp-plan-step__reference">{{ reference() }}</h4>
+    <p class="alp-plan-step__lead">
+      Decide whether this dashboard reference is the policy holder on our record, then say what
+      the decision leaves to do.
+    </p>
+  </header>
 
-    <!-- A fieldset, because these tick boxes are one question and a legend is
-         how a screen reader is told so. -->
+  <fieldset class="alp-plan-step__block">
+    <legend class="alp-plan-step__heading">Was this a match?</legend>
+    <ul class="alp-choice-list alp-choice-list--split">
+      <li class="alp-choice-list__item">
+        <label class="alp-choice">
+          <input
+            class="alp-choice__input"
+            type="radio"
+            name="dashboard-reference-decision"
+            value="matched"
+            [checked]="decision() === 'matched'"
+            (change)="chooseDecision('matched')"
+          />
+          <span class="alp-choice__text">
+            <span class="alp-choice__label">Matched</span>
+          </span>
+        </label>
+      </li>
+      <li class="alp-choice-list__item">
+        <label class="alp-choice">
+          <input
+            class="alp-choice__input"
+            type="radio"
+            name="dashboard-reference-decision"
+            value="not-matched"
+            [checked]="decision() === 'not-matched'"
+            (change)="chooseDecision('not-matched')"
+          />
+          <span class="alp-choice__text">
+            <span class="alp-choice__label">Not Matched</span>
+          </span>
+        </label>
+      </li>
+    </ul>
+  </fieldset>
+
+  <!-- Asked only once there is a decision to have consequences. -->
+  @if (decision()) {
     <fieldset class="alp-plan-step__block">
-      <legend class="alp-plan-step__heading">Record what was supplied</legend>
-      <p class="alp-plan-step__lead">
-        Tick anything you filled in or corrected on this call. The list is the
-        comparison's own: what the two records disagree on, and what neither of
-        them holds.
-      </p>
-
-      <ul class="alp-choice-list">
-        <!-- First, and across the row, because it is the answer to the whole
-             question rather than one item in the list. -->
-        <li class="alp-choice-list__item alp-choice-list__item--wide">
-          <label class="alp-choice">
-            <input
-              class="alp-choice__input"
-              type="checkbox"
-              [checked]="noChanges()"
-              (change)="toggleNoChanges($event)"
-            />
-            <span class="alp-choice__text">
-              <span class="alp-choice__label">No changes were needed</span>
-              <span class="alp-choice__hint">Nothing was supplied or corrected on this call</span>
-            </span>
-          </label>
-        </li>
-
-        @for (field of options(); track field.label) {
-          <li class="alp-choice-list__item">
-            <label class="alp-choice">
-              <input
-                class="alp-choice__input"
-                type="checkbox"
-                [checked]="isSupplied(field.label)"
-                (change)="toggleField(field.label, $event)"
-              />
-              <span class="alp-choice__text">
-                <span class="alp-choice__label">{{ field.label }}</span>
-                <span class="alp-choice__hint">
-                  {{ field.section }} · {{ supplyReasons[field.verdict] }}
-                </span>
-              </span>
-            </label>
-          </li>
-        }
-      </ul>
-
-      @if (!options().length) {
-        <p class="alp-plan-step__note">
-          Every field on this record already matches, so there was nothing to supply.
-        </p>
-      }
-    </fieldset>
-
-    <fieldset class="alp-plan-step__block">
-      <legend class="alp-plan-step__heading">Was this a match?</legend>
-      <p class="alp-plan-step__lead">
-        Decide whether the person behind this dashboard reference is the person on our policy.
-        This is what the plan saves.
-      </p>
-
+      <legend class="alp-plan-step__heading">What was required in this decision?</legend>
       <ul class="alp-choice-list alp-choice-list--split">
         <li class="alp-choice-list__item">
           <label class="alp-choice">
             <input
               class="alp-choice__input"
               type="radio"
-              name="dashboard-reference-decision"
-              value="matched"
-              [checked]="decision() === 'matched'"
-              (change)="choose('matched')"
+              name="dashboard-reference-actions"
+              value="no-actions"
+              [checked]="actions() === 'no-actions'"
+              (change)="chooseActions('no-actions')"
             />
             <span class="alp-choice__text">
-              <span class="alp-choice__label">Matched</span>
-              <span class="alp-choice__hint">This record is our client</span>
+              <span class="alp-choice__label">No actions required</span>
             </span>
           </label>
         </li>
@@ -126,25 +72,56 @@
             <input
               class="alp-choice__input"
               type="radio"
-              name="dashboard-reference-decision"
-              value="not-matched"
-              [checked]="decision() === 'not-matched'"
-              (change)="choose('not-matched')"
+              name="dashboard-reference-actions"
+              value="actions"
+              [checked]="actions() === 'actions'"
+              (change)="chooseActions('actions')"
             />
             <span class="alp-choice__text">
-              <span class="alp-choice__label">Not Matched</span>
-              <span class="alp-choice__hint">This record is somebody else</span>
+              <span class="alp-choice__label">Actions required</span>
             </span>
           </label>
         </li>
       </ul>
     </fieldset>
-  } @else if (!loading()) {
-    <div class="alp-notice alp-notice--warning" role="alert">
-      <i aria-hidden="true" class="alp-notice__icon fas fa-exclamation-triangle"></i>
-      <p class="alp-notice__text">
-        No dashboard reference is in context. Search for one first, then start this work plan.
-      </p>
-    </div>
+  }
+
+  @if (needsCategories()) {
+    <fieldset class="alp-plan-step__block">
+      <legend class="alp-plan-step__heading">What was updated?</legend>
+      <ul class="alp-choice-list">
+        @for (category of categories; track category.id) {
+          <li class="alp-choice-list__item">
+            <label class="alp-choice">
+              <input
+                class="alp-choice__input"
+                type="checkbox"
+                [checked]="isChosen(category.id)"
+                (change)="toggleCategory(category.id, $event)"
+              />
+              <span class="alp-choice__text">
+                <span class="alp-choice__label">{{ category.label }}</span>
+              </span>
+            </label>
+          </li>
+        }
+      </ul>
+
+      <!-- Other is the one category that cannot name itself, so it asks. -->
+      @if (otherChosen()) {
+        <div class="alp-plan-step__note-field">
+          <label class="alp-label" for="DashboardReferenceOther">What else was updated?</label>
+          <textarea
+            class="alp-textarea"
+            id="DashboardReferenceOther"
+            rows="4"
+            [attr.maxlength]="noteLimit"
+            [value]="note()"
+            (input)="writeNote($event)"
+          ></textarea>
+          <p class="char-count">{{ noteRemaining() }} of {{ noteLimit }} characters remaining</p>
+        </div>
+      }
+    </fieldset>
   }
 </div>

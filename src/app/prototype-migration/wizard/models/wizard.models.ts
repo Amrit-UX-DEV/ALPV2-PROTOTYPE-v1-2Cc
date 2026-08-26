@@ -46,8 +46,6 @@ export interface WizardStepNavigation {
   previousLabel?: string;
   finishLabel?: string;
   showReset?: boolean;
-  /** What is still outstanding, shown while `requires` is not satisfied. */
-  requiresHint?: string;
 }
 
 /**

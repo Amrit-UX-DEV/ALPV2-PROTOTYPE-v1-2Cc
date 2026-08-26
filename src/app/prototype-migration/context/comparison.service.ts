@@ -219,18 +219,6 @@ export class ComparisonService {
   readonly notHeld = computed(() => this.fields().filter((field) => field.verdict === 'not-held'));
 
   /**
-   * The fields a rep could have filled in on this call: everything the two
-   * platforms disagree on, and everything neither of them holds.
-   *
-   * What matched is left out. There is nothing to supply against a field both
-   * platforms already agree on, and offering it would turn a short list of real
-   * gaps into every field on the record.
-   */
-  readonly supplyableFields = computed(() =>
-    this.fields().filter((field) => field.verdict !== 'matched'),
-  );
-
-  /**
    * A date written the way the rest of the app writes one, e.g. 13 Nov 1966.
    *
    * Both platforms send dates as 1966-11-13, and a rep comparing this screen

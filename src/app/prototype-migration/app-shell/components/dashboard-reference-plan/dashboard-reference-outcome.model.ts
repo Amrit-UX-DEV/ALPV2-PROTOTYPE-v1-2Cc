@@ -1,24 +1,62 @@
 /** What the rep decided about the record behind a dashboard reference. */
 export type MatchDecision = 'matched' | 'not-matched';
 
+/** Whether the decision leaves anything to do. */
+export type DecisionActions = 'no-actions' | 'actions';
+
+/**
+ * A category of change, as the application classifies one.
+ *
+ * The comparison is field by field, because that is how the other platform
+ * sends it, but nothing downstream works at that grain: a given name, a surname
+ * and any of the five alternate surnames are all one thing, a change of name.
+ * So the plan records the categories rather than the fields, and there are four
+ * of them and an "other".
+ *
+ * Held here rather than in the comparison, because it is not a fact about the
+ * two records; it is how this business process classifies work. Held in one
+ * place rather than in the markup, so the confirmation and the form cannot come
+ * to name them differently.
+ */
+export interface ChangeCategory {
+  id: string;
+  label: string;
+}
+
+export const CHANGE_CATEGORIES: readonly ChangeCategory[] = [
+  { id: 'name', label: 'Change of name' },
+  { id: 'ni-number', label: 'Change of National Insurance number' },
+  { id: 'address', label: 'Change of address' },
+  { id: 'contact', label: 'Change of contact details' },
+  { id: 'other', label: 'Other' },
+];
+
+/** The category that has to be written out rather than ticked. */
+export const OTHER_CATEGORY = 'other';
+
+/** How much may be written against Other. */
+export const NOTE_LIMIT = 1000;
+
 /**
  * What the first step of the dashboard reference work plan records.
  *
- * It is the whole of what the plan saves, so the confirmation reads it back
- * from here rather than going to the context again: the rep should be shown
- * what was recorded, not what happens to be on screen afterwards.
+ * complete is the step's own verdict on itself, and it is what the wizard holds
+ * the Save button against. It is worked out here rather than in the shell
+ * because only the step knows what its answers imply: whether categories are
+ * needed at all depends on the answer before them, and whether a note is needed
+ * depends on one of the categories.
  */
 export interface DashboardReferenceOutcome {
   /** The reference the caller read out, e.g. PMR12345678910. */
   reference: string;
-  /** The pension it resolved to, which is a policy of ours. */
-  pensionReference: string;
-  /** The name on the other platform's record. */
-  record: string;
-  /** Nothing was supplied on the call, which is an answer in itself. */
-  noChanges: boolean;
-  /** The fields the rep supplied or corrected, by their names on the comparison. */
-  supplied: string[];
   /** Whether this record is the caller. Null until the rep says. */
   decision: MatchDecision | null;
+  /** Whether the decision leaves anything to do. Null until the rep says. */
+  actions: DecisionActions | null;
+  /** The categories of change, by id, where there are actions. */
+  categories: string[];
+  /** What was written against Other, empty unless Other is one of them. */
+  note: string;
+  /** Whether every answer the step needs has been given. */
+  complete: boolean;
 }

@@ -1,21 +1,45 @@
 /*
  * The two steps of the dashboard reference work plan share this, because they
- * are two halves of one thing: the second reads back what the first recorded,
- * and a fact written one way on the form and another on the confirmation would
- * look like a different fact.
+ * are two halves of one thing and a heading written one way on the form and
+ * another on the confirmation would look like a different screen.
  *
- * The blocks sit inside the wizard's own step body, which brings its border,
- * its background and its padding, so nothing here draws a card of its own.
+ * The blocks sit inside the wizard's own step body, which brings its border, its
+ * background and its padding, so nothing here draws a card of its own.
  *
- * Every pair is AA on the step body's near-white: headings are slate 900 at
- * 17.25:1, the sentence under one is slate 700 at 10.01:1, and the small labels
- * are muted at 4.94:1 there and 5.12:1 on the white panel the facts sit on.
+ * Every pair is AA on the step body's near-white: the reference and the headings
+ * are slate 900 at 17.25:1, the sentence under one is slate 700 at 10.01:1, and
+ * the small label above the reference is muted at 4.94:1.
  */
 .alp-plan-step {
   display: flex;
   flex-direction: column;
   gap: var(--alp-space-5);
   padding: var(--alp-space-2) var(--alp-space-2) var(--alp-space-4);
+}
+
+.alp-plan-step__head {
+  display: flex;
+  flex-direction: column;
+  gap: var(--alp-space-1);
+}
+
+.alp-plan-step__label {
+  margin: 0;
+  font-size: var(--alp-font-size-xs);
+  font-weight: var(--alp-font-weight-semibold);
+  color: var(--alp-color-text-muted);
+}
+
+/* The whole step is about this one reference, so it is the size of a thing being
+   worked on rather than the size of a caption. Set in the same near-black as the
+   headings under it and not as a link, since it goes nowhere from here. */
+.alp-plan-step__reference {
+  margin: 0;
+  font-size: var(--alp-font-size-2xl);
+  font-weight: var(--alp-font-weight-bold);
+  line-height: 1.2;
+  color: var(--alp-color-text);
+  overflow-wrap: anywhere;
 }
 
 /* A section or a fieldset, which is the same block either way: a fieldset
@@ -30,9 +54,9 @@
   border: 0;
 }
 
-/* h4 and legend both, so the three blocks read as three headings of one rank
-   whichever element the question needed. A legend also has to be told to stop
-   floating in the border it no longer has. */
+/* h4 and legend both, so the questions read as headings of one rank whichever
+   element each needed. A legend also has to be told to stop floating in the
+   border it no longer has. */
 .alp-plan-step__heading {
   float: none;
   width: auto;
@@ -51,53 +75,12 @@
   color: var(--alp-color-slate-700);
 }
 
-.alp-plan-step__note {
-  margin: 0;
-  font-size: var(--alp-font-size-sm);
-  color: var(--alp-color-text-muted);
-}
-
-/* The record the step is about, laid out as label over value in as many columns
-   as the width allows. auto-fit off this block's own width, so the dock opening
-   costs a column rather than breaking the layout. */
-.alp-plan-step__facts {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(13rem, 1fr));
-  gap: var(--alp-space-3) var(--alp-space-5);
-  margin: 0;
-  padding: var(--alp-space-3) var(--alp-space-4);
-  border: 1px solid var(--alp-color-border);
-  border-radius: var(--alp-radius-md);
-  background: var(--alp-color-surface);
-}
-
-.alp-plan-step__fact {
+/* The one thing that has to be written rather than ticked, and its count. Held
+   in a block of its own so the count sits with the box rather than at the
+   fieldset's own spacing. */
+.alp-plan-step__note-field {
   display: flex;
   flex-direction: column;
-  gap: 2px;
-  min-width: 0;
-}
-
-/* A list of field names is a sentence, not a value, so it takes the row rather
-   than a column of it. */
-.alp-plan-step__fact--wide {
-  grid-column: 1 / -1;
-}
-
-.alp-plan-step__fact dt {
-  font-size: var(--alp-font-size-xs);
-  color: var(--alp-color-text-muted);
-}
-
-.alp-plan-step__fact dd {
-  margin: 0;
-  font-size: var(--alp-font-size-sm);
-  color: var(--alp-color-text);
-  overflow-wrap: anywhere;
-}
-
-/* A tag standing in for a value is the whole of that value, so it drops the
-   margin it carries when it follows something. */
-.alp-plan-step__fact .alp-status-tag {
-  margin-top: 0;
+  gap: var(--alp-space-1);
+  margin-top: var(--alp-space-2);
 }

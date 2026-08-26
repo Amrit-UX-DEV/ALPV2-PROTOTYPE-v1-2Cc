@@ -5,25 +5,21 @@
   "steps": [
     {
       "id": "step-1",
-      "label": "Confirm and Record",
+      "label": "Decision",
       "componentId": "dashboard-reference-outcome",
       "output": "outcome",
       "inputs": {
         "initial": "step-1"
       },
-      "requires": ["decision"],
+      "requires": ["complete"],
       "navigation": {
-        "saveLabel": "Save and Continue",
-        "requiresHint": "Select Matched or Not Matched to save this work plan."
+        "saveLabel": "Save and Continue"
       }
     },
     {
       "id": "step-2",
       "label": "Confirmation",
       "componentId": "dashboard-reference-confirmation",
-      "inputs": {
-        "outcome": "step-1"
-      },
       "navigation": {
         "finishLabel": "Finish",
         "previousLabel": "Previous"

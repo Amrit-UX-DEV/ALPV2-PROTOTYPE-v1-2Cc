@@ -182,11 +182,34 @@ export class AlphaSearchSummaryComponent {
   });
 
   /**
-   * Which groups are open, kept per layout.
+   * How the groups stand before the rep has touched them.
    *
-   * Held here rather than left to the details elements, so one control can open
-   * and close all three and still agree with what is on screen: every group
-   * reports its own toggle back, including the ones the rep works by hand.
+   * What differs is open, because it is the work. What neither platform holds is
+   * closed, because there is none in it. What matched is closed while anything
+   * differs: a rep opening the screen is looking for what to do about it, and
+   * the twelve agreeing fields are what they would otherwise scroll past to
+   * find the two that need them.
+   *
+   * Where nothing differs, what matched is the whole comparison, so it opens: a
+   * screen that says every field agrees and shows none of them has hidden the
+   * only thing it has to say.
+   *
+   * A computed rather than a written-down state, because the comparison arrives
+   * after the screen does. The rule is read off the fields themselves, so it
+   * cannot fall out of step with them.
+   */
+  private readonly defaultOpen = computed<Record<ComparisonVerdict, boolean>>(() => ({
+    matched: this.differences().length === 0,
+    'not-matched': true,
+    'not-held': false,
+  }));
+
+  /**
+   * Which groups the rep has opened or closed by hand, kept per layout.
+   *
+   * Overrides rather than a full state, so a group nobody has touched follows
+   * the rule above however the fields turn out, and one that has been touched
+   * stays exactly where it was put.
    *
    * Two records rather than one, because opening a group means something
    * different in each. Closing what matched in the panels puts three lines of
@@ -194,25 +217,33 @@ export class AlphaSearchSummaryComponent {
    * has arranged one layout to read it has not asked for the other to be
    * arranged the same, and coming back to it changed is a small surprise nobody
    * needs.
-   *
-   * What matched and what differs are open on arrival. What neither platform
-   * holds sits last and closed: it is the group with nothing in it to work
-   * through, so it says its piece in its header and stays out of the way.
    */
-  private readonly groups = signal<Record<ComparisonView, Record<ComparisonVerdict, boolean>>>({
-    grouped: { matched: true, 'not-matched': true, 'not-held': false },
-    table: { matched: true, 'not-matched': true, 'not-held': false },
+  private readonly overrides = signal<
+    Record<ComparisonView, Partial<Record<ComparisonVerdict, boolean>>>
+  >({
+    grouped: {},
+    table: {},
   });
 
   /** The open groups of the layout on screen, which is the only one that can be read. */
-  protected readonly openGroups = computed(() => this.groups()[this.currentView()]);
+  protected readonly openGroups = computed<Record<ComparisonVerdict, boolean>>(() => {
+    const fallback = this.defaultOpen();
+    const chosen = this.overrides()[this.currentView()];
+    return {
+      matched: chosen.matched ?? fallback.matched,
+      'not-matched': chosen['not-matched'] ?? fallback['not-matched'],
+      'not-held': chosen['not-held'] ?? fallback['not-held'],
+    };
+  });
 
   /**
-   * Whether anything is open, which is what the one control works from: with a
-   * group open there is something to collapse, and with all of them closed the
-   * only useful thing it can do is open them.
+   * Whether every group is open, which is what the one control works from.
+   *
+   * All of them open and the only thing left to do is close them; anything
+   * closed and the useful action is to open everything. So on arrival, with what
+   * matched put away, the control offers to expand.
    */
-  protected readonly anyOpen = computed(() => Object.values(this.openGroups()).some(Boolean));
+  protected readonly allOpen = computed(() => Object.values(this.openGroups()).every(Boolean));
 
   /**
    * What the control says, which is what it will do and what it will do it to.
@@ -222,7 +253,7 @@ export class AlphaSearchSummaryComponent {
    * button is now talking about the panels, or pressing it looks broken.
    */
   protected readonly groupToggleLabel = computed(() => {
-    const action = this.anyOpen() ? 'Collapse' : 'Expand';
+    const action = this.allOpen() ? 'Collapse' : 'Expand';
     const layout = this.currentView() === 'table' ? 'table' : 'grid';
     return `${action} all ${layout} groups`;
   });
@@ -261,15 +292,15 @@ export class AlphaSearchSummaryComponent {
   /**
    * Opens or closes every group at once, overriding wherever they were left.
    *
-   * One control with one meaning at any moment: anything open and it closes
-   * everything, nothing open and it opens everything. Mixed states resolve the
-   * same way, so the rep never has to press it twice to see what it does.
+   * One control with one meaning at any moment: everything open and it closes
+   * everything, anything closed and it opens everything. Mixed states resolve
+   * the same way, so the rep never has to press it twice to see what it does.
    */
   protected toggleAllGroups(): void {
-    const open = !this.anyOpen();
+    const open = !this.allOpen();
     const view = this.currentView();
-    this.groups.update((groups) => ({
-      ...groups,
+    this.overrides.update((all) => ({
+      ...all,
       [view]: { matched: open, 'not-matched': open, 'not-held': open },
     }));
   }
@@ -277,9 +308,9 @@ export class AlphaSearchSummaryComponent {
   /** One group of the layout showing, leaving the other layout as the rep left it. */
   private setGroup(group: ComparisonVerdict, open: boolean): void {
     const view = this.currentView();
-    this.groups.update((groups) => ({
-      ...groups,
-      [view]: { ...groups[view], [group]: open },
+    this.overrides.update((all) => ({
+      ...all,
+      [view]: { ...all[view], [group]: open },
     }));
   }
 

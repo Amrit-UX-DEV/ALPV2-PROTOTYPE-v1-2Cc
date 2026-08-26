@@ -10,30 +10,34 @@ import {
   signal,
 } from '@angular/core';
 
-import { ComparisonService } from '../../../context/comparison.service';
-import { PossibleMatchService } from '../../../context/possible-match.service';
 import { PrototypeContextService } from '../../../context/prototype-context.service';
-import { DashboardReferenceOutcome, MatchDecision } from './dashboard-reference-outcome.model';
+import {
+  CHANGE_CATEGORIES,
+  DashboardReferenceOutcome,
+  DecisionActions,
+  MatchDecision,
+  NOTE_LIMIT,
+  OTHER_CATEGORY,
+} from './dashboard-reference-outcome.model';
 
 /**
- * Step one of the dashboard reference work plan: confirm, record, decide.
+ * Step one of the dashboard reference work plan: the decision, and what it
+ * leaves to do.
  *
- * Three things in the order the call happens in. The reference and the policy
- * it resolved to are shown first, because everything after them is about that
- * record and a rep who has been through several calls needs to see which one
- * this is. Then what was supplied, since that is what the call was for. Then
- * the decision, which is the thing the plan exists to capture and the only
- * answer the step insists on.
+ * One question at a time, and the next one only once the last has an answer.
+ * The whole step is about a single judgement, so the reference it is about is
+ * the heading and nothing else about the policy is repeated here: the rep has
+ * just come off the comparison, and a second summary of it is a screen to read
+ * rather than a question to answer.
  *
- * What can be supplied is the comparison's own list of fields, not a list
- * written out here: the same service the dashboard reference summary reads,
- * filtered to what the two platforms disagree on and what neither of them
- * holds. A field they already agree on has nothing to supply against it, so it
- * is not offered.
+ * Changes are recorded by category, not by field. The comparison is field by
+ * field because that is how the other platform sends it, but a name is a name:
+ * a given name, a surname and five alternate surnames are one change of name to
+ * everything downstream of this.
  *
- * The step reports itself on every change rather than when the rep presses
- * Save, so the wizard can see whether it has been given a decision and hold the
- * button until it has.
+ * The step reports itself on every change, including whether it has everything
+ * it needs, so the wizard can hold its Save button without knowing what any of
+ * these answers mean.
  */
 @Component({
   selector: 'dashboard-reference-outcome',
@@ -44,8 +48,6 @@ import { DashboardReferenceOutcome, MatchDecision } from './dashboard-reference-
 })
 export class DashboardReferenceOutcomeComponent {
   private readonly ctx = inject(PrototypeContextService);
-  private readonly matches = inject(PossibleMatchService);
-  private readonly comparison = inject(ComparisonService);
 
   /**
    * What this step recorded last time it was on screen.
@@ -60,46 +62,50 @@ export class DashboardReferenceOutcomeComponent {
   /** Everything recorded so far, reported on every change. */
   @Output() readonly outcome = new EventEmitter<DashboardReferenceOutcome>();
 
-  /* ── What the rep is deciding about ──────────────────────────── */
-
-  protected readonly record = this.matches.record;
-  protected readonly loading = this.matches.loading;
-  protected readonly detail = this.matches.detail;
-  protected readonly policy = this.ctx.policy;
+  /** The reference the whole step is about, which is its heading. */
   protected readonly reference = this.ctx.reference;
 
-  /** The name on the other platform's record, which is who the caller says they are. */
-  protected readonly recordName = computed(() => {
-    const them = this.record();
-    if (!them) return '';
-    return `${them.givenName} ${them.surName}`.replace(/\s+/g, ' ').trim();
-  });
+  protected readonly categories = CHANGE_CATEGORIES;
+  protected readonly noteLimit = NOTE_LIMIT;
 
-  protected readonly validUntil = computed(() =>
-    this.comparison.asDate(this.detail()?.pensionValidUntill),
+  /* ── What the rep has answered ───────────────────────────────── */
+
+  private readonly matchDecision = signal<MatchDecision | null>(null);
+  private readonly decisionActions = signal<DecisionActions | null>(null);
+  private readonly chosenCategories = signal<string[]>([]);
+  private readonly otherNote = signal('');
+
+  protected readonly decision = this.matchDecision.asReadonly();
+  protected readonly actions = this.decisionActions.asReadonly();
+  protected readonly note = this.otherNote.asReadonly();
+
+  /** Whether the categories are being asked for, which is the only reveal here. */
+  protected readonly needsCategories = computed(() => this.decisionActions() === 'actions');
+
+  protected readonly otherChosen = computed(() =>
+    this.chosenCategories().includes(OTHER_CATEGORY),
   );
 
-  /** Everything the two platforms disagree on, and everything neither holds. */
-  protected readonly options = this.comparison.supplyableFields;
+  /** What is left of the thousand, counted down as it is typed. */
+  protected readonly noteRemaining = computed(() => NOTE_LIMIT - this.otherNote().length);
 
   /**
-   * Why a field is on the list, said in as few words as the line allows. A rep
-   * ticking Postcode should be able to see whether they were correcting one or
-   * supplying the first one either platform has.
+   * Whether the step has been given everything it asks for.
+   *
+   * A decision, then what it leaves to do, then a category if there is anything
+   * to do, then something written down if one of those categories is the one
+   * that does not name itself.
    */
-  protected readonly supplyReasons: Record<string, string> = {
-    'not-matched': 'Records differ',
-    'not-held': 'Neither platform holds this',
-  };
+  private readonly complete = computed(() => {
+    if (this.matchDecision() === null) return false;
 
-  /* ── What the rep has recorded ───────────────────────────────── */
+    const actions = this.decisionActions();
+    if (actions === null) return false;
+    if (actions === 'no-actions') return true;
 
-  private readonly suppliedFields = signal<string[]>([]);
-  private readonly nothingSupplied = signal(false);
-  private readonly matchDecision = signal<MatchDecision | null>(null);
-
-  protected readonly noChanges = this.nothingSupplied.asReadonly();
-  protected readonly decision = this.matchDecision.asReadonly();
+    if (this.chosenCategories().length === 0) return false;
+    return !this.otherChosen() || this.otherNote().trim().length > 0;
+  });
 
   constructor() {
     // Restored once, from whatever the wizard held: after that the rep's own
@@ -109,53 +115,59 @@ export class DashboardReferenceOutcomeComponent {
       const previous = this.initial();
       if (restored || !previous) return;
       restored = true;
-      this.suppliedFields.set(previous.supplied);
-      this.nothingSupplied.set(previous.noChanges);
       this.matchDecision.set(previous.decision);
+      this.decisionActions.set(previous.actions);
+      this.chosenCategories.set(previous.categories);
+      this.otherNote.set(previous.note);
     });
   }
 
-  protected isSupplied(label: string): boolean {
-    return this.suppliedFields().includes(label);
+  protected isChosen(id: string): boolean {
+    return this.chosenCategories().includes(id);
+  }
+
+  protected chooseDecision(decision: MatchDecision): void {
+    this.matchDecision.set(decision);
+    this.report();
   }
 
   /**
-   * One field ticked or unticked.
-   *
-   * Ticking a field is saying something was supplied, so it clears an earlier
-   * claim that nothing was: the two cannot both be true, and leaving the rep to
-   * notice that themselves is how a contradiction gets saved.
+   * Nothing to do clears what was ticked, since the categories are no longer
+   * being asked about and a list held behind an answer that hides it is a list
+   * that gets saved by accident.
    */
-  protected toggleField(label: string, event: Event): void {
+  protected chooseActions(actions: DecisionActions): void {
+    this.decisionActions.set(actions);
+    if (actions === 'no-actions') {
+      this.chosenCategories.set([]);
+      this.otherNote.set('');
+    }
+    this.report();
+  }
+
+  protected toggleCategory(id: string, event: Event): void {
     const checked = (event.target as HTMLInputElement).checked;
-    this.suppliedFields.update((fields) =>
-      checked ? [...fields, label] : fields.filter((field) => field !== label),
+    this.chosenCategories.update((chosen) =>
+      checked ? [...chosen, id] : chosen.filter((entry) => entry !== id),
     );
-    if (checked) this.nothingSupplied.set(false);
+    // Unticking Other takes what was written with it, for the same reason.
+    if (id === OTHER_CATEGORY && !checked) this.otherNote.set('');
     this.report();
   }
 
-  /** Nothing was supplied, which clears anything ticked to say otherwise. */
-  protected toggleNoChanges(event: Event): void {
-    const checked = (event.target as HTMLInputElement).checked;
-    this.nothingSupplied.set(checked);
-    if (checked) this.suppliedFields.set([]);
-    this.report();
-  }
-
-  protected choose(decision: MatchDecision): void {
-    this.matchDecision.set(decision);
+  protected writeNote(event: Event): void {
+    this.otherNote.set((event.target as HTMLTextAreaElement).value.slice(0, NOTE_LIMIT));
     this.report();
   }
 
   private report(): void {
     this.outcome.emit({
       reference: this.reference(),
-      pensionReference: this.detail()?.pensionReference ?? '',
-      record: this.recordName(),
-      noChanges: this.nothingSupplied(),
-      supplied: this.suppliedFields(),
       decision: this.matchDecision(),
+      actions: this.decisionActions(),
+      categories: this.chosenCategories(),
+      note: this.otherNote(),
+      complete: this.complete(),
     });
   }
 }

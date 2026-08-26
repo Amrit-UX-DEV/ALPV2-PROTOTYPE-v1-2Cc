@@ -10,9 +10,8 @@
    the control's own, and the tile follows it with :has(), so what is
    drawn cannot disagree with what the form holds.
 
-   Every pair is AA. The label is slate 900 at 17.85:1 on white and
-   15.97:1 on the brand 50 a chosen one takes; the hint under it is
-   muted at 5.12:1 and 4.57:1 on the same two.
+   The label is slate 900, which is 17.85:1 on the white a choice
+   stands on and 15.97:1 on the brand 50 a chosen one takes.
    ========================================================= */
 
 .alp-choice-list {
@@ -33,12 +32,6 @@
 .alp-choice-list__item {
   display: flex;
   min-width: 0;
-}
-
-/* Across every column: an answer to the whole question rather than one of the
-   things being answered about. */
-.alp-choice-list__item--wide {
-  grid-column: 1 / -1;
 }
 
 .alp-choice {
@@ -76,11 +69,6 @@
   outline-offset: 2px;
 }
 
-.alp-choice:has(.alp-choice__input:disabled) {
-  opacity: 0.55;
-  cursor: not-allowed;
-}
-
 /* Level with the first line of the label, whatever that line's height, and left
    at the size the browser draws it so it is still recognisably a tick box. */
 .alp-choice__input {
@@ -102,10 +90,4 @@
   font-size: var(--alp-font-size-sm);
   font-weight: var(--alp-font-weight-semibold);
   color: var(--alp-color-text);
-}
-
-.alp-choice__hint {
-  font-size: var(--alp-font-size-xs);
-  line-height: 1.35;
-  color: var(--alp-color-text-muted);
 }

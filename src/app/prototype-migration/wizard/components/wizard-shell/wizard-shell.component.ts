@@ -76,8 +76,11 @@ export class WizardShellComponent implements OnInit {
    * step component: the shell holds no reference to it, and a step that reports
    * what it has is a step whose progress the rail and the buttons can both see.
    *
-   * An empty array counts as nothing, so a list of what was supplied with
-   * nothing ticked does not pass for an answer.
+   * An empty array counts as nothing, so a list with nothing ticked does not
+   * pass for an answer, and false counts as nothing too, so a step can report
+   * its own verdict on itself as a flag and have that flag be what holds the
+   * button. Only the step can work that verdict out: which of its answers are
+   * needed at all can depend on the answers before them.
    */
   readonly canAdvance = computed(() => {
     const step = this.currentStep();
@@ -90,6 +93,7 @@ export class WizardShellComponent implements OnInit {
     return required.every((name) => {
       const value = data[name];
       if (Array.isArray(value)) return value.length > 0;
+      if (typeof value === 'boolean') return value;
       return value !== undefined && value !== null && value !== '';
     });
   });
