@@ -10,38 +10,35 @@
  * are slate 900 at 17.25:1, the sentence under one is slate 700 at 10.01:1, and
  * the small label above the reference is muted at 4.94:1.
  */
+/*
+ * The step is the container that holds the measure. A question and its answers
+ * belong to the same column, and that column is capped rather than taking
+ * whatever the dock happens to be: options stretched across a wide panel send
+ * the reading eye back to the left margin once per option. It shrinks freely,
+ * so a narrow dock just gets a narrower column.
+ */
 .alp-plan-step {
   display: flex;
   flex-direction: column;
-  gap: var(--alp-space-8);
+  gap: var(--alp-space-10);
+  width: 100%;
+  max-width: 720px;
   padding: var(--alp-space-2) var(--alp-space-2) var(--alp-space-4);
 }
 
 /*
- * This is a header of a step, not the header of the application, and the legacy
- * stack does not distinguish them: 13-desktop-layout-structure.css:21 styles the
- * bare element with the branding fill, the app header's fixed height, a
- * 200ms transition on everything and flex column, and three more files
- * (01-bootstrap-v4-0-0-alpha6.css:20, 04-html-resets.css:41 and :112,
- * css-stack/bootstrap-flex.css:25) reset its display and box.
- *
- * None of that is edited, since the app header still needs it. Every
- * declaration that reaches this one is answered here instead, so the block is
- * longer than it looks like it needs to be on purpose. One thing it cannot
- * answer is 21-alpha-header-items.css:171, which hides any checkbox inside a
- * header outright: the questions are in fieldsets below this element rather
- * than in it, and they have to stay there.
+ * The reference and the sentence under it. This must stay a div: the legacy
+ * stack styles the header element itself, in five places and in four files, and
+ * a step header that has to out-declare all of them to look like text is a
+ * block of overrides waiting to fall behind. 13-desktop-layout-structure.css:21
+ * is the worst of them, giving every header the branding fill and the app
+ * header's own fixed height; 21-alpha-header-items.css:171 goes further and
+ * hides any checkbox inside one.
  */
 .alp-plan-step__head {
   display: flex;
   flex-direction: column;
   gap: var(--alp-space-1);
-  height: auto;
-  min-height: 0;
-  padding: 0;
-  border: 0;
-  background-color: transparent;
-  transition: none;
 }
 
 .alp-plan-step__label {
@@ -66,11 +63,12 @@
 /* A section or a fieldset, which is the same block either way: a fieldset
    carries a browser border and padding of its own, and both come off.
    The gap is what separates a question from its answers, and it is wide
-   because a legend sitting on top of a tile reads as part of the tile. */
+   because a legend close to a tile reads as part of the tile rather than as
+   the thing being asked. */
 .alp-plan-step__block {
   display: flex;
   flex-direction: column;
-  gap: var(--alp-space-6);
+  gap: var(--alp-space-8);
   min-width: 0;
   margin: 0;
   padding: 0;
@@ -106,5 +104,4 @@
   display: flex;
   flex-direction: column;
   gap: var(--alp-space-1);
-  max-width: 52ch;
 }

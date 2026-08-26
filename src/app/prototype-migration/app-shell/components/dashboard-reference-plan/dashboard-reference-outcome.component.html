@@ -1,14 +1,19 @@
 <div class="alp-plan-step">
   <!-- The reference the whole step is about, and one sentence saying what is
        being decided about it. Nothing else of the policy is repeated: the rep
-       has just come off the comparison. -->
-  <header class="alp-plan-step__head">
+       has just come off the comparison.
+
+       A div and not a header element: the legacy stack styles that element
+       itself, and beating it from here means keeping a list of overrides in
+       step with four files nobody is maintaining. The heading below carries the
+       structure, so the element was only ever a label for it. -->
+  <div class="alp-plan-step__head">
     <p class="alp-plan-step__label">Dashboard Reference</p>
     <h4 class="alp-plan-step__reference">{{ reference() }}</h4>
     <p class="alp-plan-step__lead">
       Decide whether this dashboard reference belongs to the policy holder on our records.
     </p>
-  </header>
+  </div>
 
   <fieldset class="alp-plan-step__block">
     <legend class="alp-plan-step__heading">Was this a match?</legend>

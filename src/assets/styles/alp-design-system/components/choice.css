@@ -6,22 +6,25 @@
    which of two outcomes happened, what a decision changed.
 
    The form factor is the call script journey's, because a rep answers
-   questions there all day and these are the same act: a tile of the
-   same height, the same 16/20 padding, the same two-pixel edge, the
-   same twelve between the control and its words and the same fourteen
-   between one option and the next. Only the names are generic, so any
-   screen can ask a question without owning a set of controls. The
-   journey's own rules stay where they are; this does not reuse them.
+   questions there all day and these are the same act. Measured off
+   journey.css:160 and matched: 16 top and bottom and 20 either side,
+   a two-pixel edge, 10 of radius, 12 between the control and its
+   words, 14 between one option and the next, and a 17px label on the
+   inherited 1.2, which puts both tiles at the same 56px. Only the
+   names are generic, so any screen can ask a question without owning a
+   set of controls, and the journey's own rules stay where they are:
+   nothing here reuses them.
 
    The label wraps the control, so the whole tile is the target and
    nothing depends on matching an id to a for attribute. The state is
    the control's own, and the tile follows it with :has(), so what is
    drawn cannot disagree with what the form holds.
 
-   The list is capped on a character measure rather than filling
-   whatever it is dropped into. Options that run the width of a dock
-   put the reading eye back at the left margin for every one of them,
-   which is the slowest way to compare a short list.
+   The list fills the column it is given and does not carry a measure
+   of its own. Options that run the width of a dock are hard to compare,
+   but the width that fixes that belongs to the screen asking the
+   question, next to its heading and its prose, rather than to a control
+   that cannot see either.
 
    The label is slate 900, which is 17.85:1 on the white a choice
    stands on and 15.97:1 on the brand 50 a chosen one takes. Brand 600
@@ -35,15 +38,9 @@
    ========================================================= */
 
 .alp-choice-list {
-  /* Roughly the longest of these labels and no more: about fifty
-     characters, which a consuming screen can reset if it asks something
-     longer. */
-  --alp-choice-measure: 52ch;
-
   display: flex;
   flex-direction: column;
   gap: 14px;
-  max-width: var(--alp-choice-measure);
   margin: 0;
   padding: 0;
   list-style: none;
@@ -90,13 +87,13 @@
   outline-offset: 2px;
 }
 
-/* Level with the first line of the label, whatever that line's height, and left
-   at the size the browser draws it so it is still recognisably a tick box. */
+/* Level with the first line of the label, and left at the size the browser
+   draws it so it is still recognisably a tick box. */
 .alp-choice__input {
   flex: 0 0 auto;
   width: 16px;
   height: 16px;
-  margin: 3px 0 0;
+  margin: 2px 0 0;
   accent-color: var(--alp-color-brand);
 }
 
@@ -105,11 +102,12 @@
   min-width: 0;
 }
 
-/* Seventeen, as on the journey: these are the question's answers rather than
-   body copy, and they are read at a glance from a few feet back. */
+/* Seventeen on the 1.2 everything here inherits, which is the journey's own
+   line box: these are a question's answers rather than body copy, and they are
+   read at a glance from a few feet back. */
 .alp-choice__label {
   font-size: 17px;
   font-weight: var(--alp-font-weight-semibold);
-  line-height: 1.35;
+  line-height: 1.2;
   color: var(--alp-color-text);
 }
