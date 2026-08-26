@@ -22,8 +22,9 @@
          LEFT RAIL: icon rail plus the slide-out search panel.
          The panel is hidden by
            .alpha-explorer-toolbar .ui-action-menu-extended { display: none }
-         and revealed when jQuery adds .extended to this element. Keep the
-         panel nested inside this div or it renders open by default.
+         and revealed by .extended on this element, which the toolbar
+         component puts there. Keep the panel nested inside this div or it
+         renders open by default.
          ============================================================ -->
                 <div class="alpha-explorer-toolbar ux-toolbar-example pinned01" alpha-explorer-toolbar
          [currentView]="views.view()" (viewChange)="switchView($event)"></div>

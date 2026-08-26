@@ -15,7 +15,7 @@
   }
   @if (rail.search()) {
   <div class="ui-menu-action-block search ui-menu-action-block--divider">
-    <button class="ui-menu-action tier-0" alpha-ui-event="click" alpha-ui-attr-toggle=".ux-toolbar-example ,extended">
+    <button class="ui-menu-action tier-0" type="button" aria-controls="ExplorerSearchPanel" [attr.aria-expanded]="panelOpen()" (click)="togglePanel()">
     <span class="details"><i class="fa fa-search" aria-hidden="true"></i> </span>
     <span class="tooltip">Search ALPHA</span> </button>
   </div>
@@ -69,7 +69,7 @@
 
 </div>
 <!-- ===== Slide-out search panel: toggled by the rail's search button ===== -->
-<div class="ui-action-menu-extended">
+<div class="ui-action-menu-extended" id="ExplorerSearchPanel">
   <div class="header-block">
     <span class="app-toolbar--heading">
     <!-- The app icon this heading carried, alpha-icon-72.png, is not in the

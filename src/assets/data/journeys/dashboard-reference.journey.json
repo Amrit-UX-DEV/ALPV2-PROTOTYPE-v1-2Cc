@@ -8,7 +8,7 @@
       "title": "Open the search panel",
       "action": "Press Search ALPHA on the left rail.",
       "result": "The panel slides out beside the rail with Search Criteria on Policy, which is what most calls start from.",
-      "target": ".ui-action-rail button[alpha-ui-attr-toggle]",
+      "target": ".ui-action-rail button[aria-controls='ExplorerSearchPanel']",
       "capture": ".alpha-explorer-toolbar",
       "notes": "The rail only draws the buttons this build offers and that lead somewhere. With nothing searched, Group Summary and Business Processes are not there yet."
     },

@@ -1,4 +1,4 @@
-import { Component, Input, Output, EventEmitter, inject, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
+import { Component, Input, Output, EventEmitter, inject, signal, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 
 import { AppView } from '../../../ui/app-view.service';
 import { ContextSearchService } from '../../../context/context-search.service';
@@ -15,9 +15,16 @@ export type { AppView } from '../../../ui/app-view.service';
  * <div class="alpha-explorer-toolbar ux-toolbar-example pinned01">. That div is
  * a flex item of main > .alpha-layout-row-2, and the search panel is hidden by
  * `.alpha-explorer-toolbar .ui-action-menu-extended { display: none }` and
- * revealed when jQuery adds .extended to the host. An element selector would
- * insert a node between the two and the panel would render open by default,
- * which is how it broke once before.
+ * revealed by .extended on the host. An element selector would insert a node
+ * between the two and the panel would render open by default, which is how it
+ * broke once before.
+ *
+ * That class is put there from here. It used to be jQuery's job, through an
+ * alpha-ui-attr-toggle attribute on the button, and the library that read it is
+ * no longer loaded: the attribute stayed, the behaviour went, and the button
+ * has been doing nothing since. The state is a signal on the component because
+ * that is where it belongs anyway, and the host binding puts the class on the
+ * one element the stylesheet is looking for.
  *
  * Two rail buttons switch the main view. The shell owns currentView because
  * three places depend on it: these buttons set it, these buttons also render
@@ -40,6 +47,7 @@ export type { AppView } from '../../../ui/app-view.service';
   standalone: true,
   templateUrl: './explorer-toolbar.component.html',
   styleUrl: './explorer-toolbar.component.css',
+  host: { '[class.extended]': 'panelOpen()' },
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
 })
 export class ExplorerToolbarComponent {
@@ -54,8 +62,15 @@ export class ExplorerToolbarComponent {
   @Input() currentView: AppView = 'group-summary';
   @Output() viewChange = new EventEmitter<AppView>();
 
+  /** Whether the slide-out search panel is showing. */
+  protected readonly panelOpen = signal(false);
+
   switchView(view: AppView) {
     this.viewChange.emit(view);
+  }
+
+  protected togglePanel(): void {
+    this.panelOpen.update((open) => !open);
   }
 
   /**
