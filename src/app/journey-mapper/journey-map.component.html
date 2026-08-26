@@ -1,29 +1,13 @@
 <div class="jm-map">
 
-  <!-- The journey as a whole: what path this is, and every step of it. A
-       reviewer asked about step nine has to be able to get to step nine. -->
-  <aside class="jm-map__contents">
-    <p class="jm-map__eyebrow">Journey</p>
-    <h1 class="jm-map__title">{{ name() }}</h1>
-    @if (summary()) {
-      <p class="jm-map__summary">{{ summary() }}</p>
-    }
-
-    <ol class="jm-map__steps">
-      @for (step of journeys.steps(); track step.id; let i = $index) {
-        <li>
-          <button
-            type="button"
-            class="jm-step-link"
-            [class.jm-step-link--current]="i === journeys.stepIndex()"
-            [attr.aria-current]="i === journeys.stepIndex() ? 'step' : null"
-            (click)="journeys.goTo(i)">
-            <span class="jm-step-link__number">{{ i + 1 }}</span>
-            <span class="jm-step-link__title">{{ step.title }}</span>
-          </button>
-        </li>
+  <header class="jm-map__head">
+    <div class="jm-map__heading">
+      <p class="jm-map__eyebrow">Journey</p>
+      <h1 class="jm-map__title">{{ name() }}</h1>
+      @if (summary()) {
+        <p class="jm-map__summary">{{ summary() }}</p>
       }
-    </ol>
+    </div>
 
     <!-- Frames are photographs of a running app, so they age the moment the app
          changes. Saying when they were taken, and offering to take them again,
@@ -33,75 +17,11 @@
         <p class="jm-map__captured">Frames captured {{ capturedAt() }}</p>
       }
       <button type="button" class="alp-btn alp-btn--sm alp-btn--secondary" (click)="capture.recapture()">
-        <i aria-hidden="true" class="fas fa-rotate-right"></i>
+        <i aria-hidden="true" class="fas fa-redo"></i>
         Capture again
       </button>
     </div>
-  </aside>
-
-  <!-- One frame, which is the step the journey is on. -->
-  @if (journeys.step(); as step) {
-    <article class="jm-frame">
-
-      <div class="jm-frame__head">
-        <p class="jm-frame__count">Step {{ journeys.stepNumber() }} of {{ journeys.stepCount() }}</p>
-        <h2 class="jm-frame__title">{{ step.title }}</h2>
-      </div>
-
-      <!-- The picture: the markup the prototype itself rendered at this point in
-           the journey, drawn by the same stylesheets and doing nothing. -->
-      <div class="jm-frame__stage">
-        @if (capture.frame(step.id); as frame) {
-          <journey-clone
-            [html]="frame.html"
-            [width]="frame.width"
-            [height]="frame.height"
-            [target]="step.target"
-          ></journey-clone>
-        } @else if (capture.status() === 'capturing') {
-          <p class="jm-frame__no-clone">Capturing.</p>
-        } @else {
-          <p class="jm-frame__no-clone">
-            No frame for this step. Nothing on the screen matched what it asked to
-            photograph, which usually means the step before it did not land.
-          </p>
-        }
-      </div>
-
-      <dl class="jm-frame__detail">
-        <div class="jm-frame__pair">
-          <dt>Action</dt>
-          <dd>{{ step.action }}</dd>
-        </div>
-        <div class="jm-frame__pair">
-          <dt>Result</dt>
-          <dd>{{ step.result }}</dd>
-        </div>
-        @if (step.notes) {
-          <div class="jm-frame__pair">
-            <dt>Notes</dt>
-            <dd>{{ step.notes }}</dd>
-          </div>
-        }
-        @if (step.target) {
-          <div class="jm-frame__pair">
-            <dt>Target</dt>
-            <dd><code class="jm-frame__target">{{ step.target }}</code></dd>
-          </div>
-        }
-      </dl>
-
-    </article>
-  } @else {
-    <article class="jm-frame jm-frame--empty">
-      <div class="alp-notice alp-notice--info">
-        <i aria-hidden="true" class="alp-notice__icon fas fa-info-circle"></i>
-        <p class="alp-notice__text">
-          No journey is loaded. Check assets/data/journeys/index.json and the file it points at.
-        </p>
-      </div>
-    </article>
-  }
+  </header>
 
   <!-- Where the pass could not do what a step asked, it is said here rather than
        left in the console: a frame that is missing or wrong has a reason, and
@@ -122,4 +42,139 @@
     </div>
   }
 
+  <!-- The path itself: every step in order, scrolling left to right. The list
+       is the contents as well as the pictures, so there is one place to click
+       and one place that says where the journey has got to. -->
+  @if (journeys.steps().length) {
+    <ol class="jm-timeline">
+      @for (step of journeys.steps(); track step.id; let i = $index) {
+        <li class="jm-timeline__step">
+          <button
+            #thumb
+            type="button"
+            class="jm-thumb"
+            [class.jm-thumb--current]="i === journeys.stepIndex()"
+            [attr.aria-current]="i === journeys.stepIndex() ? 'step' : null"
+            (click)="enlarge(i)">
+
+            <!-- A frame is the whole app, which is thousands of elements. Fifteen
+                 of them drawn at once would cost more than the strip is worth,
+                 so each one waits until it is scrolled to. -->
+            <span class="jm-thumb__stage">
+              @if (capture.frame(step.id); as frame) {
+                @defer (on viewport) {
+                  <journey-clone
+                    [html]="frame.html"
+                    [width]="frame.width"
+                    [height]="frame.height"
+                    [focus]="frame.focus"
+                  ></journey-clone>
+                } @placeholder {
+                  <span class="jm-thumb__no-clone">Frame {{ i + 1 }}</span>
+                }
+              } @else if (capture.status() === 'capturing') {
+                <span class="jm-thumb__no-clone">Capturing.</span>
+              } @else {
+                <span class="jm-thumb__no-clone">No frame</span>
+              }
+            </span>
+
+            <span class="jm-thumb__caption">
+              <span class="jm-thumb__number">{{ i + 1 }}</span>
+              <span class="jm-thumb__title">{{ step.title }}</span>
+            </span>
+          </button>
+        </li>
+      }
+    </ol>
+  } @else {
+    <div class="jm-map__empty">
+      <div class="alp-notice alp-notice--info">
+        <i aria-hidden="true" class="alp-notice__icon fas fa-info-circle"></i>
+        <p class="alp-notice__text">
+          No journey is loaded. Check assets/data/journeys/index.json and the file it points at.
+        </p>
+      </div>
+    </div>
+  }
+
 </div>
+
+<!-- One step, big enough to read. It is the step the journey is on, so closing
+     it leaves the strip where the reviewer expects to come back to. -->
+@if (enlarged() && journeys.step(); as step) {
+  <div class="jm-viewer" role="dialog" aria-modal="true" aria-labelledby="JourneyViewerTitle">
+    <div class="jm-viewer__panel">
+
+      <header class="jm-viewer__head">
+        <div>
+          <p class="jm-viewer__count">Step {{ journeys.stepNumber() }} of {{ journeys.stepCount() }}</p>
+          <h2 class="jm-viewer__title" id="JourneyViewerTitle">{{ step.title }}</h2>
+        </div>
+
+        <div class="alp-action-row">
+          <button
+            type="button"
+            class="alp-btn alp-btn--sm alp-btn--secondary"
+            [disabled]="!journeys.hasPrevious()"
+            (click)="journeys.previous()">
+            <i aria-hidden="true" class="fas fa-chevron-left"></i>
+            Previous
+          </button>
+          <button
+            type="button"
+            class="alp-btn alp-btn--sm alp-btn--secondary"
+            [disabled]="!journeys.hasNext()"
+            (click)="journeys.next()">
+            Next
+            <i aria-hidden="true" class="fas fa-chevron-right"></i>
+          </button>
+          <button type="button" class="alp-btn alp-btn--sm alp-btn--primary" (click)="shrink()">
+            <i aria-hidden="true" class="fas fa-times"></i>
+            Back to the timeline
+          </button>
+        </div>
+      </header>
+
+      <div class="jm-viewer__stage">
+        @if (capture.frame(step.id); as frame) {
+          <journey-clone
+            [html]="frame.html"
+            [width]="frame.width"
+            [height]="frame.height"
+            [focus]="frame.focus"
+          ></journey-clone>
+        } @else {
+          <p class="jm-viewer__no-clone">
+            No frame for this step. The pass could not reach it, which usually
+            means the step before it did not land.
+          </p>
+        }
+      </div>
+
+      <dl class="jm-viewer__detail">
+        <div class="jm-viewer__pair">
+          <dt>Action</dt>
+          <dd>{{ step.action }}</dd>
+        </div>
+        <div class="jm-viewer__pair">
+          <dt>Result</dt>
+          <dd>{{ step.result }}</dd>
+        </div>
+        @if (step.notes) {
+          <div class="jm-viewer__pair">
+            <dt>Notes</dt>
+            <dd>{{ step.notes }}</dd>
+          </div>
+        }
+        @if (step.target) {
+          <div class="jm-viewer__pair">
+            <dt>Target</dt>
+            <dd><code class="jm-viewer__target">{{ step.target }}</code></dd>
+          </div>
+        }
+      </dl>
+
+    </div>
+  </div>
+}

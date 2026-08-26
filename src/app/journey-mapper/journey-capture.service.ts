@@ -1,9 +1,12 @@
 import { Injectable, computed, signal } from '@angular/core';
 
-import { Journey, JourneyAction, JourneyFrame, JourneyLook, JourneyStep } from './journey.model';
+import { Journey, JourneyAction, JourneyFocus, JourneyFrame, JourneyLook, JourneyStep } from './journey.model';
 
-/** Where a completed run is kept so it can survive the reload that follows it. */
-const STORAGE_KEY = 'jm.frames';
+/** Names the run this tab is holding. The run itself is far too big for here. */
+const TOKEN_KEY = 'jm.run';
+
+const DB_NAME = 'journey-mapper';
+const DB_STORE = 'runs';
 
 /** How long to wait for a selector to turn up before giving up on it. */
 const WAIT_MS = 3000;
@@ -12,35 +15,19 @@ const POLL_MS = 50;
 /** How long to let the app answer an action before the next one. */
 const SETTLE_MS = 300;
 
-/**
- * Roughly what a session store will take. Over this the run is kept in memory
- * for the session instead, which costs the reload rather than the frames.
- */
-const MAX_STORED_CHARS = 3_000_000;
-
-/**
- * A ceiling on a frame's measured size. Something parked off-screen at a large
- * offset, which the legacy stack does in a few places, would otherwise report a
- * frame thousands of pixels wide and shrink the picture to nothing.
- */
-const MAX_FRAME_PX = 2400;
-
 /** Marks the element the collected stylesheets are put back in. */
 const STYLE_MARK = 'data-jm-frame-styles';
+
+/** Carries a scroll position across, since markup cannot. */
+const SCROLL_MARK = 'data-jm-scroll';
 
 /** How far a frame may stand from the screen it came from before it is wrong. */
 const HEIGHT_SLACK = 0.15;
 const HEIGHT_SLACK_PX = 48;
 
-/** How far the picture may climb out of wrappers that hold nothing else. */
-const WIDEN_LIMIT = 4;
-
 export type CaptureStatus = 'idle' | 'capturing' | 'ready' | 'failed';
 
 interface StoredRun {
-  journeyId: string;
-  /** The steps the run was taken from, so a rewritten journey is not reused. */
-  fingerprint: string;
   capturedAt: number;
   frames: Record<string, JourneyFrame>;
   /** The component stylesheets the frames need. See collectStyles. */
@@ -51,9 +38,16 @@ interface StoredRun {
  * Takes the pictures.
  *
  * The pass drives the running prototype through the journey. For each step it
- * photographs the screen as it stands, then does what the step says to do and
- * waits for the app to answer, and photographs the next one. What comes out is
- * a frame per step: the markup the app itself rendered, held as a string.
+ * photographs the whole app as it stands, then does what the step says to do
+ * and waits for the app to answer, and photographs the next one.
+ *
+ * Every frame is of the whole app, and the same root every time. A frame cut
+ * down to the panel a step is about looks tidier and is a lie: half the app is
+ * positioned against something outside any one panel -- the dock is fixed, the
+ * search panel hangs off the toolbar, dialogs cover the lot -- and a cropped
+ * clone loses whatever it was positioned against. What the step is about is
+ * said with a mask instead, drawn over the frame rather than cut out of it, so
+ * the rest of the screen stays where it was and stays legible.
  *
  * Photographing before acting is the whole point of the order. A frame is what
  * the rep was looking at when they decided to do the thing the step describes,
@@ -64,9 +58,9 @@ interface StoredRun {
  * is what keeps the shell a frame around the app rather than a part of it.
  *
  * A run leaves the prototype at the end of the journey, which is no place to
- * hand back to a reviewer. So a finished run is written to session storage and
- * the page is reloaded: the app comes back at its beginning, and the frames are
- * read from storage instead of being taken again.
+ * hand back to a reviewer. So a finished run is kept and the page is reloaded:
+ * the app comes back at its beginning, and the frames are read back rather than
+ * taken again.
  */
 @Injectable({ providedIn: 'root' })
 export class JourneyCaptureService {
@@ -124,7 +118,7 @@ export class JourneyCaptureService {
   }
 
   /**
-   * Reuses the last run if it was of this journey, and takes a new one if not.
+   * Reuses this tab's run if it is of this journey, and takes a new one if not.
    *
    * Called once the prototype has rendered, since there is nothing to
    * photograph before that.
@@ -132,20 +126,27 @@ export class JourneyCaptureService {
   async start(journey: Journey, root: HTMLElement): Promise<void> {
     if (this.running) return;
 
-    const fingerprint = journey.steps.map((step) => step.id).join('|');
-    const stored = this.read(journey.id, fingerprint);
-    if (stored) {
-      this.applyStyles(stored.styles);
-      this.captured.set(stored.frames);
-      this.at.set(stored.capturedAt);
-      this.total.set(journey.steps.length);
-      this.done.set(journey.steps.length);
-      this.state.set('ready');
-      void this.verify(stored.frames);
-      return;
+    const token = `${journey.id}|${journey.steps.map((step) => step.id).join('|')}`;
+
+    // The token is what makes a run belong to this tab and this journey. The
+    // run outlives the tab in the browser's own store, and reading somebody
+    // else's, or one taken of a journey since rewritten, would be worse than
+    // taking it again.
+    if (this.claimed(token)) {
+      const stored = await this.readRun(token);
+      if (stored) {
+        this.applyStyles(stored.styles);
+        this.captured.set(stored.frames);
+        this.at.set(stored.capturedAt);
+        this.total.set(journey.steps.length);
+        this.done.set(journey.steps.length);
+        this.state.set('ready');
+        void this.verify(stored.frames);
+        return;
+      }
     }
 
-    await this.run(journey, root, fingerprint);
+    await this.run(journey, root, token);
   }
 
   /**
@@ -155,15 +156,11 @@ export class JourneyCaptureService {
    * beginning, and the prototype is wherever the reviewer left it.
    */
   recapture(): void {
-    try {
-      sessionStorage.removeItem(STORAGE_KEY);
-    } catch {
-      /* A store that cannot be written to cannot be holding a stale run. */
-    }
+    this.claim('');
     location.reload();
   }
 
-  private async run(journey: Journey, root: HTMLElement, fingerprint: string): Promise<void> {
+  private async run(journey: Journey, root: HTMLElement, token: string): Promise<void> {
     this.running = true;
     this.state.set('capturing');
     this.total.set(journey.steps.length);
@@ -176,8 +173,7 @@ export class JourneyCaptureService {
       for (const [index, step] of journey.steps.entries()) {
         this.done.set(index);
 
-        const found = (await this.find(root, step.capture)) ?? root;
-        frames[step.id] = this.snapshot(this.widen(found, root), root);
+        frames[step.id] = this.snapshot(root, step);
         this.collectStyles();
 
         await this.perform(root, step);
@@ -204,16 +200,18 @@ export class JourneyCaptureService {
     // taken, not the next time somebody opens the map and wonders.
     await this.verify(frames);
 
-    // Only reload where the frames are safely written down. Reloading without
-    // them would run the pass again on the next boot, and again after that.
-    if (this.write(journey.id, fingerprint, frames, styles)) {
+    // Only reload where the run is safely written down. Reloading without it
+    // would take the whole pass again on the next boot, and again after that.
+    const kept = await this.writeRun(token, { capturedAt: Date.now(), frames, styles });
+    if (kept) {
+      this.claim(token);
       location.reload();
       return;
     }
 
     this.note(
-      'The frames were too large to store, so the prototype has been left at the ' +
-        'end of the journey. Reload the page to put it back at the beginning.',
+      'The frames could not be stored, so the prototype has been left at the end ' +
+        'of the journey. Reload the page to put it back at the beginning.',
     );
     this.state.set('ready');
   }
@@ -309,141 +307,96 @@ export class JourneyCaptureService {
   }
 
   /**
-   * Climbs out of any wrapper that holds nothing but the subject.
+   * The picture: the whole app as it stands, deep cloned and written out.
    *
-   * A selector usually names the div inside a component rather than the
-   * component's own element, and the component's element is where its :host
-   * rules land -- often the padding, the background and the height of the very
-   * thing being photographed. Left above the subject it becomes a shell and is
-   * flattened, and the frame loses all of it.
-   *
-   * An ancestor with one child adds nothing to the picture but itself, so
-   * taking it in cannot bring anything unwanted with it. The climb stops at
-   * anything with a second child, at the root, and at a few levels up, which is
-   * far enough for a host and its wrapper and not far enough to end up
-   * photographing the whole app by accident.
-   */
-  private widen(scope: Element, root: HTMLElement): Element {
-    let subject = scope;
-
-    for (let step = 0; step < WIDEN_LIMIT; step++) {
-      const parent = subject.parentElement;
-      if (!parent || parent === root || parent.childElementCount !== 1) break;
-      subject = parent;
-    }
-
-    return subject;
-  }
-
-  /**
-   * The picture: the element as it stands, with everything above it that its
-   * stylesheets are looking for.
-   *
-   * A subtree on its own comes out wrong, and wrong in a way that is hard to
-   * see at first. Nearly every rule in the legacy stack is a descendant
-   * selector: the rail is dark because it is inside .alpha-explorer-toolbar,
-   * and lifted out of it, it is a white box. So the chain from the root down
-   * to the subject is rebuilt around it, one empty element per ancestor with
-   * its classes and its attributes kept. Nothing of the ancestors is drawn --
-   * they are neutralised in the stylesheet -- but every selector that reaches
-   * through them still matches.
-   *
-   * Two more things have to be put right on the way out. What a rep has keyed
-   * sits in a property and not in an attribute, so a copy of the markup shows
-   * an empty field unless the values are written in. And scripts come along
-   * with anything cloned, which is no use in a picture.
+   * Three things have to be carried across by hand, because none of them live
+   * in markup. What a rep has keyed sits in a property. Where a panel has been
+   * scrolled to sits in a property too. And where the step's subject is on the
+   * screen has to be worked out here, while there is a screen to measure: a
+   * frame is a string by the time anybody looks at it.
    *
    * Angular's own scoping attributes are kept, which is what lets component
    * stylesheets draw the frame the same way they drew the screen.
    */
-  private snapshot(scope: Element, root: HTMLElement): JourneyFrame {
-    const subject = scope.cloneNode(true) as HTMLElement;
+  private snapshot(root: HTMLElement, step: JourneyStep): JourneyFrame {
+    const copy = root.cloneNode(true) as HTMLElement;
 
-    const live = scope.querySelectorAll('input, textarea, select');
-    const drawn = subject.querySelectorAll('input, textarea, select');
-    live.forEach((field, index) => this.writeValue(field, drawn[index]));
+    const live = root.querySelectorAll('*');
+    const drawn = copy.querySelectorAll('*');
+    live.forEach((element, index) => this.carryOver(element, drawn[index]));
+    this.carryScroll(root, copy);
 
-    for (const script of Array.from(subject.querySelectorAll('script'))) {
+    for (const script of Array.from(copy.querySelectorAll('script'))) {
       script.remove();
     }
 
     // A ring the shell left on the live screen is not part of the screen. The
-    // frame draws its own from the step's selector.
-    for (const rung of Array.from(subject.querySelectorAll('.jm-target'))) {
+    // frame says what it is about with its mask instead.
+    for (const rung of Array.from(copy.querySelectorAll('.jm-target'))) {
       rung.classList.remove('jm-target');
     }
-    subject.classList.remove('jm-target');
 
-    // An absolutely positioned subject has nothing to be positioned against
-    // once it is out of the app: whatever held it is a neutralised shell now,
-    // so it would fly off to a corner of the frame. It is laid out in flow
-    // instead, which is where a picture of it belongs.
-    const position = getComputedStyle(scope).position;
-    if (position === 'absolute' || position === 'fixed') {
-      subject.style.position = 'static';
-    }
+    copy.setAttribute('data-jm-subject', '');
 
-    // The box the subject had, written onto it. Without this it is laid out
-    // again inside the frame against whatever room the frame has, and a screen
-    // measured against a different width is a picture of something nobody saw:
-    // a full-height rail becomes a stub, and a panel hung off the bottom of it
-    // goes with it.
-    const host = scope as HTMLElement;
-    if (host.offsetWidth) subject.style.width = `${host.offsetWidth}px`;
-    if (host.offsetHeight) subject.style.height = `${host.offsetHeight}px`;
-    subject.style.boxSizing = 'border-box';
+    const width = root.offsetWidth;
+    const height = root.offsetHeight;
 
-    subject.setAttribute('data-jm-subject', '');
-
-    let outermost: HTMLElement = subject;
-    for (let ancestor = scope.parentElement; ancestor; ancestor = ancestor.parentElement) {
-      const shell = ancestor.cloneNode(false) as HTMLElement;
-      shell.setAttribute('data-jm-shell', '');
-      shell.appendChild(outermost);
-      outermost = shell;
-      if (ancestor === root) break;
-    }
-
-    const { width, height } = this.extent(scope);
     return {
-      html: outermost.outerHTML,
+      html: copy.outerHTML,
       width,
       height,
-      look: this.look(scope, host.offsetHeight),
+      focus: this.focus(root, step.target, width, height),
+      // The look is measured off the content rather than off the box the
+      // shell put it in, since the box is the same size whether the app's
+      // stylesheets are on the page or not.
+      look: this.look(root, root.scrollHeight),
     };
   }
 
   /**
-   * How much room the subject takes, including anything of it that hangs
-   * outside its own box.
+   * Where on the frame the step's subject was, in the app's own pixels.
    *
-   * The box on its own is not the answer. The explorer toolbar is fifty pixels
-   * wide and its search panel is positioned out to the right of that, so a
-   * frame cut to the box would be a sliver of rail and no panel.
-   *
-   * Measured in layout pixels rather than screen ones. The prototype is drawn
-   * inside a scaled box, so what a rect reports is the app after the shell has
-   * shrunk it, and the frame wants the size the app believes it is.
+   * The prototype is drawn inside a scaled box, so what a rect reports is the
+   * app after the shell has shrunk it. The frame is laid out at the app's own
+   * size, so the mask has to be measured at the app's own size too.
    */
-  private extent(scope: Element): { width: number; height: number } {
-    const rect = scope.getBoundingClientRect();
-    const laid = (scope as HTMLElement).offsetWidth;
-    const zoom = laid > 0 ? rect.width / laid : 1;
-    const scale = zoom > 0 ? zoom : 1;
+  private focus(
+    root: HTMLElement,
+    target: string | undefined,
+    width: number,
+    height: number,
+  ): JourneyFocus | undefined {
+    if (!target) return undefined;
 
-    let right = rect.right;
-    let bottom = rect.bottom;
-
-    for (const child of Array.from(scope.querySelectorAll('*'))) {
-      const box = child.getBoundingClientRect();
-      if (!box.width && !box.height) continue;
-      if (box.right > right) right = box.right;
-      if (box.bottom > bottom) bottom = box.bottom;
+    let element: Element | null = null;
+    try {
+      element = root.querySelector(target);
+    } catch {
+      this.note(`'${target}' is not a selector this browser understands.`);
+      return undefined;
     }
+    if (!element) return undefined;
+
+    const box = element.getBoundingClientRect();
+    const frame = root.getBoundingClientRect();
+    const scale = root.offsetWidth > 0 ? frame.width / root.offsetWidth : 1;
+    const zoom = scale > 0 ? scale : 1;
+
+    const x = Math.round((box.left - frame.left) / zoom);
+    const y = Math.round((box.top - frame.top) / zoom);
+    const w = Math.round(box.width / zoom);
+    const h = Math.round(box.height / zoom);
+
+    // Clamped, because something half off the screen is still worth pointing
+    // at and a mask hanging over the edge of the frame is not.
+    const left = Math.max(0, Math.min(x, width));
+    const top = Math.max(0, Math.min(y, height));
 
     return {
-      width: Math.min(MAX_FRAME_PX, Math.ceil((right - rect.left) / scale)),
-      height: Math.min(MAX_FRAME_PX, Math.ceil((bottom - rect.top) / scale)),
+      x: left,
+      y: top,
+      width: Math.max(0, Math.min(w, width - left)),
+      height: Math.max(0, Math.min(h, height - top)),
     };
   }
 
@@ -453,11 +406,6 @@ export class JourneyCaptureService {
    * Called after each frame is taken, which is the only moment the rules for
    * that screen are certain to be there. A set, because the same stylesheet is
    * on the page for most of the run and only needs keeping once.
-   *
-   * The global stylesheets are gathered along with the component ones. They are
-   * link elements in a built app and are not picked up here, but a dev server
-   * inlines them, and a stylesheet already on the page costs nothing to have
-   * twice.
    */
   private collectStyles(): void {
     for (const sheet of Array.from(document.querySelectorAll('style'))) {
@@ -523,7 +471,14 @@ export class JourneyCaptureService {
           continue;
         }
 
-        const differences = this.compare(frame.look, this.look(subject, subject.offsetHeight));
+        // Laid out at the width it was photographed at and left to find its own
+        // height, which is the measurement being checked. A component host is
+        // an inline element until something says otherwise, and in the app the
+        // shell says so.
+        subject.style.display = 'block';
+        subject.style.width = '100%';
+
+        const differences = this.compare(frame.look, this.look(subject, subject.scrollHeight));
         if (differences.length) {
           this.note(
             `Step '${id}': the frame is not drawn like the screen it came from ` +
@@ -561,9 +516,11 @@ export class JourneyCaptureService {
       differences.push(`text at ${frame.fontSize} against ${screen.fontSize}`);
     }
 
-    // A frame reflows a little against a screen it was cut out of, so the
+    // A frame reflows a little against the screen it was taken of, so the
     // tolerance is generous. What it is looking for is the frame that came out
-    // a fifth of the height, which is what no stylesheet looks like.
+    // at three times the height of the app, which is what a screen with none of
+    // its stylesheets looks like: nothing hidden, nothing laid out, everything
+    // stacked one under the next.
     const slack = Math.max(HEIGHT_SLACK_PX, screen.height * HEIGHT_SLACK);
     if (Math.abs(frame.height - screen.height) > slack) {
       differences.push(`${frame.height}px tall against ${screen.height}px`);
@@ -573,14 +530,16 @@ export class JourneyCaptureService {
   }
 
   /**
-   * What a rep keyed, chose or ticked, written into the copy as an attribute.
+   * What a rep keyed, chose or ticked, and how far a panel is scrolled.
    *
    * A property is not an attribute. The markup of a filled-in form is the
    * markup of an empty one, and a frame taken without this shows a rep about
    * to press Search on a field with nothing in it.
    */
-  private writeValue(live: Element, drawn: Element | undefined): void {
+  private carryOver(live: Element, drawn: Element | undefined): void {
     if (!drawn) return;
+
+    this.carryScroll(live, drawn);
 
     if (live instanceof HTMLInputElement) {
       if (live.type === 'checkbox' || live.type === 'radio') {
@@ -605,6 +564,12 @@ export class JourneyCaptureService {
     }
   }
 
+  /** Left as an attribute for the frame to apply once it is in the page. */
+  private carryScroll(live: Element, drawn: Element): void {
+    if (!live.scrollTop && !live.scrollLeft) return;
+    drawn.setAttribute(SCROLL_MARK, `${Math.round(live.scrollTop)},${Math.round(live.scrollLeft)}`);
+  }
+
   private note(problem: string): void {
     console.warn(`Journey capture: ${problem}`);
     this.problems.update((all) => [...all, problem]);
@@ -616,35 +581,82 @@ export class JourneyCaptureService {
     });
   }
 
-  private read(journeyId: string, fingerprint: string): StoredRun | undefined {
-    try {
-      const raw = sessionStorage.getItem(STORAGE_KEY);
-      if (!raw) return undefined;
+  /* ── Where a run is kept ──────────────────────────────────────────
+     Full-app frames run to megabytes, which is more than a session store
+     will hold, so the run goes in the browser's database and the session
+     holds only the name of it. That keeps a run tied to the tab that took
+     it, which is what stops one build's frames turning up in another's. */
 
-      const stored = JSON.parse(raw) as StoredRun;
-      const usable = stored.journeyId === journeyId && stored.fingerprint === fingerprint;
-      return usable ? stored : undefined;
+  private claimed(token: string): boolean {
+    try {
+      return sessionStorage.getItem(TOKEN_KEY) === token;
     } catch {
-      return undefined;
+      return false;
     }
   }
 
-  /** True where the run is safely written down and can be read back. */
-  private write(
-    journeyId: string,
-    fingerprint: string,
-    frames: Record<string, JourneyFrame>,
-    styles: string[],
-  ): boolean {
-    const run: StoredRun = { journeyId, fingerprint, capturedAt: Date.now(), frames, styles };
-    const raw = JSON.stringify(run);
-    if (raw.length > MAX_STORED_CHARS) return false;
+  private claim(token: string): void {
+    try {
+      if (token) sessionStorage.setItem(TOKEN_KEY, token);
+      else sessionStorage.removeItem(TOKEN_KEY);
+    } catch {
+      /* A store that cannot be written to cannot be holding a stale run. */
+    }
+  }
+
+  private openDatabase(): Promise<IDBDatabase | undefined> {
+    return new Promise((resolve) => {
+      try {
+        const request = indexedDB.open(DB_NAME, 1);
+        request.onupgradeneeded = () => request.result.createObjectStore(DB_STORE);
+        request.onsuccess = () => resolve(request.result);
+        request.onerror = () => resolve(undefined);
+        request.onblocked = () => resolve(undefined);
+      } catch {
+        resolve(undefined);
+      }
+    });
+  }
+
+  private async readRun(token: string): Promise<StoredRun | undefined> {
+    const database = await this.openDatabase();
+    if (!database) return undefined;
 
     try {
-      sessionStorage.setItem(STORAGE_KEY, raw);
-      return sessionStorage.getItem(STORAGE_KEY) === raw;
+      return await new Promise<StoredRun | undefined>((resolve) => {
+        const request = database.transaction(DB_STORE, 'readonly').objectStore(DB_STORE).get(token);
+        request.onsuccess = () => resolve(request.result as StoredRun | undefined);
+        request.onerror = () => resolve(undefined);
+      });
+    } finally {
+      database.close();
+    }
+  }
+
+  /** True where the run is written down and can be read back. */
+  private async writeRun(token: string, run: StoredRun): Promise<boolean> {
+    const database = await this.openDatabase();
+    if (!database) return false;
+
+    try {
+      return await new Promise<boolean>((resolve) => {
+        const transaction = database.transaction(DB_STORE, 'readwrite');
+        const store = transaction.objectStore(DB_STORE);
+
+        // One run at a time. Nothing here is worth keeping once it has been
+        // replaced, and a database quietly filling with old journeys is a bill
+        // somebody pays later.
+        store.clear();
+        store.put(run, token);
+
+        transaction.oncomplete = () => resolve(true);
+        transaction.onerror = () => resolve(false);
+        transaction.onabort = () => resolve(false);
+      });
     } catch {
       return false;
+    } finally {
+      database.close();
     }
   }
 }

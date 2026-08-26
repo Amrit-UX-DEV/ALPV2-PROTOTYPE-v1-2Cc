@@ -9,7 +9,6 @@
       "action": "Press Search ALPHA on the left rail.",
       "result": "The panel slides out beside the rail with Search Criteria on Policy, which is what most calls start from.",
       "target": ".ui-action-rail button[aria-controls='ExplorerSearchPanel']",
-      "capture": ".alpha-explorer-toolbar",
       "notes": "The rail only draws the buttons this build offers and that lead somewhere. With nothing searched, Group Summary and Business Processes are not there yet."
     },
     {
@@ -24,7 +23,6 @@
           "value": "Dashboard Reference"
         }
       ],
-      "capture": ".alpha-explorer-toolbar",
       "notes": "The criteria and the hint are the same data the call centre search reads, so the two forms cannot ask for different things."
     },
     {
@@ -38,8 +36,7 @@
           "type": "type",
           "value": "PMR12345678910"
         }
-      ],
-      "capture": ".alpha-explorer-toolbar"
+      ]
     },
     {
       "id": "search",
@@ -47,7 +44,6 @@
       "action": "Press Search.",
       "result": "The dashboard reference screen opens: the reference in the heading, the policy it resolved to, and the comparison underneath.",
       "target": "#MenuSearch_SearchButton",
-      "capture": ".alpha-explorer-toolbar",
       "settleMs": 600
     },
     {
@@ -57,7 +53,6 @@
       "result": "Dashboard Reference: PMR12345678910, and how long that reference stays valid.",
       "target": ".alp-search-summary__head",
       "do": [],
-      "capture": ".alp-search-summary",
       "notes": "The reference is in the heading rather than repeated in a corner. The pension reference is not shown here because it is the policy number, which the tile below gives a line of its own."
     },
     {
@@ -66,8 +61,7 @@
       "action": "Read the policy tile.",
       "result": "The policy number, its status, the kind of policy it is, and how many parties are attached to it.",
       "target": ".alp-policy-tile",
-      "do": [],
-      "capture": ".alp-search-summary"
+      "do": []
     },
     {
       "id": "compare",
@@ -76,7 +70,6 @@
       "result": "Three groups: what disagrees, what agrees, and what neither platform holds. Differences are open on arrival because they are the reason the screen exists.",
       "target": ".alp-search-summary__comparison",
       "do": [],
-      "capture": ".alp-search-summary",
       "notes": "Grouped by what the comparison found rather than field by field, so a rep is not reading forty identical rows to find the three that matter."
     },
     {
@@ -89,8 +82,7 @@
         {
           "target": ".alp-search-summary__controls .alp-view-switch__option:last-child"
         }
-      ],
-      "capture": ".alp-search-summary"
+      ]
     },
     {
       "id": "open-processes",
@@ -98,7 +90,6 @@
       "action": "Press Business Processes on the rail.",
       "result": "On a build that shows the hub, the work plans this build offers. On a build cut to one plan, the Dashboard Reference plan opens directly.",
       "target": ".ui-menu-action-block.business-processes .ui-menu-action",
-      "capture": ".alpha-explorer-toolbar",
       "notes": "The button is only on the rail once there is a plan that can be run. A plan about a dashboard reference cannot run without one."
     },
     {
@@ -107,7 +98,6 @@
       "action": "Press the Dashboard Reference tile.",
       "result": "Step one opens, headed by the reference the whole plan is about.",
       "target": ".alp-launch-tile[data-plan='dashboard-reference']",
-      "capture": ".alp-work-plans",
       "notes": "There is no hub on a build cut down to one plan, and the rail opens the plan itself. This step is the hub's."
     },
     {
@@ -116,7 +106,6 @@
       "action": "Answer 'Was this a match?' with Matched.",
       "result": "A second question appears asking what the decision required. Not Matched would ask nothing further: there is nothing to record against a reference that is not this person.",
       "target": "input[name='dashboard-reference-decision'][value='matched']",
-      "capture": ".alpha-wizard",
       "notes": "One question at a time, and the next only once the last has an answer."
     },
     {
@@ -124,8 +113,7 @@
       "title": "Say what the decision required",
       "action": "Answer Actions Required.",
       "result": "The categories appear. No Actions Required would end the step here.",
-      "target": "input[name='dashboard-reference-actions'][value='actions']",
-      "capture": ".alpha-wizard"
+      "target": "input[name='dashboard-reference-actions'][value='actions']"
     },
     {
       "id": "categorise",
@@ -146,7 +134,6 @@
           "value": "Dashboard holds a second forename we do not."
         }
       ],
-      "capture": ".alpha-wizard",
       "notes": "By category rather than by field. The comparison is field by field because that is how the other platform sends it, but a given name, a surname and five alternate surnames are one change of name to everything downstream."
     },
     {
@@ -155,7 +142,6 @@
       "action": "Press Save and Continue.",
       "result": "The confirmation says the decision and what it required have been recorded against this dashboard reference.",
       "target": ".wizard-navigation .stepNext",
-      "capture": ".alpha-wizard",
       "settleMs": 500
     },
     {
@@ -164,8 +150,7 @@
       "action": "Press Finish.",
       "result": "Back where the rep came from: the hub on a build that has one, and this reference's own comparison on a build that does not.",
       "target": ".wizard-navigation .ui-btn:last-child",
-      "do": [],
-      "capture": ".alpha-wizard"
+      "do": []
     }
   ]
 }

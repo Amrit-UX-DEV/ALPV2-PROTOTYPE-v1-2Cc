@@ -44,18 +44,21 @@
 /* ---------------------------------------------------------
    THE FRAME
 
-   A frame is the subject of a step with the chain of elements
-   that stood above it in the app rebuilt around it, because
-   the stylesheets are nearly all descendant selectors and a
-   subtree lifted out of its place is drawn by almost none of
-   them.
+   A frame is the whole app, photographed as it stood, laid
+   out at the size it had on screen and scaled down to fit
+   whatever room it is given.
 
-   Those ancestors are scaffolding. They are there to be
-   matched by selectors, not to be seen: whatever they held,
-   how they were positioned and how much room they took is the
-   business of the screen they came from, and inside a frame
-   all of it gets in the way. So they are flattened, and the
-   subject is left to be drawn exactly as it was.
+   The whole app rather than the part a step is about, because
+   a great deal of what this app draws is positioned against
+   something outside any one panel: the dock is fixed, the
+   search panel hangs off the toolbar, dialogs cover the lot.
+   A clone cut down to a panel loses whatever that panel was
+   positioned against, and what comes back is not a smaller
+   picture of the screen but a different screen.
+
+   Which is why the step's subject is picked out by masking
+   rather than by cutting: everything around it is dimmed and
+   left where it was.
    --------------------------------------------------------- */
 
 .jm-clone {
@@ -64,13 +67,24 @@
   overflow: hidden;
 }
 
+/* Positioned, so the mask can be laid over the frame in the frame's own
+   pixels, and always transformed, even at full size. A transform makes this
+   the containing block for anything fixed inside it, which is what keeps the
+   app's docked panels and dialogs in the frame instead of flying off to the
+   corners of the browser window. */
 .jm-clone__surface {
+  position: relative;
   transform-origin: top left;
   /* Inert already takes it out of pointer events, the tab order and the
      accessibility tree. This is for the cursor, which would otherwise still
      turn into a hand over something that cannot be pressed. */
   cursor: default;
   user-select: none;
+}
+
+.jm-clone__canvas {
+  position: relative;
+  height: 100%;
 }
 
 .jm-clone__surface * {
@@ -86,43 +100,70 @@
   transition: none !important;
 }
 
-/* The scaffolding. Everything that makes an element take part in a layout is
-   taken off it, and everything that would draw it is taken off too. What is
-   left is a box in the right place in the tree with the right classes on it,
-   which is all a selector needs. */
-[data-jm-shell] {
-  display: block !important;
-  position: static !important;
-  float: none !important;
-  width: auto !important;
-  min-width: 0 !important;
-  max-width: none !important;
-  height: auto !important;
-  min-height: 0 !important;
-  max-height: none !important;
-  margin: 0 !important;
-  padding: 0 !important;
-  border: 0 !important;
-  border-radius: 0 !important;
-  background: none !important;
-  box-shadow: none !important;
-  overflow: visible !important;
-  transform: none !important;
-  filter: none !important;
-  opacity: 1 !important;
-  flex: none !important;
-  grid-area: auto !important;
-}
-
-/* A shell drawing nothing should take up no room either, and a good many of
-   them are pseudo-element decorations in the legacy stack. */
-[data-jm-shell]::before,
-[data-jm-shell]::after {
-  content: none !important;
-}
-
-/* The subject is drawn as it was, and fills the width the frame was laid out
-   at, which is the width it had on screen. */
-[data-jm-subject] {
+/* The photographed app fills the frame, the same way it fills the stage it was
+   photographed on. Both rules are here rather than in a component stylesheet
+   because neither element belongs to a component of the mapper's: one is the
+   prototype projected into the shell, the other is a copy of it written into
+   the page as markup, and Angular's scoping attribute is on neither. */
+.jm-stage__frame > *,
+.jm-clone__canvas > [data-jm-subject] {
+  display: block;
+  width: 100%;
+  height: 100%;
   max-width: none;
+}
+
+/* ---------------------------------------------------------
+   THE MASK
+
+   Four panels around the step's subject rather than one panel
+   with a hole in it. The arithmetic is the same either way and
+   four rectangles are drawn by every browser the same way,
+   where a clipped hole is a newer thing that fails by covering
+   the frame completely.
+
+   Slate 900 at just over half is dark enough to sink a white
+   panel well below the one left bright, and light enough that
+   what it covers can still be read -- which is the point of
+   masking rather than cropping. It is decoration over a
+   picture, so nothing here needs to meet a contrast ratio;
+   what has to stay legible is the bright part, and nothing is
+   drawn over that at all.
+   --------------------------------------------------------- */
+
+.jm-clone__mask {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+
+/* Each panel is given the edges it needs and takes the rest from here, which
+   is what keeps the arithmetic in the component down to two numbers a side. */
+.jm-clone__shade {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  background: rgb(15 23 42 / 58%);
+}
+
+/* The bright box: a ring and nothing inside it, so the thing being pointed at
+   is drawn exactly as the app drew it. Amber over a white halo for the same
+   reason the live ring uses them -- one of the two shows up on whatever it
+   lands on, panel or rail.
+
+   Both edges of the indicator clear what a boundary needs. On a white panel
+   the amber holds 3.19:1 against the bright content it encloses and the halo
+   holds 3.70:1 against the scrim outside it; on the near-black rail the amber
+   is 5.60:1 and the halo 13.02:1.
+
+   The rail is worth saying out loud: a dark scrim over near-black changes
+   almost nothing, so on the rail it is the ring that does the work rather than
+   the mask. Which is why the ring has the halo. */
+.jm-clone__focus {
+  position: absolute;
+  outline: 3px solid var(--alp-color-amber-600);
+  outline-offset: 1px;
+  box-shadow: 0 0 0 6px oklch(from var(--alp-color-white) l c h / 0.85);
+  border-radius: var(--alp-radius-xs);
 }

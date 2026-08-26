@@ -14,23 +14,41 @@
  */
 
 /**
- * One frame: a photograph of part of the running app.
+ * One frame: a photograph of the whole running app at one point in a journey.
  *
- * The markup is the subject with the chain of ancestors above it rebuilt as
- * empty shells, because the app's stylesheets are nearly all descendant
- * selectors and a subtree lifted out of its place is drawn by almost none of
- * them.
+ * The whole app every time, rather than the part the step is about. Nearly
+ * every rule in the app's stylesheets is a descendant selector, and a good deal
+ * of what it draws is positioned against something outside any one panel, so a
+ * clone cut down to a panel is drawn by neither. What the step is about is said
+ * by the focus box instead, which is masked around rather than cut out.
  *
- * The size is the room the subject took on screen, in the app's own layout
- * pixels. A frame is laid out at that width and then scaled to fit, so it
- * reflows exactly as far as the real thing did and no further.
+ * The size is the room the app took on screen, in its own layout pixels. A
+ * frame is laid out at that size and then scaled to fit whatever it is shown
+ * in, so it reflows exactly as far as the real thing did and no further.
  */
 export interface JourneyFrame {
   html: string;
   width: number;
   height: number;
-  /** How the subject was drawn, so a frame can be checked against it later. */
+  /** Where the step's subject was on the frame, for the mask to point at. */
+  focus?: JourneyFocus;
+  /** How the app was drawn, so a frame can be checked against it later. */
   look: JourneyLook;
+}
+
+/**
+ * A box on a frame, in the app's own pixels, measured from the frame's corner.
+ *
+ * What a step is about is said by masking rather than by cropping. A frame is
+ * the whole app every time, because half of what the app draws is positioned
+ * against something outside any one panel, and a clone cut down to a panel
+ * loses whatever it was positioned against.
+ */
+export interface JourneyFocus {
+  x: number;
+  y: number;
+  width: number;
+  height: number;
 }
 
 /**
@@ -89,12 +107,14 @@ export interface JourneyStep {
   /**
    * A CSS selector for the thing the action is performed on.
    *
-   * Used twice from the one place: the prototype view rings whatever it
-   * matches on the live screen, and a frame rings whatever it matches inside
-   * that step's picture. A step therefore cannot point at one thing in the map
-   * and another in the app.
+   * Used three times from the one place: the pass performs the step's actions
+   * on it, the prototype view rings it on the live screen, and the frame masks
+   * everything around where it was. A step therefore cannot point at one thing
+   * in the map and another in the app.
    *
-   * Optional, because a step can be about a screen rather than a control.
+   * Optional, because a step can be about a screen rather than a control. A
+   * step without one is framed unmasked, which is the right way to show a
+   * screen that is being read rather than worked.
    */
   target?: string;
   /**
@@ -105,14 +125,6 @@ export interface JourneyStep {
    * is written.
    */
   do?: JourneyAction[];
-  /**
-   * What to photograph: a selector for the part of the screen the step is
-   * about. The whole prototype where it is left out.
-   *
-   * Worth setting on most steps. A frame of one panel is read at a glance and
-   * costs a few kilobytes; a frame of the entire app is neither.
-   */
-  capture?: string;
   /**
    * How long to let the app settle after each of this step's actions, in
    * milliseconds. Only worth setting where something takes its time.

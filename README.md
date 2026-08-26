@@ -151,18 +151,19 @@ the same, except while the keystroke belongs to a field in the app.
 ### Frames are captured, not written
 
 No markup is kept in this repo. When the shell starts it runs a capture pass:
-for each step it photographs the part of the screen the step is about, then does
-what the step says to do and waits for the app to answer, and photographs the
-next one. A frame is therefore what the prototype draws today. Change a
-template and the next capture shows the change; there is nothing to keep in
-step by hand.
+for each step it photographs the whole app as it stands, then does what the step
+says to do and waits for the app to answer, and photographs the next one. A
+frame is therefore what the prototype draws today. Change a template and the
+next capture shows the change; there is nothing to keep in step by hand.
 
 A loading state covers the shell while the pass runs, because the app is being
 pressed and typed into by something other than the person watching. The pass
 leaves the prototype at the end of the journey, so a finished run is written to
-session storage and the page reloads: the app comes back at its beginning and
-the frames are read from storage. **Capture again**, in the map, throws the run
-away and takes it from a fresh start.
+the browser's database and the page reloads: the app comes back at its
+beginning and the frames are read back rather than taken again. The run is
+named in session storage, which is what keeps it belonging to the tab that took
+it. **Capture again**, in the map, throws the run away and takes it from a
+fresh start.
 
 Frames are photographed before the step's action, not after: a frame is what
 the rep was looking at when they decided to do the thing the step describes.
@@ -171,6 +172,20 @@ What they got for doing it is the next frame.
 The pass also says when a step changed nothing on screen. That is a dead
 control, and it is the difference between a journey that is out of date and a
 prototype that is broken.
+
+### The map is a timeline
+
+The journey view is the whole path in a strip that scrolls left to right, a
+small frame a step, joined in sequence and numbered. It is the contents as well
+as the pictures: there is one list of steps, and clicking a step is the same act
+as reading it. Where the journey has got to is ringed, and the strip follows the
+shell's Previous and Next and the arrow keys.
+
+Small frames are the point of a strip and useless on their own, so clicking one
+opens it over the shell at the size of the window, with the action, result,
+notes and target beside it and Previous, Next and a way back to the strip.
+Escape closes it. Opening a frame moves the journey to that step, so nothing
+ever disagrees about where the reviewer is.
 
 ### Writing a journey
 
@@ -190,9 +205,8 @@ Each journey file is a name, a summary and a list of steps:
 | `title` | What the step is, in a few words. |
 | `action` | What the rep does, in the imperative. |
 | `result` | What the prototype does back. |
-| `target` | CSS selector for the thing acted on. Rung in both views. |
+| `target` | CSS selector for the thing acted on. Rung on the live screen and masked around in the frame. |
 | `do` | What moves the prototype on. Absent means a click on `target`; `[]` means the step is only read. |
-| `capture` | Selector for the part of the screen to photograph. The whole app where it is left out. |
 | `settleMs` | How long to let the app answer each action. 300 unless it is slower than that. |
 | `notes` | Anything that is neither the action nor the result. |
 
@@ -205,22 +219,33 @@ lists whatever the index holds in the order it holds it, so
 `.alp-work-plans__item:first-child` is a position that will one day belong to
 something else.
 
-`target` is used twice from the one place. In the prototype view it rings the
-element on the live screen; in a frame it rings the same selector inside the
-photograph. A step cannot point at one thing in the map and another in the app.
+`target` is used three times from the one place: the pass performs the step's
+actions on it, the prototype view rings it on the live screen, and the frame
+masks everything around where it was. A step cannot point at one thing in the
+map and another in the app. A step with no target is framed unmasked, which is
+the right way to show a screen that is being read rather than worked.
+
+### Full frames, masked rather than cropped
+
+Every step photographs the same root: the whole app, exactly as the reviewer
+sees it in Prototype mode. Framing the panel a step is about looks tidier and is
+a lie. A great deal of what this app draws is positioned against something
+outside any one panel -- the dock is fixed, the search panel hangs off the
+toolbar, dialogs cover the lot -- and a clone cut down to a panel loses whatever
+it was positioned against. What comes back is not a smaller picture of the
+screen; it is a different screen.
+
+So what the step is about is said with a mask laid over the frame. Everything
+outside the target's box is dimmed and stays where it was, and the target is
+left bright inside an amber ring. Where the target was is measured while there
+is a screen to measure it on, in the app's own pixels, and kept with the frame:
+by the time anybody looks at a frame it is a string.
 
 ### Why a frame looks like the app
 
 A frame is markup the app produced, mounted in the same document, so the
 stylesheets already on the page draw it. Three things make that work rather
 than nearly work.
-
-The chain comes with it. Nearly every rule in the legacy stack is a descendant
-selector, so a subtree lifted out of its place is drawn by almost none of them:
-the rail is dark because it sits inside `.alpha-explorer-toolbar`. Each ancestor
-from the capture root down to the subject is cloned empty, classes and
-attributes kept, and rebuilt around it. Those shells are flattened by
-`journey-mapper.css` so they are matched by selectors and never seen.
 
 The stylesheets come with it. Angular takes a component's styles out of the
 document when its last instance is destroyed, and the run ends in a reload, so
@@ -232,27 +257,28 @@ They are the app's own rules, scoped by the same attributes the frames carry,
 so putting them back changes nothing for the app.
 
 Angular's scoping attributes are kept, so component stylesheets draw the frame
-the same way they drew the screen. Where a selector names the div inside a
-component rather than the component's own element, the picture climbs out to
-take the element with it, since that is where the `:host` rules land.
+the same way they drew the screen, and every descendant selector in the legacy
+stack still matches because the whole app is there to be matched.
 
-The box comes with it. The subject is written out at the width and height it
-had on screen and the frame is laid out at that size, then scaled down to fit.
-A screen re-measured against the width of a panel is a picture of something
-nobody saw.
+The box comes with it. The app is written out at the width and height it had on
+screen and the frame is laid out at that size, then scaled down to fit: a
+thumbnail in the strip, or the width of the window when it is opened. It is
+always scaled, even at full size, because a transform makes the frame the
+containing block for anything fixed inside it, which is what keeps the docked
+panels and dialogs in the picture instead of flying off to the corners of the
+browser window. What cannot be written out as markup is carried over by hand:
+what a rep keyed, what they ticked, and how far a panel was scrolled.
 
 Frames are `inert`, which takes them out of pointer events, out of the tab
 order and out of the accessibility tree. Nothing runs behind them, and their
 scripts are stripped on the way out.
 
-Pick a `capture` root that is a whole layout unit rather than a fragment of
-one: `.alpha-explorer-toolbar` rather than the search panel positioned against
-it, `.alpha-wizard` rather than the step inside its card.
-
 Every frame is checked. Once a run is in, each frame is drawn off-screen at its
 own width and compared with what the screen it came from actually looked like:
-text colour, background, typeface, size and height. Anything that does not
-match is reported under the map, which is how a frame that lost its stylesheets
-says so itself rather than waiting to be noticed.
+text colour, background, typeface, size and height. A frame that has lost its
+stylesheets comes out at nothing like the height of the app, because nothing is
+hidden and nothing is laid out. Anything that does not match is reported under
+the map, which is how a frame that is wrong says so itself rather than waiting
+to be noticed.
 
 Adding a journey is a file and an index entry. Nothing in `src/app` changes.
