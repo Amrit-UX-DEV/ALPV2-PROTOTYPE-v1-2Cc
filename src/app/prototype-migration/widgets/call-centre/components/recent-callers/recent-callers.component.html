@@ -92,15 +92,17 @@
     }
   </div>
 
-  <!-- Full List (Popover) - Unchanged -->
+  <!-- The full list is a dialog like every other one in the prototype, so it
+       wears the dialog's shell, heading and close button. It keeps its own
+       place, dropping from the top right near the panel it was opened from
+       rather than landing in the middle of the screen. -->
   @if (showFullList()) {
-    <div class="alp-recent-callers__overlay" (click)="closeFullList()">
-      <div class="alp-recent-callers__popover" (click)="$event.stopPropagation()">
-        <div class="alp-recent-callers__popover-header">
+    <div class="alp-dialog-overlay alp-dialog-overlay--anchored-end" (click)="closeFullList()">
+      <div class="alp-dialog alp-dialog--small" (click)="$event.stopPropagation()">
+        <div class="alp-dialog__header">
           <h4>Recent Callers (Last 30 Days)</h4>
-          <button type="button" class="alp-btn alp-btn--icon alp-btn--ghost"
-                  aria-label="Close" (click)="closeFullList()">
-            <i aria-hidden="true" class="fas fa-times"></i>
+          <button type="button" (click)="closeFullList()" class="alp-dialog__close-btn" aria-label="Close">
+            <i class="fas fa-times"></i>
           </button>
         </div>
 

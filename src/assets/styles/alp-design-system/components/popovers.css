@@ -221,109 +221,11 @@
 }
 
 /* =========================================================
-   TRANSFER CALL POPOVER
-   Overlay, shell, header, search, reasons grid, notes, actions.
+   RECENT CALLERS FULL LIST
+
+   The dialog it sits in is the design system's; what is left
+   here is the list inside it and the row each caller gets.
    ========================================================= */
-
-.alp-transfer-popover-overlay {
-  position: fixed;
-  inset: 0;
-  background: oklch(from var(--alp-shadow-color) l c h / 0.5);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  z-index: 2000;
-}
-
-.alp-transfer-popover {
-  background: var(--alp-color-surface);
-  width: 420px;
-  max-width: 95%;
-  border-radius: var(--alp-radius-lg);
-  box-shadow: 0 10px 30px oklch(from var(--alp-shadow-color) l c h / 0.2);
-  overflow: hidden;
-}
-
-.alp-transfer-popover__header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: var(--alp-space-4) var(--alp-space-5);
-  border-bottom: 1px solid var(--alp-color-border);
-}
-
-.alp-transfer-popover__search {
-  padding: var(--alp-space-4) var(--alp-space-5) var(--alp-space-2);
-}
-
-/* The reasons are a group of one question, so they are a fieldset. Its border
-   and padding come off: the popover already frames them. */
-.alp-transfer-popover__group {
-  margin: 0;
-  padding: 0 var(--alp-space-5) var(--alp-space-4);
-  border: 0;
-}
-
-/* Two to a row, which is this dialog's decision rather than the control's: the
-   reasons are two or three words each and a single column of six would be
-   taller than the dialog. */
-.alp-transfer-popover__reasons {
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: var(--alp-space-2);
-}
-
-.alp-transfer-popover__notes {
-  padding: 0 var(--alp-space-5) var(--alp-space-4);
-}
-
-.alp-transfer-popover__actions {
-  display: flex;
-  justify-content: flex-end;
-  gap: var(--alp-space-3);
-  padding: var(--alp-space-4) var(--alp-space-5);
-  background: var(--alp-color-slate-50);
-  border-top: 1px solid var(--alp-color-border);
-}
-
-/* =========================================================
-   RECENT CALLERS FULL-LIST POPOVER
-   Overlay, shell, header, scrollable list, and full-item button.
-   ========================================================= */
-
-.alp-recent-callers__overlay {
-  position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background: oklch(from var(--alp-shadow-color) l c h / 0.4);
-  display: flex;
-  align-items: flex-start;
-  justify-content: flex-end;
-  padding: 80px var(--alp-space-5) var(--alp-space-5);
-  z-index: var(--alp-z-modal);
-}
-
-.alp-recent-callers__popover {
-  background: var(--alp-color-surface);
-  width: 400px;
-  max-height: 70vh;
-  border-radius: var(--alp-radius-lg);
-  box-shadow: var(--alp-shadow-xl);
-  overflow: hidden;
-  display: flex;
-  flex-direction: column;
-}
-
-.alp-recent-callers__popover-header {
-  padding: var(--alp-space-4) var(--alp-space-5);
-  border-bottom: 1px solid var(--alp-color-border);
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  background: var(--alp-color-slate-50);
-}
 
 .alp-recent-callers__full-list {
   overflow-y: auto;

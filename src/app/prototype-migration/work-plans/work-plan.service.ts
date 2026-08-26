@@ -40,6 +40,11 @@ export class WorkPlanService {
    * Whether the hub is always a screen, or is skipped where there is only one
    * plan to choose. True until the index says otherwise, so a build that cannot
    * read its own index still shows the list rather than guessing what to open.
+   *
+   * It says more than where business processes lands, though. A hub that is
+   * always there is a build showing what has been built, so it also lifts the
+   * context each plan would otherwise wait for. Reserved for develop unless a
+   * release is deliberately cut that way.
    */
   readonly alwaysShowHub = computed(() => this.index()?.hub.alwaysShow ?? true);
 
@@ -56,10 +61,16 @@ export class WorkPlanService {
    * runnable is not shown as unavailable, because a rep cannot do anything
    * about it: what puts it in reach is searching for something, which is a
    * different act on a different part of the screen.
+   *
+   * Unless the hub is always shown, which overrides the context a plan asks
+   * for. That build is showing the work rather than putting a rep through it,
+   * and a flow nobody can open because they have not searched for the right
+   * thing first is a flow nobody can review.
    */
-  readonly eligible = computed<WorkPlan[]>(() =>
-    this.offered().filter((plan) => this.inContext(plan)),
-  );
+  readonly eligible = computed<WorkPlan[]>(() => {
+    const offered = this.offered();
+    return this.alwaysShowHub() ? offered : offered.filter((plan) => this.inContext(plan));
+  });
 
   private readonly current = signal<WorkPlan | undefined>(undefined);
 
@@ -79,6 +90,9 @@ export class WorkPlanService {
     // searching for something else or clearing the search, leaves the wizard
     // holding a reference that is no longer on screen anywhere, so it closes
     // rather than carrying on against nothing.
+    //
+    // Nothing closes on a build whose hub is always shown, since eligibility
+    // there does not depend on context in the first place.
     effect(() => {
       const open = this.current();
       if (!open) return;

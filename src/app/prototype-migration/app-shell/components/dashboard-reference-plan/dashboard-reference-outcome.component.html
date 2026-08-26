@@ -9,7 +9,12 @@
        structure, so the element was only ever a label for it. -->
   <div class="alp-plan-step__head">
     <p class="alp-plan-step__label">Dashboard Reference</p>
-    <h4 class="alp-plan-step__reference">{{ reference() }}</h4>
+    <!-- Only where there is one. A build that shows every plan for review can
+         open this without a reference in play, and an empty heading under a
+         label is worse than a label on its own. -->
+    @if (reference()) {
+      <h4 class="alp-plan-step__reference">{{ reference() }}</h4>
+    }
     <p class="alp-plan-step__lead">
       Decide whether this dashboard reference matches the policy holder on our records.
     </p>

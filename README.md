@@ -102,7 +102,11 @@ everything; a release branch turns off what its audience has no use for.
 - `show: false` drops a button or a plan from the build entirely.
 - `requiresContext` is the context a plan needs before it can be run. Leave it
   out for a plan that runs from anywhere, as script management does.
-- `hub.alwaysShow: false` skips the hub where only one plan can be run, so the
+- `hub.alwaysShow: true` shows the hub as a screen and lifts `requiresContext`
+  from every plan, so all of them can be opened and reviewed without searching
+  for something first. Keep it to `develop`.
+- `hub.alwaysShow: false` is what a release branch uses: each plan waits for the
+  context it needs, and where only one can be run the hub is skipped and the
   rail's business processes button opens that plan directly.
 
 A button set to `show: true` still only appears when it leads somewhere: the
