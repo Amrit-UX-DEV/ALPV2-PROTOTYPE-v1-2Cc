@@ -222,8 +222,19 @@ from the capture root down to the subject is cloned empty, classes and
 attributes kept, and rebuilt around it. Those shells are flattened by
 `journey-mapper.css` so they are matched by selectors and never seen.
 
+The stylesheets come with it. Angular takes a component's styles out of the
+document when its last instance is destroyed, and the run ends in a reload, so
+by the time the frames are read the app has never rendered most of what was
+photographed and its rules are simply not on the page. That is what an unstyled
+frame is. The pass collects every stylesheet on the page after each frame it
+takes, keeps them with the run, and puts them back before a frame is drawn.
+They are the app's own rules, scoped by the same attributes the frames carry,
+so putting them back changes nothing for the app.
+
 Angular's scoping attributes are kept, so component stylesheets draw the frame
-the same way they drew the screen.
+the same way they drew the screen. Where a selector names the div inside a
+component rather than the component's own element, the picture climbs out to
+take the element with it, since that is where the `:host` rules land.
 
 The box comes with it. The subject is written out at the width and height it
 had on screen and the frame is laid out at that size, then scaled down to fit.
@@ -237,5 +248,11 @@ scripts are stripped on the way out.
 Pick a `capture` root that is a whole layout unit rather than a fragment of
 one: `.alpha-explorer-toolbar` rather than the search panel positioned against
 it, `.alpha-wizard` rather than the step inside its card.
+
+Every frame is checked. Once a run is in, each frame is drawn off-screen at its
+own width and compared with what the screen it came from actually looked like:
+text colour, background, typeface, size and height. Anything that does not
+match is reported under the map, which is how a frame that lost its stylesheets
+says so itself rather than waiting to be noticed.
 
 Adding a journey is a file and an index entry. Nothing in `src/app` changes.

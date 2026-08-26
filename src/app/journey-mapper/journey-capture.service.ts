@@ -1,6 +1,6 @@
 import { Injectable, computed, signal } from '@angular/core';
 
-import { Journey, JourneyAction, JourneyFrame, JourneyStep } from './journey.model';
+import { Journey, JourneyAction, JourneyFrame, JourneyLook, JourneyStep } from './journey.model';
 
 /** Where a completed run is kept so it can survive the reload that follows it. */
 const STORAGE_KEY = 'jm.frames';
@@ -25,6 +25,16 @@ const MAX_STORED_CHARS = 3_000_000;
  */
 const MAX_FRAME_PX = 2400;
 
+/** Marks the element the collected stylesheets are put back in. */
+const STYLE_MARK = 'data-jm-frame-styles';
+
+/** How far a frame may stand from the screen it came from before it is wrong. */
+const HEIGHT_SLACK = 0.15;
+const HEIGHT_SLACK_PX = 48;
+
+/** How far the picture may climb out of wrappers that hold nothing else. */
+const WIDEN_LIMIT = 4;
+
 export type CaptureStatus = 'idle' | 'capturing' | 'ready' | 'failed';
 
 interface StoredRun {
@@ -33,6 +43,8 @@ interface StoredRun {
   fingerprint: string;
   capturedAt: number;
   frames: Record<string, JourneyFrame>;
+  /** The component stylesheets the frames need. See collectStyles. */
+  styles: string[];
 }
 
 /**
@@ -87,6 +99,23 @@ export class JourneyCaptureService {
   private readonly problems = signal<string[]>([]);
   readonly warnings = this.problems.asReadonly();
 
+  /**
+   * Every component stylesheet seen while the pass ran.
+   *
+   * This is the difference between a frame and a wall of unstyled markup.
+   * Angular takes a component's styles out of the document when its last
+   * instance is destroyed, and the whole point of a journey is that the app
+   * moves on: by the time the frames are read, the screen half of them came
+   * from is long gone and so are its rules. Worse, the run ends in a reload,
+   * and a freshly booted app has never rendered most of what was photographed.
+   *
+   * So the stylesheets are collected while they are on the page, kept with the
+   * run, and put back before a frame is drawn. They are the app's own rules,
+   * scoped by the same attributes the frames carry, so putting them back
+   * changes nothing for the app itself.
+   */
+  private readonly styleSheets = new Set<string>();
+
   private running = false;
 
   /** The frame for a step, absent where that step has none. */
@@ -106,11 +135,13 @@ export class JourneyCaptureService {
     const fingerprint = journey.steps.map((step) => step.id).join('|');
     const stored = this.read(journey.id, fingerprint);
     if (stored) {
+      this.applyStyles(stored.styles);
       this.captured.set(stored.frames);
       this.at.set(stored.capturedAt);
       this.total.set(journey.steps.length);
       this.done.set(journey.steps.length);
       this.state.set('ready');
+      void this.verify(stored.frames);
       return;
     }
 
@@ -145,8 +176,9 @@ export class JourneyCaptureService {
       for (const [index, step] of journey.steps.entries()) {
         this.done.set(index);
 
-        const scope = (await this.find(root, step.capture)) ?? root;
-        frames[step.id] = this.snapshot(scope, root);
+        const found = (await this.find(root, step.capture)) ?? root;
+        frames[step.id] = this.snapshot(this.widen(found, root), root);
+        this.collectStyles();
 
         await this.perform(root, step);
       }
@@ -159,13 +191,22 @@ export class JourneyCaptureService {
     }
 
     this.done.set(journey.steps.length);
+    this.collectStyles();
+
+    const styles = [...this.styleSheets];
+    this.applyStyles(styles);
     this.captured.set(frames);
     this.at.set(Date.now());
     this.running = false;
 
+    // Checked against how the screens actually looked before the run is kept.
+    // A frame that is not drawn is worth knowing about at the moment it is
+    // taken, not the next time somebody opens the map and wonders.
+    await this.verify(frames);
+
     // Only reload where the frames are safely written down. Reloading without
     // them would run the pass again on the next boot, and again after that.
-    if (this.write(journey.id, fingerprint, frames)) {
+    if (this.write(journey.id, fingerprint, frames, styles)) {
       location.reload();
       return;
     }
@@ -268,6 +309,33 @@ export class JourneyCaptureService {
   }
 
   /**
+   * Climbs out of any wrapper that holds nothing but the subject.
+   *
+   * A selector usually names the div inside a component rather than the
+   * component's own element, and the component's element is where its :host
+   * rules land -- often the padding, the background and the height of the very
+   * thing being photographed. Left above the subject it becomes a shell and is
+   * flattened, and the frame loses all of it.
+   *
+   * An ancestor with one child adds nothing to the picture but itself, so
+   * taking it in cannot bring anything unwanted with it. The climb stops at
+   * anything with a second child, at the root, and at a few levels up, which is
+   * far enough for a host and its wrapper and not far enough to end up
+   * photographing the whole app by accident.
+   */
+  private widen(scope: Element, root: HTMLElement): Element {
+    let subject = scope;
+
+    for (let step = 0; step < WIDEN_LIMIT; step++) {
+      const parent = subject.parentElement;
+      if (!parent || parent === root || parent.childElementCount !== 1) break;
+      subject = parent;
+    }
+
+    return subject;
+  }
+
+  /**
    * The picture: the element as it stands, with everything above it that its
    * stylesheets are looking for.
    *
@@ -337,7 +405,12 @@ export class JourneyCaptureService {
     }
 
     const { width, height } = this.extent(scope);
-    return { html: outermost.outerHTML, width, height };
+    return {
+      html: outermost.outerHTML,
+      width,
+      height,
+      look: this.look(scope, host.offsetHeight),
+    };
   }
 
   /**
@@ -372,6 +445,131 @@ export class JourneyCaptureService {
       width: Math.min(MAX_FRAME_PX, Math.ceil((right - rect.left) / scale)),
       height: Math.min(MAX_FRAME_PX, Math.ceil((bottom - rect.top) / scale)),
     };
+  }
+
+  /**
+   * Every stylesheet on the page right now, added to the run's collection.
+   *
+   * Called after each frame is taken, which is the only moment the rules for
+   * that screen are certain to be there. A set, because the same stylesheet is
+   * on the page for most of the run and only needs keeping once.
+   *
+   * The global stylesheets are gathered along with the component ones. They are
+   * link elements in a built app and are not picked up here, but a dev server
+   * inlines them, and a stylesheet already on the page costs nothing to have
+   * twice.
+   */
+  private collectStyles(): void {
+    for (const sheet of Array.from(document.querySelectorAll('style'))) {
+      if (sheet.hasAttribute(STYLE_MARK)) continue;
+
+      const text = sheet.textContent ?? '';
+      if (text.trim()) this.styleSheets.add(text);
+    }
+  }
+
+  /**
+   * Puts the collected stylesheets back on the page, in one element.
+   *
+   * Nothing changes for the app. These are its own rules, scoped by the same
+   * attributes they always were, so the only elements they can reach that are
+   * not already drawn by them are the frames.
+   */
+  private applyStyles(styles: string[]): void {
+    if (!styles.length) return;
+
+    let tag = document.head.querySelector(`style[${STYLE_MARK}]`);
+    if (!tag) {
+      tag = document.createElement('style');
+      tag.setAttribute(STYLE_MARK, '');
+      document.head.appendChild(tag);
+    }
+
+    tag.textContent = styles.join('\n');
+  }
+
+  /**
+   * Draws every frame off-screen and compares it with the screen it came from.
+   *
+   * The check that matters is height. A frame missing its rules is not subtly
+   * wrong; it is unstyled markup at an entirely different height, and no
+   * threshold is needed to tell the two apart. The text properties are cheap
+   * and catch the narrower case of one stylesheet missing out of several.
+   *
+   * It is done in the page rather than in the abstract because that is the only
+   * place the answer means anything: the same document, the same stylesheets,
+   * the same width the frame will be laid out at.
+   */
+  private async verify(frames: Record<string, JourneyFrame>): Promise<void> {
+    await this.settle(0);
+
+    const probe = document.createElement('div');
+    probe.setAttribute('inert', '');
+    probe.setAttribute('aria-hidden', 'true');
+    probe.style.cssText = 'position:fixed;top:0;left:-20000px;visibility:hidden;';
+
+    // Inside the app's own root, since a frame is drawn inside it too and the
+    // stack has rules that reach down from there.
+    (document.querySelector('app-root') ?? document.body).appendChild(probe);
+
+    try {
+      for (const [id, frame] of Object.entries(frames)) {
+        probe.style.width = `${frame.width}px`;
+        probe.innerHTML = frame.html;
+
+        const subject = probe.querySelector('[data-jm-subject]');
+        if (!(subject instanceof HTMLElement)) {
+          this.note(`Step '${id}': the frame has nothing in it.`);
+          continue;
+        }
+
+        const differences = this.compare(frame.look, this.look(subject, subject.offsetHeight));
+        if (differences.length) {
+          this.note(
+            `Step '${id}': the frame is not drawn like the screen it came from ` +
+              `(${differences.join('; ')}).`,
+          );
+        }
+      }
+    } finally {
+      probe.remove();
+    }
+  }
+
+  private look(element: Element, height: number): JourneyLook {
+    const drawn = getComputedStyle(element);
+    return {
+      color: drawn.color,
+      background: drawn.backgroundColor,
+      fontFamily: drawn.fontFamily,
+      fontSize: drawn.fontSize,
+      height,
+    };
+  }
+
+  private compare(screen: JourneyLook, frame: JourneyLook): string[] {
+    const differences: string[] = [];
+
+    if (frame.color !== screen.color) {
+      differences.push(`text ${frame.color} against ${screen.color}`);
+    }
+    if (frame.background !== screen.background) {
+      differences.push(`background ${frame.background} against ${screen.background}`);
+    }
+    if (frame.fontFamily !== screen.fontFamily) differences.push('a different typeface');
+    if (frame.fontSize !== screen.fontSize) {
+      differences.push(`text at ${frame.fontSize} against ${screen.fontSize}`);
+    }
+
+    // A frame reflows a little against a screen it was cut out of, so the
+    // tolerance is generous. What it is looking for is the frame that came out
+    // a fifth of the height, which is what no stylesheet looks like.
+    const slack = Math.max(HEIGHT_SLACK_PX, screen.height * HEIGHT_SLACK);
+    if (Math.abs(frame.height - screen.height) > slack) {
+      differences.push(`${frame.height}px tall against ${screen.height}px`);
+    }
+
+    return differences;
   }
 
   /**
@@ -432,8 +630,13 @@ export class JourneyCaptureService {
   }
 
   /** True where the run is safely written down and can be read back. */
-  private write(journeyId: string, fingerprint: string, frames: Record<string, JourneyFrame>): boolean {
-    const run: StoredRun = { journeyId, fingerprint, capturedAt: Date.now(), frames };
+  private write(
+    journeyId: string,
+    fingerprint: string,
+    frames: Record<string, JourneyFrame>,
+    styles: string[],
+  ): boolean {
+    const run: StoredRun = { journeyId, fingerprint, capturedAt: Date.now(), frames, styles };
     const raw = JSON.stringify(run);
     if (raw.length > MAX_STORED_CHARS) return false;
 

@@ -29,6 +29,23 @@ export interface JourneyFrame {
   html: string;
   width: number;
   height: number;
+  /** How the subject was drawn, so a frame can be checked against it later. */
+  look: JourneyLook;
+}
+
+/**
+ * A few of the things a screen looked like at the moment it was photographed.
+ *
+ * Enough to tell a frame that is drawn from one that is not. A frame missing
+ * its stylesheets is not subtly wrong, it is a wall of unstyled markup at
+ * entirely the wrong height, and that is exactly what these catch.
+ */
+export interface JourneyLook {
+  color: string;
+  background: string;
+  fontFamily: string;
+  fontSize: string;
+  height: number;
 }
 
 /** How a step is carried out on the running prototype. */
