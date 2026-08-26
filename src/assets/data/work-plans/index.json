@@ -1,23 +1,17 @@
 {
-  "heading": "Work Plans",
-  "lead": "Pick the business process to work through. Each one is a short wizard that saves what you record at the end.",
+  "heading": "Prototype Work Plan Flows",
   "plans": [
     {
       "id": "script-management",
       "name": "Script Management",
-      "description": "Associate a script with a product and campaign, build or view its steps, preview it, and confirm.",
       "icon": "fas fa-file-lines",
-      "stepCount": 4,
       "configUrl": "assets/data/wizard-configs/script-management.wizard.json"
     },
     {
       "id": "dashboard-reference",
       "name": "Dashboard Reference",
-      "description": "Confirm the policy behind a dashboard reference, record what was supplied on the call, and decide whether the record matched.",
       "icon": "fas fa-clipboard-check",
-      "stepCount": 2,
-      "configUrl": "assets/data/wizard-configs/dashboard-reference.wizard.json",
-      "note": "Needs a dashboard reference in context"
+      "configUrl": "assets/data/wizard-configs/dashboard-reference.wizard.json"
     }
   ]
 }

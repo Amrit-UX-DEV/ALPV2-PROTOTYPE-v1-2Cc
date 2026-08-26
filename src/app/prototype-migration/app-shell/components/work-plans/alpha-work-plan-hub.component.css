@@ -11,26 +11,11 @@
   padding: var(--alp-space-5) var(--alp-space-5) var(--alp-space-10);
 }
 
-.alp-work-plans__head {
-  display: flex;
-  flex-direction: column;
-  gap: var(--alp-space-2);
-}
-
 .alp-work-plans__title {
   margin: 0;
   font-size: var(--alp-font-size-xl);
   font-weight: var(--alp-font-weight-semibold);
   color: var(--alp-color-text);
-}
-
-/* Slate 700 on the white body: 10.35:1, and the sentence is a line of standing
-   help rather than a caption on a value, so it is set a step above muted. */
-.alp-work-plans__lead {
-  max-width: 60ch;
-  margin: 0;
-  font-size: var(--alp-font-size-sm);
-  color: var(--alp-color-slate-700);
 }
 
 /* As many tiles to a row as will hold their width, off the width this region
@@ -46,8 +31,8 @@
   list-style: none;
 }
 
-/* Every tile the same height as the one beside it, however long its sentence
-   runs, so a row of them reads as a row. */
+/* Every tile the same height as the one beside it, so a row of them reads as a
+   row. */
 .alp-work-plans__item {
   display: flex;
 }

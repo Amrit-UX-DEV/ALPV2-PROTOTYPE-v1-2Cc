@@ -25,9 +25,8 @@ export class WorkPlanService {
 
   private readonly index = signal<WorkPlanIndex | undefined>(undefined);
 
-  /** The hub's own wording, absent until the index has been read. */
+  /** What the hub is called, absent until the index has been read. */
   readonly heading = computed(() => this.index()?.heading ?? '');
-  readonly lead = computed(() => this.index()?.lead ?? '');
 
   readonly plans = computed<WorkPlan[]>(() => this.index()?.plans ?? []);
 

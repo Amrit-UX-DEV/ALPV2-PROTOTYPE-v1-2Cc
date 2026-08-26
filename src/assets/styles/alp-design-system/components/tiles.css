@@ -498,18 +498,18 @@
    like a card rather than a card with a button in it, and the whole
    surface is the target.
 
-   Icon on the left in a tinted well, the name and what it does in
-   the middle, and a chevron at the end saying it leads somewhere.
+   Icon on the left in a tinted well, the name in the middle, and a
+   chevron at the end saying it leads somewhere. The name is all the
+   text there is: a line under it describing the thing it names is a
+   line a rep reads once and then has to read past every time after.
 
-   Every pair is AA on white: the name is slate 900 at 17.85:1, the
-   sentence under it slate 700 at 10.35:1, and the meta line muted at
-   5.12:1. Under the pointer the fill is brand 50, where those become
-   15.97:1, 9.26:1 and 4.57:1.
+   The name is slate 900, 17.85:1 on the white it rests on and 15.97:1
+   on the brand 50 it takes under the pointer.
    ========================================================= */
 
 .alp-launch-tile {
   display: flex;
-  align-items: flex-start;
+  align-items: center;
   gap: var(--alp-space-4);
   width: 100%;
   padding: var(--alp-space-4);
@@ -551,46 +551,17 @@
   color: var(--alp-color-brand);
 }
 
-.alp-launch-tile__body {
-  display: flex;
-  flex: 1 1 auto;
-  flex-direction: column;
-  gap: var(--alp-space-1);
-  min-width: 0;
-}
-
+/* The whole of the tile's text: what the thing is called and nothing under it,
+   taking the width between the icon and the chevron. */
 .alp-launch-tile__name {
+  flex: 1 1 auto;
+  min-width: 0;
   font-size: var(--alp-font-size-md);
   font-weight: var(--alp-font-weight-semibold);
   color: var(--alp-color-text);
 }
 
-.alp-launch-tile__desc {
-  font-size: var(--alp-font-size-sm);
-  line-height: 1.4;
-  color: var(--alp-color-slate-700);
-}
-
-.alp-launch-tile__meta {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  gap: var(--alp-space-1) var(--alp-space-3);
-  margin-top: var(--alp-space-1);
-  font-size: var(--alp-font-size-xs);
-  color: var(--alp-color-text-muted);
-}
-
-.alp-launch-tile__note {
-  display: inline-flex;
-  align-items: center;
-  gap: var(--alp-space-1);
-}
-
-/* Centred against the icon well rather than the first line of text, so it sits
-   level with the block it belongs to however the sentence wraps. */
 .alp-launch-tile__chevron {
-  align-self: center;
   flex: 0 0 auto;
   font-size: var(--alp-font-size-sm);
   color: var(--alp-color-slate-500);

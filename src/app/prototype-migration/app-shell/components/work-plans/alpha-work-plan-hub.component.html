@@ -1,8 +1,5 @@
 <div class="alp-work-plans">
-  <div class="alp-work-plans__head">
-    <h2 class="alp-work-plans__title">{{ plans.heading() }}</h2>
-    <p class="alp-work-plans__lead">{{ plans.lead() }}</p>
-  </div>
+  <h2 class="alp-work-plans__title">{{ plans.heading() }}</h2>
 
   @if (plans.plans().length) {
     <!-- A list, because that is what it is: two work plans now, and the next one
@@ -14,19 +11,7 @@
             <span class="alp-launch-tile__icon">
               <i aria-hidden="true" [class]="plan.icon"></i>
             </span>
-            <span class="alp-launch-tile__body">
-              <span class="alp-launch-tile__name">{{ plan.name }}</span>
-              <span class="alp-launch-tile__desc">{{ plan.description }}</span>
-              <span class="alp-launch-tile__meta">
-                <span>{{ plan.stepCount }} steps</span>
-                @if (plan.note) {
-                  <span class="alp-launch-tile__note">
-                    <i aria-hidden="true" class="fas fa-circle-info"></i>
-                    {{ plan.note }}
-                  </span>
-                }
-              </span>
-            </span>
+            <span class="alp-launch-tile__name">{{ plan.name }}</span>
             <i aria-hidden="true" class="alp-launch-tile__chevron fa fa-chevron-right"></i>
           </button>
         </li>
