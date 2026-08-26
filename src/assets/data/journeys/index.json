@@ -1,0 +1,10 @@
+{
+  "default": "dashboard-reference",
+  "journeys": [
+    {
+      "id": "dashboard-reference",
+      "name": "Dashboard Reference: check a match and record the decision",
+      "file": "dashboard-reference.journey.json"
+    }
+  ]
+}

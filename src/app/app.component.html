@@ -1,4 +1,9 @@
 
 <!-- <router-outlet></router-outlet> -->
 <!-- <alpha-v2-template></alpha-v2-template> -->
-<app-shell></app-shell>
+<!-- Experimental: the journey mapper wraps the prototype rather than replacing
+     anything in it. The app is projected into the shell's stage, so it is the
+     same document and the same bootstrap, only inset. -->
+<journey-shell>
+  <app-shell></app-shell>
+</journey-shell>

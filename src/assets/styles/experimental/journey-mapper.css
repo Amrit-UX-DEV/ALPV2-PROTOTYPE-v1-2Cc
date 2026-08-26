@@ -1,0 +1,75 @@
+/* =========================================================
+   EXPERIMENTAL — JOURNEY MAPPER (GLOBAL)
+
+   Two things the journey mapper needs that its components
+   cannot style themselves.
+
+   The ring goes on elements the mapper does not own: a real
+   element in the running prototype, or an element inside a
+   clone written straight into the DOM. Neither carries the
+   scoping attribute Angular puts on a component's own markup,
+   so neither can be reached from a component stylesheet.
+
+   Loaded after the design system so that it has the last word
+   over the legacy stack, which sets outlines and shadows on a
+   good deal of what a step is likely to point at.
+   ========================================================= */
+
+/* ---------------------------------------------------------
+   THE RING
+
+   Two rings rather than one. The prototype is drawn on white
+   panels, on the near-black rail and on tinted comparison
+   bands, and a single colour that shows up on all three does
+   not exist. Amber against a white halo shows on any of them:
+   whichever of the two disappears into the background, the
+   other one is what is seen.
+
+   Amber 600 holds 3.19:1 against white, which clears what a
+   boundary needs by itself, and the halo is what carries it
+   over the dark rail.
+
+   No animation. A ring that pulses draws the eye away from
+   the words beside it, which are the thing being read.
+   --------------------------------------------------------- */
+
+.jm-target {
+  outline: 3px solid var(--alp-color-amber-600) !important;
+  outline-offset: 2px;
+  box-shadow: 0 0 0 6px oklch(from var(--alp-color-white) l c h / 0.85) !important;
+  border-radius: var(--alp-radius-xs);
+}
+
+/* ---------------------------------------------------------
+   THE CLONE
+
+   The fragment is drawn by the same stylesheets as the app,
+   so almost nothing is set here: what a clone looks like is
+   the app's business. What is set is that it is a picture.
+   --------------------------------------------------------- */
+
+.jm-clone {
+  display: block;
+  max-width: 100%;
+}
+
+.jm-clone__surface {
+  /* Inert already takes it out of pointer events, the tab order and the
+     accessibility tree. This is for the cursor, which would otherwise still
+     turn into a hand over something that cannot be pressed. */
+  cursor: default;
+  user-select: none;
+}
+
+.jm-clone__surface * {
+  cursor: default !important;
+}
+
+/* A snapshot is a still. Anything that was going to move in it is stopped, so
+   a frame looks the same the whole time it is being read. */
+.jm-clone__surface *,
+.jm-clone__surface *::before,
+.jm-clone__surface *::after {
+  animation: none !important;
+  transition: none !important;
+}

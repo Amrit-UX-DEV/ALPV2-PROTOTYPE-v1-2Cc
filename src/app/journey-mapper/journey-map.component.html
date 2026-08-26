@@ -1,0 +1,120 @@
+<div class="jm-map">
+
+  <!-- The journey as a whole: what path this is, and every step of it. A
+       reviewer asked about step nine has to be able to get to step nine. -->
+  <aside class="jm-map__contents">
+    <p class="jm-map__eyebrow">Journey</p>
+    <h1 class="jm-map__title">{{ name() }}</h1>
+    @if (summary()) {
+      <p class="jm-map__summary">{{ summary() }}</p>
+    }
+
+    <ol class="jm-map__steps">
+      @for (step of journeys.steps(); track step.id; let i = $index) {
+        <li>
+          <button
+            type="button"
+            class="jm-step-link"
+            [class.jm-step-link--current]="i === journeys.stepIndex()"
+            [attr.aria-current]="i === journeys.stepIndex() ? 'step' : null"
+            (click)="journeys.goTo(i)">
+            <span class="jm-step-link__number">{{ i + 1 }}</span>
+            <span class="jm-step-link__title">{{ step.title }}</span>
+          </button>
+        </li>
+      }
+    </ol>
+
+    <!-- Frames are photographs of a running app, so they age the moment the app
+         changes. Saying when they were taken, and offering to take them again,
+         is the difference between a stale frame and a misleading one. -->
+    <div class="jm-map__capture">
+      @if (capturedAt()) {
+        <p class="jm-map__captured">Frames captured {{ capturedAt() }}</p>
+      }
+      <button type="button" class="alp-btn alp-btn--sm alp-btn--secondary" (click)="capture.recapture()">
+        <i aria-hidden="true" class="fas fa-rotate-right"></i>
+        Capture again
+      </button>
+    </div>
+  </aside>
+
+  <!-- One frame, which is the step the journey is on. -->
+  @if (journeys.step(); as step) {
+    <article class="jm-frame">
+
+      <div class="jm-frame__head">
+        <p class="jm-frame__count">Step {{ journeys.stepNumber() }} of {{ journeys.stepCount() }}</p>
+        <h2 class="jm-frame__title">{{ step.title }}</h2>
+      </div>
+
+      <!-- The picture: the markup the prototype itself rendered at this point in
+           the journey, drawn by the same stylesheets and doing nothing. -->
+      <div class="jm-frame__stage">
+        @if (capture.frame(step.id); as html) {
+          <journey-clone [html]="html" [target]="step.target"></journey-clone>
+        } @else if (capture.status() === 'capturing') {
+          <p class="jm-frame__no-clone">Capturing.</p>
+        } @else {
+          <p class="jm-frame__no-clone">
+            No frame for this step. Nothing on the screen matched what it asked to
+            photograph, which usually means the step before it did not land.
+          </p>
+        }
+      </div>
+
+      <dl class="jm-frame__detail">
+        <div class="jm-frame__pair">
+          <dt>Action</dt>
+          <dd>{{ step.action }}</dd>
+        </div>
+        <div class="jm-frame__pair">
+          <dt>Result</dt>
+          <dd>{{ step.result }}</dd>
+        </div>
+        @if (step.notes) {
+          <div class="jm-frame__pair">
+            <dt>Notes</dt>
+            <dd>{{ step.notes }}</dd>
+          </div>
+        }
+        @if (step.target) {
+          <div class="jm-frame__pair">
+            <dt>Target</dt>
+            <dd><code class="jm-frame__target">{{ step.target }}</code></dd>
+          </div>
+        }
+      </dl>
+
+    </article>
+  } @else {
+    <article class="jm-frame jm-frame--empty">
+      <div class="alp-notice alp-notice--info">
+        <i aria-hidden="true" class="alp-notice__icon fas fa-info-circle"></i>
+        <p class="alp-notice__text">
+          No journey is loaded. Check assets/data/journeys/index.json and the file it points at.
+        </p>
+      </div>
+    </article>
+  }
+
+  <!-- Where the pass could not do what a step asked, it is said here rather than
+       left in the console: a frame that is missing or wrong has a reason, and
+       the reason is usually a selector the app has moved on from. -->
+  @if (capture.warnings().length) {
+    <div class="jm-map__warnings">
+      <div class="alp-notice alp-notice--warning" role="alert">
+        <i aria-hidden="true" class="alp-notice__icon fas fa-exclamation-triangle"></i>
+        <div class="alp-notice__text">
+          <strong>The capture pass could not follow every step.</strong>
+          <ul class="jm-map__warning-list">
+            @for (warning of capture.warnings(); track warning) {
+              <li>{{ warning }}</li>
+            }
+          </ul>
+        </div>
+      </div>
+    </div>
+  }
+
+</div>

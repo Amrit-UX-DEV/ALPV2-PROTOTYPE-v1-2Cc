@@ -1,0 +1,259 @@
+/* =========================================================
+   JOURNEY MAP
+
+   The contents down one side and one frame beside it. Both
+   scroll on their own: a long journey should not push its
+   current frame off the screen, and a tall snapshot should
+   not push the list of steps off it either.
+   ========================================================= */
+
+:host {
+  display: block;
+  height: 100%;
+  min-height: 0;
+  container: jm-map / inline-size;
+}
+
+.jm-map {
+  display: grid;
+  grid-template-columns: minmax(220px, 300px) 1fr;
+  gap: var(--alp-space-5);
+  height: 100%;
+  min-height: 0;
+  padding: var(--alp-space-5);
+  box-sizing: border-box;
+}
+
+/* ---- Contents ---- */
+
+.jm-map__contents {
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+  overflow-y: auto;
+  padding-right: var(--alp-space-2);
+}
+
+.jm-map__eyebrow {
+  margin: 0;
+  font-size: var(--alp-font-size-xs);
+  font-weight: var(--alp-font-weight-semibold);
+  color: var(--alp-color-text-muted);
+}
+
+.jm-map__title {
+  margin: var(--alp-space-1) 0 0;
+  font-size: var(--alp-font-size-lg);
+  font-weight: var(--alp-font-weight-bold);
+  line-height: 1.25;
+  color: var(--alp-color-text);
+}
+
+.jm-map__summary {
+  margin: var(--alp-space-2) 0 0;
+  font-size: var(--alp-font-size-sm);
+  line-height: 1.45;
+  color: var(--alp-color-slate-700);
+}
+
+.jm-map__steps {
+  margin: var(--alp-space-4) 0 0;
+  padding: 0;
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+/* The whole row is the target, and the number keeps its own column so the
+   titles line up whether the journey has nine steps or ninety. */
+.jm-step-link {
+  display: flex;
+  align-items: baseline;
+  gap: var(--alp-space-2);
+  width: 100%;
+  padding: var(--alp-space-2) var(--alp-space-3);
+  border: 0;
+  border-radius: var(--alp-radius-sm);
+  background: transparent;
+  font-family: inherit;
+  font-size: var(--alp-font-size-sm);
+  text-align: left;
+  color: var(--alp-color-slate-700);
+  cursor: pointer;
+}
+
+.jm-step-link:hover {
+  background: var(--alp-color-slate-100);
+  color: var(--alp-color-text);
+}
+
+.jm-step-link:focus-visible {
+  outline: 2px solid var(--alp-color-border-focus);
+  outline-offset: 1px;
+}
+
+/* Where the journey is. Brand fill and white on it, which is 7.80:1. */
+.jm-step-link--current {
+  background: var(--alp-color-brand);
+  color: var(--alp-color-brand-text);
+  font-weight: var(--alp-font-weight-semibold);
+}
+
+.jm-step-link--current:hover {
+  background: var(--alp-color-brand-hover);
+  color: var(--alp-color-brand-text);
+}
+
+.jm-step-link__number {
+  flex: 0 0 1.5rem;
+  font-variant-numeric: tabular-nums;
+  font-weight: var(--alp-font-weight-semibold);
+}
+
+.jm-step-link__title {
+  min-width: 0;
+}
+
+/* Pushed to the bottom of the contents: it is about the frames rather than
+   about the journey, and it should not sit between a reader and the steps. */
+.jm-map__capture {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: var(--alp-space-2);
+  margin-top: auto;
+  padding-top: var(--alp-space-4);
+}
+
+.jm-map__captured {
+  margin: 0;
+  font-size: var(--alp-font-size-xs);
+  color: var(--alp-color-text-muted);
+}
+
+/* ---- Frame ---- */
+
+.jm-frame {
+  display: grid;
+  grid-template-rows: auto 1fr auto;
+  min-height: 0;
+  gap: var(--alp-space-4);
+  padding: var(--alp-space-5);
+  border: 1px solid var(--alp-color-border);
+  border-radius: var(--alp-radius-lg);
+  background: var(--alp-color-surface);
+  box-shadow: var(--alp-shadow-sm);
+  overflow: hidden;
+}
+
+.jm-frame--empty {
+  grid-template-rows: auto;
+  align-content: start;
+}
+
+.jm-frame__head {
+  display: flex;
+  flex-direction: column;
+  gap: var(--alp-space-1);
+}
+
+.jm-frame__count {
+  margin: 0;
+  font-size: var(--alp-font-size-xs);
+  font-weight: var(--alp-font-weight-semibold);
+  color: var(--alp-color-text-muted);
+}
+
+.jm-frame__title {
+  margin: 0;
+  font-size: var(--alp-font-size-xl);
+  font-weight: var(--alp-font-weight-bold);
+  line-height: 1.2;
+  color: var(--alp-color-text);
+}
+
+/* The snapshot sits on the app's own background rather than on the frame's
+   white, so a white panel in the clone still reads as a panel. */
+.jm-frame__stage {
+  display: flex;
+  flex-direction: column;
+  gap: var(--alp-space-2);
+  min-height: 0;
+  overflow: auto;
+  padding: var(--alp-space-4);
+  border: 1px solid var(--alp-color-border);
+  border-radius: var(--alp-radius-md);
+  background: var(--alp-color-background);
+}
+
+.jm-frame__no-clone {
+  margin: auto;
+  font-size: var(--alp-font-size-sm);
+  color: var(--alp-color-text-muted);
+}
+
+/* Action, result and the rest as a pair per line, label in a fixed column so
+   the sentences start at the same place. */
+.jm-frame__detail {
+  display: flex;
+  flex-direction: column;
+  gap: var(--alp-space-2);
+  margin: 0;
+}
+
+.jm-frame__pair {
+  display: grid;
+  grid-template-columns: 5.5rem 1fr;
+  gap: var(--alp-space-3);
+  align-items: baseline;
+}
+
+.jm-frame__pair dt {
+  font-size: var(--alp-font-size-xs);
+  font-weight: var(--alp-font-weight-semibold);
+  color: var(--alp-color-text-muted);
+}
+
+.jm-frame__pair dd {
+  margin: 0;
+  font-size: var(--alp-font-size-sm);
+  line-height: 1.45;
+  color: var(--alp-color-text);
+}
+
+.jm-frame__target {
+  font-family: var(--alp-font-family-mono, monospace);
+  font-size: var(--alp-font-size-xs);
+  color: var(--alp-color-slate-700);
+  overflow-wrap: anywhere;
+}
+
+/* A container query rather than a viewport one: what decides this layout is
+   the room the frame has, and in a shell that can be given more or less of the
+   window that is not the same question as how wide the window is. */
+@container jm-map (max-width: 900px) {
+  .jm-map {
+    grid-template-columns: 1fr;
+    grid-template-rows: auto 1fr;
+  }
+}
+
+/* Under both columns, because a fault in the pass is about the run and not
+   about the step being read when it is noticed. */
+.jm-map__warnings {
+  grid-column: 1 / -1;
+}
+
+.jm-map__warning-list {
+  margin: var(--alp-space-2) 0 0;
+  padding-left: var(--alp-space-5);
+  font-size: var(--alp-font-size-sm);
+  line-height: 1.5;
+}
+
+@container jm-map (max-width: 900px) {
+  .jm-map__warnings {
+    grid-column: auto;
+  }
+}

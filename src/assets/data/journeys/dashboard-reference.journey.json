@@ -1,0 +1,153 @@
+{
+  "id": "dashboard-reference",
+  "name": "Dashboard Reference: check a match and record the decision",
+  "summary": "A pensions dashboard sends a possible match. A rep searches for that reference, compares what the dashboard holds against what we hold, decides whether it is the same person, and records what the decision required.",
+  "steps": [
+    {
+      "id": "open-search",
+      "title": "Open the search panel",
+      "action": "Press Search ALPHA on the left rail.",
+      "result": "The panel slides out beside the rail with Search Criteria on Policy, which is what most calls start from.",
+      "target": ".ui-action-rail button[alpha-ui-attr-toggle]",
+      "capture": ".alpha-explorer-toolbar",
+      "notes": "The rail only draws the buttons this build offers and that lead somewhere. With nothing searched, Group Summary and Business Processes are not there yet."
+    },
+    {
+      "id": "choose-criteria",
+      "title": "Choose what is being searched for",
+      "action": "Set Search Criteria to Dashboard Reference.",
+      "result": "The field below changes what it expects: the placeholder becomes a dashboard reference and the hint under it says what one looks like.",
+      "target": "#MenuSearch_SearchCriteria",
+      "do": [{ "type": "select", "value": "Dashboard Reference" }],
+      "capture": ".ui-action-menu-extended",
+      "notes": "The criteria and the hint are the same data the call centre search reads, so the two forms cannot ask for different things."
+    },
+    {
+      "id": "enter-reference",
+      "title": "Enter the reference",
+      "action": "Type PMR12345678910.",
+      "result": "Search becomes pressable. A reference that does not match the shape of one is flagged on the field rather than after the search.",
+      "target": "#MenuSearch_ReferenceNumber",
+      "do": [{ "type": "type", "value": "PMR12345678910" }],
+      "capture": ".ui-action-menu-extended"
+    },
+    {
+      "id": "search",
+      "title": "Search",
+      "action": "Press Search.",
+      "result": "The dashboard reference screen opens: the reference in the heading, the policy it resolved to, and the comparison underneath.",
+      "target": "#MenuSearch_SearchButton",
+      "capture": ".ui-action-menu-extended",
+      "settleMs": 600
+    },
+    {
+      "id": "read-heading",
+      "title": "Confirm what is on screen",
+      "action": "Read the heading and the date under it.",
+      "result": "Dashboard Reference: PMR12345678910, and how long that reference stays valid.",
+      "target": ".alp-search-summary__head",
+      "do": [],
+      "capture": ".alp-search-summary",
+      "notes": "The reference is in the heading rather than repeated in a corner. The pension reference is not shown here because it is the policy number, which the tile below gives a line of its own."
+    },
+    {
+      "id": "read-policy",
+      "title": "See the policy it resolved to",
+      "action": "Read the policy tile.",
+      "result": "The policy number, its status, the kind of policy it is, and how many parties are attached to it.",
+      "target": ".alp-policy-tile",
+      "do": [],
+      "capture": ".alp-search-summary"
+    },
+    {
+      "id": "compare",
+      "title": "Work through the comparison",
+      "action": "Read the differences, then open the agreements if they are needed.",
+      "result": "Three groups: what disagrees, what agrees, and what neither platform holds. Differences are open on arrival because they are the reason the screen exists.",
+      "target": ".alp-search-summary__comparison",
+      "do": [],
+      "capture": ".alp-search-summary__comparison",
+      "notes": "Grouped by what the comparison found rather than field by field, so a rep is not reading forty identical rows to find the three that matter."
+    },
+    {
+      "id": "switch-layout",
+      "title": "Switch the layout if a table reads better",
+      "action": "Press Table on the layout switch.",
+      "result": "The same three groups, the same order, laid out as rows against columns for Dashboard Data and Our Record.",
+      "target": ".alp-search-summary__controls .alp-view-switch",
+      "do": [{ "target": ".alp-search-summary__controls .alp-view-switch__option:last-child" }],
+      "capture": ".alp-search-summary__comparison"
+    },
+    {
+      "id": "open-processes",
+      "title": "Go to the business process",
+      "action": "Press Business Processes on the rail.",
+      "result": "On a build that shows the hub, the work plans this build offers. On a build cut to one plan, the Dashboard Reference plan opens directly.",
+      "target": ".ui-menu-action-block.business-processes .ui-menu-action",
+      "capture": ".ui-action-rail",
+      "notes": "The button is only on the rail once there is a plan that can be run. A plan about a dashboard reference cannot run without one."
+    },
+    {
+      "id": "open-plan",
+      "title": "Open the Dashboard Reference plan",
+      "action": "Press the Dashboard Reference tile.",
+      "result": "Step one opens, headed by the reference the whole plan is about.",
+      "target": ".alp-work-plans__item:first-child .alp-launch-tile",
+      "capture": ".alp-work-plans",
+      "notes": "There is no hub on a build cut down to one plan, and the rail opens the plan itself. This step is the hub's."
+    },
+    {
+      "id": "decide",
+      "title": "Say whether it is a match",
+      "action": "Answer 'Was this a match?' with Matched.",
+      "result": "A second question appears asking what the decision required. Not Matched would ask nothing further: there is nothing to record against a reference that is not this person.",
+      "target": "input[name='dashboard-reference-decision'][value='matched']",
+      "capture": ".alp-plan-step",
+      "notes": "One question at a time, and the next only once the last has an answer."
+    },
+    {
+      "id": "record-actions",
+      "title": "Say what the decision required",
+      "action": "Answer Actions Required.",
+      "result": "The categories appear. No Actions Required would end the step here.",
+      "target": "input[name='dashboard-reference-actions'][value='actions']",
+      "capture": ".alp-plan-step"
+    },
+    {
+      "id": "categorise",
+      "title": "Record what it changed",
+      "action": "Tick Change of Name and Other, and write what Other was.",
+      "result": "The note field appears with Other, and the step has everything it needs.",
+      "target": ".alp-plan-step__block:last-of-type",
+      "do": [
+        { "target": ".alp-choice-list:not(.alp-choice-list--inline) .alp-choice-list__item:first-child .alp-choice__input" },
+        { "target": ".alp-choice-list:not(.alp-choice-list--inline) .alp-choice-list__item:last-child .alp-choice__input" },
+        {
+          "type": "type",
+          "target": "#DashboardReferenceOther",
+          "value": "Dashboard holds a second forename we do not."
+        }
+      ],
+      "capture": ".alp-plan-step",
+      "notes": "By category rather than by field. The comparison is field by field because that is how the other platform sends it, but a given name, a surname and five alternate surnames are one change of name to everything downstream."
+    },
+    {
+      "id": "save",
+      "title": "Save",
+      "action": "Press Save and Continue.",
+      "result": "The confirmation says the decision and what it required have been recorded against this dashboard reference.",
+      "target": ".wizard-navigation .stepNext",
+      "capture": ".alpha-wizard",
+      "settleMs": 500
+    },
+    {
+      "id": "exit",
+      "title": "Leave the plan",
+      "action": "Press Finish.",
+      "result": "Back where the rep came from: the hub on a build that has one, and this reference's own comparison on a build that does not.",
+      "target": ".wizard-navigation .ui-btn:last-child",
+      "do": [],
+      "capture": ".alpha-wizard"
+    }
+  ]
+}

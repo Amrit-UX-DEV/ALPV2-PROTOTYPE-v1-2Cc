@@ -1,0 +1,175 @@
+/* =========================================================
+   JOURNEY SHELL
+
+   The page: a stage with the prototype inset in it, and a bar
+   under that. The shell is fixed to the viewport and nothing
+   in it scrolls, because the prototype inside sizes itself to
+   the viewport and would fight anything that did.
+   ========================================================= */
+
+:host {
+  display: block;
+}
+
+.jm-shell {
+  position: fixed;
+  inset: 0;
+  display: grid;
+  grid-template-rows: 1fr auto;
+  background:
+    radial-gradient(
+      120% 120% at 50% 0%,
+      var(--alp-color-slate-700) 0%,
+      var(--alp-color-slate-900) 60%
+    );
+  z-index: var(--alp-z-modal, 1000);
+}
+
+/* ---- Stage ---- */
+
+.jm-stage {
+  position: relative;
+  min-height: 0;
+  overflow: hidden;
+  padding: var(--alp-space-4);
+}
+
+/*
+ * The prototype at its natural size, moved and shrunk rather than squeezed.
+ *
+ * A full viewport wide and tall so that everything inside it that measures
+ * itself against the viewport still gets the answer it was written for. The
+ * transform is set by the component, which measures what room the stage has.
+ */
+.jm-stage__frame {
+  position: absolute;
+  top: var(--alp-space-4);
+  left: 50%;
+  width: 100vw;
+  height: 100vh;
+  transform-origin: top center;
+  border-radius: var(--alp-radius-lg);
+  overflow: hidden;
+  background: var(--alp-color-surface);
+  box-shadow: 0 24px 60px oklch(from var(--alp-shadow-color) l c h / 0.45);
+}
+
+/* The map covers the stage rather than replacing the prototype, so the app
+   underneath keeps running and keeps its place in whatever flow it was in. */
+.jm-stage__map {
+  position: absolute;
+  inset: 0;
+  background: var(--alp-color-background);
+}
+
+/* ---- Bar ---- */
+
+.jm-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: var(--alp-space-3);
+  padding: var(--alp-space-3) var(--alp-space-5);
+  background: var(--alp-color-surface);
+  border-top: 1px solid var(--alp-color-border);
+}
+
+.jm-bar__identity {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+
+.jm-bar__label {
+  font-size: var(--alp-font-size-xs);
+  font-weight: var(--alp-font-weight-semibold);
+  color: var(--alp-color-text-muted);
+}
+
+.jm-bar__journey {
+  font-size: var(--alp-font-size-sm);
+  font-weight: var(--alp-font-weight-semibold);
+  color: var(--alp-color-text);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  max-width: 34ch;
+}
+
+.jm-bar__steps {
+  display: flex;
+  align-items: center;
+  gap: var(--alp-space-3);
+}
+
+/* Tabular figures so the counter does not shuffle the buttons either side of
+   it every time the step number changes width. */
+.jm-bar__count {
+  font-size: var(--alp-font-size-sm);
+  font-variant-numeric: tabular-nums;
+  color: var(--alp-color-slate-700);
+  white-space: nowrap;
+}
+
+/* ---- Capture overlay ---- */
+
+/*
+ * Over everything, bar included. While the pass runs the app is being pressed
+ * and typed into by something other than the person watching, and the one thing
+ * that must not happen is the two of them working the same screen at once.
+ */
+.jm-capture {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  padding: var(--alp-space-5);
+  background: oklch(from var(--alp-color-slate-900) l c h / 0.72);
+  z-index: 1;
+}
+
+.jm-capture__panel {
+  width: min(28rem, 100%);
+  padding: var(--alp-space-6);
+  border-radius: var(--alp-radius-lg);
+  background: var(--alp-color-surface);
+  box-shadow: var(--alp-shadow-lg);
+}
+
+.jm-capture__title {
+  margin: 0;
+  font-size: var(--alp-font-size-lg);
+  font-weight: var(--alp-font-weight-bold);
+  color: var(--alp-color-text);
+}
+
+.jm-capture__line {
+  margin: var(--alp-space-2) 0 0;
+  font-size: var(--alp-font-size-sm);
+  color: var(--alp-color-slate-700);
+}
+
+.jm-capture__track {
+  height: 6px;
+  margin-top: var(--alp-space-4);
+  border-radius: var(--alp-radius-full);
+  background: var(--alp-color-slate-200);
+  overflow: hidden;
+}
+
+/* Width is the progress. No animation on it: the bar moves when a step is
+   done, and a bar that slides on its own says the app is busy when it is only
+   waiting. */
+.jm-capture__bar {
+  height: 100%;
+  border-radius: var(--alp-radius-full);
+  background: var(--alp-color-brand);
+}
+
+.jm-capture__note {
+  margin: var(--alp-space-4) 0 0;
+  font-size: var(--alp-font-size-xs);
+  line-height: 1.5;
+  color: var(--alp-color-text-muted);
+}

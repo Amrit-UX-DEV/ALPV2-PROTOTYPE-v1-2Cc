@@ -93,3 +93,8 @@
 
 /* ALP Design System */
 @import '../../alp-design-system/_index.css';
+
+/* Experimental. Loaded last on purpose: what is in here has to reach elements
+   the legacy stack has already styled. Not part of the design system, and it
+   leaves with the experiment. */
+@import '../../experimental/journey-mapper.css';

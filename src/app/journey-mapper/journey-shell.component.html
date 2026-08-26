@@ -1,0 +1,106 @@
+<div class="jm-shell">
+
+  <!-- The stage holds both views. The prototype stays mounted while the map is
+       open: it is a running app with a half-finished flow in it, and unmounting
+       it to read about it and mounting it again would throw that away. -->
+  <div #stage class="jm-stage">
+
+    <div #frame class="jm-stage__frame" [style.transform]="frameTransform()">
+      <ng-content></ng-content>
+    </div>
+
+    @if (journeys.view() === 'journey') {
+      <div class="jm-stage__map">
+        <journey-map></journey-map>
+      </div>
+    }
+
+  </div>
+
+  <!-- The bar belongs to the shell rather than to either view, because what it
+       holds is true of both: which one is showing, and where in the journey the
+       reader is. -->
+  <div class="jm-bar">
+
+    <div class="jm-bar__identity">
+      <span class="jm-bar__label">Journey Mapper</span>
+      @if (journeys.journey(); as journey) {
+        <span class="jm-bar__journey">{{ journey.name }}</span>
+      }
+    </div>
+
+    <div class="alp-view-switch" role="group" aria-label="What the shell is showing">
+      <button
+        type="button"
+        class="alp-view-switch__option"
+        [class.is-selected]="journeys.view() === 'prototype'"
+        [attr.aria-pressed]="journeys.view() === 'prototype'"
+        (click)="journeys.showView('prototype')">
+        <i aria-hidden="true" class="fas fa-desktop"></i>
+        Prototype
+      </button>
+      <button
+        type="button"
+        class="alp-view-switch__option"
+        [class.is-selected]="journeys.view() === 'journey'"
+        [attr.aria-pressed]="journeys.view() === 'journey'"
+        (click)="journeys.showView('journey')">
+        <i aria-hidden="true" class="fas fa-map-signs"></i>
+        Journey map
+      </button>
+    </div>
+
+    <div class="jm-bar__steps">
+      <button
+        type="button"
+        class="alp-btn alp-btn--sm alp-btn--secondary"
+        [disabled]="!journeys.hasPrevious()"
+        (click)="journeys.previous()">
+        <i aria-hidden="true" class="fas fa-chevron-left"></i>
+        Previous
+      </button>
+
+      <span class="jm-bar__count" aria-live="polite">
+        @if (journeys.stepCount()) {
+          Step {{ journeys.stepNumber() }} of {{ journeys.stepCount() }}
+        } @else {
+          No journey
+        }
+      </span>
+
+      <button
+        type="button"
+        class="alp-btn alp-btn--sm alp-btn--secondary"
+        [disabled]="!journeys.hasNext()"
+        (click)="journeys.next()">
+        Next
+        <i aria-hidden="true" class="fas fa-chevron-right"></i>
+      </button>
+    </div>
+
+  </div>
+
+  <!-- While the pass runs, the prototype is being pressed and typed into by the
+       shell. It covers everything, because a screen moving on its own under a
+       reviewer's cursor is not something to leave reachable, and it says what is
+       happening so it does not read as the app having a fit. -->
+  @if (capture.status() === 'capturing') {
+    <div class="jm-capture" role="status" aria-live="polite">
+      <div class="jm-capture__panel">
+        <h1 class="jm-capture__title">Capturing the journey</h1>
+        <p class="jm-capture__line">
+          Step {{ capture.progress() + 1 }} of {{ capture.stepTotal() }}@if (capturingStep(); as step) {: {{ step.title }}}
+        </p>
+        <div class="jm-capture__track">
+          <div class="jm-capture__bar" [style.width.%]="capture.percent()"></div>
+        </div>
+        <p class="jm-capture__note">
+          Each screen is being photographed from the running prototype, then pressed
+          on to reach the next one. The prototype returns to its beginning when this
+          is done.
+        </p>
+      </div>
+    </div>
+  }
+
+</div>

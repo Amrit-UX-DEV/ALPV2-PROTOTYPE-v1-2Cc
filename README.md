@@ -136,3 +136,76 @@ Cut one per shareable piece of work and leave it alone afterwards. A later
 change, however small, gets its own `release/...` rather than being pushed on
 top of a cut somebody has already been given, so a link shared today shows the
 same thing next week.
+## Journey mapper (experimental)
+
+On the `experimental-journey-mapper` branch only, and not merged into
+`develop`. It puts a frame around the prototype so a flow can be reviewed as a
+path rather than as a screen at a time.
+
+The shell is the page. The prototype is inset in it at a measured scale, in the
+same document rather than in an iframe, so nothing about how it is built or
+bootstrapped changes. A bar at the bottom switches between **Prototype** and
+**Journey map** and steps through the journey; the left and right arrow keys do
+the same, except while the keystroke belongs to a field in the app.
+
+### Frames are captured, not written
+
+No markup is kept in this repo. When the shell starts it runs a capture pass:
+for each step it photographs the part of the screen the step is about, then does
+what the step says to do and waits for the app to answer, and photographs the
+next one. A frame is therefore what the prototype draws today. Change a
+template and the next capture shows the change; there is nothing to keep in
+step by hand.
+
+A loading state covers the shell while the pass runs, because the app is being
+pressed and typed into by something other than the person watching. The pass
+leaves the prototype at the end of the journey, so a finished run is written to
+session storage and the page reloads: the app comes back at its beginning and
+the frames are read from storage. **Capture again**, in the map, throws the run
+away and takes it from a fresh start.
+
+Frames are photographed before the step's action, not after: a frame is what
+the rep was looking at when they decided to do the thing the step describes.
+What they got for doing it is the next frame.
+
+The pass also says when a step changed nothing on screen. That is a dead
+control, and it is the difference between a journey that is out of date and a
+prototype that is broken.
+
+### Writing a journey
+
+`src/assets/data/journeys/index.json` names the journeys a build holds and
+which one opens:
+
+```json
+{ "default": "dashboard-reference",
+  "journeys": [{ "id": "dashboard-reference", "name": "...", "file": "dashboard-reference.journey.json" }] }
+```
+
+Each journey file is a name, a summary and a list of steps:
+
+| Field | What it is |
+| --- | --- |
+| `id` | Stable. Frames are held against it. |
+| `title` | What the step is, in a few words. |
+| `action` | What the rep does, in the imperative. |
+| `result` | What the prototype does back. |
+| `target` | CSS selector for the thing acted on. Rung in both views. |
+| `do` | What moves the prototype on. Absent means a click on `target`; `[]` means the step is only read. |
+| `capture` | Selector for the part of the screen to photograph. The whole app where it is left out. |
+| `settleMs` | How long to let the app answer each action. 300 unless it is slower than that. |
+| `notes` | Anything that is neither the action nor the result. |
+
+An entry in `do` is `{ "type": "click" | "type" | "select" | "none", "target": "...", "value": "..." }`.
+Both `type` and `target` have defaults: a click, on the step's own target.
+
+`target` is used twice from the one place. In the prototype view it rings the
+element on the live screen; in a frame it rings the same selector inside the
+photograph. A step cannot point at one thing in the map and another in the app.
+
+Frames are `inert`, which takes them out of pointer events, out of the tab
+order and out of the accessibility tree. Nothing runs behind them: they are
+markup the app produced, with its scripts stripped and its scoping attributes
+kept, so the app's own stylesheets draw them.
+
+Adding a journey is a file and an index entry. Nothing in `src/app` changes.
