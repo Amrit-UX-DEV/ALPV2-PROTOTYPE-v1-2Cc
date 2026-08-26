@@ -36,7 +36,7 @@ export class AlpPolicyTileComponent {
   readonly policy = input.required<ContextPolicy>();
 
   /**
-   * Extra badges beside the status, e.g. 'Life'.
+   * Extra badges beside the status, e.g. 'Pension'.
    *
    * Kept as free text because what is worth flagging differs by screen, and the
    * tile should not have to know the whole vocabulary.

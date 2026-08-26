@@ -94,10 +94,11 @@ export class AlphaSearchSummaryComponent {
   }
 
   /**
-   * The badge the legacy policy tile carries beside the status. Held as a field
-   * so the tile is not handed a new array on every check.
+   * The badges beside the status, which are the policy's own: the group summary
+   * shows the same ones, and a literal here would only agree with it until one
+   * of the two was edited.
    */
-  protected readonly policyFlags = ['Life'];
+  protected readonly policyFlags = computed(() => this.ctx.policy()?.flags ?? []);
 
   /**
    * The parties signposted on the tile: who is party to the policy, and who

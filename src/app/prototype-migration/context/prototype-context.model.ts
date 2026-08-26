@@ -119,7 +119,7 @@ export interface ContextPolicy {
   number: string;
   /** Product description, e.g. 'Group Stakeholder Pen Plan Pre Nov 04'. */
   productName: string;
-  /** Provider shown as "Company", e.g. 'HSBC (LifePen)'. */
+  /** Provider shown as "Company", e.g. 'Aviva'. */
   company: string;
   /** e.g. 'Unit Linked'. */
   policyType: string;
@@ -128,6 +128,15 @@ export interface ContextPolicy {
   /** e.g. 'Great Britain'. */
   territory: string;
   currency: ContextCurrency;
+  /**
+   * The badges shown beside the status, naming what kind of policy this is,
+   * e.g. ['Pension'].
+   *
+   * In the data rather than in either screen, because two screens show them and
+   * a badge one of them draws from a literal is a badge that goes out of step
+   * the first time a policy is not the kind the literal was written for.
+   */
+  flags?: string[];
   /**
    * Order matters. It is the order the linked-client indicators render in and
    * the order of the tokens in the row's linked-clients attribute.

@@ -4,7 +4,7 @@
   "policy": {
     "number": "80008",
     "productName": "Group Stakeholder Pen Plan Pre Nov 04",
-    "company": "HSBC (LifePen)",
+    "company": "Aviva",
     "policyType": "Unit Linked",
     "status": "In Force",
     "territory": "Great Britain",
@@ -12,6 +12,9 @@
       "label": "UK Sterling",
       "symbol": "\u00a3"
     },
+    "flags": [
+      "Pension"
+    ],
     "clients": [
       {
         "key": "MrMrsBloggs",

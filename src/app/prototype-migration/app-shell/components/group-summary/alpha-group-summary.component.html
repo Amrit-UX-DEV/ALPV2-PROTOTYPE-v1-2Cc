@@ -679,7 +679,7 @@
         
         
         <span class="ui-alpha-indicators top-line-indicators">
-                <span class="indicator ui-status active">{{ ctx.policy()?.status }}</span><span class="indicator pension">Life</span>
+                <span class="indicator ui-status active">{{ ctx.policy()?.status }}</span>@for (flag of ctx.policy()?.flags ?? []; track flag) {<span class="indicator pension">{{ flag }}</span>}
         
         
         <span class="indicator party-count">
