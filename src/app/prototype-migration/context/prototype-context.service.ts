@@ -1,5 +1,6 @@
 import { Injectable, computed, signal } from '@angular/core';
 
+import { AppView } from '../ui/app-view.service';
 import {
   ContextClient,
   ContextIndex,
@@ -72,6 +73,19 @@ export class PrototypeContextService {
    * anywhere that draws a button.
    */
   readonly hasGroupSummary = computed(() => this.kind() !== 'none');
+
+  /**
+   * The screen this context is described by, and so the screen to return to
+   * from anywhere that was opened on top of it.
+   *
+   * A dashboard reference is described by its comparison and a policy by its
+   * group summary. Searching decides this once when it lands the rep somewhere,
+   * and leaving a work plan asks the same question again, so the answer is here
+   * rather than written out twice and left to drift.
+   */
+  readonly summaryView = computed<AppView>(() =>
+    this.kind() === 'possible-match' ? 'search-summary' : 'group-summary',
+  );
 
   /** Whether there is a policy to show. False before a search finds one. */
   readonly hasPolicy = computed(() => this.policy() !== undefined);

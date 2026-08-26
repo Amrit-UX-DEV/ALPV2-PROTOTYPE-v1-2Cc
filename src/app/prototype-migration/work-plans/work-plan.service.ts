@@ -138,9 +138,12 @@ export class WorkPlanService {
   close(): void {
     this.current.set(undefined);
     // Back to the hub where the hub is a screen this build has, and to the
-    // group summary where it is not: a hub the rep was never shown on the way
-    // in is not somewhere to leave them on the way out.
-    this.views.show(this.alwaysShowHub() || this.eligible().length > 1 ? 'work-plans' : 'group-summary');
+    // screen the context is described by where it is not: a hub the rep was
+    // never shown on the way in is not somewhere to leave them on the way out,
+    // and neither is a group summary they never came from. A build cut to one
+    // plan on a dashboard reference lands back on that reference's comparison.
+    const hub = this.alwaysShowHub() || this.eligible().length > 1;
+    this.views.show(hub ? 'work-plans' : this.ctx.summaryView());
   }
 
   /** Whether a plan's context is the one in play, or it needs none. */

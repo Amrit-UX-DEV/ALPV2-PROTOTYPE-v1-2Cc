@@ -215,7 +215,7 @@ export class ContextSearchService {
       // Which screen answers a search depends on what was found, not on which
       // form ran it: a policy has a group summary, a possible match has only
       // the partial data held against the reference.
-      this.views.show(this.ctx.kind() === 'possible-match' ? 'search-summary' : 'group-summary');
+      this.views.show(this.ctx.summaryView());
     }
   }
 
