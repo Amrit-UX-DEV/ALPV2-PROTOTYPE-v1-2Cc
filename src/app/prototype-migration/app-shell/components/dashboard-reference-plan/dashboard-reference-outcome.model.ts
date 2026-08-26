@@ -24,10 +24,10 @@ export interface ChangeCategory {
 }
 
 export const CHANGE_CATEGORIES: readonly ChangeCategory[] = [
-  { id: 'name', label: 'Change of name' },
-  { id: 'ni-number', label: 'Change of National Insurance number' },
-  { id: 'address', label: 'Change of address' },
-  { id: 'contact', label: 'Change of contact details' },
+  { id: 'name', label: 'Change of Name' },
+  { id: 'ni-number', label: 'Change of National Insurance Number' },
+  { id: 'address', label: 'Change of Address' },
+  { id: 'contact', label: 'Change of Contact Details' },
   { id: 'other', label: 'Other' },
 ];
 

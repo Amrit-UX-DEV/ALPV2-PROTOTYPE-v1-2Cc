@@ -7,13 +7,18 @@
 
    The form factor is the call script journey's, because a rep answers
    questions there all day and these are the same act. Measured off
-   journey.css:160 and matched: 16 top and bottom and 20 either side,
-   a two-pixel edge, 10 of radius, 12 between the control and its
-   words, 14 between one option and the next, and a 17px label on the
-   inherited 1.2, which puts both tiles at the same 56px. Only the
-   names are generic, so any screen can ask a question without owning a
-   set of controls, and the journey's own rules stay where they are:
-   nothing here reuses them.
+   journey.css:160: 16 top and bottom and 20 either side, a two-pixel
+   edge, 10 of radius, 12 between the control and its words and 14
+   between one option and the next. Only the names are generic, so any
+   screen can ask a question without owning a set of controls, and the
+   journey's own rules stay where they are: nothing here reuses them.
+
+   Two answers go in a row and more than two go in a column. A pair is
+   a single comparison and reads faster side by side; a list of five is
+   a set to work down, and a row of five is a set to hunt through. The
+   screen says which it is with a class rather than the list guessing
+   from how many children it happens to have, because how a question
+   is answered is the question's business.
 
    The label wraps the control, so the whole tile is the target and
    nothing depends on matching an id to a for attribute. The state is
@@ -46,9 +51,20 @@
   list-style: none;
 }
 
+/* Side by side, sharing the width equally, and wrapping to a column rather
+   than squeezing if the dock is too narrow to hold them both. */
+.alp-choice-list--inline {
+  flex-direction: row;
+  flex-wrap: wrap;
+}
+
 .alp-choice-list__item {
   display: flex;
   min-width: 0;
+}
+
+.alp-choice-list--inline > .alp-choice-list__item {
+  flex: 1 1 14rem;
 }
 
 .alp-choice {
@@ -102,12 +118,11 @@
   min-width: 0;
 }
 
-/* Seventeen on the 1.2 everything here inherits, which is the journey's own
-   line box: these are a question's answers rather than body copy, and they are
-   read at a glance from a few feet back. */
+/* The same 14 as the question above it, and regular against that question's
+   bold: an answer set in the weight of the thing asking is a second heading. */
 .alp-choice__label {
-  font-size: 17px;
-  font-weight: var(--alp-font-weight-semibold);
+  font-size: 14px;
+  font-weight: var(--alp-font-weight-normal);
   line-height: 1.2;
   color: var(--alp-color-text);
 }
