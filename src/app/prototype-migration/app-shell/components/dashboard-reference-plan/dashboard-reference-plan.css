@@ -13,14 +13,35 @@
 .alp-plan-step {
   display: flex;
   flex-direction: column;
-  gap: var(--alp-space-5);
+  gap: var(--alp-space-8);
   padding: var(--alp-space-2) var(--alp-space-2) var(--alp-space-4);
 }
 
+/*
+ * This is a header of a step, not the header of the application, and the legacy
+ * stack does not distinguish them: 13-desktop-layout-structure.css:21 styles the
+ * bare element with the branding fill, the app header's fixed height, a
+ * 200ms transition on everything and flex column, and three more files
+ * (01-bootstrap-v4-0-0-alpha6.css:20, 04-html-resets.css:41 and :112,
+ * css-stack/bootstrap-flex.css:25) reset its display and box.
+ *
+ * None of that is edited, since the app header still needs it. Every
+ * declaration that reaches this one is answered here instead, so the block is
+ * longer than it looks like it needs to be on purpose. One thing it cannot
+ * answer is 21-alpha-header-items.css:171, which hides any checkbox inside a
+ * header outright: the questions are in fieldsets below this element rather
+ * than in it, and they have to stay there.
+ */
 .alp-plan-step__head {
   display: flex;
   flex-direction: column;
   gap: var(--alp-space-1);
+  height: auto;
+  min-height: 0;
+  padding: 0;
+  border: 0;
+  background-color: transparent;
+  transition: none;
 }
 
 .alp-plan-step__label {
@@ -43,11 +64,13 @@
 }
 
 /* A section or a fieldset, which is the same block either way: a fieldset
-   carries a browser border and padding of its own, and both come off. */
+   carries a browser border and padding of its own, and both come off.
+   The gap is what separates a question from its answers, and it is wide
+   because a legend sitting on top of a tile reads as part of the tile. */
 .alp-plan-step__block {
   display: flex;
   flex-direction: column;
-  gap: var(--alp-space-2);
+  gap: var(--alp-space-6);
   min-width: 0;
   margin: 0;
   padding: 0;
@@ -56,13 +79,14 @@
 
 /* h4 and legend both, so the questions read as headings of one rank whichever
    element each needed. A legend also has to be told to stop floating in the
-   border it no longer has. */
+   border it no longer has.
+   A step larger than the options under it, so the question is read first. */
 .alp-plan-step__heading {
   float: none;
   width: auto;
   margin: 0;
   padding: 0;
-  font-size: var(--alp-font-size-md);
+  font-size: var(--alp-font-size-lg);
   font-weight: var(--alp-font-weight-semibold);
   color: var(--alp-color-text);
 }
@@ -82,5 +106,5 @@
   display: flex;
   flex-direction: column;
   gap: var(--alp-space-1);
-  margin-top: var(--alp-space-2);
+  max-width: 52ch;
 }

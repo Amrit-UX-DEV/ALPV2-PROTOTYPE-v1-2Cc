@@ -6,14 +6,13 @@
     <p class="alp-plan-step__label">Dashboard Reference</p>
     <h4 class="alp-plan-step__reference">{{ reference() }}</h4>
     <p class="alp-plan-step__lead">
-      Decide whether this dashboard reference is the policy holder on our record, then say what
-      the decision leaves to do.
+      Decide whether this dashboard reference belongs to the policy holder on our records.
     </p>
   </header>
 
   <fieldset class="alp-plan-step__block">
     <legend class="alp-plan-step__heading">Was this a match?</legend>
-    <ul class="alp-choice-list alp-choice-list--split">
+    <ul class="alp-choice-list">
       <li class="alp-choice-list__item">
         <label class="alp-choice">
           <input
@@ -51,7 +50,7 @@
   @if (decision()) {
     <fieldset class="alp-plan-step__block">
       <legend class="alp-plan-step__heading">What was required in this decision?</legend>
-      <ul class="alp-choice-list alp-choice-list--split">
+      <ul class="alp-choice-list">
         <li class="alp-choice-list__item">
           <label class="alp-choice">
             <input
