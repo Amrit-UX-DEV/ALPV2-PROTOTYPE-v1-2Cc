@@ -51,8 +51,9 @@
     </ul>
   </fieldset>
 
-  <!-- Asked only once there is a decision to have consequences. -->
-  @if (decision()) {
+  <!-- Asked only of a match: not matched leaves nothing to have required
+       anything, so the question does not appear at all. -->
+  @if (needsActions()) {
     <fieldset class="alp-plan-step__block">
       <legend class="alp-plan-step__heading">What was required in this decision?</legend>
       <ul class="alp-choice-list alp-choice-list--inline">

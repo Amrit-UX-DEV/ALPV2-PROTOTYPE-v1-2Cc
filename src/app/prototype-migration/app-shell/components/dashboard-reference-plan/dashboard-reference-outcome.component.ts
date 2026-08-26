@@ -79,7 +79,17 @@ export class DashboardReferenceOutcomeComponent {
   protected readonly actions = this.decisionActions.asReadonly();
   protected readonly note = this.otherNote.asReadonly();
 
-  /** Whether the categories are being asked for, which is the only reveal here. */
+  /**
+   * Whether there is anything left to ask.
+   *
+   * Only a match has consequences to record. Not matched means this reference
+   * is not the policy holder's, and nothing about our record changed on the
+   * strength of that, so asking what it required would be asking about work
+   * that cannot exist.
+   */
+  protected readonly needsActions = computed(() => this.matchDecision() === 'matched');
+
+  /** Whether the categories are being asked for, which is the last reveal. */
   protected readonly needsCategories = computed(() => this.decisionActions() === 'actions');
 
   protected readonly otherChosen = computed(() =>
@@ -92,12 +102,14 @@ export class DashboardReferenceOutcomeComponent {
   /**
    * Whether the step has been given everything it asks for.
    *
-   * A decision, then what it leaves to do, then a category if there is anything
-   * to do, then something written down if one of those categories is the one
-   * that does not name itself.
+   * A decision is enough on its own where it is not a match, since nothing
+   * follows from it. Where it is, then what it left to do, then a category if
+   * it left anything, then something written down if one of those categories is
+   * the one that does not name itself.
    */
   private readonly complete = computed(() => {
     if (this.matchDecision() === null) return false;
+    if (!this.needsActions()) return true;
 
     const actions = this.decisionActions();
     if (actions === null) return false;
@@ -126,8 +138,18 @@ export class DashboardReferenceOutcomeComponent {
     return this.chosenCategories().includes(id);
   }
 
+  /**
+   * Not a match takes the rest of the step with it, for the same reason nothing
+   * to do clears the categories: an answer held behind a question that is no
+   * longer on screen is an answer that gets saved by accident.
+   */
   protected chooseDecision(decision: MatchDecision): void {
     this.matchDecision.set(decision);
+    if (decision !== 'matched') {
+      this.decisionActions.set(null);
+      this.chosenCategories.set([]);
+      this.otherNote.set('');
+    }
     this.report();
   }
 

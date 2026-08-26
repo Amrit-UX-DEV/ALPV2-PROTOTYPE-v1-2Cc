@@ -80,11 +80,14 @@
    border it no longer has.
    Fourteen and bold, against the same fourteen regular on the answers under
    it: the question is told apart from its answers by weight rather than by
-   size, which is how the script journey does it. */
+   size, which is how the script journey does it.
+   The margin is the question's own, on top of the block's gap, so a question
+   sits twelve clear of its answers while everything else in the block keeps
+   the eight. */
 .alp-plan-step__heading {
   float: none;
   width: auto;
-  margin: 0;
+  margin: 0 0 var(--alp-space-1);
   padding: 0;
   font-size: 14px;
   font-weight: var(--alp-font-weight-bold);
