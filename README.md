@@ -187,6 +187,11 @@ notes and target beside it and Previous, Next and a way back to the strip.
 Escape closes it. Opening a frame moves the journey to that step, so nothing
 ever disagrees about where the reviewer is.
 
+The map defaults to a vertical stack of large frames and can be switched to a
+wrapping grid. The shell's **Open in full view** link opens a new tab with
+`?view=full`; that mode renders the same prototype without the journey shell,
+map or bottom controls.
+
 ### Writing a journey
 
 `src/assets/data/journeys/index.json` names the journeys a build holds and

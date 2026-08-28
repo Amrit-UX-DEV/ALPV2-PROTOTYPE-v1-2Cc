@@ -1,9 +1,15 @@
 
 <!-- <router-outlet></router-outlet> -->
 <!-- <alpha-v2-template></alpha-v2-template> -->
-<!-- Experimental: the journey mapper wraps the prototype rather than replacing
-     anything in it. The app is projected into the shell's stage, so it is the
-     same document and the same bootstrap, only inset. -->
-<journey-shell>
+<!-- The full view keeps the prototype's normal bootstrap and removes the
+     mapper at the entry point, so the link works for any projected prototype. -->
+@if (fullView) {
   <app-shell></app-shell>
-</journey-shell>
+} @else {
+  <!-- Experimental: the journey mapper wraps the prototype rather than
+       replacing anything in it. The app is projected into the shell's stage,
+       so it is the same document and the same bootstrap, only inset. -->
+  <journey-shell>
+    <app-shell></app-shell>
+  </journey-shell>
+}

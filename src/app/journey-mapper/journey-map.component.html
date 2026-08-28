@@ -1,6 +1,6 @@
 <div class="jm-map">
 
-  <header class="jm-map__head">
+  <div class="jm-map__head" role="header">
     <div class="jm-map__heading">
       <p class="jm-map__eyebrow">Journey</p>
       <h1 class="jm-map__title">{{ name() }}</h1>
@@ -12,16 +12,42 @@
     <!-- Frames are photographs of a running app, so they age the moment the app
          changes. Saying when they were taken, and offering to take them again,
          is the difference between a stale frame and a misleading one. -->
-    <div class="jm-map__capture">
-      @if (capturedAt()) {
-        <p class="jm-map__captured">Frames captured {{ capturedAt() }}</p>
-      }
-      <button type="button" class="alp-btn alp-btn--sm alp-btn--secondary" (click)="capture.recapture()">
-        <i aria-hidden="true" class="fas fa-redo"></i>
-        Capture again
-      </button>
+    <div class="jm-map__actions">
+      <div class="jm-map__capture">
+        @if (capturedAt()) {
+          <p class="jm-map__captured">Frames captured {{ capturedAt() }}</p>
+        }
+        <button type="button" class="alp-btn alp-btn--sm alp-btn--secondary" (click)="capture.recapture()">
+          <i aria-hidden="true" class="fas fa-redo"></i>
+          Capture again
+        </button>
+      </div>
+
+      <div class="jm-map__layout">
+        <span class="jm-map__layout-label">Frame layout</span>
+        <div class="alp-view-switch" role="group" aria-label="Frame layout">
+          <button
+            type="button"
+            class="alp-view-switch__option"
+            [class.is-selected]="layout() === 'stack'"
+            [attr.aria-pressed]="layout() === 'stack'"
+            (click)="showLayout('stack')">
+            <i aria-hidden="true" class="fas fa-bars"></i>
+            Stack
+          </button>
+          <button
+            type="button"
+            class="alp-view-switch__option"
+            [class.is-selected]="layout() === 'grid'"
+            [attr.aria-pressed]="layout() === 'grid'"
+            (click)="showLayout('grid')">
+            <i aria-hidden="true" class="fas fa-th"></i>
+            Wrapping grid
+          </button>
+        </div>
+      </div>
     </div>
-  </header>
+  </div>
 
   <!-- Where the pass could not do what a step asked, it is said here rather than
        left in the console: a frame that is missing or wrong has a reason, and
@@ -46,7 +72,7 @@
        is the contents as well as the pictures, so there is one place to click
        and one place that says where the journey has got to. -->
   @if (journeys.steps().length) {
-    <ol class="jm-timeline">
+    <ol class="jm-timeline" [class.jm-timeline--grid]="layout() === 'grid'">
       @for (step of journeys.steps(); track step.id; let i = $index) {
         <li class="jm-timeline__step">
           <button
@@ -106,7 +132,7 @@
   <div class="jm-viewer" role="dialog" aria-modal="true" aria-labelledby="JourneyViewerTitle">
     <div class="jm-viewer__panel">
 
-      <header class="jm-viewer__head">
+      <div class="jm-viewer__head" role="header">
         <div>
           <p class="jm-viewer__count">Step {{ journeys.stepNumber() }} of {{ journeys.stepCount() }}</p>
           <h2 class="jm-viewer__title" id="JourneyViewerTitle">{{ step.title }}</h2>
@@ -134,7 +160,7 @@
             Back to the timeline
           </button>
         </div>
-      </header>
+      </div>
 
       <div class="jm-viewer__stage">
         @if (capture.frame(step.id); as frame) {

@@ -17,6 +17,34 @@
    ========================================================= */
 
 /* ---------------------------------------------------------
+   GRAPH PAPER CHROME
+
+   This class is shared by the shell and map. It is deliberately
+   not applied to the prototype frame, whose background and
+   styles belong to the prototype being reviewed.
+   --------------------------------------------------------- */
+
+.jm-graph-paper {
+  --jm-chrome-background: #0f172a;
+  --jm-chrome-background-raised: #172033;
+  --jm-chrome-surface: #1e293b;
+  --jm-chrome-surface-hover: #334155;
+  --jm-chrome-border: #475569;
+  --jm-chrome-text: #f8fafc;
+  --jm-chrome-muted: #cbd5e1;
+  --jm-chrome-accent: #fbbf24;
+  --jm-chrome-grid-major: rgb(148 163 184 / 16%);
+  --jm-chrome-grid-minor: rgb(148 163 184 / 8%);
+  background-color: var(--jm-chrome-background);
+  background-image:
+    linear-gradient(var(--jm-chrome-grid-major) 1px, transparent 1px),
+    linear-gradient(90deg, var(--jm-chrome-grid-major) 1px, transparent 1px),
+    linear-gradient(var(--jm-chrome-grid-minor) 1px, transparent 1px),
+    linear-gradient(90deg, var(--jm-chrome-grid-minor) 1px, transparent 1px);
+  background-size: 32px 32px, 32px 32px, 8px 8px, 8px 8px;
+}
+
+/* ---------------------------------------------------------
    THE RING
 
    Two rings rather than one. The prototype is drawn on white

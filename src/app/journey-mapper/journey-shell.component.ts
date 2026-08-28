@@ -1,3 +1,4 @@
+import { DOCUMENT } from '@angular/common';
 import {
   ChangeDetectionStrategy,
   Component,
@@ -15,6 +16,7 @@ import {
 import { JourneyCaptureService } from './journey-capture.service';
 import { JourneyMapComponent } from './journey-map.component';
 import { JourneyService } from './journey.service';
+import { fullViewUrl } from '../view-mode';
 
 /** How small the prototype is allowed to get before it stops being readable. */
 const MIN_SCALE = 0.4;
@@ -50,7 +52,11 @@ const MIN_SCALE = 0.4;
 export class JourneyShellComponent {
   protected readonly journeys = inject(JourneyService);
   protected readonly capture = inject(JourneyCaptureService);
+  private readonly document = inject(DOCUMENT);
   private readonly destroyRef = inject(DestroyRef);
+
+  /** Keeps the current app path and any other query parameters intact. */
+  protected readonly fullViewUrl = fullViewUrl(this.document);
 
   private readonly stage = viewChild<ElementRef<HTMLElement>>('stage');
   private readonly frame = viewChild<ElementRef<HTMLElement>>('frame');

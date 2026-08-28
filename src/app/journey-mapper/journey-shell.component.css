@@ -16,12 +16,6 @@
   inset: 0;
   display: grid;
   grid-template-rows: 1fr auto;
-  background:
-    radial-gradient(
-      120% 120% at 50% 0%,
-      var(--alp-color-slate-700) 0%,
-      var(--alp-color-slate-900) 60%
-    );
   z-index: var(--alp-z-modal, 1000);
 }
 
@@ -59,7 +53,6 @@
 .jm-stage__map {
   position: absolute;
   inset: 0;
-  background: var(--alp-color-background);
 }
 
 /* ---- Bar ---- */
@@ -71,8 +64,8 @@
   flex-wrap: wrap;
   gap: var(--alp-space-3);
   padding: var(--alp-space-3) var(--alp-space-5);
-  background: var(--alp-color-surface);
-  border-top: 1px solid var(--alp-color-border);
+  background: var(--jm-chrome-surface);
+  border-top: 1px solid var(--jm-chrome-border);
 }
 
 .jm-bar__identity {
@@ -84,17 +77,65 @@
 .jm-bar__label {
   font-size: var(--alp-font-size-xs);
   font-weight: var(--alp-font-weight-semibold);
-  color: var(--alp-color-text-muted);
+  color: var(--jm-chrome-muted);
 }
 
 .jm-bar__journey {
   font-size: var(--alp-font-size-sm);
   font-weight: var(--alp-font-weight-semibold);
-  color: var(--alp-color-text);
+  color: var(--jm-chrome-text);
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
   max-width: 34ch;
+}
+
+.jm-bar .alp-view-switch {
+  border-color: var(--jm-chrome-border);
+  background: var(--jm-chrome-background-raised);
+}
+
+.jm-bar .alp-view-switch__option {
+  color: var(--jm-chrome-muted);
+}
+
+.jm-bar .alp-view-switch__option:hover:not(.is-selected) {
+  background: var(--jm-chrome-surface-hover);
+  color: var(--jm-chrome-text);
+}
+
+.jm-bar .alp-view-switch__option.is-selected {
+  background: var(--jm-chrome-accent);
+  color: var(--jm-chrome-background);
+}
+
+.jm-bar__view-controls {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: var(--alp-space-4);
+}
+
+.jm-bar__full-view {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--alp-space-2);
+  color: var(--jm-chrome-muted);
+  font-size: var(--alp-font-size-sm);
+  font-weight: var(--alp-font-weight-medium);
+  text-decoration: none;
+  white-space: nowrap;
+}
+
+.jm-bar__full-view:hover {
+  color: var(--jm-chrome-text);
+  text-decoration: underline;
+}
+
+.jm-bar__full-view:focus-visible {
+  outline: 2px solid var(--jm-chrome-accent);
+  outline-offset: 4px;
+  border-radius: var(--alp-radius-xs);
 }
 
 .jm-bar__steps {
@@ -103,12 +144,29 @@
   gap: var(--alp-space-3);
 }
 
+.jm-bar .jm-bar__steps .alp-btn--secondary {
+  background: var(--jm-chrome-background-raised);
+  border-color: var(--jm-chrome-border);
+  color: var(--jm-chrome-text);
+}
+
+.jm-bar .jm-bar__steps .alp-btn--secondary:hover:not(:disabled) {
+  background: var(--jm-chrome-surface-hover);
+  border-color: var(--jm-chrome-muted);
+}
+
+.jm-bar .jm-bar__steps .alp-btn--secondary:disabled {
+  background: var(--jm-chrome-background-raised);
+  border-color: var(--jm-chrome-border);
+  color: var(--jm-chrome-muted);
+}
+
 /* Tabular figures so the counter does not shuffle the buttons either side of
    it every time the step number changes width. */
 .jm-bar__count {
   font-size: var(--alp-font-size-sm);
   font-variant-numeric: tabular-nums;
-  color: var(--alp-color-slate-700);
+  color: var(--jm-chrome-muted);
   white-space: nowrap;
 }
 
@@ -133,28 +191,28 @@
   width: min(28rem, 100%);
   padding: var(--alp-space-6);
   border-radius: var(--alp-radius-lg);
-  background: var(--alp-color-surface);
-  box-shadow: var(--alp-shadow-lg);
+  background: var(--jm-chrome-surface);
+  box-shadow: 0 24px 60px rgb(2 6 23 / 60%);
 }
 
 .jm-capture__title {
   margin: 0;
   font-size: var(--alp-font-size-lg);
   font-weight: var(--alp-font-weight-bold);
-  color: var(--alp-color-text);
+  color: var(--jm-chrome-text);
 }
 
 .jm-capture__line {
   margin: var(--alp-space-2) 0 0;
   font-size: var(--alp-font-size-sm);
-  color: var(--alp-color-slate-700);
+  color: var(--jm-chrome-muted);
 }
 
 .jm-capture__track {
   height: 6px;
   margin-top: var(--alp-space-4);
   border-radius: var(--alp-radius-full);
-  background: var(--alp-color-slate-200);
+  background: var(--jm-chrome-background-raised);
   overflow: hidden;
 }
 
@@ -164,12 +222,12 @@
 .jm-capture__bar {
   height: 100%;
   border-radius: var(--alp-radius-full);
-  background: var(--alp-color-brand);
+  background: var(--jm-chrome-accent);
 }
 
 .jm-capture__note {
   margin: var(--alp-space-4) 0 0;
   font-size: var(--alp-font-size-xs);
   line-height: 1.5;
-  color: var(--alp-color-text-muted);
+  color: var(--jm-chrome-muted);
 }

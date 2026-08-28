@@ -14,6 +14,8 @@ import { JourneyCaptureService } from './journey-capture.service';
 import { JourneyCloneComponent } from './journey-clone.component';
 import { JourneyService } from './journey.service';
 
+type JourneyLayout = 'stack' | 'grid';
+
 /**
  * The journey view: the whole path laid out left to right, one frame a step.
  *
@@ -58,6 +60,9 @@ export class JourneyMapComponent {
   private readonly open = signal(false);
   protected readonly enlarged = this.open.asReadonly();
 
+  private readonly currentLayout = signal<JourneyLayout>('stack');
+  protected readonly layout = this.currentLayout.asReadonly();
+
   private readonly thumbs = viewChildren<ElementRef<HTMLElement>>('thumb');
 
   constructor() {
@@ -76,6 +81,10 @@ export class JourneyMapComponent {
 
   protected shrink(): void {
     this.open.set(false);
+  }
+
+  protected showLayout(layout: JourneyLayout): void {
+    this.currentLayout.set(layout);
   }
 
   /** Escape is what everyone tries first, so it is what closes the frame. */
