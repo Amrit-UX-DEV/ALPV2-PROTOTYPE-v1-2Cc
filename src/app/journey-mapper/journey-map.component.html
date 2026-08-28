@@ -68,51 +68,86 @@
     </div>
   }
 
-  <!-- The path itself: every step in order, scrolling left to right. The list
-       is the contents as well as the pictures, so there is one place to click
-       and one place that says where the journey has got to. -->
+  <!-- The stack keeps the whole path visible on the left while the selected
+       full-app frame is large enough to inspect on the right. -->
   @if (journeys.steps().length) {
-    <ol class="jm-timeline" [class.jm-timeline--grid]="layout() === 'grid'">
-      @for (step of journeys.steps(); track step.id; let i = $index) {
-        <li class="jm-timeline__step">
-          <button
-            #thumb
-            type="button"
-            class="jm-thumb"
-            [class.jm-thumb--current]="i === journeys.stepIndex()"
-            [attr.aria-current]="i === journeys.stepIndex() ? 'step' : null"
-            (click)="enlarge(i)">
+    <div class="jm-frames" [class.jm-frames--grid]="layout() === 'grid'">
+      <ol class="jm-filmstrip" aria-label="Journey steps">
+        @for (step of journeys.steps(); track step.id; let i = $index) {
+          <li class="jm-filmstrip__step">
+            <button
+              #thumb
+              type="button"
+              class="jm-thumb"
+              [class.jm-thumb--current]="i === journeys.stepIndex()"
+              [attr.aria-current]="i === journeys.stepIndex() ? 'step' : null"
+              (click)="select(i)">
 
-            <!-- A frame is the whole app, which is thousands of elements. Fifteen
-                 of them drawn at once would cost more than the strip is worth,
-                 so each one waits until it is scrolled to. -->
-            <span class="jm-thumb__stage">
-              @if (capture.frame(step.id); as frame) {
-                @defer (on viewport) {
-                  <journey-clone
-                    [html]="frame.html"
-                    [width]="frame.width"
-                    [height]="frame.height"
-                    [focus]="frame.focus"
-                  ></journey-clone>
-                } @placeholder {
-                  <span class="jm-thumb__no-clone">Frame {{ i + 1 }}</span>
+              <!-- Frames are still drawn from the captured runtime DOM. The
+                   strip delays off-screen clones so a long journey stays cheap. -->
+              <span class="jm-thumb__stage">
+                @if (capture.frame(step.id); as frame) {
+                  @defer (on viewport) {
+                    <journey-clone
+                      [html]="frame.html"
+                      [width]="frame.width"
+                      [height]="frame.height"
+                      [focus]="frame.focus"
+                    ></journey-clone>
+                  } @placeholder {
+                    <span class="jm-thumb__no-clone">Frame {{ i + 1 }}</span>
+                  }
+                } @else if (capture.status() === 'capturing') {
+                  <span class="jm-thumb__no-clone">Capturing.</span>
+                } @else {
+                  <span class="jm-thumb__no-clone">No frame</span>
                 }
-              } @else if (capture.status() === 'capturing') {
-                <span class="jm-thumb__no-clone">Capturing.</span>
-              } @else {
-                <span class="jm-thumb__no-clone">No frame</span>
-              }
-            </span>
+              </span>
 
-            <span class="jm-thumb__caption">
-              <span class="jm-thumb__number">{{ i + 1 }}</span>
-              <span class="jm-thumb__title">{{ step.title }}</span>
-            </span>
-          </button>
-        </li>
+              <span class="jm-thumb__caption">
+                <span class="jm-thumb__number">Step {{ i + 1 }}</span>
+                <span class="jm-thumb__title">{{ step.title }}</span>
+              </span>
+            </button>
+          </li>
+        }
+      </ol>
+
+      @if (layout() === 'stack' && journeys.step(); as step) {
+        <section class="jm-main-frame" [attr.aria-labelledby]="'JourneyStep' + journeys.stepNumber()">
+          <div class="jm-main-frame__head">
+            <p class="jm-main-frame__number">Step {{ journeys.stepNumber() }} of {{ journeys.stepCount() }}</p>
+            <h2 class="jm-main-frame__title" [id]="'JourneyStep' + journeys.stepNumber()">{{ step.title }}</h2>
+          </div>
+
+          <div class="jm-main-frame__stage">
+            @if (capture.frame(step.id); as frame) {
+              <journey-clone
+                [html]="frame.html"
+                [width]="frame.width"
+                [height]="frame.height"
+                [focus]="frame.focus"
+              ></journey-clone>
+            } @else {
+              <p class="jm-main-frame__no-clone">
+                No frame for this step. The capture pass could not reach it.
+              </p>
+            }
+          </div>
+
+          <footer class="jm-main-frame__detail">
+            <div class="jm-main-frame__description">
+              <p><strong>Action</strong> {{ step.action }}</p>
+              <p><strong>Result</strong> {{ step.result }}</p>
+            </div>
+            <button type="button" class="alp-btn alp-btn--sm alp-btn--secondary" (click)="enlarge()">
+              <i aria-hidden="true" class="fas fa-expand"></i>
+              Expand frame
+            </button>
+          </footer>
+        </section>
       }
-    </ol>
+    </div>
   } @else {
     <div class="jm-map__empty">
       <div class="alp-notice alp-notice--info">
@@ -126,8 +161,7 @@
 
 </div>
 
-<!-- One step, big enough to read. It is the step the journey is on, so closing
-     it leaves the strip where the reviewer expects to come back to. -->
+<!-- One step, expanded inside the journey map rather than in another tab. -->
 @if (enlarged() && journeys.step(); as step) {
   <div class="jm-viewer" role="dialog" aria-modal="true" aria-labelledby="JourneyViewerTitle">
     <div class="jm-viewer__panel">
@@ -138,28 +172,6 @@
           <h2 class="jm-viewer__title" id="JourneyViewerTitle">{{ step.title }}</h2>
         </div>
 
-        <div class="alp-action-row">
-          <button
-            type="button"
-            class="alp-btn alp-btn--sm alp-btn--secondary"
-            [disabled]="!journeys.hasPrevious()"
-            (click)="journeys.previous()">
-            <i aria-hidden="true" class="fas fa-chevron-left"></i>
-            Previous
-          </button>
-          <button
-            type="button"
-            class="alp-btn alp-btn--sm alp-btn--secondary"
-            [disabled]="!journeys.hasNext()"
-            (click)="journeys.next()">
-            Next
-            <i aria-hidden="true" class="fas fa-chevron-right"></i>
-          </button>
-          <button type="button" class="alp-btn alp-btn--sm alp-btn--primary" (click)="shrink()">
-            <i aria-hidden="true" class="fas fa-times"></i>
-            Back to the timeline
-          </button>
-        </div>
       </div>
 
       <div class="jm-viewer__stage">
@@ -200,6 +212,31 @@
           </div>
         }
       </dl>
+
+      <div class="jm-viewer__controls">
+        <div class="jm-viewer__navigation">
+          <button
+            type="button"
+            class="alp-btn alp-btn--sm alp-btn--secondary"
+            [disabled]="!journeys.hasPrevious()"
+            (click)="journeys.previous()">
+            <i aria-hidden="true" class="fas fa-chevron-left"></i>
+            Previous
+          </button>
+          <button
+            type="button"
+            class="alp-btn alp-btn--sm alp-btn--secondary"
+            [disabled]="!journeys.hasNext()"
+            (click)="journeys.next()">
+            Next
+            <i aria-hidden="true" class="fas fa-chevron-right"></i>
+          </button>
+        </div>
+        <button type="button" class="alp-btn alp-btn--sm alp-btn--primary" (click)="shrink()">
+          <i aria-hidden="true" class="fas fa-times"></i>
+          Back to stack
+        </button>
+      </div>
 
     </div>
   </div>

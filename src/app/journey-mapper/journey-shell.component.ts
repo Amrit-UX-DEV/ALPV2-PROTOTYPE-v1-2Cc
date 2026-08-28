@@ -161,7 +161,12 @@ export class JourneyShellComponent {
     const height = window.innerHeight;
     if (!width || !height) return;
 
-    const fits = Math.min(host.clientWidth / width, host.clientHeight / height);
+    const styles = getComputedStyle(host);
+    const availableWidth =
+      host.clientWidth - parseFloat(styles.paddingLeft) - parseFloat(styles.paddingRight);
+    const availableHeight =
+      host.clientHeight - parseFloat(styles.paddingTop) - parseFloat(styles.paddingBottom);
+    const fits = Math.min(availableWidth / width, availableHeight / height);
     this.scale.set(Math.max(MIN_SCALE, Math.min(1, fits)));
   }
 

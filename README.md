@@ -173,24 +173,20 @@ The pass also says when a step changed nothing on screen. That is a dead
 control, and it is the difference between a journey that is out of date and a
 prototype that is broken.
 
-### The map is a timeline
+### The map is a film strip
 
-The journey view is the whole path in a strip that scrolls left to right, a
-small frame a step, joined in sequence and numbered. It is the contents as well
-as the pictures: there is one list of steps, and clicking a step is the same act
-as reading it. Where the journey has got to is ringed, and the strip follows the
-shell's Previous and Next and the arrow keys.
+The default Journey Map view keeps smaller, numbered frames in a vertical film
+strip at left and shows the selected full-app frame at right, with its action
+and result. Selecting a frame updates the journey position, so the strip, the
+bottom navigation and arrow keys agree about the current step.
 
-Small frames are the point of a strip and useless on their own, so clicking one
-opens it over the shell at the size of the window, with the action, result,
-notes and target beside it and Previous, Next and a way back to the strip.
-Escape closes it. Opening a frame moves the journey to that step, so nothing
-ever disagrees about where the reviewer is.
+**Expand frame** fills the current Journey Map screen with the selected frame;
+**Back to stack** returns to the film strip. The alternate wrapping grid is a
+quick overview of the same captured frames.
 
-The map defaults to a vertical stack of large frames and can be switched to a
-wrapping grid. The shell's **Open in full view** link opens a new tab with
-`?view=full`; that mode renders the same prototype without the journey shell,
-map or bottom controls.
+The shell's **Open in full view** link opens a new tab with `?view=full`; that
+mode renders the same prototype without the journey shell, map or bottom
+controls.
 
 ### Writing a journey
 
@@ -267,7 +263,8 @@ stack still matches because the whole app is there to be matched.
 
 The box comes with it. The app is written out at the width and height it had on
 screen and the frame is laid out at that size, then scaled down to fit: a
-thumbnail in the strip, or the width of the window when it is opened. It is
+film-strip thumbnail, a selected main frame, or the width of the map when it is
+expanded. It is
 always scaled, even at full size, because a transform makes the frame the
 containing block for anything fixed inside it, which is what keeps the docked
 panels and dialogs in the picture instead of flying off to the corners of the

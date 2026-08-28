@@ -135,64 +135,50 @@
   line-height: 1.5;
 }
 
-/* ---- The strip ---- */
+/* ---- Frames ---- */
 
-/* The default is a readable vertical path. Frames have room to show the full
-   app rather than being reduced to a row of postage stamps. */
-.jm-timeline {
+/* The default is a film strip beside one full-size, selected frame. This keeps
+   the path in sight without making the screen being reviewed too small to use. */
+.jm-frames {
+  display: grid;
+  grid-template-columns: minmax(14rem, 19rem) minmax(0, 1fr);
+  flex: 1 1 auto;
+  min-height: 0;
+  gap: var(--alp-space-5);
+}
+
+.jm-filmstrip {
   display: flex;
   flex-direction: column;
-  flex: 1 1 auto;
-  align-items: flex-start;
-  gap: var(--alp-space-8);
-  margin: 0;
-  padding: var(--alp-space-2) var(--alp-space-1) var(--alp-space-4);
-  list-style: none;
+  gap: var(--alp-space-3);
   min-height: 0;
-  overflow-x: hidden;
+  margin: 0;
+  padding: var(--alp-space-1);
+  list-style: none;
   overflow-y: auto;
-  scroll-snap-type: y proximity;
   scrollbar-width: thin;
 }
 
-.jm-timeline__step {
-  position: relative;
-  width: min(100%, 72rem);
-  margin: 0 auto;
-  scroll-snap-align: start;
+.jm-filmstrip__step {
+  flex: 0 0 auto;
 }
 
-/* The dotted line connects the frames in the stack and sits in their gap. */
-.jm-timeline__step:not(:last-child)::after {
-  content: '';
-  position: absolute;
-  bottom: calc(var(--alp-space-8) * -1);
-  left: 50%;
-  height: var(--alp-space-8);
-  border-left: 2px dotted var(--jm-chrome-border);
-}
-
-/* The alternate view keeps the same large cards but uses the available width
-   for a wrapping grid. */
-.jm-timeline--grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(min(100%, 32rem), 1fr));
-  align-content: start;
-  align-items: start;
-  gap: var(--alp-space-6);
-  overflow-x: hidden;
+/* The alternate view turns the same captured frames into a wrapping overview. */
+.jm-frames--grid {
+  display: block;
   overflow-y: auto;
-  scroll-snap-type: none;
 }
 
-.jm-timeline--grid .jm-timeline__step {
-  width: auto;
-  min-width: 0;
-  margin: 0;
+.jm-frames--grid .jm-filmstrip {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 22rem), 1fr));
+  align-items: start;
+  gap: var(--alp-space-5);
+  overflow: visible;
 }
 
-.jm-timeline--grid .jm-timeline__step::after {
-  display: none;
+.jm-frames--grid .jm-thumb__stage {
+  min-height: 180px;
 }
 
 .jm-thumb {
@@ -233,7 +219,7 @@
    need, and the strip does not shuffle under the cursor as frames arrive. */
 .jm-thumb__stage {
   display: block;
-  min-height: 150px;
+  min-height: 112px;
   overflow: hidden;
   background: var(--jm-chrome-background-raised);
   border-bottom: 1px solid var(--jm-chrome-border);
@@ -249,26 +235,105 @@
 
 .jm-thumb__caption {
   display: flex;
-  align-items: baseline;
+  flex-direction: column;
+  align-items: flex-start;
   gap: var(--alp-space-2);
-  padding: var(--alp-space-2) var(--alp-space-3);
+  padding: var(--alp-space-3);
 }
 
 .jm-thumb__number {
   flex: 0 0 auto;
-  min-width: 1.25rem;
-  font-size: var(--alp-font-size-xs);
+  padding: 2px var(--alp-space-2);
+  border-radius: var(--alp-radius-full);
+  background: var(--jm-chrome-accent);
+  color: var(--jm-chrome-background);
+  font-size: 0.6875rem;
   font-weight: var(--alp-font-weight-bold);
+  letter-spacing: 0.04em;
   font-variant-numeric: tabular-nums;
-  color: var(--jm-chrome-accent);
+  text-transform: uppercase;
 }
 
 .jm-thumb__title {
   min-width: 0;
-  font-size: var(--alp-font-size-xs);
+  font-size: var(--alp-font-size-sm);
   font-weight: var(--alp-font-weight-semibold);
-  line-height: 1.35;
+  line-height: 1.45;
   color: var(--jm-chrome-text);
+}
+
+.jm-main-frame {
+  display: grid;
+  grid-template-rows: auto minmax(0, 1fr) auto;
+  min-width: 0;
+  min-height: 0;
+  overflow: hidden;
+  border: 1px solid var(--jm-chrome-border);
+  background: var(--jm-chrome-surface);
+  box-shadow: 0 18px 44px rgb(2 6 23 / 32%);
+}
+
+.jm-main-frame__head {
+  padding: var(--alp-space-4) var(--alp-space-5);
+  border-bottom: 1px solid var(--jm-chrome-border);
+}
+
+.jm-main-frame__number,
+.jm-viewer__count {
+  margin: 0;
+  color: var(--jm-chrome-accent);
+  font-size: var(--alp-font-size-sm);
+  font-weight: var(--alp-font-weight-bold);
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+.jm-main-frame__title {
+  margin: var(--alp-space-1) 0 0;
+  color: var(--jm-chrome-text);
+  font-size: var(--alp-font-size-xl);
+  line-height: 1.2;
+}
+
+.jm-main-frame__stage {
+  min-height: 0;
+  overflow: auto;
+  padding: var(--alp-space-4);
+  background: var(--jm-chrome-background-raised);
+}
+
+.jm-main-frame__no-clone {
+  margin: auto;
+  color: var(--jm-chrome-muted);
+  font-size: var(--alp-font-size-sm);
+}
+
+.jm-main-frame__detail {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--alp-space-4);
+  padding: var(--alp-space-4) var(--alp-space-5);
+  border-top: 1px solid var(--jm-chrome-border);
+}
+
+.jm-main-frame__description {
+  min-width: 0;
+  color: var(--jm-chrome-text);
+  font-size: var(--alp-font-size-sm);
+  line-height: 1.5;
+}
+
+.jm-main-frame__description p {
+  margin: 0;
+}
+
+.jm-main-frame__description p + p {
+  margin-top: var(--alp-space-1);
+}
+
+.jm-main-frame__description strong {
+  color: var(--jm-chrome-accent);
 }
 
 .jm-map__empty {
@@ -292,7 +357,7 @@
 
 .jm-viewer__panel {
   display: grid;
-  grid-template-rows: auto 1fr auto;
+  grid-template-rows: auto minmax(0, 1fr) auto auto;
   gap: var(--alp-space-4);
   width: 100%;
   min-height: 0;
@@ -313,9 +378,6 @@
 
 .jm-viewer__count {
   margin: 0;
-  font-size: var(--alp-font-size-xs);
-  font-weight: var(--alp-font-weight-semibold);
-  color: var(--jm-chrome-muted);
 }
 
 .jm-viewer__title {
@@ -348,6 +410,20 @@
   flex-direction: column;
   gap: var(--alp-space-2);
   margin: 0;
+}
+
+.jm-viewer__controls,
+.jm-viewer__navigation {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: var(--alp-space-3);
+}
+
+.jm-viewer__controls {
+  padding-top: var(--alp-space-2);
+  border-top: 1px solid var(--jm-chrome-border);
 }
 
 .jm-viewer__pair {
@@ -388,4 +464,21 @@
 
 .jm-map .alp-notice__icon {
   color: var(--jm-chrome-accent);
+}
+
+@media (max-width: 54rem) {
+  .jm-frames {
+    grid-template-columns: 1fr;
+  }
+
+  .jm-filmstrip {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(12rem, 1fr));
+    max-height: 18rem;
+  }
+
+  .jm-main-frame__detail {
+    align-items: flex-start;
+    flex-direction: column;
+  }
 }

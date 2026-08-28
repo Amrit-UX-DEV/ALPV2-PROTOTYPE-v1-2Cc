@@ -15,7 +15,7 @@
   position: fixed;
   inset: 0;
   display: grid;
-  grid-template-rows: 1fr auto;
+  grid-template-rows: minmax(0, 1fr) auto;
   z-index: var(--alp-z-modal, 1000);
 }
 
@@ -26,6 +26,7 @@
   min-height: 0;
   overflow: hidden;
   padding: var(--alp-space-4);
+  box-sizing: border-box;
 }
 
 /*
@@ -42,7 +43,6 @@
   width: 100vw;
   height: 100vh;
   transform-origin: top center;
-  border-radius: var(--alp-radius-lg);
   overflow: hidden;
   background: var(--alp-color-surface);
   box-shadow: 0 24px 60px oklch(from var(--alp-shadow-color) l c h / 0.45);
@@ -58,10 +58,9 @@
 /* ---- Bar ---- */
 
 .jm-bar {
-  display: flex;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr);
   align-items: center;
-  justify-content: space-between;
-  flex-wrap: wrap;
   gap: var(--alp-space-3);
   padding: var(--alp-space-3) var(--alp-space-5);
   background: var(--jm-chrome-surface);
@@ -69,6 +68,7 @@
 }
 
 .jm-bar__identity {
+  grid-column: 1;
   display: flex;
   flex-direction: column;
   min-width: 0;
@@ -116,6 +116,15 @@
   gap: var(--alp-space-4);
 }
 
+.jm-bar__controls {
+  grid-column: 2;
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: var(--alp-space-4);
+}
+
 .jm-bar__full-view {
   display: inline-flex;
   align-items: center;
@@ -142,6 +151,23 @@
   display: flex;
   align-items: center;
   gap: var(--alp-space-3);
+}
+
+@media (max-width: 54rem) {
+  .jm-bar {
+    grid-template-columns: 1fr;
+    justify-items: center;
+  }
+
+  .jm-bar__identity,
+  .jm-bar__controls {
+    grid-column: 1;
+  }
+
+  .jm-bar__identity {
+    align-items: center;
+    text-align: center;
+  }
 }
 
 .jm-bar .jm-bar__steps .alp-btn--secondary {

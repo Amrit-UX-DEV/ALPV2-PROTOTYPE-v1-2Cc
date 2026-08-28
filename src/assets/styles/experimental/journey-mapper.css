@@ -17,14 +17,14 @@
    ========================================================= */
 
 /* ---------------------------------------------------------
-   GRAPH PAPER CHROME
+   DOTTED PAPER CHROME
 
    This class is shared by the shell and map. It is deliberately
    not applied to the prototype frame, whose background and
    styles belong to the prototype being reviewed.
    --------------------------------------------------------- */
 
-.jm-graph-paper {
+.jm-dotted-paper {
   --jm-chrome-background: #0f172a;
   --jm-chrome-background-raised: #172033;
   --jm-chrome-surface: #1e293b;
@@ -33,15 +33,11 @@
   --jm-chrome-text: #f8fafc;
   --jm-chrome-muted: #cbd5e1;
   --jm-chrome-accent: #fbbf24;
-  --jm-chrome-grid-major: rgb(148 163 184 / 16%);
-  --jm-chrome-grid-minor: rgb(148 163 184 / 8%);
+  --jm-chrome-dot: rgb(203 213 225 / 11%);
   background-color: var(--jm-chrome-background);
-  background-image:
-    linear-gradient(var(--jm-chrome-grid-major) 1px, transparent 1px),
-    linear-gradient(90deg, var(--jm-chrome-grid-major) 1px, transparent 1px),
-    linear-gradient(var(--jm-chrome-grid-minor) 1px, transparent 1px),
-    linear-gradient(90deg, var(--jm-chrome-grid-minor) 1px, transparent 1px);
-  background-size: 32px 32px, 32px 32px, 8px 8px, 8px 8px;
+  background-image: radial-gradient(circle, var(--jm-chrome-dot) 1px, transparent 1.25px);
+  background-position: 0 0;
+  background-size: 18px 18px;
 }
 
 /* ---------------------------------------------------------
