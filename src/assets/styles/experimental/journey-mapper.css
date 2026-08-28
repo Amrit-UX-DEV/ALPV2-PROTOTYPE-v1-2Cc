@@ -5,11 +5,9 @@
    style themselves.
 
    Frames are markup taken off the running app and written
-   into the page, and the ring goes on elements the mapper
-   does not own: a real element in the running prototype, or
-   an element inside a frame. None of it carries the scoping
-   attribute Angular puts on a component's own markup, so none
-   of it can be reached from a component stylesheet.
+   into the page. Their masks sit on elements the mapper does
+   not own, so they need global rules rather than component
+   scoped ones.
 
    Loaded after the design system so that it has the last word
    over the legacy stack, which sets outlines, shadows and
@@ -38,31 +36,6 @@
   background-image: radial-gradient(circle, var(--jm-chrome-dot) 1px, transparent 1.25px);
   background-position: 0 0;
   background-size: 18px 18px;
-}
-
-/* ---------------------------------------------------------
-   THE RING
-
-   Two rings rather than one. The prototype is drawn on white
-   panels, on the near-black rail and on tinted comparison
-   bands, and a single colour that shows up on all three does
-   not exist. Amber against a white halo shows on any of them:
-   whichever of the two disappears into the background, the
-   other one is what is seen.
-
-   Amber 600 holds 3.19:1 against white, which clears what a
-   boundary needs by itself, and the halo is what carries it
-   over the dark rail.
-
-   No animation. A ring that pulses draws the eye away from
-   the words beside it, which are the thing being read.
-   --------------------------------------------------------- */
-
-.jm-target {
-  outline: 3px solid var(--alp-color-amber-600) !important;
-  outline-offset: 2px;
-  box-shadow: 0 0 0 6px oklch(from var(--alp-color-white) l c h / 0.85) !important;
-  border-radius: var(--alp-radius-xs);
 }
 
 /* ---------------------------------------------------------

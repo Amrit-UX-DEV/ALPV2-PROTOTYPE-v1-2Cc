@@ -95,17 +95,14 @@ export class JourneyShellComponent {
       void this.capture.start(journey, root);
     });
 
-    // The ring follows the step, and only while the prototype is the thing
-    // being looked at: the map draws its own ring inside its own frame, and two
-    // rings for one step in two places is one ring too many.
+    // Focus belongs to captured frames, where the mask explains the step
+    // without altering the running prototype. Clear any old ring left by an
+    // earlier shell instance or a hot reload rather than adding a live one.
     effect(() => {
-      // Nothing is rung while the pass runs. The ring is a class on a live
-      // element, and a live element with a ring on it is what gets
-      // photographed: the frames would come out ringed twice, once by the
-      // shell and once by the frame's own selector.
-      const settled = this.rendered() && this.capture.status() !== 'capturing';
-      const showing = this.journeys.view() === 'prototype';
-      this.ring(settled && showing ? this.journeys.step()?.target : undefined);
+      if (!this.rendered()) return;
+      this.capture.status();
+      this.journeys.view();
+      this.clearRings();
     });
   }
 
@@ -171,26 +168,13 @@ export class JourneyShellComponent {
     this.scale.set(Math.max(MIN_SCALE, Math.min(1, fits)));
   }
 
-  /**
-   * Rings whatever the step points at on the live screen.
-   *
-   * The element is found rather than remembered: the prototype rebuilds its
-   * views as a rep moves through it, so the thing a selector matched a moment
-   * ago may not be the thing it matches now.
-   */
-  private ring(target: string | undefined): void {
+  /** Removes any focus treatment from the live prototype. */
+  private clearRings(): void {
     const root = this.prototypeRoot();
     if (!root) return;
 
     for (const rung of Array.from(root.querySelectorAll('.jm-target'))) {
       rung.classList.remove('jm-target');
-    }
-    if (!target) return;
-
-    try {
-      root.querySelector(target)?.classList.add('jm-target');
-    } catch {
-      console.error(`Journey step: '${target}' is not a selector this browser understands.`);
     }
   }
 }

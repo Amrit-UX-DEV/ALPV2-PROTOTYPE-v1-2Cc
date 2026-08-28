@@ -20,7 +20,7 @@
   gap: var(--alp-space-4);
   height: 100%;
   min-height: 0;
-  padding: var(--alp-space-5);
+  padding: var(--alp-space-4) var(--alp-space-5);
   box-sizing: border-box;
   color: var(--jm-chrome-text);
 }
@@ -38,14 +38,14 @@
 .jm-map__actions {
   display: flex;
   flex-wrap: wrap;
-  align-items: flex-end;
+  align-items: flex-start;
   justify-content: flex-end;
   gap: var(--alp-space-5);
 }
 
 .jm-map__heading {
   min-width: 0;
-  max-width: 68ch;
+  flex: 1 1 32rem;
 }
 
 .jm-map__eyebrow {
@@ -64,7 +64,7 @@
 }
 
 .jm-map__summary {
-  margin: var(--alp-space-2) 0 0;
+  margin: var(--alp-space-1) 0 0;
   font-size: var(--alp-font-size-sm);
   line-height: 1.45;
   color: var(--jm-chrome-muted);
@@ -72,15 +72,24 @@
 
 .jm-map__capture {
   display: flex;
-  flex-direction: column;
-  align-items: flex-end;
-  gap: var(--alp-space-2);
+  min-height: 34px;
+  justify-content: center;
 }
 
 .jm-map__captured {
+  display: flex;
+  align-items: center;
+  min-height: 34px;
   margin: 0;
+  gap: var(--alp-space-2);
   font-size: var(--alp-font-size-xs);
+  font-weight: var(--alp-font-weight-semibold);
   color: var(--jm-chrome-muted);
+}
+
+.jm-map__captured time {
+  color: var(--jm-chrome-text);
+  font-variant-numeric: tabular-nums;
 }
 
 .jm-map__layout {
@@ -91,6 +100,9 @@
 }
 
 .jm-map__layout-label {
+  min-height: 34px;
+  display: flex;
+  align-items: center;
   font-size: var(--alp-font-size-xs);
   font-weight: var(--alp-font-weight-semibold);
   color: var(--jm-chrome-muted);
@@ -284,7 +296,7 @@
 
 .jm-main-frame {
   display: grid;
-  grid-template-rows: auto minmax(0, 1fr);
+  grid-template-rows: auto minmax(0, 1fr) auto;
   min-width: 0;
   min-height: 0;
   overflow: hidden;
@@ -319,11 +331,19 @@
   line-height: 1.2;
 }
 
+.jm-frame-details {
+  display: grid;
+  gap: var(--alp-space-3);
+  padding: var(--alp-space-4) var(--alp-space-5);
+  border-top: 1px solid var(--jm-chrome-border);
+  background: var(--jm-chrome-surface);
+}
+
 .jm-frame-description {
   display: grid;
   gap: var(--alp-space-1);
   max-width: 80ch;
-  margin-top: var(--alp-space-3);
+  margin: 0;
   color: var(--jm-chrome-text);
   font-size: var(--alp-font-size-sm);
   line-height: 1.5;

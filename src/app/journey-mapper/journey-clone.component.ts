@@ -61,6 +61,7 @@ import { JourneyFocus } from './journey.model';
         class="jm-clone__surface"
         [style.width.px]="width() || null"
         [style.height.px]="height() || null"
+        [style.color]="textColor() || null"
         [style.transform]="transform()"
       >
         <div #canvas class="jm-clone__canvas" inert></div>
@@ -107,6 +108,9 @@ export class JourneyCloneComponent {
   /** The size the app had on screen. The frame is laid out at it. */
   readonly width = input(0);
   readonly height = input(0);
+
+  /** The captured root colour, retained when the source relied on inheritance. */
+  readonly textColor = input('');
 
   /** Where the step's subject was, or nothing on a step that only reads. */
   readonly focus = input<JourneyFocus | undefined>(undefined);

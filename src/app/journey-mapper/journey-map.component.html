@@ -15,17 +15,16 @@
     <div class="jm-map__actions">
       <div class="jm-map__capture">
         @if (capturedAt()) {
-          <p class="jm-map__captured">Frames captured {{ capturedAt() }}</p>
+          <p class="jm-map__captured">
+            <span>Frames Captured</span>
+            <time>{{ capturedAt() }}</time>
+          </p>
         }
-        <button type="button" class="alp-btn alp-btn--sm alp-btn--secondary" (click)="capture.recapture()">
-          <i aria-hidden="true" class="fas fa-redo"></i>
-          Capture again
-        </button>
       </div>
 
       <div class="jm-map__layout">
-        <span class="jm-map__layout-label">Frame layout</span>
-        <div class="alp-view-switch" role="group" aria-label="Frame layout">
+        <span class="jm-map__layout-label">Frame Layout</span>
+        <div class="alp-view-switch" role="group" aria-label="Frame Layout">
           <button
             type="button"
             class="alp-view-switch__option"
@@ -42,10 +41,15 @@
             [attr.aria-pressed]="layout() === 'grid'"
             (click)="showLayout('grid')">
             <i aria-hidden="true" class="fas fa-th"></i>
-            Wrapping grid
+            Wrapping Grid
           </button>
         </div>
       </div>
+
+      <button type="button" class="alp-btn alp-btn--sm alp-btn--secondary" (click)="capture.recapture()">
+        <i aria-hidden="true" class="fas fa-redo"></i>
+        Capture Again
+      </button>
     </div>
   </div>
 
@@ -92,6 +96,7 @@
                       [html]="frame.html"
                       [width]="frame.width"
                       [height]="frame.height"
+                      [textColor]="frame.look.color"
                       [focus]="frame.focus"
                     ></journey-clone>
                   } @placeholder {
@@ -119,14 +124,10 @@
             <div>
               <p class="jm-main-frame__number">Step {{ journeys.stepNumber() }} of {{ journeys.stepCount() }}</p>
               <h2 class="jm-main-frame__title" [id]="'JourneyStep' + journeys.stepNumber()">{{ step.title }}</h2>
-              <div class="jm-frame-description">
-                <p><strong>Action</strong> {{ step.action }}</p>
-                <p><strong>Result</strong> {{ step.result }}</p>
-              </div>
             </div>
             <button type="button" class="alp-btn alp-btn--sm alp-btn--secondary" (click)="enlarge()">
               <i aria-hidden="true" class="fas fa-expand"></i>
-              Expand frame
+              Expand Frame
             </button>
           </div>
 
@@ -136,6 +137,7 @@
                 [html]="frame.html"
                 [width]="frame.width"
                 [height]="frame.height"
+                [textColor]="frame.look.color"
                 [focus]="frame.focus"
               ></journey-clone>
             } @else {
@@ -144,6 +146,13 @@
               </p>
             }
           </div>
+
+          <footer class="jm-frame-details">
+            <div class="jm-frame-description">
+              <p><strong>Action</strong> {{ step.action }}</p>
+              <p><strong>Result</strong> {{ step.result }}</p>
+            </div>
+          </footer>
 
         </section>
       }
@@ -170,14 +179,10 @@
         <div>
           <p class="jm-viewer__count">Step {{ journeys.stepNumber() }} of {{ journeys.stepCount() }}</p>
           <h2 class="jm-viewer__title" id="JourneyViewerTitle">{{ step.title }}</h2>
-          <div class="jm-frame-description">
-            <p><strong>Action</strong> {{ step.action }}</p>
-            <p><strong>Result</strong> {{ step.result }}</p>
-          </div>
         </div>
         <button type="button" class="alp-btn alp-btn--sm alp-btn--secondary" (click)="shrink()">
           <i aria-hidden="true" class="fas fa-compress"></i>
-          Return to stack
+          Return to Stack
         </button>
       </div>
 
@@ -187,6 +192,7 @@
             [html]="frame.html"
             [width]="frame.width"
             [height]="frame.height"
+            [textColor]="frame.look.color"
             [focus]="frame.focus"
           ></journey-clone>
         } @else {
@@ -197,20 +203,28 @@
         }
       </div>
 
-      <dl class="jm-viewer__detail">
-        @if (step.notes) {
-          <div class="jm-viewer__pair">
-            <dt>Notes</dt>
-            <dd>{{ step.notes }}</dd>
-          </div>
+      <footer class="jm-frame-details">
+        <div class="jm-frame-description">
+          <p><strong>Action</strong> {{ step.action }}</p>
+          <p><strong>Result</strong> {{ step.result }}</p>
+        </div>
+        @if (step.notes || step.target) {
+          <dl class="jm-viewer__detail">
+            @if (step.notes) {
+              <div class="jm-viewer__pair">
+                <dt>Notes</dt>
+                <dd>{{ step.notes }}</dd>
+              </div>
+            }
+            @if (step.target) {
+              <div class="jm-viewer__pair">
+                <dt>Target</dt>
+                <dd><code class="jm-viewer__target">{{ step.target }}</code></dd>
+              </div>
+            }
+          </dl>
         }
-        @if (step.target) {
-          <div class="jm-viewer__pair">
-            <dt>Target</dt>
-            <dd><code class="jm-viewer__target">{{ step.target }}</code></dd>
-          </div>
-        }
-      </dl>
+      </footer>
 
       <journey-step-navigation></journey-step-navigation>
 

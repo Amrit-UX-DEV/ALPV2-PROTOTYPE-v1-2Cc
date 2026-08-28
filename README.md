@@ -180,12 +180,12 @@ strip at left and shows the selected full-app frame at right, with its action
 and result. Selecting a frame updates the journey position, so the strip, the
 bottom navigation and arrow keys agree about the current step.
 
-**Expand frame** fills the current Journey Map screen with the selected frame;
-**Return to stack** brings back the film strip. The alternate wrapping grid is
+**Expand Frame** fills the current Journey Map screen with the selected frame;
+**Return to Stack** brings back the film strip. The alternate wrapping grid is
 a quick overview of the same captured frames, and selecting one opens that
 frame in the same expanded view.
 
-The shell's **Open in full view** link opens a new tab with `?view=full`; that
+The shell's **Open in Full View** link opens a new tab with `?view=full`; that
 mode renders the same prototype without the journey shell, map or bottom
 controls.
 

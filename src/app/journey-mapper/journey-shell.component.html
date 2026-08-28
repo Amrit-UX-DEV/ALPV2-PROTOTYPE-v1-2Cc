@@ -21,14 +21,6 @@
        holds is true of both: which one is showing, and where in the journey the
        reader is. -->
   <div class="jm-bar jm-dotted-paper">
-
-    <div class="jm-bar__identity">
-      <span class="jm-bar__label">Journey Mapper</span>
-      @if (journeys.journey(); as journey) {
-        <span class="jm-bar__journey">{{ journey.name }}</span>
-      }
-    </div>
-
     <div class="jm-bar__controls">
       <div class="jm-bar__view-controls">
         <div class="alp-view-switch" role="group" aria-label="What the shell is showing">
@@ -39,7 +31,7 @@
             [attr.aria-pressed]="journeys.view() === 'prototype'"
             (click)="journeys.showView('prototype')">
             <i aria-hidden="true" class="fas fa-desktop"></i>
-            Interactive prototype
+            Interactive Prototype
           </button>
           <button
             type="button"
@@ -48,7 +40,7 @@
             [attr.aria-pressed]="journeys.view() === 'journey'"
             (click)="journeys.showView('journey')">
             <i aria-hidden="true" class="fas fa-map-signs"></i>
-            Journey map
+            Journey Map
           </button>
         </div>
 
@@ -59,7 +51,7 @@
             target="_blank"
             rel="noopener noreferrer">
             <i aria-hidden="true" class="fas fa-expand"></i>
-            Open in full view
+            Open in Full View
           </a>
         }
       </div>
