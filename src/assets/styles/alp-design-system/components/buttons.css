@@ -42,7 +42,8 @@
 /* A button acting on a tile or a row rather than on the screen, where the
    full size would outweigh the thing it belongs to. */
 .alp-btn--sm {
-  padding: 6px var(--alp-space-3);
+  min-height: 34px;
+  padding: 0 var(--alp-space-3);
   font-size: var(--alp-font-size-sm);
 }
 
@@ -63,6 +64,17 @@
 
 .alp-btn:not(.alp-btn--icon):has(> i:first-child, > svg:first-child) {
   padding-left: var(--alp-space-4);
+}
+
+/* Compact chrome controls share the icon-button height. Their tighter icon
+   edge keeps the glyph optically aligned with the text without each feature
+   needing a one-off padding modifier. */
+.alp-btn--sm:not(.alp-btn--icon):has(> i:last-child, > svg:last-child) {
+  padding-right: var(--alp-space-2);
+}
+
+.alp-btn--sm:not(.alp-btn--icon):has(> i:first-child, > svg:first-child) {
+  padding-left: var(--alp-space-2);
 }
 
 .alp-btn--primary {

@@ -33,7 +33,8 @@
   display: inline-flex;
   align-items: center;
   gap: var(--alp-space-2);
-  padding: 6px 14px;
+  min-height: 34px;
+  padding: 0 14px;
   border: none;
   border-radius: var(--alp-radius-full);
   background: transparent;
@@ -43,6 +44,14 @@
   font-weight: var(--alp-font-weight-medium);
   cursor: pointer;
   transition: background 0.15s ease, color 0.15s ease;
+}
+
+.alp-view-switch__option:has(> i:first-child, > svg:first-child) {
+  padding-left: var(--alp-space-2);
+}
+
+.alp-view-switch__option:has(> i:last-child, > svg:last-child) {
+  padding-right: var(--alp-space-2);
 }
 
 .alp-view-switch__option:hover:not(.is-selected) {

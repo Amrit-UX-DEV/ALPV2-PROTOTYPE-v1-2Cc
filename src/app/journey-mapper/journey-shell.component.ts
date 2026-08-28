@@ -15,6 +15,7 @@ import {
 
 import { JourneyCaptureService } from './journey-capture.service';
 import { JourneyMapComponent } from './journey-map.component';
+import { JourneyStepNavigationComponent } from './journey-step-navigation.component';
 import { JourneyService } from './journey.service';
 import { fullViewUrl } from '../view-mode';
 
@@ -44,7 +45,7 @@ const MIN_SCALE = 0.4;
 @Component({
   selector: 'journey-shell',
   standalone: true,
-  imports: [JourneyMapComponent],
+  imports: [JourneyMapComponent, JourneyStepNavigationComponent],
   templateUrl: './journey-shell.component.html',
   styleUrl: './journey-shell.component.css',
   changeDetection: ChangeDetectionStrategy.OnPush,

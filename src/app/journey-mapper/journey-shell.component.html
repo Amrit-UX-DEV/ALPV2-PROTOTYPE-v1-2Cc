@@ -39,7 +39,7 @@
             [attr.aria-pressed]="journeys.view() === 'prototype'"
             (click)="journeys.showView('prototype')">
             <i aria-hidden="true" class="fas fa-desktop"></i>
-            Prototype
+            Interactive prototype
           </button>
           <button
             type="button"
@@ -52,44 +52,20 @@
           </button>
         </div>
 
-        <a
-          class="jm-bar__full-view"
-          [href]="fullViewUrl"
-          target="_blank"
-          rel="noopener noreferrer">
-          <i aria-hidden="true" class="fas fa-expand"></i>
-          Open in full view
-        </a>
+        @if (journeys.view() === 'prototype') {
+          <a
+            class="jm-bar__full-view"
+            [href]="fullViewUrl"
+            target="_blank"
+            rel="noopener noreferrer">
+            <i aria-hidden="true" class="fas fa-expand"></i>
+            Open in full view
+          </a>
+        }
       </div>
 
       @if (journeys.view() === 'journey') {
-        <div class="jm-bar__steps">
-          <button
-            type="button"
-            class="alp-btn alp-btn--sm alp-btn--secondary"
-            [disabled]="!journeys.hasPrevious()"
-            (click)="journeys.previous()">
-            <i aria-hidden="true" class="fas fa-chevron-left"></i>
-            Previous
-          </button>
-
-          <span class="jm-bar__count" aria-live="polite">
-            @if (journeys.stepCount()) {
-              Step {{ journeys.stepNumber() }} of {{ journeys.stepCount() }}
-            } @else {
-              No journey
-            }
-          </span>
-
-          <button
-            type="button"
-            class="alp-btn alp-btn--sm alp-btn--secondary"
-            [disabled]="!journeys.hasNext()"
-            (click)="journeys.next()">
-            Next
-            <i aria-hidden="true" class="fas fa-chevron-right"></i>
-          </button>
-        </div>
+        <journey-step-navigation></journey-step-navigation>
       }
     </div>
 

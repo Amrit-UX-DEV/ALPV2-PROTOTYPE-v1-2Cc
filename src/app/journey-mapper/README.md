@@ -67,5 +67,6 @@ from the screens being reviewed.
 `JourneyMapComponent` renders the captured path. Stack mode is the default:
 smaller frames form a vertical film strip at left, while the selected step is
 shown large at right with its action and result. The selected frame can expand
-within the map and returns to the stack with **Back to stack**. Grid mode is an
-alternate overview of the same captured frames.
+within the map and returns to the stack with **Return to stack**. Grid mode is
+an alternate overview of the same captured frames; selecting one opens the
+same expanded frame view.

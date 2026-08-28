@@ -129,6 +129,8 @@
   display: inline-flex;
   align-items: center;
   gap: var(--alp-space-2);
+  min-height: 34px;
+  padding: 0 var(--alp-space-2);
   color: var(--jm-chrome-muted);
   font-size: var(--alp-font-size-sm);
   font-weight: var(--alp-font-weight-medium);
@@ -147,12 +149,6 @@
   border-radius: var(--alp-radius-xs);
 }
 
-.jm-bar__steps {
-  display: flex;
-  align-items: center;
-  gap: var(--alp-space-3);
-}
-
 @media (max-width: 54rem) {
   .jm-bar {
     grid-template-columns: 1fr;
@@ -168,32 +164,6 @@
     align-items: center;
     text-align: center;
   }
-}
-
-.jm-bar .jm-bar__steps .alp-btn--secondary {
-  background: var(--jm-chrome-background-raised);
-  border-color: var(--jm-chrome-border);
-  color: var(--jm-chrome-text);
-}
-
-.jm-bar .jm-bar__steps .alp-btn--secondary:hover:not(:disabled) {
-  background: var(--jm-chrome-surface-hover);
-  border-color: var(--jm-chrome-muted);
-}
-
-.jm-bar .jm-bar__steps .alp-btn--secondary:disabled {
-  background: var(--jm-chrome-background-raised);
-  border-color: var(--jm-chrome-border);
-  color: var(--jm-chrome-muted);
-}
-
-/* Tabular figures so the counter does not shuffle the buttons either side of
-   it every time the step number changes width. */
-.jm-bar__count {
-  font-size: var(--alp-font-size-sm);
-  font-variant-numeric: tabular-nums;
-  color: var(--jm-chrome-muted);
-  white-space: nowrap;
 }
 
 /* ---- Capture overlay ---- */

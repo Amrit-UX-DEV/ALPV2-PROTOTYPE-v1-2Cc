@@ -12,6 +12,7 @@ import {
 
 import { JourneyCaptureService } from './journey-capture.service';
 import { JourneyCloneComponent } from './journey-clone.component';
+import { JourneyStepNavigationComponent } from './journey-step-navigation.component';
 import { JourneyService } from './journey.service';
 
 type JourneyLayout = 'stack' | 'grid';
@@ -37,7 +38,7 @@ type JourneyLayout = 'stack' | 'grid';
 @Component({
   selector: 'journey-map',
   standalone: true,
-  imports: [JourneyCloneComponent],
+  imports: [JourneyCloneComponent, JourneyStepNavigationComponent],
   templateUrl: './journey-map.component.html',
   styleUrl: './journey-map.component.css',
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -75,6 +76,7 @@ export class JourneyMapComponent {
 
   protected select(index: number): void {
     this.journeys.goTo(index);
+    if (this.layout() === 'grid') this.open.set(true);
   }
 
   protected enlarge(): void {
@@ -83,6 +85,7 @@ export class JourneyMapComponent {
 
   protected shrink(): void {
     this.open.set(false);
+    this.currentLayout.set('stack');
   }
 
   protected showLayout(layout: JourneyLayout): void {
