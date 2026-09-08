@@ -42,12 +42,20 @@ export interface WorkPlan {
 /** How the hub itself behaves. */
 export interface WorkPlanHub {
   /**
-   * Whether the hub is a screen a rep always lands on.
+   * Whether the hub is a screen a rep always lands on, and with it whether the
+   * context a plan asks for applies at all.
    *
-   * True on develop, where the hub is part of what is being shown. False on a
-   * build cut down to one runnable plan, where a list of one is a screen that
-   * asks a question with a single answer: business processes then goes straight
-   * into that plan and the hub is never drawn.
+   * True on develop, where the hub is part of what is being shown: every plan
+   * the build offers is listed and can be opened, whether or not the context it
+   * would normally need is in play. A build showing the work has to be able to
+   * reach all of it.
+   *
+   * False on a build cut for an audience, where a plan waits for its context
+   * and a list of one is a screen asking a question with a single answer:
+   * business processes then goes straight into that plan and the hub is never
+   * drawn.
+   *
+   * Reserved for develop unless a release is deliberately cut that way.
    */
   alwaysShow: boolean;
 }

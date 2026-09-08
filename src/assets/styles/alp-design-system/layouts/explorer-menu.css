@@ -1,0 +1,57 @@
+/* =========================================================
+   ALP DESIGN SYSTEM — EXPLORER MENU WIDTH
+
+   The slide-out panel beside the rail, which holds the search
+   form and the hint under it.
+
+   The legacy stack sets that panel to 230px and then repeats
+   the number in three other places: the margin the toolbar
+   takes while the panel is open, and two widths for the sticky
+   wizard navigation, both worked out by subtracting the panel
+   from the viewport. Four literals that have to agree, in two
+   files, neither of which is maintained.
+
+   So the width becomes a token and the four rules are restated
+   here, in the layer that loads last. The legacy declarations
+   are left where they are: overriding them costs four rules
+   read together in one place, and editing them costs knowing
+   what else in two thousand lines was leaning on the number.
+
+   245 rather than 230. The hint that says what a search
+   criteria expects was breaking across three lines in the old
+   width; fifteen pixels is a word and a half of it.
+   ========================================================= */
+
+:root {
+  --alp-explorer-menu-width: 245px;
+}
+
+.alpha-explorer-toolbar .ui-action-menu-extended {
+  width: var(--alp-explorer-menu-width);
+}
+
+/* What the toolbar gives up to the panel while it is open. */
+.alpha-explorer-toolbar.extended {
+  margin-right: var(--alp-explorer-menu-width);
+}
+
+/* The sticky wizard navigation, which is positioned against the viewport and
+   so has to be told what the panel is taking. Two rules because the companion
+   dock is the other thing that takes width, and it may or may not be open. */
+.ui-app-explorer-v2.ui-app-exp-open
+  .wizard-container.wizard-vertical-theme-01
+  .step-container
+  .content-section-header.step-open
+  + .content-section-body
+  .wizard-navigation {
+  width: calc((100% - 60px) - 60px - var(--alp-explorer-menu-width));
+}
+
+.companion-dock-open.ui-app-explorer-v2.ui-app-exp-open
+  .wizard-container.wizard-vertical-theme-01
+  .step-container
+  .content-section-header.step-open
+  + .content-section-body
+  .wizard-navigation {
+  width: calc((100% - 520px) - 60px - var(--alp-explorer-menu-width));
+}

@@ -89,6 +89,15 @@ dialog::backdrop {
   z-index: var(--alp-z-toast);
 }
 
+/* Dropped from the top right rather than centred, for a dialog opened from a
+   panel on that side and read as an extension of it. Everything else about it
+   is still a dialog. */
+.alp-dialog-overlay--anchored-end {
+  align-items: flex-start;
+  justify-content: flex-end;
+  padding: 80px var(--alp-space-5) var(--alp-space-5);
+}
+
 .alp-dialog-overlay--wizard {
   z-index: var(--alp-z-tooltip);
 }
@@ -195,6 +204,33 @@ dialog::backdrop {
   color: var(--alp-color-text-muted);
   padding: var(--alp-space-8) var(--alp-space-4);
   font-size: 14px;
+}
+
+/* ---- Transfer call dialog ----
+   The shell, the heading, the close button and the footer are the dialog's.
+   These are the two things this one asks for that no other dialog does. */
+
+/* A fieldset where the block is a group of controls, and a plain block
+   otherwise: the reset is the same either way, and a fieldset will not shrink
+   below its content without being told it may. */
+.alp-transfer-dialog__section {
+  margin: 0;
+  padding: 0;
+  border: 0;
+  min-width: 0;
+}
+
+.alp-transfer-dialog__section + .alp-transfer-dialog__section {
+  margin-top: var(--alp-space-5);
+}
+
+/* Two reasons to a row, which is this dialog's decision rather than the
+   control's: the reasons are two or three words each, and a single column of
+   six would be taller than the dialog. */
+.alp-transfer-dialog__reasons {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: var(--alp-space-2);
 }
 
 /* ---- Preview modal ---- */
