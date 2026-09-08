@@ -1,0 +1,843 @@
+{
+  "libraryVersion": "2026-09-01",
+  "description": "Reusable content units for call-centre scripts. Authored once, referenced by many scripts/sub-scripts. Content is versioned and treated as immutable for audit.",
+
+  "prompts": [
+    {
+      "unitId": "prm.suspended-fund",
+      "version": 1,
+      "kind": "prompt",
+      "body": "You are currently invested in suspended funds, we've written to you to explain what this means. <Refer to mailing if needed>. We will need to check whether payment can be made from this/these suspended funds and let you know. We'll write to you and if you do have any options we'll also send any forms you need to complete at the same time. This can take 10 working days."
+    },
+    {
+      "unitId": "prm.suspended-fund",
+      "version": 2,
+      "kind": "prompt",
+      "body": "xxxxYou are currently invested in suspended funds, we've written to you to explain what this means. <Refer to mailing if needed>. We will need to check whether payment can be made from this/these suspended funds and let you know. We'll write to you and if you do have any options we'll also send any forms you need to complete at the same time. This can take 10 working days."
+    },
+    {
+      "unitId": "prm.alternatives-intro",
+      "version": 1,
+      "kind": "prompt",
+      "body": "It's important to remember that fully cashing in your policy may not be your only option. You also have the option to {{alternativesWording}}.",
+      "placeholders": [{ "key": "alternativesWording", "source": "chk.allow-alternatives", "path": "items[0].alternativesWording" }]
+    },
+
+    {
+      "unitId": "prm.alt-choice-confirm",
+      "version": 1,
+      "kind": "prompt",
+      "body": "Thanks - you've chosen \"{{choice}}\". I'll take you through the next steps for that now.",
+      "placeholders": [{ "key": "choice", "source": "c-alt-q", "path": "text" }]
+    },
+
+    {
+      "unitId": "prm.pup-ph-info",
+      "version": 1,
+      "kind": "prompt",
+      "body": "We'll send you some more information about this in the post. Please don't cancel your direct debit until you've read all the information in our letter."
+    },
+
+    {
+      "unitId": "prm.partial-form-post",
+      "version": 1,
+      "kind": "prompt",
+      "body": "No problem, I'll get that requested now. Forms can take up to 10 working days, although in most cases they're issued sooner than this."
+    },
+
+    { "unitId": "prm.partial-form-email", "version": 1, "kind": "prompt", "body": "No problem, I'll get that sent to you now." },
+
+    {
+      "unitId": "prm.value-today",
+      "version": 1,
+      "kind": "prompt",
+      "body": "Before we get started, I'd like to let you know that the value of your policy today is {{policyValue}}. This amount changes daily and isn't guaranteed.",
+      "placeholders": [
+        { "key": "policyValue", "source": "chk.policy-value", "path": "items[0].policyValue", "format": "currency-gbp" }
+      ]
+    },
+
+    {
+      "unitId": "prm.warnings-conditional",
+      "version": 1,
+      "kind": "prompt",
+      "conditionalSegments": true,
+      "body": "{{#hasBenefits}}Your policy provides {{benefits}} which will be lost if you cash in your policy. {{/hasBenefits}}{{#hasPenalty}}There is an exit fee or penalty for cashing in your policy early {{penaltyDetail}}. {{/hasPenalty}}{{#hasMVR}}A Market Value Reduction may apply. {{/hasMVR}}{{#hasBonuses}}Bonuses may reduce on surrender. Guaranteed amounts only apply if premiums are paid when due; if you end your policy early these guaranteed amounts will not apply and we'll work out new values. Final bonuses are not guaranteed and will be reduced if you cancel your policy early. {{/hasBonuses}}",
+      "placeholders": [
+        { "key": "hasBenefits", "source": "chk.policy-features", "path": "items[0].hasBenefits" },
+        { "key": "benefits", "source": "chk.policy-features", "path": "items[0].benefits" },
+        { "key": "hasPenalty", "source": "chk.policy-features", "path": "items[0].hasPenalty" },
+        { "key": "penaltyDetail", "source": "chk.policy-features", "path": "items[0].penaltyDetail" },
+        { "key": "hasMVR", "source": "chk.policy-features", "path": "items[0].hasMvr" },
+        { "key": "hasBonuses", "source": "chk.policy-features", "path": "items[0].hasBonuses" }
+      ]
+    },
+
+    {
+      "unitId": "prm.pop-on-hold",
+      "version": 1,
+      "kind": "prompt",
+      "body": "Great, thanks for confirming. I'm just going to check some details on your policy. I'm going to pop you on hold for a minute or so while I do that."
+    },
+
+    {
+      "unitId": "prm.form-and-id",
+      "version": 1,
+      "kind": "prompt",
+      "body": "To cash in your policy there's a form you need to fill in and you might also need to send us some ID."
+    },
+
+    {
+      "unitId": "prm.third-party-claim",
+      "version": 1,
+      "kind": "prompt",
+      "body": "Just so you know, if it should come to light that a third party has a genuine claim on this policy, we may need to recover the payment."
+    },
+
+    {
+      "unitId": "prm.fastest-over-phone",
+      "version": 1,
+      "kind": "prompt",
+      "body": "The fastest way to do this is over the phone and we should be able to help you with this today. Otherwise you can request this on our website or we can send you the forms to fill in."
+    },
+
+    {
+      "unitId": "prm.website-link-warnings",
+      "version": 1,
+      "kind": "prompt",
+      "body": "I'll give you the link to our website, but before you go ahead there's some things we need to make you aware of."
+    },
+
+    {
+      "unitId": "prm.can-complete-phone",
+      "version": 1,
+      "kind": "prompt",
+      "body": "Thanks for confirming, we should be able to complete this over the phone for you today."
+    },
+
+    {
+      "unitId": "prm.both-ph-needed",
+      "version": 1,
+      "kind": "prompt",
+      "body": "We won't be able to do this over the phone today without speaking to both policyholders. You can either call us back when you're both available, complete this on our website, or I can send you the forms to complete via email or post."
+    },
+
+    {
+      "unitId": "prm.moneyhelper-signpost",
+      "version": 1,
+      "kind": "prompt",
+      "body": "Ok, that's understandable. You can find lots of helpful information at moneyhelper.org.uk, including help finding a financial adviser if you need one. To cash in your policy there's just a simple form you need to complete if you decide to go ahead. You might be able to request this on our website. I can also get this sent through the post or by email if you prefer."
+    },
+
+    {
+      "unitId": "prm.can-process-request",
+      "version": 1,
+      "kind": "prompt",
+      "body": "Based on your policy and the information you've given me, we can process your request."
+    },
+
+    {
+      "unitId": "prm.things-to-know",
+      "version": 1,
+      "kind": "prompt",
+      "body": "If you decide to go ahead and cash in your policy, there's some things we need to make you aware of."
+    },
+
+    {
+      "unitId": "prm.scam-warning",
+      "version": 1,
+      "kind": "prompt",
+      "body": "It's becoming more common that people with lump sums of money are targeted by scammers. Please be cautious and take time to check any offer before acting on it."
+    },
+
+    {
+      "unitId": "prm.no-financial-advice",
+      "version": 1,
+      "kind": "prompt",
+      "body": "We'd like to make it clear that ReAssure can't provide you with financial advice."
+    },
+
+    {
+      "unitId": "prm.adviser-info",
+      "version": 1,
+      "kind": "prompt",
+      "body": "A Financial Adviser can make a personal recommendation based on your individual circumstances. You can find one at moneyhelper.org.uk if you'd like to speak to someone before deciding."
+    },
+
+    {
+      "unitId": "prm.government-benefits",
+      "version": 1,
+      "kind": "prompt",
+      "body": "If you receive any Government benefits, you should be aware that taking your money now could affect your entitlement to them."
+    },
+
+    {
+      "unitId": "prm.chargeable-event",
+      "version": 1,
+      "kind": "prompt",
+      "body": "Cashing in your policy early could cause a chargeable event gain. If this occurs, there may be tax to pay."
+    },
+
+    {
+      "unitId": "prm.hmrc-helpsheet",
+      "version": 1,
+      "kind": "prompt",
+      "body": "HMRC have a help sheet on their website called 'Gains on UK life insurance policies' which explains this in more detail."
+    },
+
+    {
+      "unitId": "prm.can-process-online-phone",
+      "version": 1,
+      "kind": "prompt",
+      "body": "Based on your policy and the information you've given me, we can process your request. Would you like to do this online, or shall we continue over the phone?"
+    },
+
+    {
+      "unitId": "prm.existing-bank",
+      "version": 1,
+      "kind": "prompt",
+      "body": "I can see that we currently have a bank account ending in {{accountLast3}} (confirm Alpha details).",
+      "placeholders": [{ "key": "accountLast3", "source": "chk.known-bank-account", "path": "items[0].accountLast3" }]
+    },
+
+    {
+      "unitId": "prm.can-cancel-today",
+      "version": 1,
+      "kind": "prompt",
+      "body": "Thanks for confirming, I can arrange for your policy to be cancelled today and payment to be made to this account. Once this is done, it cannot be reversed."
+    },
+
+    {
+      "unitId": "prm.will-do-today",
+      "version": 1,
+      "kind": "prompt",
+      "body": "Thank you, we will do this for you today. Once all of our checks have been completed, your payment will be made."
+    },
+
+    {
+      "unitId": "prm.nothing-changed",
+      "version": 1,
+      "kind": "prompt",
+      "body": "Ok, that's understandable, nothing has been changed on your policy. You can find lots of helpful information at moneyhelper.org.uk."
+    },
+
+    {
+      "unitId": "prm.confirm-uk-bank",
+      "version": 1,
+      "kind": "prompt",
+      "body": "Please can you confirm which UK bank account you'd like us to make your payment to?"
+    },
+
+    {
+      "unitId": "prm.overseas-account",
+      "version": 1,
+      "kind": "prompt",
+      "body": "I'm unable to complete the surrender of your policy over the phone today unless we can pay into a UK bank account."
+    },
+
+    {
+      "unitId": "prm.cannot-proceed-form",
+      "version": 1,
+      "kind": "prompt",
+      "body": "I can't go ahead with your request over the phone today, you'll just need to complete a form. I can send this to you by email or post."
+    },
+
+    {
+      "unitId": "prm.eid-intro",
+      "version": 1,
+      "kind": "prompt",
+      "body": "Before I can progress your payment, I will need to perform an Electronic Identity check."
+    },
+
+    {
+      "unitId": "prm.id-required",
+      "version": 1,
+      "kind": "prompt",
+      "body": "Ok, that's fine, we will need you to send us some ID before we can go ahead. I can email you a link to our ID guide."
+    },
+
+    {
+      "unitId": "prm.can-cancel-eid",
+      "version": 1,
+      "kind": "prompt",
+      "body": "I can cancel your policy today and arrange for your payment to be made. Once this is done, it cannot be reversed."
+    },
+
+    {
+      "unitId": "prm.will-request-today",
+      "version": 1,
+      "kind": "prompt",
+      "body": "Thank you, we will request this for you today. Once all of our checks have been completed, your payment will be made."
+    },
+
+    {
+      "unitId": "prm.eid-failed",
+      "version": 1,
+      "kind": "prompt",
+      "body": "I'm unable to complete the surrender of your policy over the phone today, as the electronic checks haven't scored highly enough. There's just a simple form you need to complete when you're ready. I can get this sent to you through the post or by email for you to print, fill in and send back to us if you'd prefer."
+    }
+  ],
+
+  "questions": [
+    {
+      "unitId": "qst.interested-in-alternatives",
+      "version": 1,
+      "kind": "question",
+      "prompt": "Are you interested in these options?",
+      "selectionMode": "single",
+      "options": [
+        { "key": "part-surrender", "text": "Interested in part surrender" },
+        { "key": "pup-ph", "text": "Interested in paid up / premium holiday" },
+        { "key": "continue-full", "text": "No, continue full surrender process" }
+      ]
+    },
+
+    {
+      "unitId": "qst.do-online",
+      "version": 1,
+      "kind": "question",
+      "prompt": "Do you want to do this online?",
+      "selectionMode": "single",
+      "options": [
+        { "key": "yes", "text": "Yes" },
+        { "key": "no", "text": "No" }
+      ]
+    },
+
+    {
+      "unitId": "qst.post-or-email",
+      "version": 1,
+      "kind": "question",
+      "prompt": "Would you like it sent in the post or over email for you to print at home?",
+      "selectionMode": "single",
+      "options": [
+        { "key": "post", "text": "Post" },
+        { "key": "email", "text": "Email" }
+      ]
+    },
+
+    {
+      "unitId": "qst.continue-or-think",
+      "version": 1,
+      "kind": "question",
+      "prompt": "Would you like to continue, or do you want to take some time to think about this? Once you've cashed in your policy this can't be reversed.",
+      "selectionMode": "single",
+      "options": [
+        { "key": "continue", "text": "Continue" },
+        { "key": "think", "text": "Think" }
+      ]
+    },
+
+    {
+      "unitId": "qst.confirm-trust-assignment",
+      "version": 1,
+      "kind": "question",
+      "prompt": "To continue I just need to confirm that: this policy is not in Trust? This policy is not assigned? Have you ever been the subject of a Bankruptcy Order, Act and Warrant in Sequestration, Individual Voluntary Arrangement or Trust Deed for Creditors?",
+      "selectionMode": "single",
+      "options": [
+        { "key": "confirms-clear", "text": "Customer confirms policy IS NOT in trust / assigned / bankruptcy" },
+        { "key": "confirms-issue", "text": "Customer confirms policy IS in trust / assigned / bankruptcy" }
+      ]
+    },
+
+    {
+      "unitId": "qst.which-method",
+      "version": 1,
+      "kind": "question",
+      "prompt": "Which would you prefer? Make a note.",
+      "selectionMode": "single",
+      "options": [
+        { "key": "online", "text": "Online" },
+        { "key": "phone", "text": "Phone" },
+        { "key": "paper", "text": "Paper" }
+      ]
+    },
+
+    {
+      "unitId": "qst.other-ph-with-you",
+      "version": 1,
+      "kind": "question",
+      "prompt": "I've noticed this is a joint policy. Can I confirm that the other policyholder is with you?",
+      "selectionMode": "single",
+      "options": [
+        { "key": "yes", "text": "Yes" },
+        { "key": "no", "text": "No" }
+      ]
+    },
+
+    {
+      "unitId": "qst.speak-other-ph-now",
+      "version": 1,
+      "kind": "question",
+      "prompt": "Please can I speak to the other policyholder now?",
+      "selectionMode": "single",
+      "options": [
+        { "key": "yes", "text": "Yes" },
+        { "key": "no", "text": "No" }
+      ]
+    },
+
+    {
+      "unitId": "qst.happy-continue-joint",
+      "version": 1,
+      "kind": "question",
+      "prompt": "I understand that you want to cash in this policy. Are you happy for me to continue?",
+      "selectionMode": "single",
+      "options": [
+        { "key": "yes", "text": "Yes - Continue" },
+        { "key": "no", "text": "No - Do not continue" }
+      ]
+    },
+
+    {
+      "unitId": "qst.want-scam-links",
+      "version": 1,
+      "kind": "question",
+      "prompt": "Would you like the link to these websites?",
+      "selectionMode": "single",
+      "options": [
+        { "key": "yes", "text": "Yes" },
+        { "key": "no", "text": "No" }
+      ]
+    },
+
+    {
+      "unitId": "qst.help-find-adviser",
+      "version": 1,
+      "kind": "question",
+      "prompt": "Would you like help to find an adviser, or would you like to continue?",
+      "selectionMode": "single",
+      "options": [
+        { "key": "more-info", "text": "More information on financial advice" },
+        { "key": "continue", "text": "Continue" }
+      ]
+    },
+
+    {
+      "unitId": "qst.continue",
+      "version": 1,
+      "kind": "question",
+      "prompt": "Would you like to continue?",
+      "selectionMode": "single",
+      "options": [
+        { "key": "continue", "text": "Continue" },
+        { "key": "think", "text": "Think" }
+      ]
+    },
+
+    {
+      "unitId": "qst.more-info-cgt",
+      "version": 1,
+      "kind": "question",
+      "prompt": "Would you like more information on this?",
+      "selectionMode": "single",
+      "options": [
+        { "key": "yes", "text": "Yes" },
+        { "key": "no", "text": "No" }
+      ]
+    },
+
+    {
+      "unitId": "qst.online-or-phone",
+      "version": 1,
+      "kind": "question",
+      "prompt": "Would you like to do this online, or continue over the phone?",
+      "selectionMode": "single",
+      "options": [
+        { "key": "online", "text": "Online" },
+        { "key": "phone", "text": "Phone" }
+      ]
+    },
+
+    {
+      "unitId": "qst.pay-into-existing",
+      "version": 1,
+      "kind": "question",
+      "prompt": "Would you like us to make payment into this account? This is the quickest way.",
+      "selectionMode": "single",
+      "options": [
+        { "key": "continue", "text": "Continue" },
+        { "key": "stop", "text": "Stop" }
+      ]
+    },
+
+    {
+      "unitId": "qst.happy-to-proceed",
+      "version": 1,
+      "kind": "question",
+      "prompt": "Are you happy to go ahead with this?",
+      "selectionMode": "single",
+      "options": [
+        { "key": "continue", "text": "Continue" },
+        { "key": "stop", "text": "Stop" }
+      ]
+    },
+
+    {
+      "unitId": "qst.bank-account-type",
+      "version": 1,
+      "kind": "question",
+      "prompt": "Please can you confirm which UK bank account you'd like us to make your payment to?",
+      "selectionMode": "single",
+      "options": [
+        { "key": "bank-bs", "text": "Bank or Building Society" },
+        { "key": "overseas", "text": "Overseas account" },
+        { "key": "no-details", "text": "No account details available" }
+      ]
+    },
+
+    {
+      "unitId": "qst.cheque-instead",
+      "version": 1,
+      "kind": "question",
+      "prompt": "Would you like a cheque instead?",
+      "selectionMode": "single",
+      "options": [
+        { "key": "yes", "text": "Yes" },
+        { "key": "no", "text": "No" }
+      ]
+    },
+
+    {
+      "unitId": "qst.continue-eid",
+      "version": 1,
+      "kind": "question",
+      "prompt": "Would you like to continue with the Electronic Identity Check?",
+      "selectionMode": "single",
+      "options": [
+        { "key": "yes", "text": "Yes" },
+        { "key": "no", "text": "No" }
+      ]
+    },
+
+    {
+      "unitId": "qst.uk-account-now",
+      "version": 1,
+      "kind": "question",
+      "prompt": "Are you able to provide a UK bank account now?",
+      "selectionMode": "single",
+      "options": [
+        { "key": "yes", "text": "UK account provided" },
+        { "key": "no", "text": "No UK account" }
+      ]
+    }
+  ],
+
+  "checks": [
+    {
+      "unitId": "chk.suspended-fund",
+      "version": 1,
+      "kind": "automated",
+      "label": "Is the policy invested in a suspended fund?",
+      "binding": {
+        "method": "GET",
+        "url": "policy/surrender/suspended_fund",
+        "restData": [],
+        "resultPath": "items[0].suspendedFund",
+        "outcomeMap": { "Y": "Yes", "N": "No" }
+      },
+      "outcomes": ["Yes", "No"],
+      "styling": { "No": "pass", "Yes": "fail" }
+    },
+
+    {
+      "unitId": "chk.allow-alternatives",
+      "version": 1,
+      "kind": "automated",
+      "label": "Does the policy allow partial surrender / PUP / premium holiday?",
+      "binding": {
+        "method": "GET",
+        "url": "policy/surrender/alternatives_allowed",
+        "restData": [],
+        "resultPath": "items[0].allowed",
+        "outcomeMap": { "Y": "Yes", "N": "No" }
+      },
+      "outcomes": ["Yes", "No"],
+      "styling": { "Yes": "pass", "No": "fail" }
+    },
+
+    {
+      "unitId": "chk.policy-value",
+      "version": 1,
+      "kind": "automated",
+      "label": "Current surrender value",
+      "binding": { "method": "GET", "url": "policy/surrender/value", "restData": [], "resultPath": "items[0].policyValue" },
+      "outcomes": []
+    },
+
+    {
+      "unitId": "chk.policy-features",
+      "version": 1,
+      "kind": "automated",
+      "label": "Does policy have cover/benefits/guarantees, surrender penalty (excl MVR), MVR, or bonuses that reduce on surrender?",
+      "binding": {
+        "method": "GET",
+        "url": "policy/surrender/features",
+        "restData": [],
+        "resultPath": "items[0]",
+        "aggregateFlag": { "outputKey": "anyWarning", "trueWhenAny": ["hasBenefits", "hasPenalty", "hasMvr", "hasBonuses"] }
+      },
+      "outcomes": []
+    },
+
+    {
+      "unitId": "chk.pre-surrender-flags",
+      "version": 1,
+      "kind": "automated",
+      "label": "Pre-surrender eligibility flags (bulk)",
+      "comment": "Single ORDS call returning every sub-flag; the waypoint aggregates Green/Red.",
+      "binding": {
+        "method": "GET",
+        "url": "policy/surrender/pre_checks",
+        "restData": [],
+        "resultPath": "items[0]",
+        "subChecks": [
+          { "key": "nameAddrBankChanged6m", "label": "PH Name, Address or Bank Details changed within last 6 months" },
+          { "key": "fctWarningFlag", "label": "FCT warning flag present" },
+          { "key": "policyInArrears", "label": "Policy in arrears" },
+          { "key": "valueOver100k", "label": "Value over £100k" },
+          { "key": "addressOuk", "label": "PH address OUK" },
+          { "key": "manualCalculation", "label": "Manual calculation required" },
+          { "key": "policyInDebt", "label": "Policy in debt" },
+          { "key": "policyOnHold", "label": "Policy on hold" },
+          { "key": "faCalling", "label": "FA calling" },
+          { "key": "poaCalling", "label": "POA calling" },
+          { "key": "openBill", "label": "Open bill" }
+        ],
+        "subOutcomeMap": { "Y": "Yes", "N": "No" }
+      },
+      "styling": { "No": "pass", "Yes": "fail" }
+    },
+
+    {
+      "unitId": "chk.trust-assigned-bankruptcy",
+      "version": 1,
+      "kind": "automated",
+      "label": "Policy in Trust or Assigned? Has customer been subject to bankruptcy order?",
+      "binding": {
+        "method": "GET",
+        "url": "policy/surrender/trust_assignment",
+        "restData": [],
+        "resultPath": "items[0].status",
+        "outcomeMap": { "N": "No", "Y": "Yes", "U": "Unconfirmed" }
+      },
+      "outcomes": ["No", "Yes", "Unconfirmed"],
+      "styling": { "No": "pass", "Unconfirmed": "amber", "Yes": "fail" }
+    },
+
+    {
+      "unitId": "chk.trust-assigned-manual",
+      "version": 1,
+      "kind": "manual",
+      "label": "Policy in Trust or Assigned, has customer been subject to bankruptcy order?",
+      "outcomes": ["No", "Yes"],
+      "styling": { "No": "pass", "Yes": "fail" }
+    },
+
+    {
+      "unitId": "chk.single-joint-ownership",
+      "version": 1,
+      "kind": "automated",
+      "label": "Single / Joint ownership",
+      "binding": {
+        "method": "GET",
+        "url": "policy/surrender/ownership",
+        "restData": [],
+        "resultPath": "items[0].ownership",
+        "outcomeMap": { "S": "Single", "J": "Joint" }
+      },
+      "outcomes": ["Single", "Joint"],
+      "styling": { "Single": "pass", "Joint": "amber" }
+    },
+
+    {
+      "unitId": "chk.online-partial-eligible",
+      "version": 1,
+      "kind": "manual",
+      "label": "Is the customer eligible for the online partial surrender form? (i.e. not in trust or assigned)",
+      "outcomes": ["Yes", "No"],
+      "styling": { "Yes": "pass", "No": "fail" }
+    },
+
+    {
+      "unitId": "chk.non-qualifying",
+      "version": 1,
+      "kind": "automated",
+      "label": "Is policy non-qualifying?",
+      "binding": {
+        "method": "GET",
+        "url": "policy/surrender/non_qualifying",
+        "restData": [],
+        "resultPath": "items[0].nonQualifying",
+        "outcomeMap": { "Y": "Yes", "N": "No" }
+      },
+      "outcomes": ["Yes", "No"]
+    },
+
+    {
+      "unitId": "chk.known-bank-account",
+      "version": 1,
+      "kind": "automated",
+      "label": "Is there a bank account that satisfies ReAssure's known bank account rules? (UK and has had regular payments to/from it for at least six months - see FCR procedures)",
+      "binding": {
+        "method": "GET",
+        "url": "policy/surrender/known_bank_account",
+        "restData": [],
+        "resultPath": "items[0].satisfies",
+        "outcomeMap": { "Y": "Yes", "N": "No" }
+      },
+      "outcomes": ["Yes", "No"],
+      "styling": { "Yes": "pass", "No": "fail" }
+    },
+
+    {
+      "unitId": "chk.is-bond",
+      "version": 1,
+      "kind": "automated",
+      "label": "Is the policy a Bond?",
+      "binding": {
+        "method": "GET",
+        "url": "policy/surrender/is_bond",
+        "restData": [],
+        "resultPath": "items[0].isBond",
+        "outcomeMap": { "Y": "Yes", "N": "No" }
+      },
+      "outcomes": ["Yes", "No"]
+    },
+
+    {
+      "unitId": "chk.eid-warnings",
+      "version": 1,
+      "kind": "manual",
+      "label": "Are EID warnings present?",
+      "outcomes": ["no-warnings-or-waivable", "warning-cannot-be-waived"],
+      "optionLabels": {
+        "no-warnings-or-waivable": "No warnings OR warnings that can be waived",
+        "warning-cannot-be-waived": "Warning present that cannot be waived"
+      },
+      "styling": { "no-warnings-or-waivable": "pass", "warning-cannot-be-waived": "fail" }
+    }
+  ],
+
+  "actions": [
+    {
+      "unitId": "act.log-task-suspended-reqs",
+      "version": 1,
+      "kind": "action",
+      "actionType": "log-task",
+      "label": "Log a task for back office to send surrender requirements, noting this policy has suspended funds.",
+      "binding": { "method": "POST", "url": "trans/surrender/log_task", "data": { "taskType": "SURRENDER_REQ_SUSPENDED" } }
+    },
+
+    {
+      "unitId": "act.log-pup-ph-post",
+      "version": 1,
+      "kind": "action",
+      "actionType": "log-task",
+      "label": "Log task for PUP/Premium Holiday information to be posted.",
+      "binding": { "method": "POST", "url": "trans/surrender/log_task", "data": { "taskType": "PUP_PH_INFO_POST" } }
+    },
+
+    {
+      "unitId": "act.log-partial-forms-post",
+      "version": 1,
+      "kind": "action",
+      "actionType": "log-task",
+      "label": "Log task for Partial Surrender forms to be posted.",
+      "binding": { "method": "POST", "url": "trans/surrender/log_task", "data": { "taskType": "PARTIAL_FORMS_POST" } }
+    },
+
+    {
+      "unitId": "act.email-partial-form",
+      "version": 1,
+      "kind": "action",
+      "actionType": "send-email",
+      "label": "Email PDF version of the online partial surrender form.",
+      "binding": { "method": "POST", "url": "trans/surrender/email_pack", "data": { "template": "PARTIAL_SURRENDER_FORM" } }
+    },
+
+    {
+      "unitId": "act.direct-help-centre",
+      "version": 1,
+      "kind": "action",
+      "actionType": "signpost",
+      "label": "Direct to Help Centre help.reassure.co.uk",
+      "binding": null
+    },
+
+    {
+      "unitId": "act.email-surrender",
+      "version": 1,
+      "kind": "action",
+      "actionType": "send-email",
+      "label": "Email - Send approved surrender email.",
+      "binding": { "method": "POST", "url": "trans/surrender/email_pack", "data": { "template": "APPROVED_SURRENDER" } }
+    },
+
+    {
+      "unitId": "act.post-sv100",
+      "version": 1,
+      "kind": "action",
+      "actionType": "send-post",
+      "label": "Post - Send SV100 or log task if manual calculation is needed.",
+      "binding": { "method": "POST", "url": "trans/surrender/post_pack", "data": { "form": "SV100" } }
+    },
+
+    {
+      "unitId": "act.provide-scam-links",
+      "version": 1,
+      "kind": "action",
+      "actionType": "signpost",
+      "label": "Provide the following links - moneyhelper.org.uk (search 'Scams') and fca.org.uk.",
+      "binding": null
+    },
+
+    {
+      "unitId": "act.capture-ph-names",
+      "version": 1,
+      "kind": "action",
+      "actionType": "capture",
+      "label": "Capture details - current policyholder's name, 2nd policyholder's name.",
+      "captureFields": ["currentPolicyholderName", "secondPolicyholderName"]
+    },
+
+    {
+      "unitId": "act.capture-bank-details",
+      "version": 1,
+      "kind": "action",
+      "actionType": "capture",
+      "label": "Capture detail - Account Name, Sort Code, Account Number, Bank/Building Society Name.",
+      "captureFields": ["accountName", "sortCode", "accountNumber", "bankName"]
+    },
+
+    {
+      "unitId": "act.record-eid",
+      "version": 1,
+      "kind": "action",
+      "actionType": "capture",
+      "label": "Complete EID and record details - EID Score (score <45 and Bond will need to be HRID), EID reference.",
+      "captureFields": ["eidScore", "eidReference"],
+      "binding": { "method": "POST", "url": "trans/surrender/record_eid", "data": {} }
+    },
+
+    {
+      "unitId": "act.email-id-guide",
+      "version": 1,
+      "kind": "action",
+      "actionType": "send-email",
+      "label": "Send email with link to ID guide. Record all checks complete and surrender requirements.",
+      "binding": { "method": "POST", "url": "trans/surrender/email_pack", "data": { "template": "ID_GUIDE" } }
+    },
+
+    {
+      "unitId": "act.log-payment-out",
+      "version": 1,
+      "kind": "action",
+      "actionType": "log-task",
+      "label": "Log task for payment out to be completed.",
+      "binding": { "method": "POST", "url": "trans/surrender/log_task", "data": { "taskType": "PAYMENT_OUT" } }
+    }
+  ],
+
+  "endCalls": [{ "unitId": "end.generic", "version": 1, "kind": "end-call", "label": "End call" }]
+}

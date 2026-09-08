@@ -1,0 +1,101 @@
+{
+  "_comment": "EXAMPLE - the response body ORDS returns for GET /scripts/flow/offer-form?version=1. Each callable flow is fetched by its own REST call (the path segment is the flow id, the version query pins the frozen version). At session start the engine fires all of these flow calls in parallel, alongside the bundle (/lookup) and the checks prefetch (/prefetch), then caches each for the session - so entering a callFlow step into offer-form never blocks. The payload is a self-contained CallableFlow: startStepId/terminal/params/exits/steps PLUS its own 'units' (every library unit its steps reference), so it renders without the main bundle. Nested flows it calls are fetched by their own parallel GET /scripts/flow/... calls the same way.",
+  "version": 1,
+  "scriptId": "offer-form",
+  "title": "Offer form by email or post, then end call",
+  "terminal": true,
+  "params": [
+    {
+      "key": "leadPrompt",
+      "required": false,
+      "type": "unitRef"
+    }
+  ],
+  "exits": [],
+  "startStepId": "st-offer-form",
+  "steps": [
+    {
+      "stepId": "st-offer-form",
+      "version": 1,
+      "title": "Offer form",
+      "content": [
+        {
+          "id": "c-lead",
+          "ref": "{{leadPrompt}}",
+          "visibleWhen": "arg.leadPrompt != null"
+        },
+        {
+          "id": "c-q",
+          "ref": "qst.post-or-email"
+        }
+      ],
+      "buttons": [
+        {
+          "key": "next",
+          "kind": "next",
+          "label": "Next",
+          "enabledWhen": "c-q.answered",
+          "routes": [
+            {
+              "when": "c-q.value == 'email'",
+              "onEnter": ["act.email-surrender"],
+              "to": "@end"
+            },
+            {
+              "when": "c-q.value == 'post'",
+              "onEnter": ["act.post-sv100"],
+              "to": "@end"
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "units": {
+    "act.email-surrender": {
+      "unitId": "act.email-surrender",
+      "version": 1,
+      "kind": "action",
+      "actionType": "send-email",
+      "label": "Email - Send approved surrender email.",
+      "binding": {
+        "method": "POST",
+        "url": "trans/surrender/email_pack",
+        "data": {
+          "template": "APPROVED_SURRENDER"
+        }
+      }
+    },
+    "act.post-sv100": {
+      "unitId": "act.post-sv100",
+      "version": 1,
+      "kind": "action",
+      "actionType": "send-post",
+      "label": "Post - Send SV100 or log task if manual calculation is needed.",
+      "binding": {
+        "method": "POST",
+        "url": "trans/surrender/post_pack",
+        "data": {
+          "form": "SV100"
+        }
+      }
+    },
+    "qst.post-or-email": {
+      "unitId": "qst.post-or-email",
+      "version": 1,
+      "kind": "question",
+      "prompt": "Would you like it sent in the post or over email for you to print at home?",
+      "selectionMode": "single",
+      "options": [
+        {
+          "key": "post",
+          "text": "Post"
+        },
+        {
+          "key": "email",
+          "text": "Email"
+        }
+      ]
+    }
+  }
+}

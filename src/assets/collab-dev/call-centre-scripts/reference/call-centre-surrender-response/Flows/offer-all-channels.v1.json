@@ -1,0 +1,114 @@
+{
+  "_comment": "EXAMPLE - the response body ORDS returns for GET /scripts/flow/offer-all-channels?version=1. Each callable flow is fetched by its own REST call (the path segment is the flow id, the version query pins the frozen version). At session start the engine fires all of these flow calls in parallel, alongside the bundle (/lookup) and the checks prefetch (/prefetch), then caches each for the session - so entering a callFlow step into offer-all-channels never blocks. The payload is a self-contained CallableFlow: startStepId/terminal/params/exits/steps PLUS its own 'units' (every library unit its steps reference), so it renders without the main bundle. Nested flows it calls are fetched by their own parallel GET /scripts/flow/... calls the same way.",
+  "version": 1,
+  "scriptId": "offer-all-channels",
+  "title": "Offer online / email / post, then end call",
+  "terminal": true,
+  "params": [
+    {
+      "key": "leadPrompt",
+      "required": true,
+      "type": "unitRef"
+    }
+  ],
+  "exits": [],
+  "startStepId": "st-offer",
+  "steps": [
+    {
+      "stepId": "st-offer",
+      "version": 1,
+      "title": "Offer channels",
+      "content": [
+        {
+          "id": "c-lead",
+          "ref": "{{leadPrompt}}"
+        },
+        {
+          "id": "c-choice",
+          "inline": {
+            "kind": "question",
+            "prompt": "How would you like us to help you with this?",
+            "selectionMode": "single",
+            "options": [
+              {
+                "key": "online",
+                "text": "Online"
+              },
+              {
+                "key": "email",
+                "text": "Email"
+              },
+              {
+                "key": "post",
+                "text": "Post"
+              }
+            ]
+          }
+        }
+      ],
+      "buttons": [
+        {
+          "key": "next",
+          "kind": "next",
+          "label": "Next",
+          "enabledWhen": "c-choice.answered",
+          "routes": [
+            {
+              "when": "c-choice.value == 'online'",
+              "onEnter": ["act.direct-help-centre"],
+              "to": "@end"
+            },
+            {
+              "when": "c-choice.value == 'email'",
+              "onEnter": ["act.email-surrender"],
+              "to": "@end"
+            },
+            {
+              "when": "c-choice.value == 'post'",
+              "onEnter": ["act.post-sv100"],
+              "to": "@end"
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "units": {
+    "act.direct-help-centre": {
+      "unitId": "act.direct-help-centre",
+      "version": 1,
+      "kind": "action",
+      "actionType": "signpost",
+      "label": "Direct to Help Centre help.reassure.co.uk",
+      "binding": null
+    },
+    "act.email-surrender": {
+      "unitId": "act.email-surrender",
+      "version": 1,
+      "kind": "action",
+      "actionType": "send-email",
+      "label": "Email - Send approved surrender email.",
+      "binding": {
+        "method": "POST",
+        "url": "trans/surrender/email_pack",
+        "data": {
+          "template": "APPROVED_SURRENDER"
+        }
+      }
+    },
+    "act.post-sv100": {
+      "unitId": "act.post-sv100",
+      "version": 1,
+      "kind": "action",
+      "actionType": "send-post",
+      "label": "Post - Send SV100 or log task if manual calculation is needed.",
+      "binding": {
+        "method": "POST",
+        "url": "trans/surrender/post_pack",
+        "data": {
+          "form": "SV100"
+        }
+      }
+    }
+  }
+}

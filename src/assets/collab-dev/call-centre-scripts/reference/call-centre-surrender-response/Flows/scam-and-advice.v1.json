@@ -1,0 +1,265 @@
+{
+  "_comment": "EXAMPLE - the response body ORDS returns for GET /scripts/flow/scam-and-advice?version=1. Each callable flow is fetched by its own REST call (the path segment is the flow id, the version query pins the frozen version). At session start the engine fires all of these flow calls in parallel, alongside the bundle (/lookup) and the checks prefetch (/prefetch), then caches each for the session - so entering a callFlow step into scam-and-advice never blocks. The payload is a self-contained CallableFlow: startStepId/terminal/params/exits/steps PLUS its own 'units' (every library unit its steps reference), so it renders without the main bundle. Nested flows it calls are fetched by their own parallel GET /scripts/flow/... calls the same way.",
+  "version": 1,
+  "scriptId": "scam-and-advice",
+  "title": "Scam awareness and financial advice signposting",
+  "terminal": false,
+  "params": [],
+  "exits": ["proceed", "think-stop"],
+  "startStepId": "st-scam-warn",
+  "steps": [
+    {
+      "stepId": "st-scam-warn",
+      "version": 1,
+      "title": "Scam awareness",
+      "content": [
+        {
+          "id": "c-scam",
+          "ref": "prm.scam-warning"
+        },
+        {
+          "id": "c-want-links",
+          "ref": "qst.want-scam-links"
+        }
+      ],
+      "buttons": [
+        {
+          "key": "next",
+          "kind": "next",
+          "label": "Next",
+          "enabledWhen": "c-want-links.answered",
+          "routes": [
+            {
+              "when": "c-want-links.value == 'yes'",
+              "to": "st-scam-links"
+            },
+            {
+              "to": "st-scam-no-advice"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "stepId": "st-scam-links",
+      "version": 1,
+      "title": "Provide scam links",
+      "content": [
+        {
+          "id": "c-links",
+          "ref": "act.provide-scam-links"
+        },
+        {
+          "id": "c-continue-think",
+          "ref": "qst.continue-or-think"
+        }
+      ],
+      "buttons": [
+        {
+          "key": "next",
+          "kind": "next",
+          "label": "Next",
+          "enabledWhen": "c-continue-think.answered",
+          "routes": [
+            {
+              "when": "c-continue-think.value == 'think'",
+              "to": "@exit:think-stop"
+            },
+            {
+              "to": "st-scam-no-advice"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "stepId": "st-scam-no-advice",
+      "version": 1,
+      "title": "No financial advice",
+      "content": [
+        {
+          "id": "c-no-advice",
+          "ref": "prm.no-financial-advice"
+        },
+        {
+          "id": "c-help-adviser",
+          "ref": "qst.help-find-adviser"
+        }
+      ],
+      "buttons": [
+        {
+          "key": "next",
+          "kind": "next",
+          "label": "Next",
+          "enabledWhen": "c-help-adviser.answered",
+          "routes": [
+            {
+              "when": "c-help-adviser.value == 'more-info'",
+              "to": "st-scam-adviser"
+            },
+            {
+              "to": "st-scam-benefits"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "stepId": "st-scam-adviser",
+      "version": 1,
+      "title": "Adviser info",
+      "content": [
+        {
+          "id": "c-adviser-info",
+          "ref": "prm.adviser-info"
+        },
+        {
+          "id": "c-continue",
+          "ref": "qst.continue"
+        }
+      ],
+      "buttons": [
+        {
+          "key": "next",
+          "kind": "next",
+          "label": "Next",
+          "enabledWhen": "c-continue.answered",
+          "routes": [
+            {
+              "when": "c-continue.value == 'think'",
+              "to": "@exit:think-stop"
+            },
+            {
+              "to": "st-scam-benefits"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "stepId": "st-scam-benefits",
+      "version": 1,
+      "title": "Government benefits",
+      "content": [
+        {
+          "id": "c-benefits",
+          "ref": "prm.government-benefits"
+        }
+      ],
+      "buttons": [
+        {
+          "key": "next",
+          "kind": "next",
+          "label": "Next",
+          "routes": [
+            {
+              "to": "@exit:proceed"
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "units": {
+    "act.provide-scam-links": {
+      "unitId": "act.provide-scam-links",
+      "version": 1,
+      "kind": "action",
+      "actionType": "signpost",
+      "label": "Provide the following links - moneyhelper.org.uk (search 'Scams') and fca.org.uk.",
+      "binding": null
+    },
+    "prm.adviser-info": {
+      "unitId": "prm.adviser-info",
+      "version": 1,
+      "kind": "prompt",
+      "body": "A Financial Adviser can make a personal recommendation based on your individual circumstances. You can find one at moneyhelper.org.uk if you'd like to speak to someone before deciding."
+    },
+    "prm.government-benefits": {
+      "unitId": "prm.government-benefits",
+      "version": 1,
+      "kind": "prompt",
+      "body": "If you receive any Government benefits, you should be aware that taking your money now could affect your entitlement to them."
+    },
+    "prm.no-financial-advice": {
+      "unitId": "prm.no-financial-advice",
+      "version": 1,
+      "kind": "prompt",
+      "body": "We'd like to make it clear that ReAssure can't provide you with financial advice."
+    },
+    "prm.scam-warning": {
+      "unitId": "prm.scam-warning",
+      "version": 1,
+      "kind": "prompt",
+      "body": "It's becoming more common that people with lump sums of money are targeted by scammers. Please be cautious and take time to check any offer before acting on it."
+    },
+    "qst.continue": {
+      "unitId": "qst.continue",
+      "version": 1,
+      "kind": "question",
+      "prompt": "Would you like to continue?",
+      "selectionMode": "single",
+      "options": [
+        {
+          "key": "continue",
+          "text": "Continue"
+        },
+        {
+          "key": "think",
+          "text": "Think"
+        }
+      ]
+    },
+    "qst.continue-or-think": {
+      "unitId": "qst.continue-or-think",
+      "version": 1,
+      "kind": "question",
+      "prompt": "Would you like to continue, or do you want to take some time to think about this? Once you've cashed in your policy this can't be reversed.",
+      "selectionMode": "single",
+      "options": [
+        {
+          "key": "continue",
+          "text": "Continue"
+        },
+        {
+          "key": "think",
+          "text": "Think"
+        }
+      ]
+    },
+    "qst.help-find-adviser": {
+      "unitId": "qst.help-find-adviser",
+      "version": 1,
+      "kind": "question",
+      "prompt": "Would you like help to find an adviser, or would you like to continue?",
+      "selectionMode": "single",
+      "options": [
+        {
+          "key": "more-info",
+          "text": "More information on financial advice"
+        },
+        {
+          "key": "continue",
+          "text": "Continue"
+        }
+      ]
+    },
+    "qst.want-scam-links": {
+      "unitId": "qst.want-scam-links",
+      "version": 1,
+      "kind": "question",
+      "prompt": "Would you like the link to these websites?",
+      "selectionMode": "single",
+      "options": [
+        {
+          "key": "yes",
+          "text": "Yes"
+        },
+        {
+          "key": "no",
+          "text": "No"
+        }
+      ]
+    }
+  }
+}

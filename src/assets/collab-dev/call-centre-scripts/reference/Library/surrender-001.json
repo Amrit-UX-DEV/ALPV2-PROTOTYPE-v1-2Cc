@@ -1,0 +1,777 @@
+{
+  "_comment": "The MAIN Surrender script authored in the step model - every one of the 42 nodes from the original node/edge Visio flow is represented in a step below. Architecture (README 21.6, Option A): a script has STEPS; a step has ordered content UNITS (referenced from the library) plus optional onEnter LOGIC (checks/waypoints run before the screen renders); BUTTONS at the end own all navigation. Answering a question/manual-check inside a step captures the answer and reveals dependent units (visibleWhen); it does NOT navigate - only a button click navigates. onEnter entries are { kind:'check', ref } or { kind:'waypoint', id, aggregate, source } (aggregate logic = README 9). A pure decision step has empty content and a single { kind:'auto' } button whose routes are evaluated immediately. A call step invokes a reusable callable flow via callFlow:{ ref, args? } and maps its exits with onExit:{ exitName: stepId } (terminal callable flows need no onExit). Expression language (illustrative): '<checkRef> == v' / '<checkRef>.<field>' (aggregateFlag output) / '<waypointId> == v' / '<contentId>.value' / '<contentId>.answered'. The callable flows referenced by callFlow are realised in step form inside surrender-001.steps.bundle.example.json, which is the complete runnable bundle.",
+  "product": "life",
+  "requestType": "surrender",
+  "scriptId": "surrender-001",
+  "version": 3,
+  "title": "Surrender Request",
+  "startStepId": "st-suspended",
+  "steps": [
+    {
+      "stepId": "st-suspended",
+      "version": 1,
+      "title": "Suspended funds check",
+      "onEnter": [
+        {
+          "kind": "check",
+          "ref": "chk.suspended-fund"
+        }
+      ],
+      "content": [],
+      "buttons": [
+        {
+          "key": "auto",
+          "kind": "auto",
+          "routes": [
+            {
+              "when": "chk.suspended-fund == 'Yes'",
+              "to": "st-suspended-info"
+            },
+            {
+              "to": "st-alternatives"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "stepId": "st-suspended-info",
+      "version": 1,
+      "title": "Suspended funds",
+      "content": [
+        {
+          "id": "c-susp",
+          "ref": "prm.suspended-fund",
+          "refVersion": 1
+        }
+      ],
+      "buttons": [
+        {
+          "key": "back",
+          "kind": "back",
+          "label": "Back"
+        },
+        {
+          "key": "end",
+          "kind": "end",
+          "label": "End call",
+          "onClick": ["act.log-task-suspended-reqs"]
+        }
+      ]
+    },
+    {
+      "stepId": "st-alternatives",
+      "version": 1,
+      "title": "Alternatives",
+      "onEnter": [
+        {
+          "kind": "check",
+          "ref": "chk.allow-alternatives"
+        }
+      ],
+      "content": [
+        {
+          "id": "c-alt-intro",
+          "ref": "prm.alternatives-intro",
+          "visibleWhen": "chk.allow-alternatives == 'Yes'"
+        },
+        {
+          "id": "c-alt-q",
+          "ref": "qst.interested-in-alternatives",
+          "visibleWhen": "chk.allow-alternatives == 'Yes'"
+        },
+        {
+          "id": "c-alt-choice-confirm",
+          "ref": "prm.alt-choice-confirm",
+          "visibleWhen": "c-alt-q.answered"
+        }
+      ],
+      "buttons": [
+        {
+          "key": "back",
+          "kind": "back",
+          "label": "Back"
+        },
+        {
+          "key": "next",
+          "kind": "next",
+          "label": "Next",
+          "enabledWhen": "chk.allow-alternatives == 'No' || c-alt-q.answered",
+          "routes": [
+            {
+              "when": "chk.allow-alternatives == 'No'",
+              "to": "st-value"
+            },
+            {
+              "when": "c-alt-q.value == 'part-surrender'",
+              "to": "st-partial"
+            },
+            {
+              "when": "c-alt-q.value == 'pup-ph'",
+              "to": "st-pup"
+            },
+            {
+              "to": "st-value"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "stepId": "st-partial",
+      "version": 1,
+      "title": "Partial surrender form",
+      "callFlow": {
+        "ref": "partial-surrender-form"
+      }
+    },
+    {
+      "stepId": "st-pup",
+      "version": 1,
+      "title": "Paid-up / premium holiday info",
+      "callFlow": {
+        "ref": "pup-ph-info"
+      }
+    },
+    {
+      "stepId": "st-value",
+      "version": 1,
+      "title": "Policy value & warnings",
+      "onEnter": [
+        {
+          "kind": "check",
+          "ref": "chk.policy-value"
+        },
+        {
+          "kind": "check",
+          "ref": "chk.policy-features"
+        }
+      ],
+      "content": [
+        {
+          "id": "c-value",
+          "ref": "prm.value-today"
+        },
+        {
+          "id": "c-warn",
+          "ref": "prm.warnings-conditional",
+          "visibleWhen": "chk.policy-features.anyWarning == true"
+        },
+        {
+          "id": "c-continue",
+          "ref": "qst.continue-or-think",
+          "visibleWhen": "chk.policy-features.anyWarning == true"
+        }
+      ],
+      "buttons": [
+        {
+          "key": "back",
+          "kind": "back",
+          "label": "Back"
+        },
+        {
+          "key": "next",
+          "kind": "next",
+          "label": "Next",
+          "enabledWhen": "chk.policy-features.anyWarning == false || c-continue.answered",
+          "routes": [
+            {
+              "when": "c-continue.value == 'think'",
+              "to": "st-signpost-moneyhelper"
+            },
+            {
+              "to": "st-hold"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "stepId": "st-hold",
+      "version": 1,
+      "title": "Please hold",
+      "content": [
+        {
+          "id": "c-hold",
+          "ref": "prm.pop-on-hold"
+        }
+      ],
+      "buttons": [
+        {
+          "key": "back",
+          "kind": "back",
+          "label": "Back"
+        },
+        {
+          "key": "next",
+          "kind": "next",
+          "label": "Next",
+          "routes": [
+            {
+              "to": "st-pre-decision"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "stepId": "st-pre-decision",
+      "version": 1,
+      "title": "Pre-surrender eligibility",
+      "onEnter": [
+        {
+          "kind": "check",
+          "ref": "chk.pre-surrender-flags"
+        },
+        {
+          "kind": "waypoint",
+          "id": "wp-pre",
+          "aggregate": "all-pass",
+          "source": "chk.pre-surrender-flags"
+        }
+      ],
+      "content": [],
+      "buttons": [
+        {
+          "key": "auto",
+          "kind": "auto",
+          "routes": [
+            {
+              "when": "wp-pre == 'fail'",
+              "to": "st-fail-form"
+            },
+            {
+              "to": "st-trust-decision"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "stepId": "st-trust-decision",
+      "version": 1,
+      "title": "Trust / assignment / bankruptcy",
+      "onEnter": [
+        {
+          "kind": "check",
+          "ref": "chk.trust-assigned-bankruptcy"
+        },
+        {
+          "kind": "waypoint",
+          "id": "wp-trust",
+          "aggregate": "tri-state",
+          "source": "chk.trust-assigned-bankruptcy"
+        }
+      ],
+      "content": [],
+      "buttons": [
+        {
+          "key": "auto",
+          "kind": "auto",
+          "routes": [
+            {
+              "when": "wp-trust == 'fail'",
+              "to": "st-fail-form"
+            },
+            {
+              "when": "wp-trust == 'amber'",
+              "to": "st-trust-manual"
+            },
+            {
+              "to": "st-trust-confirm"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "stepId": "st-trust-manual",
+      "version": 1,
+      "title": "Trust / assignment (manual check)",
+      "content": [
+        {
+          "id": "c-trust-manual",
+          "ref": "chk.trust-assigned-manual"
+        }
+      ],
+      "buttons": [
+        {
+          "key": "back",
+          "kind": "back",
+          "label": "Back"
+        },
+        {
+          "key": "next",
+          "kind": "next",
+          "label": "Next",
+          "enabledWhen": "c-trust-manual.answered",
+          "routes": [
+            {
+              "when": "c-trust-manual.value == 'Yes'",
+              "to": "st-fail-form"
+            },
+            {
+              "to": "st-trust-confirm"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "stepId": "st-trust-confirm",
+      "version": 1,
+      "title": "Confirm trust / assignment / bankruptcy",
+      "content": [
+        {
+          "id": "c-confirm",
+          "ref": "qst.confirm-trust-assignment"
+        }
+      ],
+      "buttons": [
+        {
+          "key": "back",
+          "kind": "back",
+          "label": "Back"
+        },
+        {
+          "key": "next",
+          "kind": "next",
+          "label": "Next",
+          "enabledWhen": "c-confirm.answered",
+          "routes": [
+            {
+              "when": "c-confirm.value == 'confirms-issue'",
+              "to": "st-fail-form"
+            },
+            {
+              "to": "st-method"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "stepId": "st-method",
+      "version": 1,
+      "title": "Preferred method",
+      "content": [
+        {
+          "id": "c-third-party",
+          "ref": "prm.third-party-claim"
+        },
+        {
+          "id": "c-method-intro",
+          "ref": "prm.fastest-over-phone"
+        },
+        {
+          "id": "c-which-method",
+          "ref": "qst.which-method"
+        }
+      ],
+      "buttons": [
+        {
+          "key": "back",
+          "kind": "back",
+          "label": "Back"
+        },
+        {
+          "key": "next",
+          "kind": "next",
+          "label": "Next",
+          "enabledWhen": "c-which-method.answered",
+          "routes": [
+            {
+              "when": "c-which-method.value == 'online'",
+              "to": "st-website-warn"
+            },
+            {
+              "when": "c-which-method.value == 'phone'",
+              "to": "st-ownership-decision"
+            },
+            {
+              "when": "c-which-method.value == 'paper'",
+              "to": "st-paper-form"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "stepId": "st-website-warn",
+      "version": 1,
+      "title": "Website warnings",
+      "content": [
+        {
+          "id": "c-website",
+          "ref": "prm.website-link-warnings"
+        }
+      ],
+      "buttons": [
+        {
+          "key": "back",
+          "kind": "back",
+          "label": "Back"
+        },
+        {
+          "key": "next",
+          "kind": "next",
+          "label": "Next",
+          "routes": [
+            {
+              "to": "st-scam"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "stepId": "st-ownership-decision",
+      "version": 1,
+      "title": "Ownership",
+      "onEnter": [
+        {
+          "kind": "check",
+          "ref": "chk.single-joint-ownership"
+        },
+        {
+          "kind": "waypoint",
+          "id": "wp-own",
+          "aggregate": "single-joint",
+          "source": "chk.single-joint-ownership"
+        }
+      ],
+      "content": [],
+      "buttons": [
+        {
+          "key": "auto",
+          "kind": "auto",
+          "routes": [
+            {
+              "when": "wp-own == 'amber'",
+              "to": "st-other-ph"
+            },
+            {
+              "to": "st-can-phone"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "stepId": "st-can-phone",
+      "version": 1,
+      "title": "Complete over the phone",
+      "content": [
+        {
+          "id": "c-can-phone",
+          "ref": "prm.can-complete-phone"
+        }
+      ],
+      "buttons": [
+        {
+          "key": "back",
+          "kind": "back",
+          "label": "Back"
+        },
+        {
+          "key": "next",
+          "kind": "next",
+          "label": "Next",
+          "routes": [
+            {
+              "to": "st-scam"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "stepId": "st-other-ph",
+      "version": 1,
+      "title": "Other policyholder present?",
+      "content": [
+        {
+          "id": "c-other-ph",
+          "ref": "qst.other-ph-with-you"
+        }
+      ],
+      "buttons": [
+        {
+          "key": "back",
+          "kind": "back",
+          "label": "Back"
+        },
+        {
+          "key": "next",
+          "kind": "next",
+          "label": "Next",
+          "enabledWhen": "c-other-ph.answered",
+          "routes": [
+            {
+              "when": "c-other-ph.value == 'yes'",
+              "to": "st-speak-ph"
+            },
+            {
+              "to": "st-both-needed"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "stepId": "st-speak-ph",
+      "version": 1,
+      "title": "Speak to other policyholder now?",
+      "content": [
+        {
+          "id": "c-speak-ph",
+          "ref": "qst.speak-other-ph-now"
+        }
+      ],
+      "buttons": [
+        {
+          "key": "back",
+          "kind": "back",
+          "label": "Back"
+        },
+        {
+          "key": "next",
+          "kind": "next",
+          "label": "Next",
+          "enabledWhen": "c-speak-ph.answered",
+          "routes": [
+            {
+              "when": "c-speak-ph.value == 'yes'",
+              "to": "st-capture-ph"
+            },
+            {
+              "to": "st-both-needed"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "stepId": "st-capture-ph",
+      "version": 1,
+      "title": "Capture policyholder names",
+      "content": [
+        {
+          "id": "c-capture-ph",
+          "ref": "act.capture-ph-names"
+        }
+      ],
+      "buttons": [
+        {
+          "key": "back",
+          "kind": "back",
+          "label": "Back"
+        },
+        {
+          "key": "next",
+          "kind": "next",
+          "label": "Next",
+          "routes": [
+            {
+              "to": "st-happy-joint"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "stepId": "st-happy-joint",
+      "version": 1,
+      "title": "Happy to continue jointly?",
+      "content": [
+        {
+          "id": "c-happy-joint",
+          "ref": "qst.happy-continue-joint"
+        }
+      ],
+      "buttons": [
+        {
+          "key": "back",
+          "kind": "back",
+          "label": "Back"
+        },
+        {
+          "key": "next",
+          "kind": "next",
+          "label": "Next",
+          "enabledWhen": "c-happy-joint.answered",
+          "routes": [
+            {
+              "when": "c-happy-joint.value == 'yes'",
+              "to": "st-can-process"
+            },
+            {
+              "to": "st-signpost-moneyhelper"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "stepId": "st-can-process",
+      "version": 1,
+      "title": "Can process the request",
+      "content": [
+        {
+          "id": "c-can-process",
+          "ref": "prm.can-process-request"
+        },
+        {
+          "id": "c-things",
+          "ref": "prm.things-to-know"
+        }
+      ],
+      "buttons": [
+        {
+          "key": "back",
+          "kind": "back",
+          "label": "Back"
+        },
+        {
+          "key": "next",
+          "kind": "next",
+          "label": "Next",
+          "routes": [
+            {
+              "to": "st-scam"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "stepId": "st-scam",
+      "version": 1,
+      "title": "Scam awareness & advice",
+      "callFlow": {
+        "ref": "scam-and-advice"
+      },
+      "onExit": {
+        "proceed": "st-chargeable",
+        "think-stop": "st-signpost-moneyhelper"
+      }
+    },
+    {
+      "stepId": "st-chargeable",
+      "version": 1,
+      "title": "Chargeable event",
+      "callFlow": {
+        "ref": "chargeable-event"
+      },
+      "onExit": {
+        "proceed": "st-online-or-phone",
+        "think-stop": "st-signpost-moneyhelper"
+      }
+    },
+    {
+      "stepId": "st-online-or-phone",
+      "version": 1,
+      "title": "Online or phone?",
+      "content": [
+        {
+          "id": "c-online-or-phone",
+          "ref": "qst.online-or-phone"
+        }
+      ],
+      "buttons": [
+        {
+          "key": "back",
+          "kind": "back",
+          "label": "Back"
+        },
+        {
+          "key": "next",
+          "kind": "next",
+          "label": "Next",
+          "enabledWhen": "c-online-or-phone.answered",
+          "routes": [
+            {
+              "when": "c-online-or-phone.value == 'online'",
+              "to": "st-online"
+            },
+            {
+              "to": "st-payment"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "stepId": "st-online",
+      "version": 1,
+      "title": "Direct to Help Centre",
+      "content": [
+        {
+          "id": "c-online-act",
+          "ref": "act.direct-help-centre"
+        }
+      ],
+      "buttons": [
+        {
+          "key": "back",
+          "kind": "back",
+          "label": "Back"
+        },
+        {
+          "key": "end",
+          "kind": "end",
+          "label": "End call"
+        }
+      ]
+    },
+    {
+      "stepId": "st-payment",
+      "version": 1,
+      "title": "Payment collection & EID",
+      "callFlow": {
+        "ref": "payment-collection-and-eid"
+      }
+    },
+    {
+      "stepId": "st-signpost-moneyhelper",
+      "version": 1,
+      "title": "Signpost MoneyHelper",
+      "callFlow": {
+        "ref": "offer-all-channels",
+        "args": {
+          "leadPrompt": "prm.moneyhelper-signpost"
+        }
+      }
+    },
+    {
+      "stepId": "st-both-needed",
+      "version": 1,
+      "title": "Both policyholders needed",
+      "callFlow": {
+        "ref": "offer-all-channels",
+        "args": {
+          "leadPrompt": "prm.both-ph-needed"
+        }
+      }
+    },
+    {
+      "stepId": "st-fail-form",
+      "version": 1,
+      "title": "Not eligible - offer form",
+      "callFlow": {
+        "ref": "offer-form",
+        "args": {
+          "leadPrompt": "prm.form-and-id"
+        }
+      }
+    },
+    {
+      "stepId": "st-paper-form",
+      "version": 1,
+      "title": "Paper form",
+      "callFlow": {
+        "ref": "offer-form"
+      }
+    }
+  ]
+}

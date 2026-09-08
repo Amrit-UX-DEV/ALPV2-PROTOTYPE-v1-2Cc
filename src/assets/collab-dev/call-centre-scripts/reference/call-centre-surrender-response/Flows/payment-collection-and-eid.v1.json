@@ -1,0 +1,751 @@
+{
+  "_comment": "EXAMPLE - the response body ORDS returns for GET /scripts/flow/payment-collection-and-eid?version=1. Each callable flow is fetched by its own REST call (the path segment is the flow id, the version query pins the frozen version). At session start the engine fires all of these flow calls in parallel, alongside the bundle (/lookup) and the checks prefetch (/prefetch), then caches each for the session - so entering a callFlow step into payment-collection-and-eid never blocks. The payload is a self-contained CallableFlow: startStepId/terminal/params/exits/steps PLUS its own 'units' (every library unit its steps reference), so it renders without the main bundle. Nested flows it calls are fetched by their own parallel GET /scripts/flow/... calls the same way.",
+  "version": 1,
+  "scriptId": "payment-collection-and-eid",
+  "title": "Payment collection, bank account rules, Bond check and EID",
+  "terminal": true,
+  "params": [],
+  "exits": [],
+  "_exitsNote": "Original node graph listed exits completed/id-required, but this mini-script is terminal: every branch finishes the call via an End button. The exits are therefore unreachable and dropped.",
+  "startStepId": "st-pay-known",
+  "steps": [
+    {
+      "stepId": "st-pay-known",
+      "version": 1,
+      "title": "Known bank account?",
+      "onEnter": [
+        {
+          "kind": "check",
+          "ref": "chk.known-bank-account"
+        }
+      ],
+      "content": [],
+      "buttons": [
+        {
+          "key": "auto",
+          "kind": "auto",
+          "routes": [
+            {
+              "when": "chk.known-bank-account == 'Yes'",
+              "to": "st-pay-isbond"
+            },
+            {
+              "to": "st-pay-bank-type"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "stepId": "st-pay-isbond",
+      "version": 1,
+      "title": "Is it a Bond?",
+      "onEnter": [
+        {
+          "kind": "check",
+          "ref": "chk.is-bond"
+        }
+      ],
+      "content": [],
+      "buttons": [
+        {
+          "key": "auto",
+          "kind": "auto",
+          "routes": [
+            {
+              "when": "chk.is-bond == 'No'",
+              "to": "st-pay-existing"
+            },
+            {
+              "to": "st-pay-eid-intro"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "stepId": "st-pay-existing",
+      "version": 1,
+      "title": "Pay into existing account?",
+      "content": [
+        {
+          "id": "c-existing",
+          "ref": "prm.existing-bank"
+        },
+        {
+          "id": "c-pay-existing",
+          "ref": "qst.pay-into-existing"
+        }
+      ],
+      "buttons": [
+        {
+          "key": "next",
+          "kind": "next",
+          "label": "Next",
+          "enabledWhen": "c-pay-existing.answered",
+          "routes": [
+            {
+              "when": "c-pay-existing.value == 'continue'",
+              "to": "st-pay-can-cancel"
+            },
+            {
+              "when": "c-pay-existing.value == 'stop'",
+              "to": "st-pay-bank-type"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "stepId": "st-pay-can-cancel",
+      "version": 1,
+      "title": "Can cancel today",
+      "content": [
+        {
+          "id": "c-can-cancel",
+          "ref": "prm.can-cancel-today"
+        },
+        {
+          "id": "c-happy-1",
+          "ref": "qst.happy-to-proceed"
+        }
+      ],
+      "buttons": [
+        {
+          "key": "next",
+          "kind": "next",
+          "label": "Next",
+          "enabledWhen": "c-happy-1.answered",
+          "routes": [
+            {
+              "when": "c-happy-1.value == 'continue'",
+              "to": "st-pay-will-do"
+            },
+            {
+              "when": "c-happy-1.value == 'stop'",
+              "to": "st-pay-stop-1"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "stepId": "st-pay-will-do",
+      "version": 1,
+      "title": "Will do today",
+      "content": [
+        {
+          "id": "c-will-do",
+          "ref": "prm.will-do-today"
+        }
+      ],
+      "buttons": [
+        {
+          "key": "end",
+          "kind": "end",
+          "label": "End call",
+          "onClick": ["act.log-payment-out"]
+        }
+      ]
+    },
+    {
+      "stepId": "st-pay-stop-1",
+      "version": 1,
+      "title": "Stop - nothing changed",
+      "callFlow": {
+        "ref": "offer-all-channels",
+        "args": {
+          "leadPrompt": "prm.nothing-changed"
+        }
+      }
+    },
+    {
+      "stepId": "st-pay-bank-type",
+      "version": 1,
+      "title": "Bank account type",
+      "content": [
+        {
+          "id": "c-bank-type",
+          "ref": "qst.bank-account-type"
+        }
+      ],
+      "buttons": [
+        {
+          "key": "next",
+          "kind": "next",
+          "label": "Next",
+          "enabledWhen": "c-bank-type.answered",
+          "routes": [
+            {
+              "when": "c-bank-type.value == 'bank-bs'",
+              "to": "st-pay-capture-bank"
+            },
+            {
+              "when": "c-bank-type.value == 'overseas'",
+              "to": "st-pay-overseas"
+            },
+            {
+              "when": "c-bank-type.value == 'no-details'",
+              "to": "st-pay-cheque"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "stepId": "st-pay-overseas",
+      "version": 1,
+      "title": "Overseas account",
+      "content": [
+        {
+          "id": "c-overseas",
+          "ref": "prm.overseas-account"
+        },
+        {
+          "id": "c-uk-now",
+          "ref": "qst.uk-account-now"
+        }
+      ],
+      "buttons": [
+        {
+          "key": "next",
+          "kind": "next",
+          "label": "Next",
+          "enabledWhen": "c-uk-now.answered",
+          "routes": [
+            {
+              "when": "c-uk-now.value == 'yes'",
+              "to": "st-pay-capture-bank"
+            },
+            {
+              "when": "c-uk-now.value == 'no'",
+              "to": "st-pay-overseas-form"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "stepId": "st-pay-cheque",
+      "version": 1,
+      "title": "Cheque instead?",
+      "content": [
+        {
+          "id": "c-cheque",
+          "ref": "qst.cheque-instead"
+        }
+      ],
+      "buttons": [
+        {
+          "key": "next",
+          "kind": "next",
+          "label": "Next",
+          "enabledWhen": "c-cheque.answered",
+          "routes": [
+            {
+              "when": "c-cheque.value == 'yes'",
+              "to": "st-pay-eid-intro"
+            },
+            {
+              "when": "c-cheque.value == 'no'",
+              "to": "st-pay-cannot-form"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "stepId": "st-pay-cannot-form",
+      "version": 1,
+      "title": "Cannot proceed - offer form",
+      "callFlow": {
+        "ref": "offer-form",
+        "args": {
+          "leadPrompt": "prm.cannot-proceed-form"
+        }
+      }
+    },
+    {
+      "stepId": "st-pay-overseas-form",
+      "version": 1,
+      "title": "Overseas - offer form",
+      "callFlow": {
+        "ref": "offer-form",
+        "args": {
+          "leadPrompt": "prm.overseas-account"
+        }
+      }
+    },
+    {
+      "stepId": "st-pay-capture-bank",
+      "version": 1,
+      "title": "Capture bank details",
+      "content": [
+        {
+          "id": "c-capture-bank",
+          "ref": "act.capture-bank-details"
+        }
+      ],
+      "buttons": [
+        {
+          "key": "next",
+          "kind": "next",
+          "label": "Next",
+          "routes": [
+            {
+              "to": "st-pay-eid-intro"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "stepId": "st-pay-eid-intro",
+      "version": 1,
+      "title": "EID intro",
+      "content": [
+        {
+          "id": "c-eid-intro",
+          "ref": "prm.eid-intro"
+        },
+        {
+          "id": "c-eid-q",
+          "ref": "qst.continue-eid"
+        }
+      ],
+      "buttons": [
+        {
+          "key": "next",
+          "kind": "next",
+          "label": "Next",
+          "enabledWhen": "c-eid-q.answered",
+          "routes": [
+            {
+              "when": "c-eid-q.value == 'yes'",
+              "to": "st-pay-eid-do"
+            },
+            {
+              "when": "c-eid-q.value == 'no'",
+              "to": "st-pay-id-required"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "stepId": "st-pay-id-required",
+      "version": 1,
+      "title": "ID required",
+      "content": [
+        {
+          "id": "c-id-required",
+          "ref": "prm.id-required"
+        }
+      ],
+      "buttons": [
+        {
+          "key": "end",
+          "kind": "end",
+          "label": "End call",
+          "onClick": ["act.email-id-guide"]
+        }
+      ]
+    },
+    {
+      "stepId": "st-pay-eid-do",
+      "version": 1,
+      "title": "Record EID",
+      "content": [
+        {
+          "id": "c-eid-do",
+          "ref": "act.record-eid"
+        },
+        {
+          "id": "c-eid-warn",
+          "ref": "chk.eid-warnings"
+        }
+      ],
+      "buttons": [
+        {
+          "key": "next",
+          "kind": "next",
+          "label": "Next",
+          "enabledWhen": "c-eid-warn.answered",
+          "routes": [
+            {
+              "when": "c-eid-warn.value == 'no-warnings-or-waivable'",
+              "to": "st-pay-can-cancel-eid"
+            },
+            {
+              "when": "c-eid-warn.value == 'warning-cannot-be-waived'",
+              "to": "st-pay-eid-fail"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "stepId": "st-pay-can-cancel-eid",
+      "version": 1,
+      "title": "Can cancel today (EID)",
+      "content": [
+        {
+          "id": "c-can-cancel-eid",
+          "ref": "prm.can-cancel-eid"
+        },
+        {
+          "id": "c-happy-2",
+          "ref": "qst.happy-to-proceed"
+        }
+      ],
+      "buttons": [
+        {
+          "key": "next",
+          "kind": "next",
+          "label": "Next",
+          "enabledWhen": "c-happy-2.answered",
+          "routes": [
+            {
+              "when": "c-happy-2.value == 'continue'",
+              "to": "st-pay-will-request"
+            },
+            {
+              "when": "c-happy-2.value == 'stop'",
+              "to": "st-pay-stop-2"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "stepId": "st-pay-will-request",
+      "version": 1,
+      "title": "Will request today",
+      "content": [
+        {
+          "id": "c-will-request",
+          "ref": "prm.will-request-today"
+        }
+      ],
+      "buttons": [
+        {
+          "key": "end",
+          "kind": "end",
+          "label": "End call",
+          "onClick": ["act.log-payment-out"]
+        }
+      ]
+    },
+    {
+      "stepId": "st-pay-stop-2",
+      "version": 1,
+      "title": "Stop - signpost MoneyHelper",
+      "callFlow": {
+        "ref": "offer-all-channels",
+        "args": {
+          "leadPrompt": "prm.moneyhelper-signpost"
+        }
+      }
+    },
+    {
+      "stepId": "st-pay-eid-fail",
+      "version": 1,
+      "title": "EID failed",
+      "callFlow": {
+        "ref": "offer-all-channels",
+        "args": {
+          "leadPrompt": "prm.eid-failed"
+        }
+      }
+    }
+  ],
+  "units": {
+    "act.capture-bank-details": {
+      "unitId": "act.capture-bank-details",
+      "version": 1,
+      "kind": "action",
+      "actionType": "capture",
+      "label": "Capture detail - Account Name, Sort Code, Account Number, Bank/Building Society Name.",
+      "captureFields": ["accountName", "sortCode", "accountNumber", "bankName"]
+    },
+    "act.email-id-guide": {
+      "unitId": "act.email-id-guide",
+      "version": 1,
+      "kind": "action",
+      "actionType": "send-email",
+      "label": "Send email with link to ID guide. Record all checks complete and surrender requirements.",
+      "binding": {
+        "method": "POST",
+        "url": "trans/surrender/email_pack",
+        "data": {
+          "template": "ID_GUIDE"
+        }
+      }
+    },
+    "act.log-payment-out": {
+      "unitId": "act.log-payment-out",
+      "version": 1,
+      "kind": "action",
+      "actionType": "log-task",
+      "label": "Log task for payment out to be completed.",
+      "binding": {
+        "method": "POST",
+        "url": "trans/surrender/log_task",
+        "data": {
+          "taskType": "PAYMENT_OUT"
+        }
+      }
+    },
+    "act.record-eid": {
+      "unitId": "act.record-eid",
+      "version": 1,
+      "kind": "action",
+      "actionType": "capture",
+      "label": "Complete EID and record details - EID Score (score <45 and Bond will need to be HRID), EID reference.",
+      "captureFields": ["eidScore", "eidReference"],
+      "binding": {
+        "method": "POST",
+        "url": "trans/surrender/record_eid",
+        "data": {}
+      }
+    },
+    "chk.eid-warnings": {
+      "unitId": "chk.eid-warnings",
+      "version": 1,
+      "kind": "manual",
+      "label": "Are EID warnings present?",
+      "outcomes": ["no-warnings-or-waivable", "warning-cannot-be-waived"],
+      "optionLabels": {
+        "no-warnings-or-waivable": "No warnings OR warnings that can be waived",
+        "warning-cannot-be-waived": "Warning present that cannot be waived"
+      },
+      "styling": {
+        "no-warnings-or-waivable": "pass",
+        "warning-cannot-be-waived": "fail"
+      }
+    },
+    "chk.is-bond": {
+      "unitId": "chk.is-bond",
+      "version": 1,
+      "kind": "automated",
+      "label": "Is the policy a Bond?",
+      "binding": {
+        "method": "GET",
+        "url": "policy/surrender/is_bond",
+        "restData": [],
+        "resultPath": "items[0].isBond",
+        "outcomeMap": {
+          "Y": "Yes",
+          "N": "No"
+        }
+      },
+      "outcomes": ["Yes", "No"]
+    },
+    "chk.known-bank-account": {
+      "unitId": "chk.known-bank-account",
+      "version": 1,
+      "kind": "automated",
+      "label": "Is there a bank account that satisfies ReAssure's known bank account rules? (UK and has had regular payments to/from it for at least six months - see FCR procedures)",
+      "binding": {
+        "method": "GET",
+        "url": "policy/surrender/known_bank_account",
+        "restData": [],
+        "resultPath": "items[0].satisfies",
+        "outcomeMap": {
+          "Y": "Yes",
+          "N": "No"
+        }
+      },
+      "outcomes": ["Yes", "No"],
+      "styling": {
+        "Yes": "pass",
+        "No": "fail"
+      }
+    },
+    "prm.can-cancel-eid": {
+      "unitId": "prm.can-cancel-eid",
+      "version": 1,
+      "kind": "prompt",
+      "body": "I can cancel your policy today and arrange for your payment to be made. Once this is done, it cannot be reversed."
+    },
+    "prm.can-cancel-today": {
+      "unitId": "prm.can-cancel-today",
+      "version": 1,
+      "kind": "prompt",
+      "body": "Thanks for confirming, I can arrange for your policy to be cancelled today and payment to be made to this account. Once this is done, it cannot be reversed."
+    },
+    "prm.cannot-proceed-form": {
+      "unitId": "prm.cannot-proceed-form",
+      "version": 1,
+      "kind": "prompt",
+      "body": "I can't go ahead with your request over the phone today, you'll just need to complete a form. I can send this to you by email or post."
+    },
+    "prm.eid-failed": {
+      "unitId": "prm.eid-failed",
+      "version": 1,
+      "kind": "prompt",
+      "body": "I'm unable to complete the surrender of your policy over the phone today, as the electronic checks haven't scored highly enough. There's just a simple form you need to complete when you're ready. I can get this sent to you through the post or by email for you to print, fill in and send back to us if you'd prefer."
+    },
+    "prm.eid-intro": {
+      "unitId": "prm.eid-intro",
+      "version": 1,
+      "kind": "prompt",
+      "body": "Before I can progress your payment, I will need to perform an Electronic Identity check."
+    },
+    "prm.existing-bank": {
+      "unitId": "prm.existing-bank",
+      "version": 1,
+      "kind": "prompt",
+      "body": "I can see that we currently have a bank account ending in {{accountLast3}} (confirm Alpha details).",
+      "placeholders": [
+        {
+          "key": "accountLast3",
+          "source": "chk.known-bank-account",
+          "path": "items[0].accountLast3"
+        }
+      ]
+    },
+    "prm.id-required": {
+      "unitId": "prm.id-required",
+      "version": 1,
+      "kind": "prompt",
+      "body": "Ok, that's fine, we will need you to send us some ID before we can go ahead. I can email you a link to our ID guide."
+    },
+    "prm.moneyhelper-signpost": {
+      "unitId": "prm.moneyhelper-signpost",
+      "version": 1,
+      "kind": "prompt",
+      "body": "Ok, that's understandable. You can find lots of helpful information at moneyhelper.org.uk, including help finding a financial adviser if you need one. To cash in your policy there's just a simple form you need to complete if you decide to go ahead. You might be able to request this on our website. I can also get this sent through the post or by email if you prefer."
+    },
+    "prm.nothing-changed": {
+      "unitId": "prm.nothing-changed",
+      "version": 1,
+      "kind": "prompt",
+      "body": "Ok, that's understandable, nothing has been changed on your policy. You can find lots of helpful information at moneyhelper.org.uk."
+    },
+    "prm.overseas-account": {
+      "unitId": "prm.overseas-account",
+      "version": 1,
+      "kind": "prompt",
+      "body": "I'm unable to complete the surrender of your policy over the phone today unless we can pay into a UK bank account."
+    },
+    "prm.will-do-today": {
+      "unitId": "prm.will-do-today",
+      "version": 1,
+      "kind": "prompt",
+      "body": "Thank you, we will do this for you today. Once all of our checks have been completed, your payment will be made."
+    },
+    "prm.will-request-today": {
+      "unitId": "prm.will-request-today",
+      "version": 1,
+      "kind": "prompt",
+      "body": "Thank you, we will request this for you today. Once all of our checks have been completed, your payment will be made."
+    },
+    "qst.bank-account-type": {
+      "unitId": "qst.bank-account-type",
+      "version": 1,
+      "kind": "question",
+      "prompt": "Please can you confirm which UK bank account you'd like us to make your payment to?",
+      "selectionMode": "single",
+      "options": [
+        {
+          "key": "bank-bs",
+          "text": "Bank or Building Society"
+        },
+        {
+          "key": "overseas",
+          "text": "Overseas account"
+        },
+        {
+          "key": "no-details",
+          "text": "No account details available"
+        }
+      ]
+    },
+    "qst.cheque-instead": {
+      "unitId": "qst.cheque-instead",
+      "version": 1,
+      "kind": "question",
+      "prompt": "Would you like a cheque instead?",
+      "selectionMode": "single",
+      "options": [
+        {
+          "key": "yes",
+          "text": "Yes"
+        },
+        {
+          "key": "no",
+          "text": "No"
+        }
+      ]
+    },
+    "qst.continue-eid": {
+      "unitId": "qst.continue-eid",
+      "version": 1,
+      "kind": "question",
+      "prompt": "Would you like to continue with the Electronic Identity Check?",
+      "selectionMode": "single",
+      "options": [
+        {
+          "key": "yes",
+          "text": "Yes"
+        },
+        {
+          "key": "no",
+          "text": "No"
+        }
+      ]
+    },
+    "qst.happy-to-proceed": {
+      "unitId": "qst.happy-to-proceed",
+      "version": 1,
+      "kind": "question",
+      "prompt": "Are you happy to go ahead with this?",
+      "selectionMode": "single",
+      "options": [
+        {
+          "key": "continue",
+          "text": "Continue"
+        },
+        {
+          "key": "stop",
+          "text": "Stop"
+        }
+      ]
+    },
+    "qst.pay-into-existing": {
+      "unitId": "qst.pay-into-existing",
+      "version": 1,
+      "kind": "question",
+      "prompt": "Would you like us to make payment into this account? This is the quickest way.",
+      "selectionMode": "single",
+      "options": [
+        {
+          "key": "continue",
+          "text": "Continue"
+        },
+        {
+          "key": "stop",
+          "text": "Stop"
+        }
+      ]
+    },
+    "qst.uk-account-now": {
+      "unitId": "qst.uk-account-now",
+      "version": 1,
+      "kind": "question",
+      "prompt": "Are you able to provide a UK bank account now?",
+      "selectionMode": "single",
+      "options": [
+        {
+          "key": "yes",
+          "text": "UK account provided"
+        },
+        {
+          "key": "no",
+          "text": "No UK account"
+        }
+      ]
+    }
+  }
+}
