@@ -1,0 +1,6637 @@
+diff --git a/src/app/prototype-migration/call-center-demo/call-center-demo.component.css b/src/app/prototype-migration/call-center-demo/call-center-demo.component.css
+deleted file mode 100644
+index 04488c1..0000000
+--- a/src/app/prototype-migration/call-center-demo/call-center-demo.component.css
++++ /dev/null
+@@ -1,73 +0,0 @@
+-.alp-script-status-tile {
+-  background: #f8fafc;
+-  border: 1px solid #e2e8f0;
+-  border-radius: 10px;
+-  padding: 16px;
+-  margin: 12px 0;
+-  display: flex;
+-  align-items: center;
+-  justify-content: space-between;
+-  gap: 16px;
+-}
+-
+-.alp-script-status-tile__content {
+-  display: flex;
+-  align-items: center;
+-  gap: 12px;
+-  flex: 1;
+-}
+-
+-.alp-script-status-tile__icon {
+-  font-size: 24px;
+-  color: #10b981;
+-}
+-
+-.alp-script-status-tile__text {
+-  font-size: 15px;
+-  line-height: 1.5;
+-  color: #334155;
+-}
+-
+-.alp-script-status-tile__text strong {
+-  color: #1e2937;
+-}
+-
+-.alp-script-status-tile__run-btn {
+-  padding: 10px 18px;
+-  background: #2563eb;
+-  color: white;
+-  border: none;
+-  border-radius: 50px;
+-  font-size: 14px;
+-  font-weight: 500;
+-  cursor: pointer;
+-  white-space: nowrap;
+-  transition: background 0.2s;
+-  display: flex;
+-  align-items: center;
+-  gap: 8px;
+-}
+-
+-.alp-script-status-tile__run-btn:hover {
+-  background: #1d4ed8;
+-}
+-
+-
+-.alp-transfer-call-btn {
+-  background: #444F83;
+-  color: white;
+-  border: none;
+-  padding: 10px 18px;
+-  border-radius: 50px;
+-  font-weight: 500;
+-  cursor: pointer;
+-  display: inline-flex;
+-  align-items: center;
+-  gap: 8px;
+-  transition: all 0.2s;
+-}
+-
+-.alp-transfer-call-btn:hover {
+-  background: #343A65;
+-
+-}
+\ No newline at end of file
+diff --git a/src/app/prototype-migration/call-center-demo/call-center-demo.component.ts b/src/app/prototype-migration/call-center-demo/call-center-demo.component.ts
+index 8f3c0f8..299a657 100644
+--- a/src/app/prototype-migration/call-center-demo/call-center-demo.component.ts
++++ b/src/app/prototype-migration/call-center-demo/call-center-demo.component.ts
+@@ -33,7 +33,6 @@ import { AlphaWorkPlanComponent } from './components/work-plan/alpha-work-plan.c
+     
+   ],
+   templateUrl: './call-center-demo.component.html',
+-  styleUrls: ['./call-center-demo.component.css'],
+   schemas: [CUSTOM_ELEMENTS_SCHEMA],
+ })
+ export class CallCenterDemoComponent implements AfterViewInit {
+diff --git a/src/app/prototype-migration/call-center-demo/components/call-rep-scripts/journey/call-script-journey.component.css b/src/app/prototype-migration/call-center-demo/components/call-rep-scripts/journey/call-script-journey.component.css
+deleted file mode 100644
+index 102ce66..0000000
+--- a/src/app/prototype-migration/call-center-demo/components/call-rep-scripts/journey/call-script-journey.component.css
++++ /dev/null
+@@ -1,329 +0,0 @@
+-/* ============================================= */
+-/* ALP SCRIPT JOURNEY - STABLE & CLEAN (PX)     */
+-/* ============================================= */
+-
+-.alp-script-journey {
+-  max-width: 860px;
+-  margin: 0 auto;
+-  padding: 28px;
+-  background: #f8fafc;
+-  border: 1px solid #e2e8f0;
+-  border-radius: 12px;
+-  box-shadow: 0 4px 25px rgba(0, 0, 0, 0.08);
+-  font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto,
+-    sans-serif;
+-}
+-
+-/* Header */
+-.alp-script-journey__header {
+-  display: flex;
+-  justify-content: space-between;
+-  align-items: center;
+-  margin-bottom: 32px;
+-  padding-bottom: 20px;
+-  border-bottom: 2px solid #e5e7eb;
+-}
+-
+-.alp-script-journey__title {
+-  margin: 0;
+-  font-size: 18px;
+-  font-weight: 600;
+-  color: #111827;
+-}
+-
+-.alp-script-journey__progress {
+-  font-size: 15px;
+-  color: #6b7280;
+-  background: #f3f4f6;
+-  padding: 6px 16px;
+-  border-radius: 9999px;
+-}
+-
+-/* Read Prompt */
+-.alp-script-journey__read-prompt {
+-  background: #f8fafc;
+-  border-left: 6px solid #3b82f6;
+-  padding: 22px 26px;
+-  margin-bottom: 32px;
+-  border-radius: 8px;
+-}
+-
+-.alp-script-journey__read-prompt-label {
+-  display: block;
+-  font-size: 14px;
+-  font-weight: 600;
+-  color: #1e40af;
+-  margin-bottom: 10px;
+-}
+-
+-.alp-script-journey__read-prompt-text {
+-  margin: 0;
+-  line-height: 1.4;
+-  color: #1f2937;
+-  font-size: 16px;
+-}
+-
+-/* Question */
+-.alp-script-journey__question-text {
+-  font-size: 16px;
+-  font-weight: 600;
+-  color: #111827;
+-  margin-bottom: 28px;
+-}
+-
+-.question-sets--navigation {
+-  display: flex;
+-  background-color: #eff2f7;
+-  padding: 5px 0px 0px 5px;
+-  border-radius: 60px;
+-  margin: 0 auto;
+-  justify-content: space-between;
+-}
+-button.declaration-btn.declared:after {
+-  top: 0;
+-}
+-button.declaration-btn.declared:after {
+-  font-family: 'Font Awesome 5 Free';
+-  content: '\f00c';
+-  color: #58ae68;
+-  position: absolute;
+-  right: 0;
+-  padding: 10px;
+-  font-size: 2rem;
+-}
+-
+-.notification-block.status-prompt {
+-  margin-bottom: 40px;
+-  
+-}
+-.notification-block.status-prompt .notification-message {
+-  padding-right: 0;
+-}
+-.notification-block.status-prompt:before {
+-  font-family: 'Font Awesome 5 Free';
+-  content: '\f075';
+-  position: absolute;
+-  left: 0;
+-  top: 0;
+-  width: 35px;
+-  height: 100%;
+-  align-items: center;
+-  justify-content: center;
+-  color: #fff;
+-  display: flex;
+-  background-color: rgba(24, 110, 204, 1);
+-  font-size: 18px;
+-  font-weight: 900;
+-}
+-.notification-block.status-prompt {
+-  position: relative;
+-  padding-left: 50px;
+-  border-left: 0;
+-  border-bottom: 1px solid #fff;
+-  border-top: 0;
+-  border-right: 1px solid #fff;
+-  overflow: hidden;
+-  background-color: #e9e9e9;
+-}
+-.notification-block {
+-  position: relative;
+-  padding: 10px;
+-  padding-bottom: 16px;
+-  /* box-shadow: 0px 5px 10px -4px rgb(0 0 0 / 30%); */
+-  border: 1px solid rgb(227, 225, 225);
+-  border-left: 6px solid rgb(227, 225, 225);
+-  border-radius: 4px;
+-  background-color: rgba(236, 234, 234, 0);
+-  margin-bottom: 25px;
+-}
+-.notification-block.status-prompt p {
+-  color: #222;
+-  text-align: left;
+-}
+-.notification-message p {
+-  font-weight: bold;
+-  color: #222222;
+-}
+-
+-/* Options */
+-.alp-script-journey__options {
+-  display: flex;
+-  flex-direction: column;
+-  gap: 14px;
+-  margin-bottom: 36px;
+-}
+-
+-.alp-script-journey__option-label {
+-  display: flex;
+-  align-items: flex-start;
+-  gap: 12px;
+-  padding: 16px 20px;
+-  background: white;
+-  border: 2px solid #e5e7eb;
+-  border-radius: 10px;
+-  cursor: pointer;
+-  font-weight: 600;
+-}
+-
+-.alp-script-journey__option-label:hover {
+-  border-color: #60a5fa;
+-  background: #f0f9ff;
+-}
+-
+-.alp-script-journey__option-text {
+-  flex: 1;
+-  font-size: 17px;
+-}
+-
+-/* Selected Option */
+-.alp-script-journey__option-label:has(input:checked) {
+-  border-color: #2563eb;
+-  background-color: #eff6ff;
+-}
+-
+-/* Required Checks */
+-.alp-script-journey__checks {
+-  margin-bottom: 32px;
+-}
+-
+-.alp-script-journey__section-title {
+-  margin-bottom: 15px;
+-}
+-
+-.alp-script-journey__check-list {
+-  display: flex;
+-  flex-direction: column;
+-  gap: 12px;
+-  list-style: none;
+-  padding: 0;
+-  margin: 0;
+-  font-size:14px;
+-}
+-
+-.alp-script-journey__check-list strong{
+-    
+-  display:block;
+-  margin-top:4px;
+-}
+-
+-.alp-script-journey__check-item {
+-  display: flex;
+-  align-items: center;
+-  gap: 12px;
+-  padding: 14px 18px;
+-  background: white;
+-  border: 2px solid #e5e7eb;
+-  border-radius: 10px;
+-  cursor: pointer;
+-}
+-
+-.alp-script-journey__check-item:hover {
+-  border-color: #60a5fa;
+-}
+-
+-.alp-script-journey__check-item--auto {
+-  background-color: #ecfdf5;
+-  border-color: #a7f3d0;
+-}
+-
+-.alp-script-journey__check-badge {
+-  background: #075f42;
+-  color: white;
+-  font-size: 13px;
+-  padding: 2px 8px;
+-  border-radius: 9999px;
+-  margin-left: auto;
+-}
+-
+-.alp-script-journey__check-item--manual {
+-  background-color: #f3e8ff;
+-  border-left: 4px solid #8b5cf6;
+-}
+-
+-.alp-script-journey__check-badge.manual {
+-  background-color: #8b5cf6;
+-  color: white;
+-}
+-
+-/* Actions */
+-.alp-script-journey__actions {
+-  margin-bottom: 32px;
+-}
+-
+-.alp-script-journey__action-list {
+-  display: flex;
+-  flex-wrap: wrap;
+-  gap: 10px;
+-}
+-
+-/* Footer */
+-.alp-script-journey__footer {
+-  display: flex;
+-  justify-content: space-between;
+-  padding-top: 28px;
+-  border-top: 1px solid #e5e7eb;
+-}
+-
+-/* Buttons */
+-.alp-script-journey__btn {
+-  font-weight: 500;
+-  cursor: pointer;
+-  transition: all 0.2s ease;
+-
+-  border-radius: 50px;
+-  padding: 5px 16px;
+-  background-color: #5da4e0;
+-  text-align: center;
+-  border: 2px solid rgba(255, 255, 255, 0.3);
+-  color: #fff;
+-  min-width: 30px;
+-  min-height: 30px;
+-  line-height: 1.5;
+-  margin: 3px;
+-  font-size: 16px;
+-  box-sizing: border-box;
+-  letter-spacing: 1px;
+-}
+-
+-.alp-script-journey__btn--primary {
+-  background-color: #4c5992;
+-  color: white;
+-  border: none;
+-}
+-
+-.alp-script-journey__btn--secondary {
+-  background-color: #f3f4f6;
+-  color: #374151;
+-  border: 1px solid #d1d5db;
+-}
+-
+-.alp-script-journey__btn--danger {
+-  background-color: #dc2626;
+-  color: white;
+-}
+-
+-/* Summary */
+-.alp-script-journey__summary {
+-  padding: 40px 20px;
+-  text-align: center;
+-}
+-
+-.alp-script-journey__summary-title {
+-  font-size: 28px;
+-  margin-bottom: 32px;
+-}
+-
+-.alp-script-journey__summary-item {
+-  padding: 12px 0;
+-  border-bottom: 1px solid #e5e7eb;
+-  text-align: left;
+-}
+-
+-/* States */
+-.alp-script-journey__loading,
+-.alp-script-journey__error {
+-  padding: 60px 20px;
+-  text-align: center;
+-  color: #6b7280;
+-}
+-
+diff --git a/src/app/prototype-migration/call-center-demo/components/call-rep-scripts/journey/call-script-journey.component.ts b/src/app/prototype-migration/call-center-demo/components/call-rep-scripts/journey/call-script-journey.component.ts
+index 18cd209..5edfb0c 100644
+--- a/src/app/prototype-migration/call-center-demo/components/call-rep-scripts/journey/call-script-journey.component.ts
++++ b/src/app/prototype-migration/call-center-demo/components/call-rep-scripts/journey/call-script-journey.component.ts
+@@ -6,8 +6,7 @@ import { CallRepScriptService, CallRepScript } from '../call-rep-script.service'
+   selector: 'alpha-call-script-journey',
+   standalone: true,
+   imports: [CommonModule],
+-  templateUrl: './call-script-journey.component.html',
+-  styleUrls: ['./call-script-journey.component.css']
++  templateUrl: './call-script-journey.component.html'
+ })
+ export class CallScriptJourneyComponent implements OnInit {
+ 
+diff --git a/src/app/prototype-migration/call-center-demo/components/call-rep-scripts/script-builder/content-card/content-card.component.css b/src/app/prototype-migration/call-center-demo/components/call-rep-scripts/script-builder/content-card/content-card.component.css
+deleted file mode 100644
+index ef986ed..0000000
+--- a/src/app/prototype-migration/call-center-demo/components/call-rep-scripts/script-builder/content-card/content-card.component.css
++++ /dev/null
+@@ -1,323 +0,0 @@
+-.alp-content-card {
+-  border: 1px solid #e2e8f0;
+-  border-radius: 12px;
+-  padding: 16px 18px 18px;
+-  background: #ffffff;
+-  margin-bottom: 14px;
+-  box-shadow: 0 1px 3px rgba(15, 23, 42, 0.04);
+-  background-color:rgb(248, 250, 252);
+-}
+-
+-.alp-content-card__title-row {
+-  display: flex;
+-  justify-content: space-between;
+-  align-items: center;
+-  gap: 12px;
+-  margin-bottom: 10px;
+-}
+-
+-.alp-content-card__title {
+-  margin: 0;
+-  font-size: 15px;
+-  font-weight: 600;
+-  color: #0f172a;
+-}
+-
+-.alp-content-card__actions {
+-  display: flex;
+-  gap: 6px;
+-  flex-shrink: 0;
+-}
+-
+-.alp-content-card__tags {
+-  display: flex;
+-  flex-wrap: wrap;
+-  align-items: center;
+-  gap: 8px;
+-  margin-bottom: 16px;
+-}
+-
+-/* Type tags — colour per content type */
+-.alp-type-tag {
+-  display: inline-flex;
+-  align-items: center;
+-  font-size: 11px;
+-  font-weight: 700;
+-  letter-spacing: 0.04em;
+-  text-transform: uppercase;
+-  padding: 4px 10px;
+-  border-radius: 9999px;
+-  border: 1px solid transparent;
+-}
+-
+-.alp-type-tag[data-type="prompt"] {
+-  background: #dbeafe;
+-  color: #1e40af;
+-  border-color: #93c5fd;
+-}
+-
+-.alp-type-tag[data-type="question"] {
+-  background: #ede9fe;
+-  color: #5b21b6;
+-  border-color: #c4b5fd;
+-}
+-
+-.alp-type-tag[data-type="required-check"] {
+-  background: #ecfdf5;
+-  color: #065f46;
+-  border-color: #6ee7b7;
+-}
+-
+-.alp-type-tag[data-type="log-task"] {
+-  background: #fff7ed;
+-  color: #9a3412;
+-  border-color: #fdba74;
+-}
+-
+-.alp-type-tag[data-type="end-call"] {
+-  background: #fef2f2;
+-  color: #991b1b;
+-  border-color: #fca5a5;
+-}
+-
+-.alp-id-tag {
+-  display: inline-flex;
+-  align-items: center;
+-  font-size: 12px;
+-  font-weight: 500;
+-  color: #334155;
+-  background: #f1f5f9;
+-  border: 1px solid #cbd5e1;
+-  padding: 4px 10px;
+-  border-radius: 6px;
+-  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+-  max-width: 100%;
+-  overflow: hidden;
+-  text-overflow: ellipsis;
+-  white-space: nowrap;
+-}
+-
+-.alp-content-section {
+-  margin-bottom: 16px;
+-}
+-
+-.alp-label {
+-  display: block;
+-  font-size: 12px;
+-  font-weight: 600;
+-  color: #475569;
+-  margin-bottom: 6px;
+-}
+-
+-.alp-section-head {
+-  display: flex;
+-  justify-content: space-between;
+-  align-items: center;
+-  gap: 10px;
+-  margin-bottom: 8px;
+-}
+-
+-.alp-section-head .alp-label {
+-  margin-bottom: 0;
+-}
+-
+-.alp-section-head__actions {
+-  display: flex;
+-  gap: 8px;
+-  flex-wrap: wrap;
+-}
+-
+-.alp-input,
+-.alp-textarea {
+-  width: 100%;
+-  box-sizing: border-box;
+-  border: 1px solid #cbd5e1;
+-  border-radius: 8px;
+-  padding: 10px 12px;
+-  font-size: 14px;
+-  color: #0f172a;
+-  background: #fff;
+-}
+-
+-.alp-textarea {
+-  resize: vertical;
+-  min-height: 88px;
+-  line-height: 1.45;
+-}
+-
+-.alp-option-row {
+-  display: flex;
+-  gap: 8px;
+-  margin-bottom: 8px;
+-  align-items: center;
+-}
+-
+-.alp-option-row .alp-input {
+-  flex: 1;
+-}
+-
+-.alp-hint {
+-  margin: 6px 0 0;
+-  font-size: 13px;
+-  color: #64748b;
+-}
+-
+-/* Segmented control */
+-.alp-segmented {
+-  display: inline-flex;
+-  background: #f1f5f9;
+-  border-radius: 8px;
+-  padding: 3px;
+-  gap: 2px;
+-}
+-
+-.alp-segmented--sm .alp-segmented__btn {
+-  padding: 5px 10px;
+-  font-size: 12px;
+-}
+-
+-.alp-segmented__btn {
+-  border: none;
+-  background: transparent;
+-  padding: 7px 12px;
+-  border-radius: 6px;
+-  font-size: 13px;
+-  font-weight: 500;
+-  color: #475569;
+-  cursor: pointer;
+-}
+-
+-.alp-segmented__btn--active {
+-  background: #fff;
+-  color: #0f172a;
+-  box-shadow: 0 1px 2px rgba(15, 23, 42, 0.08);
+-}
+-
+-/* Required check cards */
+-.alp-check-card {
+-  border: 1px solid #e2e8f0;
+-  border-radius: 10px;
+-  padding: 12px 14px;
+-  margin-bottom: 12px;
+-  background: #f8fafc;
+-}
+-
+-.alp-check-card--auto {
+-  background: #ecfdf5;
+-  border-color: #a7f3d0;
+-}
+-
+-.alp-check-card--manual {
+-  background: #f5f3ff;
+-  border-color: #c4b5fd;
+-}
+-
+-.alp-check-card__header {
+-  display: flex;
+-  justify-content: space-between;
+-  align-items: center;
+-  gap: 10px;
+-  margin-bottom: 12px;
+-}
+-
+-.alp-check-card__body {
+-  display: flex;
+-  flex-direction: column;
+-  gap: 4px;
+-}
+-
+-/* Buttons (local fallbacks) */
+-.alp-btn--sm {
+-  padding: 4px 10px;
+-  font-size: 12px;
+-  min-height: auto;
+-}
+-
+-.alp-btn:disabled {
+-  opacity: 0.4;
+-  cursor: not-allowed;
+-}
+-
+-/* Variables */
+-.alp-prompt-variable-bar {
+-  display: flex;
+-  align-items: center;
+-  gap: 12px;
+-  margin-top: 12px;
+-  flex-wrap: wrap;
+-}
+-
+-.alp-prompt-variable-hint {
+-  font-size: 12px;
+-  color: #64748b;
+-}
+-
+-.alp-variable-list {
+-  display: flex;
+-  flex-direction: column;
+-  gap: 8px;
+-  max-height: 320px;
+-  overflow-y: auto;
+-}
+-
+-.alp-variable-tile {
+-  display: flex;
+-  justify-content: space-between;
+-  align-items: center;
+-  gap: 12px;
+-  width: 100%;
+-  text-align: left;
+-  padding: 12px 14px;
+-  border: 2px solid #e5e7eb;
+-  border-radius: 8px;
+-  background: #fff;
+-  cursor: pointer;
+-}
+-
+-.alp-variable-tile:hover {
+-  border-color: #444F83;
+-  background: #f0f4ff;
+-}
+-
+-.alp-variable-tile--selected {
+-  border-color: #444F83;
+-  background: #f0f4ff;
+-  box-shadow: 0 0 0 1px #444F83;
+-}
+-
+-.alp-variable-tile__label {
+-  font-weight: 600;
+-  font-size: 14px;
+-  color: #0f172a;
+-}
+-
+-.alp-variable-tile__token {
+-  font-family: ui-monospace, monospace;
+-  font-size: 12px;
+-  color: #64748b;
+-}
+-
+-.alp-augment-row {
+-  display: flex;
+-  flex-wrap: wrap;
+-  gap: 8px;
+-  margin-top: 10px;
+-  align-items: center;
+-}
+-
+-.alp-dependency-tile__main {
+-  display: flex;
+-  align-items: flex-start;
+-  flex-wrap: wrap;
+-  min-width: 0;
+-  flex: 1;
+-}
+-
+-.alp-dependency-tile__text {
+-  display: inline-flex;
+-  flex-wrap: wrap;
+-  align-items: center;
+-  gap: 8px;
+-  row-gap: 6px;
+-  min-width: 0;
+-}
+\ No newline at end of file
+diff --git a/src/app/prototype-migration/call-center-demo/components/call-rep-scripts/script-builder/content-card/content-card.component.ts b/src/app/prototype-migration/call-center-demo/components/call-rep-scripts/script-builder/content-card/content-card.component.ts
+index 4821180..d159292 100644
+--- a/src/app/prototype-migration/call-center-demo/components/call-rep-scripts/script-builder/content-card/content-card.component.ts
++++ b/src/app/prototype-migration/call-center-demo/components/call-rep-scripts/script-builder/content-card/content-card.component.ts
+@@ -20,8 +20,7 @@ import {
+   selector: 'alpha-content-card',
+   standalone: true,
+   imports: [CommonModule, FormsModule],
+-  templateUrl: './content-card.component.html',
+-  styleUrls: ['./content-card.component.css']
++  templateUrl: './content-card.component.html'
+ })
+ export class ContentCardComponent {
+ 
+diff --git a/src/app/prototype-migration/call-center-demo/components/call-rep-scripts/script-builder/popovers/condition-popover/condition-popover.component.css b/src/app/prototype-migration/call-center-demo/components/call-rep-scripts/script-builder/popovers/condition-popover/condition-popover.component.css
+deleted file mode 100644
+index c772689..0000000
+--- a/src/app/prototype-migration/call-center-demo/components/call-rep-scripts/script-builder/popovers/condition-popover/condition-popover.component.css
++++ /dev/null
+@@ -1,9 +0,0 @@
+-dialog {
+-  border: none;
+-  padding: 0;
+-  margin: auto;
+-}
+-
+-dialog::backdrop {
+-  background: rgba(15, 23, 42, 0.45);
+-}
+diff --git a/src/app/prototype-migration/call-center-demo/components/call-rep-scripts/script-builder/popovers/condition-popover/condition-popover.component.ts b/src/app/prototype-migration/call-center-demo/components/call-rep-scripts/script-builder/popovers/condition-popover/condition-popover.component.ts
+index 81602b9..bb974fa 100644
+--- a/src/app/prototype-migration/call-center-demo/components/call-rep-scripts/script-builder/popovers/condition-popover/condition-popover.component.ts
++++ b/src/app/prototype-migration/call-center-demo/components/call-rep-scripts/script-builder/popovers/condition-popover/condition-popover.component.ts
+@@ -16,8 +16,7 @@ import { ContentBlock, ContentCondition } from '../../models/script-builder.mode
+   selector: 'alpha-condition-popover',
+   standalone: true,
+   imports: [CommonModule],
+-  templateUrl: './condition-popover.component.html',
+-  styleUrls: ['./condition-popover.component.css']
++  templateUrl: './condition-popover.component.html'
+ })
+ export class ConditionPopoverComponent implements AfterViewInit {
+   @ViewChild('dialogRef') dialogRef!: ElementRef<HTMLDialogElement>;
+@@ -101,4 +100,4 @@ export class ConditionPopoverComponent implements AfterViewInit {
+   back() {
+     this.step.set(1);
+   }
+-}
++}
+\ No newline at end of file
+diff --git a/src/app/prototype-migration/call-center-demo/components/call-rep-scripts/script-builder/popovers/confirm-popover/confirm-popover.component.css b/src/app/prototype-migration/call-center-demo/components/call-rep-scripts/script-builder/popovers/confirm-popover/confirm-popover.component.css
+deleted file mode 100644
+index c772689..0000000
+--- a/src/app/prototype-migration/call-center-demo/components/call-rep-scripts/script-builder/popovers/confirm-popover/confirm-popover.component.css
++++ /dev/null
+@@ -1,9 +0,0 @@
+-dialog {
+-  border: none;
+-  padding: 0;
+-  margin: auto;
+-}
+-
+-dialog::backdrop {
+-  background: rgba(15, 23, 42, 0.45);
+-}
+diff --git a/src/app/prototype-migration/call-center-demo/components/call-rep-scripts/script-builder/popovers/confirm-popover/confirm-popover.component.ts b/src/app/prototype-migration/call-center-demo/components/call-rep-scripts/script-builder/popovers/confirm-popover/confirm-popover.component.ts
+index bccb635..55eb537 100644
+--- a/src/app/prototype-migration/call-center-demo/components/call-rep-scripts/script-builder/popovers/confirm-popover/confirm-popover.component.ts
++++ b/src/app/prototype-migration/call-center-demo/components/call-rep-scripts/script-builder/popovers/confirm-popover/confirm-popover.component.ts
+@@ -14,8 +14,7 @@ import { CommonModule } from '@angular/common';
+   selector: 'alpha-confirm-popover',
+   standalone: true,
+   imports: [CommonModule],
+-  templateUrl: './confirm-popover.component.html',
+-  styleUrls: ['./confirm-popover.component.css']
++  templateUrl: './confirm-popover.component.html'
+ })
+ export class ConfirmPopoverComponent implements AfterViewInit {
+   @ViewChild('dialogRef') dialogRef!: ElementRef<HTMLDialogElement>;
+@@ -53,4 +52,4 @@ export class ConfirmPopoverComponent implements AfterViewInit {
+   onDialogCancel() {
+     this.cancelled.emit();
+   }
+-}
++}
+\ No newline at end of file
+diff --git a/src/app/prototype-migration/call-center-demo/components/call-rep-scripts/script-builder/popovers/order-steps-popover/order-steps-popover.component.css b/src/app/prototype-migration/call-center-demo/components/call-rep-scripts/script-builder/popovers/order-steps-popover/order-steps-popover.component.css
+deleted file mode 100644
+index e94108f..0000000
+--- a/src/app/prototype-migration/call-center-demo/components/call-rep-scripts/script-builder/popovers/order-steps-popover/order-steps-popover.component.css
++++ /dev/null
+@@ -1,364 +0,0 @@
+-.alp-order-popover {
+-  background: #fff;
+-  border-radius: 12px;
+-  width: min(720px, 100%);
+-  max-height: min(80vh, 720px);
+-  display: flex;
+-  flex-direction: column;
+-  box-shadow: 0 20px 50px rgba(15, 23, 42, 0.25);
+-  overflow: hidden;
+-  border: none;
+-  padding: 0;
+-  margin: auto;
+-}
+-
+-.alp-order-popover::backdrop {
+-  background: rgba(15, 23, 42, 0.45);
+-}
+-
+-.alp-builder-modal__header {
+-  display: flex;
+-  align-items: flex-start;
+-  justify-content: space-between;
+-  padding: 16px 20px;
+-  border-bottom: 1px solid #e2e8f0;
+-  flex-shrink: 0;
+-}
+-
+-.alp-builder-modal__header > div {
+-  display: flex;
+-  flex-direction: column;
+-}
+-
+-.alp-builder-modal__title {
+-  margin: 0;
+-  font-size: 18px;
+-  font-weight: 700;
+-  color: #0f172a;
+-  letter-spacing: -0.01em;
+-  line-height: 1.3;
+-}
+-
+-.alp-builder-modal__close {
+-  border: none;
+-  background: transparent;
+-  color: #64748b;
+-  width: 32px;
+-  height: 32px;
+-  border-radius: 6px;
+-  cursor: pointer;
+-  display: inline-flex;
+-  align-items: center;
+-  justify-content: center;
+-}
+-
+-.alp-builder-modal__close:hover {
+-  background: #f1f5f9;
+-  color: #0f172a;
+-}
+-
+-.alp-order-popover__body {
+-  padding: 16px 20px;
+-  overflow-y: auto;
+-  flex: 1;
+-}
+-
+-.alp-order-popover__hint {
+-  margin: 0;
+-  font-size: 13px;
+-  color: #64748b;
+-}
+-
+-.alp-builder-modal__header .alp-order-popover__hint {
+-  margin-top: 4px;
+-}
+-
+-/* Graph paper canvas */
+-.alp-order-popover__canvas {
+-  display: flex;
+-  flex-direction: column;
+-  align-items: center;
+-  gap: 0;
+-  padding: 20px 16px;
+-  border-radius: 10px;
+-  background-color: var(--alp-color-bg);
+-    background-image: radial-gradient(var(--alp-dot-color) var(--alp-dot-size), transparent var(--alp-dot-size));
+-    background-size: var(--alp-dot-spacing) var(--alp-dot-spacing);
+-  border: 1px solid #e2e8f0;
+-}
+-
+-/* Mini step card — squarish, flow-like */
+-.alp-order-card {
+-  width: 100%;
+-  max-width: 280px;
+-  min-height: 100px;
+-  box-sizing: border-box;
+-  background: #fff;
+-  border: 1px solid #e2e8f0;
+-  border-radius: 10px;
+-  padding: 14px 16px;
+-  box-shadow: 0 1px 3px rgba(15, 23, 42, 0.06);
+-}
+-
+-.alp-order-card--source {
+-  border-color: #444F83;
+-  box-shadow: 0 0 0 2px rgba(68, 79, 131, 0.25);
+-}
+-
+-.alp-order-moved-from {
+-  width: 100%;
+-  max-width: 280px;
+-  min-height: 100px;
+-  box-sizing: border-box;
+-  display: flex;
+-  align-items: center;
+-  justify-content: center;
+-  background: #e2e8f0;
+-  border-radius: 10px;
+-  padding: 14px 16px;
+-  color: #334155;
+-  font-size: 14px;
+-  font-weight: 600;
+-  text-align: center;
+-}
+-
+-.alp-order-copy-source {
+-  width: 100%;
+-  max-width: 316px;
+-  box-sizing: border-box;
+-  display: flex;
+-  flex-direction: column;
+-  align-items: center;
+-  gap: 12px;
+-  padding: 14px;
+-  border: 2px solid transparent;
+-  border-radius: 10px;
+-  background: #e2e8f0;
+-  color: #334155;
+-  text-align: center;
+-}
+-
+-.alp-order-copy-source .alp-order-card {
+-  width: 100%;
+-  max-width: 280px;
+-}
+-
+-.alp-order-copy-source__label {
+-  font-size: 13px;
+-  font-weight: 600;
+-}
+-
+-.alp-order-undo-btn {
+-  display: inline-flex;
+-  align-items: center;
+-  gap: 0.5em;
+-}
+-
+-.alp-order-move-btn:hover,
+-.alp-order-undo-btn:hover {
+-  color: #334155;
+-}
+-
+-.alp-order-card__header {
+-  margin-bottom: 10px;
+-}
+-
+-.alp-order-card__step-line {
+-  display: flex;
+-  flex-wrap: wrap;
+-  align-items: center;
+-  gap: 8px;
+-}
+-
+-.alp-order-card__step-label {
+-  font-size: 15px;
+-  font-weight: 700;
+-  color: #0f172a;
+-}
+-
+-.alp-order-card__renumber-group {
+-  display: inline-flex;
+-  align-items: center;
+-  gap: 6px;
+-}
+-
+-.alp-order-card__step-label--original {
+-  color: #94a3b8;
+-  text-decoration: line-through;
+-}
+-
+-.alp-order-card__renumber-arrow {
+-  color: #64748b;
+-  font-size: 12px;
+-}
+-
+-.alp-order-card__tag {
+-  font-size: 11px;
+-  font-weight: 600;
+-  padding: 3px 10px;
+-  border-radius: 9999px;
+-  background: #fef3c7;
+-  color: #92400e;
+-}
+-
+-.alp-order-card__types {
+-  display: flex;
+-  flex-direction: column;
+-  align-items: flex-start;
+-  gap: 6px;
+-}
+-
+-.alp-order-card__type {
+-  font-size: 10px;
+-  font-weight: 700;
+-  letter-spacing: 0.04em;
+-  text-transform: uppercase;
+-  padding: 3px 8px;
+-  border-radius: 4px;
+-  background: #e2e8f0;
+-  color: #334155;
+-}
+-
+-/* Strong content type colours used in the order / copy dialog (white text) */
+-.alp-order-card__type[data-type="prompt"] {
+-  background: #1e40af;
+-  color: #ffffff;
+-}
+-.alp-order-card__type[data-type="question"] {
+-  background: #5b21b6;
+-  color: #ffffff;
+-}
+-.alp-order-card__type[data-type="required-check"] {
+-  background: #047857;
+-  color: #ffffff;
+-}
+-.alp-order-card__type[data-type="log-task"] {
+-  background: #b45309;
+-  color: #ffffff;
+-}
+-.alp-order-card__type[data-type="end-call"] {
+-  background: #b91c1c;
+-  color: #ffffff;
+-}
+-
+-.alp-order-card__empty {
+-  font-size: 12px;
+-  color: #64748b;
+-}
+-
+-.alp-order-card__type-row {
+-  display: flex;
+-  align-items: center;
+-  gap: 6px;
+-  flex-wrap: wrap;
+-}
+-
+-.alp-order-card__meta {
+-  font-size: 10px;
+-  font-weight: 600;
+-  letter-spacing: 0.02em;
+-  padding: 3px 8px;
+-  border-radius: 4px;
+-  background: #f1f5f9;
+-  color: #334155;
+-}
+-
+-.alp-order-card__dependency {
+-  display: inline-flex;
+-  align-items: center;
+-  justify-content: center;
+-  width: 20px;
+-  height: 20px;
+-  font-size: 10px;
+-  border-radius: 4px;
+-  background: #fef3c7;
+-  color: #92400e;
+-}
+-
+-.alp-order-card__dependency i {
+-  font-size: 10px;
+-}
+-
+-/* Tether + place control */
+-.alp-order-connector {
+-  display: flex;
+-  flex-direction: column;
+-  align-items: center;
+-  width: 100%;
+-  max-width: 280px;
+-  min-height: 28px;
+-  padding: 4px 0;
+-}
+-
+-.alp-order-connector--passive {
+-  min-height: 20px;
+-}
+-
+-.alp-order-connector--expanded {
+-  max-width: 340px;
+-}
+-
+-.alp-order-connector__line {
+-  width: 2px;
+-  height: 12px;
+-  background: #64748b;
+-  flex-shrink: 0;
+-}
+-
+-.alp-order-move-btn {
+-  display: inline-flex;
+-  align-items: center;
+-  gap: 0.5em;
+-}
+-
+-/* Expanded placeholder after selecting a destination */
+-.alp-order-placeholder {
+-  width: 100%;
+-  max-width: 280px;
+-  min-height: 100px;
+-  box-sizing: border-box;
+-  display: flex;
+-  flex-direction: column;
+-  align-items: center;
+-  justify-content: center;
+-  gap: 10px;
+-  padding: 14px 16px;
+-  border: 2px dashed #444F83;
+-  border-radius: 10px;
+-  background: #f0f4ff;
+-  color: #334155;
+-  cursor: pointer;
+-  text-align: center;
+-}
+-
+-.alp-order-placeholder:hover {
+-  background: #e8edff;
+-}
+-
+-.alp-order-placeholder--nested {
+-  max-width: 316px;
+-  min-height: auto;
+-  padding: 14px;
+-  align-items: center;
+-  gap: 12px;
+-  cursor: default;
+-}
+-
+-.alp-order-placeholder--nested:hover {
+-  background: #f0f4ff;
+-}
+-
+-.alp-order-placeholder--nested .alp-order-card {
+-  width: 100%;
+-  max-width: 280px;
+-}
+-
+-.alp-order-popover__footer {
+-  display: flex;
+-  justify-content: flex-end;
+-  gap: 10px;
+-  padding: 14px 20px;
+-  border-top: 1px solid #e2e8f0;
+-  background: #f8fafc;
+-  flex-shrink: 0;
+-}
+diff --git a/src/app/prototype-migration/call-center-demo/components/call-rep-scripts/script-builder/popovers/order-steps-popover/order-steps-popover.component.ts b/src/app/prototype-migration/call-center-demo/components/call-rep-scripts/script-builder/popovers/order-steps-popover/order-steps-popover.component.ts
+index 5f83cf4..41b128c 100644
+--- a/src/app/prototype-migration/call-center-demo/components/call-rep-scripts/script-builder/popovers/order-steps-popover/order-steps-popover.component.ts
++++ b/src/app/prototype-migration/call-center-demo/components/call-rep-scripts/script-builder/popovers/order-steps-popover/order-steps-popover.component.ts
+@@ -1,276 +1,254 @@
+-import {
+-  Component,
+-  Input,
+-  Output,
+-  EventEmitter,
+-  signal,
+-  computed,
+-  ElementRef,
+-  ViewChild,
+-  AfterViewInit,
+-} from '@angular/core';
+-import { CommonModule } from '@angular/common';
+-import { ScriptStep, ContentBlock } from '../../models/script-builder.models';
+-
+-export interface OrderMoveTarget {
+-  kind: 'before-first' | 'after';
+-  afterIndex?: number;
+-}
+-
+-export type StepPositionMode = 'move' | 'copy';
+-
+-@Component({
+-  selector: 'alpha-order-steps-popover',
+-  standalone: true,
+-  imports: [CommonModule],
+-  templateUrl: './order-steps-popover.component.html',
+-  styleUrls: ['./order-steps-popover.component.css'],
+-})
+-export class OrderStepsPopoverComponent implements AfterViewInit {
+-  @ViewChild('dialogRef') dialogRef!: ElementRef<HTMLDialogElement>;
+-
+-  @Input({ required: true }) steps: ScriptStep[] = [];
+-  @Input({ required: true }) sourceIndex = 0;
+-  @Input() mode: StepPositionMode = 'move';
+-
+-  @Output() confirmed = new EventEmitter<{
+-    sourceIndex: number;
+-    targetIndex: number;
+-  }>();
+-  @Output() cancelled = new EventEmitter<void>();
+-
+-  readonly pendingTarget = signal<OrderMoveTarget | null>(null);
+-
+-  readonly isMoveMode = computed(() => this.mode === 'move');
+-  readonly isCopyMode = computed(() => this.mode === 'copy');
+-  readonly sourceStepNumber = computed(() => this.sourceIndex + 1);
+-
+-  readonly dialogTitle = computed(() =>
+-    this.isCopyMode()
+-      ? `Copy Step ${this.sourceStepNumber()}`
+-      : `Change Step ${this.sourceStepNumber()} Order`
+-  );
+-  readonly confirmButtonText = computed(() =>
+-    this.isCopyMode() ? 'Copy Step' : 'Change Order'
+-  );
+-  readonly moveButtonText = computed(() =>
+-    this.isCopyMode() ? 'Copy Here' : 'Move Here'
+-  );
+-  readonly undoButtonText = computed(() =>
+-    this.isCopyMode() ? 'Undo Copy' : 'Undo Move'
+-  );
+-
+-  /**
+-   * After a pending move or copy: new 1-based step number for each current index.
+-   * When nothing selected, equals index + 1.
+-   */
+-  readonly previewNumbers = computed(() => {
+-    const n = this.steps.length;
+-    const from = this.sourceIndex;
+-    const p = this.pendingTarget();
+-    const base = Array.from({ length: n }, (_, i) => i + 1);
+-    if (!p) return base;
+-
+-    const to = this.computeToIndex(p);
+-    if (to === from && this.isMoveMode()) return base;
+-
+-    if (this.isCopyMode()) {
+-      // Source stays, copy inserted at to. Original indices shift by +1 from to onwards.
+-      return Array.from({ length: n }, (_, i) => (i < to ? i + 1 : i + 2));
+-    }
+-
+-    // Move mode: reorder the source to the target position.
+-    const order = Array.from({ length: n }, (_, i) => i);
+-    const [item] = order.splice(from, 1);
+-    order.splice(to, 0, item);
+-
+-    const newNums = new Array<number>(n);
+-    order.forEach((origIdx, newIdx) => {
+-      newNums[origIdx] = newIdx + 1;
+-    });
+-    return newNums;
+-  });
+-
+-  /** 1-based number the copied/moved step will become at the selected target. */
+-  readonly targetStepNumber = computed(() => {
+-    const p = this.pendingTarget();
+-    if (!p) return null;
+-    return this.computeToIndex(p) + 1;
+-  });
+-
+-  isSource(index: number): boolean {
+-    return index === this.sourceIndex;
+-  }
+-
+-  contentTypeInfos(
+-    step: ScriptStep
+-  ): { type: string; meta: string; hasDependency: boolean }[] {
+-    const content = [...(step.content || [])].sort(
+-      (a, b) => (a.order ?? 0) - (b.order ?? 0)
+-    );
+-    return content.map((b: ContentBlock) => ({
+-      type: (b.type || '').toUpperCase(),
+-      meta: this.metaForBlock(b),
+-      hasDependency: !!b.condition,
+-    }));
+-  }
+-
+-  metaForBlock(block: ContentBlock): string {
+-    switch (block.type) {
+-      case 'question':
+-        const optCount = block.options?.length ?? 0;
+-        return `${optCount} option${optCount === 1 ? '' : 's'}`;
+-      case 'required-check':
+-        const checkCount = block.requiredChecks?.length ?? 0;
+-        return `${checkCount} check${checkCount === 1 ? '' : 's'}`;
+-      case 'prompt':
+-        const words = block.content
+-          ? block.content
+-              .trim()
+-              .split(/\s+/)
+-              .filter((w) => w.length > 0).length
+-          : 0;
+-        return `${words} word${words === 1 ? '' : 's'}`;
+-      case 'log-task':
+-        return '1 task';
+-      case 'end-call':
+-        return 'end';
+-      default:
+-        return '';
+-    }
+-  }
+-
+-  currentNumber(index: number): number {
+-    return index + 1;
+-  }
+-
+-  previewNumber(index: number): number {
+-    return this.previewNumbers()[index] ?? index + 1;
+-  }
+-
+-  /** * Number to display for a step card in the order/copy dialog. * Returns the original number when not renumbering, otherwise the preview number. */
+-  displayNumber(
+-    index: number,
+-    renumberTo: number | null,
+-    showRenumber: boolean
+-  ): number {
+-    return showRenumber
+-      ? renumberTo ?? this.previewNumber(index)
+-      : this.currentNumber(index);
+-  }
+-  /** * Whether the step card should show the original -> new number mapping. */
+-  showRenumberMapping(
+-    index: number,
+-    renumberTo: number | null,
+-    showRenumber: boolean
+-  ): boolean {
+-    return (
+-      showRenumber &&
+-      this.displayNumber(index, renumberTo, showRenumber) !==
+-        this.currentNumber(index)
+-    );
+-  }
+-
+-  willRenumber(index: number): boolean {
+-    if (this.isMoveMode()) {
+-      return (
+-        this.pendingTarget() !== null &&
+-        this.previewNumber(index) !== this.currentNumber(index)
+-      );
+-    }
+-    // Copy mode: the source at its original location only renumbers if the copy is inserted before it.
+-    const p = this.pendingTarget();
+-    if (!p) return false;
+-    const to = this.computeToIndex(p);
+-    return index >= to;
+-  }
+-
+-  showBeforeFirst(): boolean {
+-    if (this.isCopyMode()) return true;
+-    return this.computeToIndex({ kind: 'before-first' }) !== this.sourceIndex;
+-  }
+-
+-  showAfter(index: number): boolean {
+-    if (this.isCopyMode()) return true;
+-    return (
+-      this.computeToIndex({ kind: 'after', afterIndex: index }) !==
+-      this.sourceIndex
+-    );
+-  }
+-
+-  isSelectedBeforeFirst(): boolean {
+-    const p = this.pendingTarget();
+-    return !!p && p.kind === 'before-first';
+-  }
+-
+-  isSelectedAfter(index: number): boolean {
+-    const p = this.pendingTarget();
+-    return !!p && p.kind === 'after' && p.afterIndex === index;
+-  }
+-
+-  toggleBeforeFirst(): void {
+-    if (this.isSelectedBeforeFirst()) {
+-      this.pendingTarget.set(null);
+-      return;
+-    }
+-    this.pendingTarget.set({ kind: 'before-first' });
+-  }
+-
+-  toggleAfter(index: number): void {
+-    if (this.isSelectedAfter(index)) {
+-      this.pendingTarget.set(null);
+-      return;
+-    }
+-    this.pendingTarget.set({ kind: 'after', afterIndex: index });
+-  }
+-
+-  clearTarget(): void {
+-    this.pendingTarget.set(null);
+-  }
+-
+-  canConfirm(): boolean {
+-    return this.pendingTarget() !== null;
+-  }
+-
+-  ngAfterViewInit() {
+-    this.dialogRef.nativeElement.showModal();
+-  }
+-
+-  onConfirmClick(): void {
+-    const p = this.pendingTarget();
+-    if (!p) return;
+-    const targetIndex = this.computeToIndex(p);
+-    if (this.isMoveMode() && targetIndex === this.sourceIndex) return;
+-    // Keep this dialog open as the modal backdrop; the parent will stack the
+-    // confirmation dialog on top. The parent destroys this component (closing
+-    // the dialog) only after the user confirms in the confirmation dialog.
+-    this.confirmed.emit({ sourceIndex: this.sourceIndex, targetIndex });
+-  }
+-
+-  onCancel(): void {
+-    this.dialogRef.nativeElement.close();
+-    this.cancelled.emit();
+-  }
+-
+-  onDialogCancel(): void {
+-    this.cancelled.emit();
+-  }
+-
+-  computeToIndex(target: OrderMoveTarget): number {
+-    const from = this.sourceIndex;
+-
+-    if (target.kind === 'before-first') {
+-      return 0;
+-    }
+-
+-    const afterIndex = target.afterIndex ?? 0;
+-    if (this.isMoveMode()) {
+-      if (from === afterIndex) return from;
+-      if (from < afterIndex) return afterIndex;
+-      return afterIndex + 1;
+-    }
+-
+-    // Copy mode: the target is the position after the selected index.
+-    return afterIndex + 1;
+-  }
+-}
++import {
++  Component,
++  Input,
++  Output,
++  EventEmitter,
++  signal,
++  computed,
++  ElementRef,
++  ViewChild,
++  AfterViewInit
++} from '@angular/core';
++import { CommonModule } from '@angular/common';
++import { ScriptStep, ContentBlock } from '../../models/script-builder.models';
++
++export interface OrderMoveTarget {
++  kind: 'before-first' | 'after';
++  afterIndex?: number;
++}
++
++export type StepPositionMode = 'move' | 'copy';
++
++@Component({
++  selector: 'alpha-order-steps-popover',
++  standalone: true,
++  imports: [CommonModule],
++  templateUrl: './order-steps-popover.component.html'
++})
++export class OrderStepsPopoverComponent implements AfterViewInit {
++  @ViewChild('dialogRef') dialogRef!: ElementRef<HTMLDialogElement>;
++
++  @Input({ required: true }) steps: ScriptStep[] = [];
++  @Input({ required: true }) sourceIndex = 0;
++  @Input() mode: StepPositionMode = 'move';
++
++  @Output() confirmed = new EventEmitter<{ sourceIndex: number; targetIndex: number }>();
++  @Output() cancelled = new EventEmitter<void>();
++
++  readonly pendingTarget = signal<OrderMoveTarget | null>(null);
++
++  readonly isMoveMode = computed(() => this.mode === 'move');
++  readonly isCopyMode = computed(() => this.mode === 'copy');
++  readonly sourceStepNumber = computed(() => this.sourceIndex + 1);
++
++  readonly dialogTitle = computed(() =>
++    this.isCopyMode() ? `Copy Step ${this.sourceStepNumber()}` : `Change Step ${this.sourceStepNumber()} Order`
++  );
++
++  readonly confirmButtonText = computed(() =>
++    this.isCopyMode() ? 'Copy Step' : 'Change Order'
++  );
++
++  readonly moveButtonText = computed(() =>
++    this.isCopyMode() ? 'Copy Here' : 'Move Here'
++  );
++
++  readonly undoButtonText = computed(() =>
++    this.isCopyMode() ? 'Undo Copy' : 'Undo Move'
++  );
++
++  /**
++   * After a pending move or copy: new 1-based step number for each current index.
++   * When nothing selected, equals index + 1.
++   */
++  readonly previewNumbers = computed(() => {
++    const n = this.steps.length;
++    const from = this.sourceIndex;
++    const p = this.pendingTarget();
++    const base = Array.from({ length: n }, (_, i) => i + 1);
++    if (!p) return base;
++
++    const to = this.computeToIndex(p);
++    if (to === from && this.isMoveMode()) return base;
++
++    if (this.isCopyMode()) {
++      // Source stays, copy inserted at to. Original indices shift by +1 from to onwards.
++      return Array.from({ length: n }, (_, i) => (i < to ? i + 1 : i + 2));
++    }
++
++    // Move mode: reorder the source to the target position.
++    const order = Array.from({ length: n }, (_, i) => i);
++    const [item] = order.splice(from, 1);
++    order.splice(to, 0, item);
++
++    const newNums = new Array<number>(n);
++    order.forEach((origIdx, newIdx) => {
++      newNums[origIdx] = newIdx + 1;
++    });
++    return newNums;
++  });
++
++  /** 1-based number the copied/moved step will become at the selected target. */
++  readonly targetStepNumber = computed(() => {
++    const p = this.pendingTarget();
++    if (!p) return null;
++    return this.computeToIndex(p) + 1;
++  });
++
++  isSource(index: number): boolean {
++    return index === this.sourceIndex;
++  }
++
++  contentTypeInfos(step: ScriptStep): { type: string; meta: string; hasDependency: boolean }[] {
++    const content = [...(step.content || [])].sort(
++      (a, b) => (a.order ?? 0) - (b.order ?? 0)
++    );
++    return content.map((b: ContentBlock) => ({
++      type: (b.type || '').toUpperCase(),
++      meta: this.metaForBlock(b),
++      hasDependency: !!b.condition
++    }));
++  }
++
++  metaForBlock(block: ContentBlock): string {
++    switch (block.type) {
++      case 'question':
++        const optCount = block.options?.length ?? 0;
++        return `${optCount} option${optCount === 1 ? '' : 's'}`;
++      case 'required-check':
++        const checkCount = block.requiredChecks?.length ?? 0;
++        return `${checkCount} check${checkCount === 1 ? '' : 's'}`;
++      case 'prompt':
++        const words = block.content
++          ? block.content.trim().split(/\s+/).filter(w => w.length > 0).length
++          : 0;
++        return `${words} word${words === 1 ? '' : 's'}`;
++      case 'log-task':
++        return '1 task';
++      case 'end-call':
++        return 'end';
++      default:
++        return '';
++    }
++  }
++
++  currentNumber(index: number): number {
++    return index + 1;
++  }
++
++  previewNumber(index: number): number {
++    return this.previewNumbers()[index] ?? index + 1;
++  }
++
++  /**
++   * Number to display for a step card in the order/copy dialog.
++   * Returns the original number when not renumbering, otherwise the preview number.
++   */
++  displayNumber(index: number, renumberTo: number | null, showRenumber: boolean): number {
++    return showRenumber ? (renumberTo ?? this.previewNumber(index)) : this.currentNumber(index);
++  }
++
++  /**
++   * Whether the step card should show the original -> new number mapping.
++   */
++  showRenumberMapping(index: number, renumberTo: number | null, showRenumber: boolean): boolean {
++    return showRenumber && this.displayNumber(index, renumberTo, showRenumber) !== this.currentNumber(index);
++  }
++
++  willRenumber(index: number): boolean {
++    if (this.isMoveMode()) {
++      return this.pendingTarget() !== null && this.previewNumber(index) !== this.currentNumber(index);
++    }
++    // Copy mode: the source at its original location only renumbers if the copy is inserted before it.
++    const p = this.pendingTarget();
++    if (!p) return false;
++    const to = this.computeToIndex(p);
++    return index >= to;
++  }
++
++  showBeforeFirst(): boolean {
++    if (this.isCopyMode()) return true;
++    return this.computeToIndex({ kind: 'before-first' }) !== this.sourceIndex;
++  }
++
++  showAfter(index: number): boolean {
++    if (this.isCopyMode()) return true;
++    return this.computeToIndex({ kind: 'after', afterIndex: index }) !== this.sourceIndex;
++  }
++
++  isSelectedBeforeFirst(): boolean {
++    const p = this.pendingTarget();
++    return !!p && p.kind === 'before-first';
++  }
++
++  isSelectedAfter(index: number): boolean {
++    const p = this.pendingTarget();
++    return !!p && p.kind === 'after' && p.afterIndex === index;
++  }
++
++  toggleBeforeFirst(): void {
++    if (this.isSelectedBeforeFirst()) {
++      this.pendingTarget.set(null);
++      return;
++    }
++    this.pendingTarget.set({ kind: 'before-first' });
++  }
++
++  toggleAfter(index: number): void {
++    if (this.isSelectedAfter(index)) {
++      this.pendingTarget.set(null);
++      return;
++    }
++    this.pendingTarget.set({ kind: 'after', afterIndex: index });
++  }
++
++  clearTarget(): void {
++    this.pendingTarget.set(null);
++  }
++
++  canConfirm(): boolean {
++    return this.pendingTarget() !== null;
++  }
++
++  ngAfterViewInit() {
++    this.dialogRef.nativeElement.showModal();
++  }
++
++  onConfirmClick(): void {
++    const p = this.pendingTarget();
++    if (!p) return;
++    const targetIndex = this.computeToIndex(p);
++    if (this.isMoveMode() && targetIndex === this.sourceIndex) return;
++    // Keep this dialog open as the modal backdrop; the parent will stack the
++    // confirmation dialog on top. The parent destroys this component (closing
++    // the dialog) only after the user confirms in the confirmation dialog.
++    this.confirmed.emit({ sourceIndex: this.sourceIndex, targetIndex });
++  }
++
++  onCancel(): void {
++    this.dialogRef.nativeElement.close();
++    this.cancelled.emit();
++  }
++
++  onDialogCancel(): void {
++    this.cancelled.emit();
++  }
++
++  computeToIndex(target: OrderMoveTarget): number {
++    const from = this.sourceIndex;
++
++    if (target.kind === 'before-first') {
++      return 0;
++    }
++
++    const afterIndex = target.afterIndex ?? 0;
++    if (this.isMoveMode()) {
++      if (from === afterIndex) return from;
++      if (from < afterIndex) return afterIndex;
++      return afterIndex + 1;
++    }
++
++    // Copy mode: the target is the position after the selected index.
++    return afterIndex + 1;
++  }
++}
+diff --git a/src/app/prototype-migration/call-center-demo/components/call-rep-scripts/script-builder/popovers/reorder-confirm/reorder-confirm.component.css b/src/app/prototype-migration/call-center-demo/components/call-rep-scripts/script-builder/popovers/reorder-confirm/reorder-confirm.component.css
+deleted file mode 100644
+index c772689..0000000
+--- a/src/app/prototype-migration/call-center-demo/components/call-rep-scripts/script-builder/popovers/reorder-confirm/reorder-confirm.component.css
++++ /dev/null
+@@ -1,9 +0,0 @@
+-dialog {
+-  border: none;
+-  padding: 0;
+-  margin: auto;
+-}
+-
+-dialog::backdrop {
+-  background: rgba(15, 23, 42, 0.45);
+-}
+diff --git a/src/app/prototype-migration/call-center-demo/components/call-rep-scripts/script-builder/popovers/reorder-confirm/reorder-confirm.component.ts b/src/app/prototype-migration/call-center-demo/components/call-rep-scripts/script-builder/popovers/reorder-confirm/reorder-confirm.component.ts
+index 406b200..081e7cb 100644
+--- a/src/app/prototype-migration/call-center-demo/components/call-rep-scripts/script-builder/popovers/reorder-confirm/reorder-confirm.component.ts
++++ b/src/app/prototype-migration/call-center-demo/components/call-rep-scripts/script-builder/popovers/reorder-confirm/reorder-confirm.component.ts
+@@ -12,8 +12,7 @@ import { CommonModule } from '@angular/common';
+   selector: 'alpha-reorder-confirm',
+   standalone: true,
+   imports: [CommonModule],
+-  templateUrl: './reorder-confirm.component.html',
+-  styleUrls: ['./reorder-confirm.component.css']
++  templateUrl: './reorder-confirm.component.html'
+ })
+ export class ReorderConfirmComponent implements AfterViewInit {
+   @ViewChild('dialogRef') dialogRef!: ElementRef<HTMLDialogElement>;
+@@ -38,4 +37,4 @@ export class ReorderConfirmComponent implements AfterViewInit {
+   onDialogCancel() {
+     this.cancelled.emit();
+   }
+-}
++}
+\ No newline at end of file
+diff --git a/src/app/prototype-migration/call-center-demo/components/call-rep-scripts/script-builder/popovers/step-picker/step-picker.component.css b/src/app/prototype-migration/call-center-demo/components/call-rep-scripts/script-builder/popovers/step-picker/step-picker.component.css
+deleted file mode 100644
+index c772689..0000000
+--- a/src/app/prototype-migration/call-center-demo/components/call-rep-scripts/script-builder/popovers/step-picker/step-picker.component.css
++++ /dev/null
+@@ -1,9 +0,0 @@
+-dialog {
+-  border: none;
+-  padding: 0;
+-  margin: auto;
+-}
+-
+-dialog::backdrop {
+-  background: rgba(15, 23, 42, 0.45);
+-}
+diff --git a/src/app/prototype-migration/call-center-demo/components/call-rep-scripts/script-builder/popovers/step-picker/step-picker.component.ts b/src/app/prototype-migration/call-center-demo/components/call-rep-scripts/script-builder/popovers/step-picker/step-picker.component.ts
+index 2336ec5..8695872 100644
+--- a/src/app/prototype-migration/call-center-demo/components/call-rep-scripts/script-builder/popovers/step-picker/step-picker.component.ts
++++ b/src/app/prototype-migration/call-center-demo/components/call-rep-scripts/script-builder/popovers/step-picker/step-picker.component.ts
+@@ -16,8 +16,7 @@ import { CommonModule } from '@angular/common';
+   selector: 'alpha-step-picker',
+   standalone: true,
+   imports: [CommonModule],
+-  templateUrl: './step-picker.component.html',
+-  styleUrls: ['./step-picker.component.css']
++  templateUrl: './step-picker.component.html'
+ })
+ export class StepPickerComponent implements OnChanges, AfterViewInit {
+   @ViewChild('dialogRef') dialogRef!: ElementRef<HTMLDialogElement>;
+@@ -62,4 +61,4 @@ export class StepPickerComponent implements OnChanges, AfterViewInit {
+   onDialogCancel() {
+     this.closed.emit();
+   }
+-}
++}
+\ No newline at end of file
+diff --git a/src/app/prototype-migration/call-center-demo/components/call-rep-scripts/script-builder/popovers/type-picker/type-picker.component.css b/src/app/prototype-migration/call-center-demo/components/call-rep-scripts/script-builder/popovers/type-picker/type-picker.component.css
+deleted file mode 100644
+index c772689..0000000
+--- a/src/app/prototype-migration/call-center-demo/components/call-rep-scripts/script-builder/popovers/type-picker/type-picker.component.css
++++ /dev/null
+@@ -1,9 +0,0 @@
+-dialog {
+-  border: none;
+-  padding: 0;
+-  margin: auto;
+-}
+-
+-dialog::backdrop {
+-  background: rgba(15, 23, 42, 0.45);
+-}
+diff --git a/src/app/prototype-migration/call-center-demo/components/call-rep-scripts/script-builder/popovers/type-picker/type-picker.component.ts b/src/app/prototype-migration/call-center-demo/components/call-rep-scripts/script-builder/popovers/type-picker/type-picker.component.ts
+index c0733f3..965b952 100644
+--- a/src/app/prototype-migration/call-center-demo/components/call-rep-scripts/script-builder/popovers/type-picker/type-picker.component.ts
++++ b/src/app/prototype-migration/call-center-demo/components/call-rep-scripts/script-builder/popovers/type-picker/type-picker.component.ts
+@@ -13,8 +13,7 @@ import { ContentType } from '../../models/script-builder.models';
+   selector: 'alpha-type-picker',
+   standalone: true,
+   imports: [CommonModule],
+-  templateUrl: './type-picker.component.html',
+-  styleUrls: ['./type-picker.component.css']
++  templateUrl: './type-picker.component.html'
+ })
+ export class TypePickerComponent implements AfterViewInit {
+   @ViewChild('dialogRef') dialogRef!: ElementRef<HTMLDialogElement>;
+@@ -39,4 +38,4 @@ export class TypePickerComponent implements AfterViewInit {
+   onDialogCancel() {
+     this.closed.emit();
+   }
+-}
++}
+\ No newline at end of file
+diff --git a/src/app/prototype-migration/call-center-demo/components/call-rep-scripts/script-builder/preview/script-preview.component.css b/src/app/prototype-migration/call-center-demo/components/call-rep-scripts/script-builder/preview/script-preview.component.css
+deleted file mode 100644
+index 2e3da6a..0000000
+--- a/src/app/prototype-migration/call-center-demo/components/call-rep-scripts/script-builder/preview/script-preview.component.css
++++ /dev/null
+@@ -1,366 +0,0 @@
+-/* Overlay shell */
+-.alp-preview-overlay {
+-  position: fixed;
+-  inset: 0;
+-  background: rgba(15, 23, 42, 0.45);
+-  display: flex;
+-  align-items: center;
+-  justify-content: center;
+-  z-index: 1100;
+-  padding: 24px;
+-}
+-
+-.alp-preview-shell {
+-  position: relative;
+-  width: 920px;
+-  max-width: 100%;
+-  max-height: 92vh;
+-  overflow: hidden;
+-  display: flex;
+-  flex-direction: column;
+-  border-radius: 12px;
+-  box-shadow: 0 12px 40px rgba(15, 23, 42, 0.2);
+-  background: #f8fafc;
+-}
+-
+-.alp-preview-modal-header {
+-  display: flex;
+-  align-items: center;
+-  justify-content: space-between;
+-  padding: 16px 20px;
+-  background: #f8fafc;
+-  border-bottom: 1px solid #e5e7eb;
+-  flex-shrink: 0;
+-  border-radius: 12px 12px 0 0;
+-}
+-
+-.alp-preview-modal-header__title {
+-  margin: 0;
+-  font-size: 16px;
+-  font-weight: 600;
+-  color: #0f172a;
+-}
+-
+-.alp-preview-modal-header__close {
+-  background: none;
+-  border: none;
+-  font-size: 18px;
+-  color: #6b7280;
+-  cursor: pointer;
+-  line-height: 1;
+-  padding: 4px 8px;
+-}
+-
+-.alp-preview-modal-header__close:hover {
+-  color: #111827;
+-}
+-
+-.alp-preview-shell > .alp-script-journey {
+-  overflow-y: auto;
+-  flex: 1;
+-  border-radius: 0 0 12px 12px;
+-  box-shadow: none;
+-  border: none;
+-  max-width: none;
+-  margin: 0;
+-}
+-
+-/* Prompt variables */
+-.auth-prompt-variable {
+-  display: inline;
+-  background: #dbeafe;
+-  color: #1e40af;
+-  font-weight: 700;
+-  padding: 0 4px;
+-  border-radius: 4px;
+-  white-space: nowrap;
+-}
+-
+-/* ============================================= */
+-/* ALP SCRIPT JOURNEY - STABLE & CLEAN (PX)     */
+-/* ============================================= */
+-
+-.alp-script-journey {
+-  max-width: 860px;
+-  margin: 0 auto;
+-  padding: 28px;
+-  background: #f8fafc;
+-  border: 1px solid #e2e8f0;
+-  border-radius: 12px;
+-  box-shadow: 0 4px 25px rgba(0, 0, 0, 0.08);
+-  font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto,
+-    sans-serif;
+-}
+-
+-.alp-script-journey__header {
+-  display: flex;
+-  justify-content: space-between;
+-  align-items: center;
+-  margin-bottom: 32px;
+-  padding-bottom: 20px;
+-  border-bottom: 2px solid #e5e7eb;
+-}
+-
+-.alp-script-journey__title {
+-  margin: 0;
+-  font-size: 18px;
+-  font-weight: 600;
+-  color: #111827;
+-}
+-
+-.alp-script-journey__progress {
+-  font-size: 15px;
+-  color: #6b7280;
+-  background: #f3f4f6;
+-  padding: 6px 16px;
+-  border-radius: 9999px;
+-}
+-
+-.alp-script-journey__read-prompt-label {
+-  display: block;
+-  font-size: 14px;
+-  font-weight: 600;
+-  color: #1e40af;
+-  margin-bottom: 10px;
+-}
+-
+-.alp-script-journey__read-prompt-text {
+-  margin: 0;
+-  line-height: 1.4;
+-  color: #1f2937;
+-  font-size: 16px;
+-}
+-
+-.alp-script-journey__question-text {
+-  font-size: 16px;
+-  font-weight: 600;
+-  color: #111827;
+-  margin-bottom: 28px;
+-}
+-
+-.notification-block.status-prompt {
+-  margin-bottom: 40px;
+-  position: relative;
+-  padding-left: 50px;
+-  border-left: 0;
+-  border-bottom: 1px solid #fff;
+-  border-top: 0;
+-  border-right: 1px solid #fff;
+-  overflow: hidden;
+-  background-color: #e9e9e9;
+-}
+-
+-.notification-block.status-prompt .notification-message {
+-  padding-right: 0;
+-}
+-
+-.notification-block.status-prompt:before {
+-  font-family: 'Font Awesome 5 Free';
+-  content: '\f075';
+-  position: absolute;
+-  left: 0;
+-  top: 0;
+-  width: 35px;
+-  height: 100%;
+-  align-items: center;
+-  justify-content: center;
+-  color: #fff;
+-  display: flex;
+-  background-color: rgba(24, 110, 204, 1);
+-  font-size: 18px;
+-  font-weight: 900;
+-}
+-
+-.notification-block {
+-  position: relative;
+-  padding: 10px;
+-  padding-bottom: 16px;
+-  border: 1px solid rgb(227, 225, 225);
+-  border-left: 6px solid rgb(227, 225, 225);
+-  border-radius: 4px;
+-  background-color: rgba(236, 234, 234, 0);
+-  margin-bottom: 25px;
+-}
+-
+-.notification-block.status-prompt p {
+-  color: #222;
+-  text-align: left;
+-}
+-
+-.notification-message p {
+-  font-weight: bold;
+-  color: #222222;
+-}
+-
+-.alp-script-journey__options {
+-  display: flex;
+-  flex-direction: column;
+-  gap: 14px;
+-  margin-bottom: 36px;
+-}
+-
+-.alp-script-journey__option-label {
+-  display: flex;
+-  align-items: flex-start;
+-  gap: 12px;
+-  padding: 16px 20px;
+-  background: white;
+-  border: 2px solid #e5e7eb;
+-  border-radius: 10px;
+-  cursor: pointer;
+-  font-weight: 600;
+-}
+-
+-.alp-script-journey__option-label:hover {
+-  border-color: #60a5fa;
+-  background: #f0f9ff;
+-}
+-
+-.alp-script-journey__option-text {
+-  flex: 1;
+-  font-size: 17px;
+-}
+-
+-.alp-script-journey__option-label:has(input:checked) {
+-  border-color: #2563eb;
+-  background-color: #eff6ff;
+-}
+-
+-.alp-script-journey__checks {
+-  margin-bottom: 32px;
+-}
+-
+-.alp-script-journey__section-title {
+-  margin-bottom: 15px;
+-}
+-
+-.alp-script-journey__check-list {
+-  display: flex;
+-  flex-direction: column;
+-  gap: 12px;
+-  list-style: none;
+-  padding: 0;
+-  margin: 0;
+-  font-size: 14px;
+-}
+-
+-.alp-script-journey__check-list strong {
+-  display: block;
+-  margin-top: 4px;
+-}
+-
+-.alp-script-journey__check-item {
+-  display: flex;
+-  align-items: center;
+-  gap: 12px;
+-  padding: 14px 18px;
+-  background: white;
+-  border: 2px solid #e5e7eb;
+-  border-radius: 10px;
+-  cursor: pointer;
+-}
+-
+-.alp-script-journey__check-item:hover {
+-  border-color: #60a5fa;
+-}
+-
+-.alp-script-journey__check-item--auto {
+-  background-color: #ecfdf5;
+-  border-color: #a7f3d0;
+-}
+-
+-.alp-script-journey__check-badge {
+-  background: #075f42;
+-  color: white;
+-  font-size: 13px;
+-  padding: 2px 8px;
+-  border-radius: 9999px;
+-  margin-left: auto;
+-}
+-
+-.alp-script-journey__check-item--manual {
+-  background-color: #f3e8ff;
+-  border-left: 4px solid #8b5cf6;
+-}
+-
+-.alp-script-journey__check-badge.manual {
+-  background-color: #8b5cf6;
+-  color: white;
+-}
+-
+-.alp-script-journey__actions {
+-  margin-bottom: 32px;
+-}
+-
+-.alp-script-journey__action-list {
+-  display: flex;
+-  flex-wrap: wrap;
+-  gap: 10px;
+-}
+-
+-.alp-script-journey__footer {
+-  display: flex;
+-  justify-content: space-between;
+-  padding-top: 28px;
+-  border-top: 1px solid #e5e7eb;
+-}
+-
+-.alp-script-journey__btn {
+-  font-weight: 500;
+-  cursor: pointer;
+-  transition: all 0.2s ease;
+-  border-radius: 50px;
+-  padding: 5px 16px;
+-  background-color: #5da4e0;
+-  text-align: center;
+-  border: 2px solid rgba(255, 255, 255, 0.3);
+-  color: #fff;
+-  min-width: 30px;
+-  min-height: 30px;
+-  line-height: 1.5;
+-  margin: 3px;
+-  font-size: 16px;
+-  box-sizing: border-box;
+-  letter-spacing: 1px;
+-}
+-
+-.alp-script-journey__btn:disabled {
+-  opacity: 0.45;
+-  cursor: not-allowed;
+-}
+-
+-.alp-script-journey__btn--primary {
+-  background-color: #4c5992;
+-  color: white;
+-  border: none;
+-}
+-
+-.alp-script-journey__btn--secondary {
+-  background-color: #f3f4f6;
+-  color: #374151;
+-  border: 1px solid #d1d5db;
+-}
+-
+-.alp-script-journey__btn--danger {
+-  background-color: #dc2626;
+-  color: white;
+-}
+-
+-.alp-script-journey__summary {
+-  padding: 40px 20px;
+-  text-align: center;
+-}
+-
+-.alp-script-journey__summary-title {
+-  font-size: 28px;
+-  margin-bottom: 32px;
+-}
+-
+-.alp-script-journey__manual-question {
+-  width: 100%;
+-}
+-
+-.alp-script-journey__manual-question strong {
+-  display: block;
+-  margin-bottom: 10px;
+-}
+\ No newline at end of file
+diff --git a/src/app/prototype-migration/call-center-demo/components/call-rep-scripts/script-builder/preview/script-preview.component.ts b/src/app/prototype-migration/call-center-demo/components/call-rep-scripts/script-builder/preview/script-preview.component.ts
+index 7e5bc3c..bcd00cf 100644
+--- a/src/app/prototype-migration/call-center-demo/components/call-rep-scripts/script-builder/preview/script-preview.component.ts
++++ b/src/app/prototype-migration/call-center-demo/components/call-rep-scripts/script-builder/preview/script-preview.component.ts
+@@ -16,8 +16,7 @@ const PROMPT_VARIABLE_LABELS: Record<string, string> = {
+   selector: 'alpha-script-preview',
+   standalone: true,
+   imports: [CommonModule, FormsModule],
+-  templateUrl: './script-preview.component.html',
+-  styleUrls: ['./script-preview.component.css']
++  templateUrl: './script-preview.component.html'
+ })
+ export class ScriptPreviewComponent {
+ 
+diff --git a/src/app/prototype-migration/call-center-demo/components/call-rep-scripts/script-builder/script-builder.component.css b/src/app/prototype-migration/call-center-demo/components/call-rep-scripts/script-builder/script-builder.component.css
+deleted file mode 100644
+index ff20db1..0000000
+--- a/src/app/prototype-migration/call-center-demo/components/call-rep-scripts/script-builder/script-builder.component.css
++++ /dev/null
+@@ -1,63 +0,0 @@
+-.alp-script-builder__block-content--prompt {
+-  white-space: pre-line;
+-  line-height: 1.55;
+-}
+-
+-.alp-script-builder__step-title-text {
+-  font-size: 13px;
+-  font-weight: 600;
+-  color: #334155;
+-}
+-
+-.alp-script-builder__path-id {
+-  font-weight: 400;
+-  opacity: 0.65;
+-  font-size: 11px;
+-  margin-left: 4px;
+-}
+-
+-/* Step as proper heading (not lozenge) */
+-.alp-script-builder__step-heading {
+-  margin: 0;
+-  padding: 0;
+-  font-size: 18px;
+-  font-weight: 700;
+-  color: #0f172a;
+-  letter-spacing: -0.01em;
+-  background: none;
+-  border: none;
+-  border-radius: 0;
+-  display: inline;
+-  line-height: 1.3;
+-}
+-
+-.alp-script-builder__step-move {
+-  position: absolute;
+-  left: -52px;
+-  top: 0;
+-  transform: none;
+-  display: flex;
+-  flex-direction: column;
+-  align-items: center;
+-  justify-content: flex-start;
+-  gap: 6px;
+-  min-width: 40px;
+-}
+-
+-.alp-btn--icon-18 i {
+-  font-size: 18px;
+-}
+-
+-.alp-script-builder__step-heading {
+-  margin: 0;
+-  padding: 0;
+-  font-size: 18px;
+-  font-weight: 700;
+-  color: #0f172a;
+-  letter-spacing: -0.01em;
+-  background: none;
+-  border: none;
+-  border-radius: 0;
+-  display: inline;
+-  line-height: 1.3;
+-}
+diff --git a/src/app/prototype-migration/call-center-demo/components/call-rep-scripts/script-builder/script-builder.component.ts b/src/app/prototype-migration/call-center-demo/components/call-rep-scripts/script-builder/script-builder.component.ts
+index 8d049d4..46947e3 100644
+--- a/src/app/prototype-migration/call-center-demo/components/call-rep-scripts/script-builder/script-builder.component.ts
++++ b/src/app/prototype-migration/call-center-demo/components/call-rep-scripts/script-builder/script-builder.component.ts
+@@ -1,544 +1,543 @@
+-import {
+-  Component,
+-  Input,
+-  OnChanges,
+-  OnInit,
+-  OnDestroy,
+-  SimpleChanges,
+-  signal,
+-  inject
+-} from '@angular/core';
+-import { CommonModule } from '@angular/common';
+-import {
+-  ScriptStep,
+-  ContentBlock
+-} from './models/script-builder.models';
+-import { ScriptToolkitComponent } from './toolkit/script-toolkit.component';
+-import { ScriptPreviewComponent } from './preview/script-preview.component';
+-import { ConfirmPopoverComponent } from './popovers/confirm-popover/confirm-popover.component';
+-import { OrderStepsPopoverComponent } from './popovers/order-steps-popover/order-steps-popover.component';
+-import { ScriptDefinitionService } from './services/script-definition.service';
+-
+-
+-const PROMPT_VARIABLE_LABELS: Record<string, string> = {
+-  policyValue: 'Policy Value',
+-  option2: 'Option 2',
+-  option3: 'Option 3',
+-  option4: 'Option 4',
+-  option5: 'Option 5',
+-  option6: 'Option 6'
+-};
+-
+-@Component({
+-  selector: 'alpha-script-builder',
+-  standalone: true,
+-  imports: [
+-    CommonModule,
+-    ScriptToolkitComponent,
+-    ScriptPreviewComponent,
+-    ConfirmPopoverComponent,
+-    OrderStepsPopoverComponent
+-  ],
+-  templateUrl: './script-builder.component.html',
+-  styleUrls: ['./script-builder.component.css']
+-})
+-export class ScriptBuilderComponent implements OnChanges, OnInit, OnDestroy {
+-  private readonly now = signal(Date.now());
+-  private timer?: ReturnType<typeof setInterval>;
+-
+-  private readonly scriptDefinition = inject(ScriptDefinitionService);
+-
+-  /**
+-   * Accept work-plan ScriptSetupSelection as-is (no extra index signature).
+-   * Property names resolved at runtime in resolveScriptFileId().
+-   */
+-  @Input() setup: {
+-    product?: string;
+-    requestType?: string;
+-    scriptName?: string;
+-    scriptDescription?: string;
+-    scriptId?: string | null;
+-    scriptFileId?: string | null;
+-    filename?: string | null;
+-    mode?: string;
+-  } | null = null;
+-
+-  product = 'Policy Surrender';
+-  requestType = 'Full Surrender';
+-  scriptName = 'Surrender Script';
+-  scriptDescription = '';
+-
+-  readonly steps = signal<ScriptStep[]>([]);
+-  readonly isLoadingScript = signal(false);
+-  readonly loadError = signal<string | null>(null);
+-
+-  readonly showToolkit = signal(false);
+-  readonly editingStepId = signal<string | null>(null);
+-  readonly insertAtIndex = signal<number | null>(null);
+-
+-  readonly showPreview = signal(false);
+-
+-  readonly showConfirm = signal(false);
+-  readonly confirmTitle = signal('');
+-  readonly confirmMessage = signal('');
+-  readonly pendingAction = signal<'move-step' | 'order-jump' | 'copy-step' | null>(null);
+-  readonly pendingMove = signal<{ index: number; direction: 'up' | 'down' } | null>(null);
+-  readonly pendingOrderJump = signal<{ sourceIndex: number; targetIndex: number } | null>(null);
+-  readonly pendingCopy = signal<{ sourceIndex: number; targetIndex: number } | null>(null);
+-  readonly skipMoveConfirm = signal(false);
+-
+-  readonly showOrderPopover = signal(false);
+-  readonly orderMode = signal<'move' | 'copy'>('move');
+-  readonly orderSourceIndex = signal(0);
+-
+-  ngOnInit() {
+-    this.timer = setInterval(() => this.now.set(Date.now()), 1000);
+-  }
+-
+-  ngOnDestroy() {
+-    if (this.timer) {
+-      clearInterval(this.timer);
+-    }
+-  }
+-
+-  ngOnChanges(changes: SimpleChanges) {
+-    if (changes['setup']) {
+-      this.applySetup(this.setup);
+-    }
+-  }
+-
+-  private applySetup(setup: ScriptBuilderComponent['setup']) {
+-    if (!setup) {
+-      this.steps.set([]);
+-      this.loadError.set(null);
+-      return;
+-    }
+-
+-    if (setup.product) {
+-      this.product = String(setup.product);
+-    }
+-    if (setup.requestType) {
+-      this.requestType = String(setup.requestType);
+-    }
+-    if (setup.scriptName) {
+-      this.scriptName = String(setup.scriptName);
+-    }
+-    if (setup.scriptDescription) {
+-      this.scriptDescription = String(setup.scriptDescription);
+-    }
+-
+-    const fileId = this.resolveScriptFileId(setup);
+-
+-    if (fileId) {
+-      void this.loadScriptById(fileId);
+-    } else {
+-      this.steps.set([]);
+-      this.loadError.set(null);
+-      this.isLoadingScript.set(false);
+-    }
+-  }
+-
+-  private resolveScriptFileId(setup: NonNullable<ScriptBuilderComponent['setup']>): string | null {
+-    const anySetup = setup as Record<string, unknown>;
+-    const raw =
+-      anySetup['scriptFileId'] ??
+-      anySetup['scriptId'] ??
+-      anySetup['filename'] ??
+-      anySetup['fileId'] ??
+-      anySetup['id'] ??
+-      null;
+-
+-    if (raw == null || raw === '') return null;
+-
+-    let id = String(raw).trim();
+-    if (id.endsWith('.json')) {
+-      id = id.slice(0, -5);
+-    }
+-    return id || null;
+-  }
+-
+-  private async loadScriptById(id: string) {
+-    this.isLoadingScript.set(true);
+-    this.loadError.set(null);
+-
+-    try {
+-      const result = await this.scriptDefinition.loadBuilderSteps(id);
+-
+-      if (!result) {
+-        this.loadError.set('Could not load script JSON.');
+-        this.steps.set([]);
+-        return;
+-      }
+-
+-      // Loaded scripts start with no activity tags; tags are generated by user
+-      // actions in this editing session only.
+-      this.steps.set(result.steps.map(s => ({ ...s, activity: undefined })));
+-
+-      if (result.title) {
+-        this.scriptName = result.title;
+-      }
+-      if (result.description) {
+-        this.scriptDescription = result.description;
+-      }
+-    } catch (err) {
+-      console.error('Script builder load failed', err);
+-      this.loadError.set('Could not load script JSON.');
+-      this.steps.set([]);
+-    } finally {
+-      this.isLoadingScript.set(false);
+-    }
+-  }
+-
+-  sortedContent(step: ScriptStep): ContentBlock[] {
+-    return [...(step.content || [])].sort((a, b) => (a.order ?? 0) - (b.order ?? 0));
+-  }
+-
+-  getStepLabel(stepId: string): string {
+-    const idx = this.steps().findIndex(s => s.id === stepId);
+-    return idx >= 0 ? `Step ${idx + 1}` : stepId;
+-  }
+-
+-  getActivityTags(
+-    step: ScriptStep
+-  ): { label: string; variant: 'created' | 'edited' | 'order-edited' }[] {
+-    const a = step.activity;
+-    if (!a) return [];
+-
+-    const tags: { label: string; variant: 'created' | 'edited' | 'order-edited' }[] = [];
+-
+-    if (a.contentEditedAt) {
+-      tags.push({
+-        label: this.formatRelativeTime('Content edited', a.contentEditedAt),
+-        variant: 'edited'
+-      });
+-    } else if (a.createdAt) {
+-      tags.push({
+-        label: this.formatRelativeTime('Created', a.createdAt, true),
+-        variant: 'created'
+-      });
+-    }
+-
+-    if (a.orderChangedAt) {
+-      tags.push({
+-        label: this.formatRelativeTime('Order changed', a.orderChangedAt),
+-        variant: 'order-edited'
+-      });
+-    }
+-
+-    return tags;
+-  }
+-
+-  private formatRelativeTime(
+-    verb: string,
+-    timestamp: number,
+-    isCreated = false
+-  ): string {
+-    const diffSec = Math.floor((this.now() - timestamp) / 1000);
+-
+-    if (diffSec < 30) {
+-      return isCreated ? `Just ${verb.toLowerCase()}` : verb;
+-    }
+-
+-    if (diffSec < 60) {
+-      // Hold at 30 seconds until the one-minute threshold, rather than
+-      // counting every second upward.
+-      return `${verb} 30 seconds ago`;
+-    }
+-
+-    const diffMin = Math.floor(diffSec / 60);
+-    if (diffMin < 60) {
+-      return `${verb} ${diffMin} minute${diffMin === 1 ? '' : 's'} ago`;
+-    }
+-
+-    const diffHour = Math.floor(diffMin / 60);
+-    const remMin = diffMin % 60;
+-    if (remMin === 0) {
+-      return `${verb} ${diffHour} hour${diffHour === 1 ? '' : 's'} ago`;
+-    }
+-    return `${verb} ${diffHour} hour${diffHour === 1 ? '' : 's'} ${remMin} minute${remMin === 1 ? '' : 's'} ago`;
+-  }
+-
+-  formatPromptHtml(text: string | null | undefined): string {
+-    if (!text) return '';
+-    let escaped = text
+-      .replace(/&/g, '&amp;')
+-      .replace(/</g, '&lt;')
+-      .replace(/>/g, '&gt;');
+-    escaped = escaped.replace(/\{\{(\w+)\}\}/g, (_m, id: string) => {
+-      const label = PROMPT_VARIABLE_LABELS[id] || id;
+-      return `<span class="auth-prompt-variable">${label}</span>`;
+-    });
+-    return escaped
+-      .replace(/([.?!])\s+/g, '$1<br><br>')
+-      .replace(/(<br>){4,}/g, '<br><br>');
+-  }
+-
+-  openToolkit(stepId?: string, insertAt?: number) {
+-    this.editingStepId.set(stepId ?? null);
+-    this.insertAtIndex.set(insertAt ?? null);
+-    this.showToolkit.set(true);
+-  }
+-
+-  closeToolkit() {
+-    this.showToolkit.set(false);
+-    this.editingStepId.set(null);
+-    this.insertAtIndex.set(null);
+-  }
+-
+-  onStepSaved(step: ScriptStep) {
+-    this.steps.update(list => {
+-      const idx = list.findIndex(s => s.id === step.id);
+-      if (idx >= 0) {
+-        const copy = [...list];
+-        const existingActivity = list[idx].activity;
+-        copy[idx] = {
+-          ...step,
+-          activity: {
+-            ...existingActivity,
+-            createdAt: existingActivity?.createdAt,
+-            contentEditedAt: Date.now()
+-          }
+-        };
+-        return copy.map((s, i) => ({ ...s, order: i + 1 }));
+-      }
+-
+-      const insertAt = this.insertAtIndex();
+-      const newStep: ScriptStep = {
+-        ...step,
+-        activity: { createdAt: Date.now() }
+-      };
+-      const copy = [...list];
+-      if (insertAt == null || insertAt < 0 || insertAt > copy.length) {
+-        copy.push(newStep);
+-      } else {
+-        copy.splice(insertAt, 0, newStep);
+-      }
+-      return copy.map((s, i) => ({ ...s, order: i + 1 }));
+-    });
+-    this.closeToolkit();
+-  }
+-
+-  onStepRemoved(stepId: string) {
+-    this.steps.update(list =>
+-      list.filter(s => s.id !== stepId).map((s, i) => ({ ...s, order: i + 1 }))
+-    );
+-    this.closeToolkit();
+-  }
+-
+-  requestMoveStep(index: number, direction: 'up' | 'down') {
+-    if (this.skipMoveConfirm()) {
+-      this.performMoveStep(index, direction);
+-      return;
+-    }
+-    this.pendingAction.set('move-step');
+-    this.pendingMove.set({ index, direction });
+-    this.confirmTitle.set('Change step order?');
+-    this.confirmMessage.set(
+-      'You are about to change the order of steps in this script.'
+-    );
+-    this.showConfirm.set(true);
+-  }
+-
+-  private performMoveStep(index: number, direction: 'up' | 'down') {
+-    this.steps.update(list => {
+-      const target = direction === 'up' ? index - 1 : index + 1;
+-      if (target < 0 || target >= list.length) return list;
+-      const copy = [...list];
+-      [copy[index], copy[target]] = [copy[target], copy[index]];
+-      const now = Date.now();
+-      copy[index] = { ...copy[index], activity: { ...copy[index].activity, orderChangedAt: now } };
+-      copy[target] = { ...copy[target], activity: { ...copy[target].activity, orderChangedAt: now } };
+-      return copy.map((s, i) => ({ ...s, order: i + 1 }));
+-    });
+-  }
+-
+-  openOrderPopover(sourceIndex: number) {
+-    this.orderMode.set('move');
+-    this.orderSourceIndex.set(sourceIndex);
+-    this.showOrderPopover.set(true);
+-  }
+-
+-  openCopyPopover(sourceIndex: number) {
+-    this.orderMode.set('copy');
+-    this.orderSourceIndex.set(sourceIndex);
+-    this.showOrderPopover.set(true);
+-  }
+-
+-  closeOrderPopover() {
+-    this.showOrderPopover.set(false);
+-  }
+-
+-  onOrderPopoverConfirmed(event: { sourceIndex: number; targetIndex: number }) {
+-    const mode = this.orderMode();
+-
+-    if (mode === 'copy') {
+-      this.pendingAction.set('copy-step');
+-      this.pendingCopy.set(event);
+-      this.confirmTitle.set('Copy Step?');
+-      this.confirmMessage.set(
+-        'You are about to create a copy of this step in the selected position.'
+-      );
+-      this.showConfirm.set(true);
+-      return;
+-    }
+-
+-    if (event.sourceIndex === event.targetIndex) return;
+-
+-    if (this.skipMoveConfirm()) {
+-      this.closeOrderPopover();
+-      this.performOrderJump(event.sourceIndex, event.targetIndex);
+-      return;
+-    }
+-
+-    this.pendingAction.set('order-jump');
+-    this.pendingOrderJump.set(event);
+-    this.confirmTitle.set('Change step order?');
+-    this.confirmMessage.set(
+-      'You are about to change the order of steps in this script.'
+-    );
+-    this.showConfirm.set(true);
+-  }
+-
+-  private performOrderJump(fromIndex: number, toIndex: number) {
+-    this.steps.update(list => {
+-      if (
+-        fromIndex < 0 ||
+-        toIndex < 0 ||
+-        fromIndex >= list.length ||
+-        toIndex >= list.length ||
+-        fromIndex === toIndex
+-      ) {
+-        return list;
+-      }
+-      const copy = [...list];
+-      const [item] = copy.splice(fromIndex, 1);
+-      copy.splice(toIndex, 0, item);
+-      const now = Date.now();
+-      const start = Math.min(fromIndex, toIndex);
+-      const end = Math.max(fromIndex, toIndex);
+-      for (let i = start; i <= end; i++) {
+-        copy[i] = { ...copy[i], activity: { ...copy[i].activity, orderChangedAt: now } };
+-      }
+-      return copy.map((s, i) => ({ ...s, order: i + 1 }));
+-    });
+-  }
+-
+-  private performCopyStep(sourceIndex: number, targetIndex: number) {
+-    this.steps.update(list => {
+-      if (
+-        sourceIndex < 0 ||
+-        targetIndex < 0 ||
+-        sourceIndex >= list.length ||
+-        targetIndex > list.length
+-      ) {
+-        return list;
+-      }
+-      const clone = this.cloneStepFrom(list[sourceIndex]);
+-      const copy = [...list];
+-      copy.splice(targetIndex, 0, clone);
+-      const now = Date.now();
+-      for (let i = targetIndex; i < copy.length; i++) {
+-        copy[i] = { ...copy[i], activity: { ...copy[i].activity, orderChangedAt: now } };
+-      }
+-      return copy.map((s, i) => ({ ...s, order: i + 1 }));
+-    });
+-  }
+-
+-  private cloneStepFrom(source: ScriptStep): ScriptStep {
+-    const stamp = Date.now();
+-    const newStepId = `step-${stamp}`;
+-    const idMap = new Map<string, string>();
+-
+-    const content = (source.content || []).map((block, i) => {
+-      const newBlockId = `${newStepId}-block-${i + 1}-${stamp}`;
+-      idMap.set(block.id, newBlockId);
+-
+-      const cloned = structuredClone(block) as ContentBlock;
+-      cloned.id = newBlockId;
+-      cloned.order = i + 1;
+-
+-      if (cloned.options?.length) {
+-        cloned.options = cloned.options.map(o => ({
+-          text: o.text,
+-          nextStep: undefined
+-        }));
+-      }
+-
+-      if (cloned.requiredChecks?.length) {
+-        cloned.requiredChecks = cloned.requiredChecks.map(c => ({
+-          ...c,
+-          options: c.options?.map(o => ({
+-            text: o.text,
+-            nextStep: undefined
+-          }))
+-        }));
+-      }
+-
+-      return cloned;
+-    });
+-
+-    for (const block of content) {
+-      if (block.condition?.dependsOn) {
+-        const mapped = idMap.get(block.condition.dependsOn);
+-        if (mapped) {
+-          block.condition = {
+-            ...block.condition,
+-            dependsOn: mapped
+-          };
+-        }
+-      }
+-    }
+-
+-    return {
+-      id: newStepId,
+-      order: 0,
+-      title: source.title,
+-      hideTitleInJourney: source.hideTitleInJourney,
+-      content,
+-      activity: { createdAt: stamp }
+-    };
+-  }
+-
+-  onConfirm(dontShowAgain: boolean) {
+-    if (dontShowAgain) {
+-      this.skipMoveConfirm.set(true);
+-    }
+-
+-    const action = this.pendingAction();
+-
+-    if (action === 'move-step' && this.pendingMove()) {
+-      const { index, direction } = this.pendingMove()!;
+-      this.performMoveStep(index, direction);
+-    }
+-
+-    if (action === 'order-jump' && this.pendingOrderJump()) {
+-      const { sourceIndex, targetIndex } = this.pendingOrderJump()!;
+-      this.performOrderJump(sourceIndex, targetIndex);
+-      this.closeOrderPopover();
+-    }
+-
+-    if (action === 'copy-step' && this.pendingCopy()) {
+-      const { sourceIndex, targetIndex } = this.pendingCopy()!;
+-      this.performCopyStep(sourceIndex, targetIndex);
+-      this.closeOrderPopover();
+-    }
+-
+-    this.closeConfirm();
+-  }
+-
+-  closeConfirm() {
+-    this.showConfirm.set(false);
+-    this.pendingAction.set(null);
+-    this.pendingMove.set(null);
+-    this.pendingOrderJump.set(null);
+-    this.pendingCopy.set(null);
+-  }
+-
+-  openPreview() {
+-    this.showPreview.set(true);
+-  }
+-
+-  closePreview() {
+-    this.showPreview.set(false);
+-  }
+-}
++import {
++  Component,
++  Input,
++  OnChanges,
++  OnInit,
++  OnDestroy,
++  SimpleChanges,
++  signal,
++  inject
++} from '@angular/core';
++import { CommonModule } from '@angular/common';
++import {
++  ScriptStep,
++  ContentBlock
++} from './models/script-builder.models';
++import { ScriptToolkitComponent } from './toolkit/script-toolkit.component';
++import { ScriptPreviewComponent } from './preview/script-preview.component';
++import { ConfirmPopoverComponent } from './popovers/confirm-popover/confirm-popover.component';
++import { OrderStepsPopoverComponent } from './popovers/order-steps-popover/order-steps-popover.component';
++import { ScriptDefinitionService } from './services/script-definition.service';
++
++
++const PROMPT_VARIABLE_LABELS: Record<string, string> = {
++  policyValue: 'Policy Value',
++  option2: 'Option 2',
++  option3: 'Option 3',
++  option4: 'Option 4',
++  option5: 'Option 5',
++  option6: 'Option 6'
++};
++
++@Component({
++  selector: 'alpha-script-builder',
++  standalone: true,
++  imports: [
++    CommonModule,
++    ScriptToolkitComponent,
++    ScriptPreviewComponent,
++    ConfirmPopoverComponent,
++    OrderStepsPopoverComponent
++  ],
++  templateUrl: './script-builder.component.html'
++})
++export class ScriptBuilderComponent implements OnChanges, OnInit, OnDestroy {
++  private readonly now = signal(Date.now());
++  private timer?: ReturnType<typeof setInterval>;
++
++  private readonly scriptDefinition = inject(ScriptDefinitionService);
++
++  /**
++   * Accept work-plan ScriptSetupSelection as-is (no extra index signature).
++   * Property names resolved at runtime in resolveScriptFileId().
++   */
++  @Input() setup: {
++    product?: string;
++    requestType?: string;
++    scriptName?: string;
++    scriptDescription?: string;
++    scriptId?: string | null;
++    scriptFileId?: string | null;
++    filename?: string | null;
++    mode?: string;
++  } | null = null;
++
++  product = 'Policy Surrender';
++  requestType = 'Full Surrender';
++  scriptName = 'Surrender Script';
++  scriptDescription = '';
++
++  readonly steps = signal<ScriptStep[]>([]);
++  readonly isLoadingScript = signal(false);
++  readonly loadError = signal<string | null>(null);
++
++  readonly showToolkit = signal(false);
++  readonly editingStepId = signal<string | null>(null);
++  readonly insertAtIndex = signal<number | null>(null);
++
++  readonly showPreview = signal(false);
++
++  readonly showConfirm = signal(false);
++  readonly confirmTitle = signal('');
++  readonly confirmMessage = signal('');
++  readonly pendingAction = signal<'move-step' | 'order-jump' | 'copy-step' | null>(null);
++  readonly pendingMove = signal<{ index: number; direction: 'up' | 'down' } | null>(null);
++  readonly pendingOrderJump = signal<{ sourceIndex: number; targetIndex: number } | null>(null);
++  readonly pendingCopy = signal<{ sourceIndex: number; targetIndex: number } | null>(null);
++  readonly skipMoveConfirm = signal(false);
++
++  readonly showOrderPopover = signal(false);
++  readonly orderMode = signal<'move' | 'copy'>('move');
++  readonly orderSourceIndex = signal(0);
++
++  ngOnInit() {
++    this.timer = setInterval(() => this.now.set(Date.now()), 1000);
++  }
++
++  ngOnDestroy() {
++    if (this.timer) {
++      clearInterval(this.timer);
++    }
++  }
++
++  ngOnChanges(changes: SimpleChanges) {
++    if (changes['setup']) {
++      this.applySetup(this.setup);
++    }
++  }
++
++  private applySetup(setup: ScriptBuilderComponent['setup']) {
++    if (!setup) {
++      this.steps.set([]);
++      this.loadError.set(null);
++      return;
++    }
++
++    if (setup.product) {
++      this.product = String(setup.product);
++    }
++    if (setup.requestType) {
++      this.requestType = String(setup.requestType);
++    }
++    if (setup.scriptName) {
++      this.scriptName = String(setup.scriptName);
++    }
++    if (setup.scriptDescription) {
++      this.scriptDescription = String(setup.scriptDescription);
++    }
++
++    const fileId = this.resolveScriptFileId(setup);
++
++    if (fileId) {
++      void this.loadScriptById(fileId);
++    } else {
++      this.steps.set([]);
++      this.loadError.set(null);
++      this.isLoadingScript.set(false);
++    }
++  }
++
++  private resolveScriptFileId(setup: NonNullable<ScriptBuilderComponent['setup']>): string | null {
++    const anySetup = setup as Record<string, unknown>;
++    const raw =
++      anySetup['scriptFileId'] ??
++      anySetup['scriptId'] ??
++      anySetup['filename'] ??
++      anySetup['fileId'] ??
++      anySetup['id'] ??
++      null;
++
++    if (raw == null || raw === '') return null;
++
++    let id = String(raw).trim();
++    if (id.endsWith('.json')) {
++      id = id.slice(0, -5);
++    }
++    return id || null;
++  }
++
++  private async loadScriptById(id: string) {
++    this.isLoadingScript.set(true);
++    this.loadError.set(null);
++
++    try {
++      const result = await this.scriptDefinition.loadBuilderSteps(id);
++
++      if (!result) {
++        this.loadError.set('Could not load script JSON.');
++        this.steps.set([]);
++        return;
++      }
++
++      // Loaded scripts start with no activity tags; tags are generated by user
++      // actions in this editing session only.
++      this.steps.set(result.steps.map(s => ({ ...s, activity: undefined })));
++
++      if (result.title) {
++        this.scriptName = result.title;
++      }
++      if (result.description) {
++        this.scriptDescription = result.description;
++      }
++    } catch (err) {
++      console.error('Script builder load failed', err);
++      this.loadError.set('Could not load script JSON.');
++      this.steps.set([]);
++    } finally {
++      this.isLoadingScript.set(false);
++    }
++  }
++
++  sortedContent(step: ScriptStep): ContentBlock[] {
++    return [...(step.content || [])].sort((a, b) => (a.order ?? 0) - (b.order ?? 0));
++  }
++
++  getStepLabel(stepId: string): string {
++    const idx = this.steps().findIndex(s => s.id === stepId);
++    return idx >= 0 ? `Step ${idx + 1}` : stepId;
++  }
++
++  getActivityTags(
++    step: ScriptStep
++  ): { label: string; variant: 'created' | 'edited' | 'order-edited' }[] {
++    const a = step.activity;
++    if (!a) return [];
++
++    const tags: { label: string; variant: 'created' | 'edited' | 'order-edited' }[] = [];
++
++    if (a.contentEditedAt) {
++      tags.push({
++        label: this.formatRelativeTime('Content edited', a.contentEditedAt),
++        variant: 'edited'
++      });
++    } else if (a.createdAt) {
++      tags.push({
++        label: this.formatRelativeTime('Created', a.createdAt, true),
++        variant: 'created'
++      });
++    }
++
++    if (a.orderChangedAt) {
++      tags.push({
++        label: this.formatRelativeTime('Order changed', a.orderChangedAt),
++        variant: 'order-edited'
++      });
++    }
++
++    return tags;
++  }
++
++  private formatRelativeTime(
++    verb: string,
++    timestamp: number,
++    isCreated = false
++  ): string {
++    const diffSec = Math.floor((this.now() - timestamp) / 1000);
++
++    if (diffSec < 30) {
++      return isCreated ? `Just ${verb.toLowerCase()}` : verb;
++    }
++
++    if (diffSec < 60) {
++      // Hold at 30 seconds until the one-minute threshold, rather than
++      // counting every second upward.
++      return `${verb} 30 seconds ago`;
++    }
++
++    const diffMin = Math.floor(diffSec / 60);
++    if (diffMin < 60) {
++      return `${verb} ${diffMin} minute${diffMin === 1 ? '' : 's'} ago`;
++    }
++
++    const diffHour = Math.floor(diffMin / 60);
++    const remMin = diffMin % 60;
++    if (remMin === 0) {
++      return `${verb} ${diffHour} hour${diffHour === 1 ? '' : 's'} ago`;
++    }
++    return `${verb} ${diffHour} hour${diffHour === 1 ? '' : 's'} ${remMin} minute${remMin === 1 ? '' : 's'} ago`;
++  }
++
++  formatPromptHtml(text: string | null | undefined): string {
++    if (!text) return '';
++    let escaped = text
++      .replace(/&/g, '&amp;')
++      .replace(/</g, '&lt;')
++      .replace(/>/g, '&gt;');
++    escaped = escaped.replace(/\{\{(\w+)\}\}/g, (_m, id: string) => {
++      const label = PROMPT_VARIABLE_LABELS[id] || id;
++      return `<span class="auth-prompt-variable">${label}</span>`;
++    });
++    return escaped
++      .replace(/([.?!])\s+/g, '$1<br><br>')
++      .replace(/(<br>){4,}/g, '<br><br>');
++  }
++
++  openToolkit(stepId?: string, insertAt?: number) {
++    this.editingStepId.set(stepId ?? null);
++    this.insertAtIndex.set(insertAt ?? null);
++    this.showToolkit.set(true);
++  }
++
++  closeToolkit() {
++    this.showToolkit.set(false);
++    this.editingStepId.set(null);
++    this.insertAtIndex.set(null);
++  }
++
++  onStepSaved(step: ScriptStep) {
++    this.steps.update(list => {
++      const idx = list.findIndex(s => s.id === step.id);
++      if (idx >= 0) {
++        const copy = [...list];
++        const existingActivity = list[idx].activity;
++        copy[idx] = {
++          ...step,
++          activity: {
++            ...existingActivity,
++            createdAt: existingActivity?.createdAt,
++            contentEditedAt: Date.now()
++          }
++        };
++        return copy.map((s, i) => ({ ...s, order: i + 1 }));
++      }
++
++      const insertAt = this.insertAtIndex();
++      const newStep: ScriptStep = {
++        ...step,
++        activity: { createdAt: Date.now() }
++      };
++      const copy = [...list];
++      if (insertAt == null || insertAt < 0 || insertAt > copy.length) {
++        copy.push(newStep);
++      } else {
++        copy.splice(insertAt, 0, newStep);
++      }
++      return copy.map((s, i) => ({ ...s, order: i + 1 }));
++    });
++    this.closeToolkit();
++  }
++
++  onStepRemoved(stepId: string) {
++    this.steps.update(list =>
++      list.filter(s => s.id !== stepId).map((s, i) => ({ ...s, order: i + 1 }))
++    );
++    this.closeToolkit();
++  }
++
++  requestMoveStep(index: number, direction: 'up' | 'down') {
++    if (this.skipMoveConfirm()) {
++      this.performMoveStep(index, direction);
++      return;
++    }
++    this.pendingAction.set('move-step');
++    this.pendingMove.set({ index, direction });
++    this.confirmTitle.set('Change step order?');
++    this.confirmMessage.set(
++      'You are about to change the order of steps in this script.'
++    );
++    this.showConfirm.set(true);
++  }
++
++  private performMoveStep(index: number, direction: 'up' | 'down') {
++    this.steps.update(list => {
++      const target = direction === 'up' ? index - 1 : index + 1;
++      if (target < 0 || target >= list.length) return list;
++      const copy = [...list];
++      [copy[index], copy[target]] = [copy[target], copy[index]];
++      const now = Date.now();
++      copy[index] = { ...copy[index], activity: { ...copy[index].activity, orderChangedAt: now } };
++      copy[target] = { ...copy[target], activity: { ...copy[target].activity, orderChangedAt: now } };
++      return copy.map((s, i) => ({ ...s, order: i + 1 }));
++    });
++  }
++
++  openOrderPopover(sourceIndex: number) {
++    this.orderMode.set('move');
++    this.orderSourceIndex.set(sourceIndex);
++    this.showOrderPopover.set(true);
++  }
++
++  openCopyPopover(sourceIndex: number) {
++    this.orderMode.set('copy');
++    this.orderSourceIndex.set(sourceIndex);
++    this.showOrderPopover.set(true);
++  }
++
++  closeOrderPopover() {
++    this.showOrderPopover.set(false);
++  }
++
++  onOrderPopoverConfirmed(event: { sourceIndex: number; targetIndex: number }) {
++    const mode = this.orderMode();
++
++    if (mode === 'copy') {
++      this.pendingAction.set('copy-step');
++      this.pendingCopy.set(event);
++      this.confirmTitle.set('Copy Step?');
++      this.confirmMessage.set(
++        'You are about to create a copy of this step in the selected position.'
++      );
++      this.showConfirm.set(true);
++      return;
++    }
++
++    if (event.sourceIndex === event.targetIndex) return;
++
++    if (this.skipMoveConfirm()) {
++      this.closeOrderPopover();
++      this.performOrderJump(event.sourceIndex, event.targetIndex);
++      return;
++    }
++
++    this.pendingAction.set('order-jump');
++    this.pendingOrderJump.set(event);
++    this.confirmTitle.set('Change step order?');
++    this.confirmMessage.set(
++      'You are about to change the order of steps in this script.'
++    );
++    this.showConfirm.set(true);
++  }
++
++  private performOrderJump(fromIndex: number, toIndex: number) {
++    this.steps.update(list => {
++      if (
++        fromIndex < 0 ||
++        toIndex < 0 ||
++        fromIndex >= list.length ||
++        toIndex >= list.length ||
++        fromIndex === toIndex
++      ) {
++        return list;
++      }
++      const copy = [...list];
++      const [item] = copy.splice(fromIndex, 1);
++      copy.splice(toIndex, 0, item);
++      const now = Date.now();
++      const start = Math.min(fromIndex, toIndex);
++      const end = Math.max(fromIndex, toIndex);
++      for (let i = start; i <= end; i++) {
++        copy[i] = { ...copy[i], activity: { ...copy[i].activity, orderChangedAt: now } };
++      }
++      return copy.map((s, i) => ({ ...s, order: i + 1 }));
++    });
++  }
++
++  private performCopyStep(sourceIndex: number, targetIndex: number) {
++    this.steps.update(list => {
++      if (
++        sourceIndex < 0 ||
++        targetIndex < 0 ||
++        sourceIndex >= list.length ||
++        targetIndex > list.length
++      ) {
++        return list;
++      }
++      const clone = this.cloneStepFrom(list[sourceIndex]);
++      const copy = [...list];
++      copy.splice(targetIndex, 0, clone);
++      const now = Date.now();
++      for (let i = targetIndex; i < copy.length; i++) {
++        copy[i] = { ...copy[i], activity: { ...copy[i].activity, orderChangedAt: now } };
++      }
++      return copy.map((s, i) => ({ ...s, order: i + 1 }));
++    });
++  }
++
++  private cloneStepFrom(source: ScriptStep): ScriptStep {
++    const stamp = Date.now();
++    const newStepId = `step-${stamp}`;
++    const idMap = new Map<string, string>();
++
++    const content = (source.content || []).map((block, i) => {
++      const newBlockId = `${newStepId}-block-${i + 1}-${stamp}`;
++      idMap.set(block.id, newBlockId);
++
++      const cloned = structuredClone(block) as ContentBlock;
++      cloned.id = newBlockId;
++      cloned.order = i + 1;
++
++      if (cloned.options?.length) {
++        cloned.options = cloned.options.map(o => ({
++          text: o.text,
++          nextStep: undefined
++        }));
++      }
++
++      if (cloned.requiredChecks?.length) {
++        cloned.requiredChecks = cloned.requiredChecks.map(c => ({
++          ...c,
++          options: c.options?.map(o => ({
++            text: o.text,
++            nextStep: undefined
++          }))
++        }));
++      }
++
++      return cloned;
++    });
++
++    for (const block of content) {
++      if (block.condition?.dependsOn) {
++        const mapped = idMap.get(block.condition.dependsOn);
++        if (mapped) {
++          block.condition = {
++            ...block.condition,
++            dependsOn: mapped
++          };
++        }
++      }
++    }
++
++    return {
++      id: newStepId,
++      order: 0,
++      title: source.title,
++      hideTitleInJourney: source.hideTitleInJourney,
++      content,
++      activity: { createdAt: stamp }
++    };
++  }
++
++  onConfirm(dontShowAgain: boolean) {
++    if (dontShowAgain) {
++      this.skipMoveConfirm.set(true);
++    }
++
++    const action = this.pendingAction();
++
++    if (action === 'move-step' && this.pendingMove()) {
++      const { index, direction } = this.pendingMove()!;
++      this.performMoveStep(index, direction);
++    }
++
++    if (action === 'order-jump' && this.pendingOrderJump()) {
++      const { sourceIndex, targetIndex } = this.pendingOrderJump()!;
++      this.performOrderJump(sourceIndex, targetIndex);
++      this.closeOrderPopover();
++    }
++
++    if (action === 'copy-step' && this.pendingCopy()) {
++      const { sourceIndex, targetIndex } = this.pendingCopy()!;
++      this.performCopyStep(sourceIndex, targetIndex);
++      this.closeOrderPopover();
++    }
++
++    this.closeConfirm();
++  }
++
++  closeConfirm() {
++    this.showConfirm.set(false);
++    this.pendingAction.set(null);
++    this.pendingMove.set(null);
++    this.pendingOrderJump.set(null);
++    this.pendingCopy.set(null);
++  }
++
++  openPreview() {
++    this.showPreview.set(true);
++  }
++
++  closePreview() {
++    this.showPreview.set(false);
++  }
++}
+\ No newline at end of file
+diff --git a/src/app/prototype-migration/call-center-demo/components/call-rep-scripts/script-builder/toolkit/script-toolkit.component.css b/src/app/prototype-migration/call-center-demo/components/call-rep-scripts/script-builder/toolkit/script-toolkit.component.css
+deleted file mode 100644
+index e69de29..0000000
+diff --git a/src/app/prototype-migration/call-center-demo/components/call-rep-scripts/script-builder/toolkit/script-toolkit.component.ts b/src/app/prototype-migration/call-center-demo/components/call-rep-scripts/script-builder/toolkit/script-toolkit.component.ts
+index f1b225c..36de730 100644
+--- a/src/app/prototype-migration/call-center-demo/components/call-rep-scripts/script-builder/toolkit/script-toolkit.component.ts
++++ b/src/app/prototype-migration/call-center-demo/components/call-rep-scripts/script-builder/toolkit/script-toolkit.component.ts
+@@ -34,8 +34,7 @@ import { ConfirmPopoverComponent } from '../popovers/confirm-popover/confirm-pop
+     StepPickerComponent,
+     ConfirmPopoverComponent
+   ],
+-  templateUrl: './script-toolkit.component.html',
+-  styleUrls: ['./script-toolkit.component.css']
++  templateUrl: './script-toolkit.component.html'
+ })
+ export class ScriptToolkitComponent implements OnChanges {
+ 
+@@ -47,7 +46,6 @@ export class ScriptToolkitComponent implements OnChanges {
+   @Output() removed = new EventEmitter<string>();
+   @Output() cancelled = new EventEmitter<void>();
+ 
+-
+   readonly title = signal('');
+   readonly hideTitleInJourney = signal(false);
+   readonly currentContent = signal<ContentBlock[]>([]);
+@@ -352,10 +350,6 @@ export class ScriptToolkitComponent implements OnChanges {
+     this.showConfirm.set(true);
+   }
+ 
+-  /**
+-   * Clone: keep content + conditions; new ids; clear nextStep only.
+-   */
+-
+   private buildStepPayload(): ScriptStep {
+     const id = this.editingId() || `step-${Date.now()}`;
+     return {
+@@ -374,4 +368,4 @@ export class ScriptToolkitComponent implements OnChanges {
+   cancel() {
+     this.cancelled.emit();
+   }
+-}
++}
+\ No newline at end of file
+diff --git a/src/app/prototype-migration/call-center-demo/components/recent-callers/recent-callers.component.css b/src/app/prototype-migration/call-center-demo/components/recent-callers/recent-callers.component.css
+deleted file mode 100644
+index da7dc94..0000000
+--- a/src/app/prototype-migration/call-center-demo/components/recent-callers/recent-callers.component.css
++++ /dev/null
+@@ -1,335 +0,0 @@
+-.alp-recent-callers {
+-  margin-bottom: 20px;
+-}
+-
+-/* Compact Tile View */
+-.alp-recent-callers__compact {
+-  background: #f8fafc;
+-  border: 1px solid #e2e8f0;
+-  border-radius: 10px;
+-  padding: 16px;
+-}
+-
+-.alp-recent-callers__header {
+-  display: flex;
+-  justify-content: space-between;
+-  align-items: center;
+-  margin-bottom: 14px;
+-  font-size: 13px;
+-  font-weight: 600;
+-  color: #334155;
+-}
+-
+-.alp-recent-callers__title {
+-  display: flex;
+-  align-items: center;
+-  gap: 8px;
+-}
+-
+-/* Tile Container */
+-.alp-recent-callers__tile {
+-  position: relative;
+-  background: white;
+-  border: 1px solid #e2e8f0;
+-  border-radius: 8px;
+-  margin-bottom: 12px;
+-  box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+-  overflow: hidden;
+-}
+-
+-/* Main Clickable Area - Full Tile */
+-.alp-recent-callers__main-btn {
+-  display: block;
+-  padding: 16px 18px 60px; /* Extra bottom padding for View Details */
+-  text-align: left;
+-  background: transparent;
+-  border: none;
+-  cursor: pointer;
+-  width: 100%;
+-  transition: background-color 0.2s ease;
+-}
+-
+-.alp-recent-callers__main-btn:hover {
+-  background-color: #f8fafc;
+-}
+-
+-.alp-recent-callers__info strong {
+-  display: block;
+-  font-size: 14px;
+-  color: #1e2937;
+-  margin-bottom: 4px;
+-}
+-
+-.alp-recent-callers__role {
+-  font-size: 14px;
+-  color: #64748b;
+-}
+-
+-.alp-recent-callers__meta {
+-  font-size: 13px;
+-  color: #64748b;
+-  margin-top: 8px;
+-}
+-
+-.alp-recent-callers__days-ago {
+-  font-weight: 500;
+-  color: #3b82f6;
+-}
+-
+-/* View Details Button - Bottom Right */
+-.alp-recent-callers__view-details-btn {
+-  position: absolute;
+-  bottom: 12px;
+-  right: 12px;
+-  padding: 6px 14px;
+-  background: #f1f5f9;
+-  color: #475569;
+-  border: 1px solid #cbd5e1;
+-  border-radius: 50px;
+-  font-size: 13px;
+-  cursor: pointer;
+-  z-index: 2;
+-  transition: all 0.2s ease;
+-}
+-
+-.alp-recent-callers__view-details-btn:hover {
+-  background: #e0e7ff;
+-  color: #1e40af;
+-  border-color: #94a3b8;
+-}
+-
+-/* Navigation */
+-.alp-recent-callers__nav {
+-  display: flex;
+-  align-items: center;
+-  justify-content: center;
+-  gap: 16px;
+-  margin-top: 12px;
+-}
+-
+-.alp-recent-callers__nav button {
+-  background: white;
+-  border: 1px solid #cbd5e1;
+-  width: 32px;
+-  height: 32px;
+-  border-radius: 50%;
+-  display: flex;
+-  align-items: center;
+-  justify-content: center;
+-  cursor: pointer;
+-}
+-
+-.alp-recent-callers__nav button:disabled {
+-  opacity: 0.4;
+-  cursor: not-allowed;
+-}
+-
+-/* Popover */
+-.alp-recent-callers__overlay {
+-  position: fixed;
+-  top: 0;
+-  left: 0;
+-  right: 0;
+-  bottom: 0;
+-  background: rgba(0,0,0,0.4);
+-  display: flex;
+-  align-items: flex-start;
+-  justify-content: flex-end;
+-  padding: 80px 20px 20px;
+-  z-index: 1000;
+-}
+-
+-.alp-recent-callers__popover {
+-  background: white;
+-  width: 400px;
+-  max-height: 70vh;
+-  border-radius: 12px;
+-  box-shadow: 0 10px 30px rgba(0,0,0,0.25);
+-  overflow: hidden;
+-  display: flex;
+-  flex-direction: column;
+-}
+-
+-.alp-recent-callers__popover-header {
+-  padding: 16px 20px;
+-  border-bottom: 1px solid #e2e8f0;
+-  display: flex;
+-  justify-content: space-between;
+-  align-items: center;
+-  background: #f8fafc;
+-}
+-
+-.alp-recent-callers__full-list {
+-  overflow-y: auto;
+-  padding: 8px;
+-  flex: 1;
+-}
+-
+-.alp-recent-callers__full-item {
+-  position: relative;
+-  
+-  border-bottom: 1px solid #f1f5f9;
+-  cursor: pointer;
+-  transition: background 0.2s;
+-}
+-
+-.alp-recent-callers__full-item:hover {
+-  background: #f8fafc;
+-}
+-
+-.alp-recent-callers__full-main-btn {
+-  display: flex;
+-  flex-direction: column;
+-  text-align: left;
+-  background: transparent;
+-  border: none;
+-  margin-bottom: 8px;
+-  cursor: pointer;
+-  padding: 12px 16px 44px 16px;
+-}
+-
+-.role {
+-  font-size: 14px;
+-  color: #64748b;
+-}
+-
+-.date {
+-  font-size: 13px;
+-  color: #64748b;
+-}
+-
+-/* ====================== TRANSFERRED CALL TILES ====================== */
+-
+-.alp-recent-callers__tile--transferred {
+-  border-left: 6px solid #7c3aed;
+-  background: #f8f5ff;
+-  position: relative;
+-}
+-
+-.alp-recent-callers__tile--transferred.expired {
+-  border-left-color: #ef4444;
+-  background: #fef2f2;
+-  opacity: 0.95;
+-}
+-
+-.alp-recent-callers__tile--transferred .timer {
+-  font-size: 13px;
+-  font-weight: 500;
+-  color: #6b21a8;
+-}
+-
+-.alp-recent-callers__tile--transferred.expired .timer {
+-  color: #b91c1c;
+-  font-style: italic;
+-}
+-
+-/* Make sure main button still takes full space */
+-.alp-recent-callers__tile--transferred .alp-recent-callers__main-btn {
+-  padding-bottom: 58px; /* space for View Details button */
+-}
+-
+-/* View Details button positioning */
+-.alp-recent-callers__tile--transferred .alp-recent-callers__view-details-btn {
+-  position: absolute;
+-  bottom: 12px;
+-  right: 12px;
+-  background: #e0d4ff;
+-  color: #5b21b6;
+-  border: 1px solid #c4b5fd;
+-}
+-
+-.alp-recent-callers__tile--transferred .alp-recent-callers__view-details-btn:hover {
+-  background: #d1c4ff;
+-}
+-
+-.alp-recent-callers__resume-btn {
+-  /* position: absolute;
+-  bottom: 12px;
+-  right: 12px; */
+-  background: #444F83;
+-  color: white;
+-  border: none;
+-  padding: 6px 14px;
+-  border-radius: 50px;
+-  font-size: 13px;
+-  cursor: pointer;
+-  display: flex;
+-  align-items: center;
+-  gap: 6px;
+-  z-index: 2;
+-}
+-
+-.alp-recent-callers__resume-btn:hover {
+-  background: #059669;
+-}
+-
+-.timer.active {
+-  color: #6b21a8;
+-  font-weight: 500;
+-}
+-
+-.timer.expired {
+-  color: #b91c1c;
+-}
+-
+-
+-
+-.alp-recent-callers__reason {
+-  display: block;
+-  font-size: 13px;
+-  color: #222;
+-  margin-top: 14px;
+-}
+-
+-/* .alp-recent-callers__actions {
+-  position: absolute;
+-  bottom: 12px;
+-  right: 12px;
+-  display: flex;
+-  gap: 8px;
+-} */
+-
+-.alp-recent-callers__actions {
+-  display: flex;
+-  justify-content: space-between;
+-  padding: 10px 16px;
+-}
+-
+-.alp-recent-callers__bailout-btn {
+-  background: #444F83;
+-  color: white;
+-  border: none;
+-  padding: 6px 12px;
+-  border-radius: 50px;
+-  font-size: 13px;
+-  cursor: pointer;
+-}
+-
+-.alp-recent-callers__bailout-btn:hover {
+-  background: #dc2626;
+-}
+-
+-.alp-recent-callers__tile--transferred.dpa-required {
+-  border-left-color: #ef4444;
+-  background: #fef2f2;
+-}
+-
+-.timer.dpa-required {
+-  color: #b91c1c;
+-  font-weight: 600;
+-}
+-
+-.dpa-label {
+-  color: #b91c1c;
+-  font-size: 13px;
+-  font-weight: 500;
+-  margin-left: 8px;
+-}
+-
+-.dpa-label.show {
+-  display: inline;
+-}
+-
+-.alp-recent-callers__tile--transferred .alp-recent-callers__main-btn{
+-  padding-bottom:20px;
+-}
+\ No newline at end of file
+diff --git a/src/app/prototype-migration/call-center-demo/components/recent-callers/recent-callers.component.ts b/src/app/prototype-migration/call-center-demo/components/recent-callers/recent-callers.component.ts
+index 91dae26..497f2f6 100644
+--- a/src/app/prototype-migration/call-center-demo/components/recent-callers/recent-callers.component.ts
++++ b/src/app/prototype-migration/call-center-demo/components/recent-callers/recent-callers.component.ts
+@@ -1,161 +1,160 @@
+-import { Component, Input, Output, EventEmitter, OnInit, signal, computed } from '@angular/core';
+-import { CommonModule } from '@angular/common';
+-
+-export interface RecentCaller {
+-  id: string;
+-  name: string;
+-  role: string;
+-  callDateTime: string;
+-}
+-
+-@Component({
+-  selector: 'alpha-recent-callers',
+-  standalone: true,
+-  imports: [CommonModule],
+-  templateUrl: './recent-callers.component.html',
+-  styleUrls: ['./recent-callers.component.css']
+-})
+-export class RecentCallersComponent implements OnInit {
+-
+-  @Input() policyNumber: string = '';
+-
+-  @Output() callerSelected = new EventEmitter<RecentCaller>();
+-
+-  readonly recentCallers = signal<RecentCaller[]>([]);
+-  readonly currentIndex = signal(0);
+-  readonly showFullList = signal(false);
+-
+-  // === NEW: Transferred Calls ===
+-  readonly transferredCalls = signal<any[]>([]);
+-
+-  readonly currentCaller = computed(() => {
+-    const callers = this.recentCallers();
+-    return callers.length > 0 ? callers[this.currentIndex()] : null;
+-  });
+-
+-  readonly totalCallers = computed(() => this.recentCallers().length);
+-
+-  // New: Check if any transferred call needs DPA (after 2 minutes)
+-  readonly needsDpa = computed(() => {
+-    return this.transferredCalls().some(call => call.elapsedSeconds() >= 120);
+-  });
+-
+-  async ngOnInit() {
+-    try {
+-      const res = await fetch('assets/data/call-rep-scripts/recent-callers.json');
+-      const data = await res.json();
+-      this.recentCallers.set(data.recentCallers || []);
+-    } catch (err) {
+-      console.error('Failed to load recent callers', err);
+-    }
+-  }
+-
+-  // ==================== TRANSFER CALL WITH REASON (from popover) ====================
+-  transferCallWithReason(reason: string, notes: string = '') {
+-    if (this.transferredCalls().length > 0) {
+-      console.log('Only one transferred call allowed at a time.');
+-      return;
+-    }
+-
+-    const newTransferred = {
+-      id: Date.now().toString(),
+-      name: 'Mr Joe Bloggs',
+-      role: 'Policy Holder, Life 1',
+-      type: 'transferred',
+-      reason: reason,
+-      notes: notes,
+-      transferredAt: new Date(),
+-      elapsedSeconds: signal(0),        // Count UP
+-      status: 'active'
+-    };
+-
+-    this.transferredCalls.set([newTransferred]);
+-    this.startElapsedTimer(newTransferred);
+-    
+-    console.log('✅ Transferred call with reason:', reason);
+-  }
+-
+-  private startElapsedTimer(call: any) {
+-    const interval = setInterval(() => {
+-      call.elapsedSeconds.update((secs: number) => secs + 1);
+-    }, 1000);
+-  }
+-
+-  // Format elapsed time (minutes ago, hours ago, days ago...)
+-  getElapsedTime(seconds: number): string {
+-    if (seconds < 60) return `${seconds} seconds ago`;
+-    if (seconds < 3600) return `${Math.floor(seconds / 60)} minutes ago`;
+-    if (seconds < 86400) return `${Math.floor(seconds / 3600)} hours ago`;
+-    const days = Math.floor(seconds / 86400);
+-    return days === 1 ? '1 day ago' : `${days} days ago`;
+-  }
+-
+-  bailoutTransferredCall(call: any) {
+-    this.transferredCalls.update(calls => calls.filter(c => c.id !== call.id));
+-    console.log('Bailout: Transferred call removed');
+-  }
+-
+-  resumeTransferredCall(call: any) {
+-    this.callerSelected.emit({
+-      id: call.id,
+-      name: call.name,
+-      role: call.role,
+-      callDateTime: call.transferredAt.toISOString()
+-    });
+-  }
+-
+-  // ==================== EXISTING METHODS (unchanged) ====================
+-  selectCurrentCaller() {
+-    const caller = this.currentCaller();
+-    if (caller) {
+-      this.callerSelected.emit(caller);
+-    }
+-  }
+-
+-  viewDetails(caller: RecentCaller | any) {
+-    console.log('View Details clicked:', caller);
+-    alert(`Details for ${caller.name} (${caller.role})`);
+-  }
+-
+-  next() {
+-    if (this.currentIndex() < this.totalCallers() - 1) {
+-      this.currentIndex.update(i => i + 1);
+-    }
+-  }
+-
+-  previous() {
+-    if (this.currentIndex() > 0) {
+-      this.currentIndex.update(i => i - 1);
+-    }
+-  }
+-
+-  openFullList() {
+-    this.showFullList.set(true);
+-  }
+-
+-  closeFullList() {
+-    this.showFullList.set(false);
+-  }
+-
+-  getDaysAgo(dateTime: string): string {
+-    const callDate = new Date(dateTime);
+-    const today = new Date();
+-    const diffTime = today.getTime() - callDate.getTime();
+-    const diffDays = Math.floor(diffTime / (1000 * 3600 * 24));
+-
+-    if (diffDays === 0) return 'Today';
+-    if (diffDays === 1) return 'Yesterday';
+-    return `${diffDays} days ago`;
+-  }
+-
+-  get sortedCallers() {
+-    return [...this.recentCallers()].sort((a, b) => 
+-      new Date(b.callDateTime).getTime() - new Date(a.callDateTime).getTime()
+-    );
+-  }
+-
+-    // Simple wrapper for backward compatibility (your main demo button)
+-    transferCall() {
+-      this.transferCallWithReason('General Transfer');
+-    }
++import { Component, Input, Output, EventEmitter, OnInit, signal, computed } from '@angular/core';
++import { CommonModule } from '@angular/common';
++
++export interface RecentCaller {
++  id: string;
++  name: string;
++  role: string;
++  callDateTime: string;
++}
++
++@Component({
++  selector: 'alpha-recent-callers',
++  standalone: true,
++  imports: [CommonModule],
++  templateUrl: './recent-callers.component.html'
++})
++export class RecentCallersComponent implements OnInit {
++
++  @Input() policyNumber: string = '';
++
++  @Output() callerSelected = new EventEmitter<RecentCaller>();
++
++  readonly recentCallers = signal<RecentCaller[]>([]);
++  readonly currentIndex = signal(0);
++  readonly showFullList = signal(false);
++
++  // === NEW: Transferred Calls ===
++  readonly transferredCalls = signal<any[]>([]);
++
++  readonly currentCaller = computed(() => {
++    const callers = this.recentCallers();
++    return callers.length > 0 ? callers[this.currentIndex()] : null;
++  });
++
++  readonly totalCallers = computed(() => this.recentCallers().length);
++
++  // New: Check if any transferred call needs DPA (after 2 minutes)
++  readonly needsDpa = computed(() => {
++    return this.transferredCalls().some(call => call.elapsedSeconds() >= 120);
++  });
++
++  async ngOnInit() {
++    try {
++      const res = await fetch('assets/data/call-rep-scripts/recent-callers.json');
++      const data = await res.json();
++      this.recentCallers.set(data.recentCallers || []);
++    } catch (err) {
++      console.error('Failed to load recent callers', err);
++    }
++  }
++
++  // ==================== TRANSFER CALL WITH REASON (from popover) ====================
++  transferCallWithReason(reason: string, notes: string = '') {
++    if (this.transferredCalls().length > 0) {
++      console.log('Only one transferred call allowed at a time.');
++      return;
++    }
++
++    const newTransferred = {
++      id: Date.now().toString(),
++      name: 'Mr Joe Bloggs',
++      role: 'Policy Holder, Life 1',
++      type: 'transferred',
++      reason: reason,
++      notes: notes,
++      transferredAt: new Date(),
++      elapsedSeconds: signal(0),        // Count UP
++      status: 'active'
++    };
++
++    this.transferredCalls.set([newTransferred]);
++    this.startElapsedTimer(newTransferred);
++    
++    console.log('✅ Transferred call with reason:', reason);
++  }
++
++  private startElapsedTimer(call: any) {
++    const interval = setInterval(() => {
++      call.elapsedSeconds.update((secs: number) => secs + 1);
++    }, 1000);
++  }
++
++  // Format elapsed time (minutes ago, hours ago, days ago...)
++  getElapsedTime(seconds: number): string {
++    if (seconds < 60) return `${seconds} seconds ago`;
++    if (seconds < 3600) return `${Math.floor(seconds / 60)} minutes ago`;
++    if (seconds < 86400) return `${Math.floor(seconds / 3600)} hours ago`;
++    const days = Math.floor(seconds / 86400);
++    return days === 1 ? '1 day ago' : `${days} days ago`;
++  }
++
++  bailoutTransferredCall(call: any) {
++    this.transferredCalls.update(calls => calls.filter(c => c.id !== call.id));
++    console.log('Bailout: Transferred call removed');
++  }
++
++  resumeTransferredCall(call: any) {
++    this.callerSelected.emit({
++      id: call.id,
++      name: call.name,
++      role: call.role,
++      callDateTime: call.transferredAt.toISOString()
++    });
++  }
++
++  // ==================== EXISTING METHODS (unchanged) ====================
++  selectCurrentCaller() {
++    const caller = this.currentCaller();
++    if (caller) {
++      this.callerSelected.emit(caller);
++    }
++  }
++
++  viewDetails(caller: RecentCaller | any) {
++    console.log('View Details clicked:', caller);
++    alert(`Details for ${caller.name} (${caller.role})`);
++  }
++
++  next() {
++    if (this.currentIndex() < this.totalCallers() - 1) {
++      this.currentIndex.update(i => i + 1);
++    }
++  }
++
++  previous() {
++    if (this.currentIndex() > 0) {
++      this.currentIndex.update(i => i - 1);
++    }
++  }
++
++  openFullList() {
++    this.showFullList.set(true);
++  }
++
++  closeFullList() {
++    this.showFullList.set(false);
++  }
++
++  getDaysAgo(dateTime: string): string {
++    const callDate = new Date(dateTime);
++    const today = new Date();
++    const diffTime = today.getTime() - callDate.getTime();
++    const diffDays = Math.floor(diffTime / (1000 * 3600 * 24));
++
++    if (diffDays === 0) return 'Today';
++    if (diffDays === 1) return 'Yesterday';
++    return `${diffDays} days ago`;
++  }
++
++  get sortedCallers() {
++    return [...this.recentCallers()].sort((a, b) => 
++      new Date(b.callDateTime).getTime() - new Date(a.callDateTime).getTime()
++    );
++  }
++
++    // Simple wrapper for backward compatibility (your main demo button)
++    transferCall() {
++      this.transferCallWithReason('General Transfer');
++    }
+ }
+\ No newline at end of file
+diff --git a/src/app/prototype-migration/call-center-demo/components/script-management/script-setup.component.css b/src/app/prototype-migration/call-center-demo/components/script-management/script-setup.component.css
+deleted file mode 100644
+index 5630253..0000000
+--- a/src/app/prototype-migration/call-center-demo/components/script-management/script-setup.component.css
++++ /dev/null
+@@ -1,334 +0,0 @@
+-.alp-script-setup {
+-  padding: 24px;
+-  border-radius: 12px;
+-  border: 1px solid #e5e7eb;
+-}
+-
+-.alp-script-setup__title {
+-  margin: 0 0 24px 0;
+-  font-size: 18px;
+-  color: #1f2937;
+-}
+-
+-.alp-script-setup__two-column {
+-  display: flex;
+-  gap: 24px;
+-  flex-wrap: wrap;
+-}
+-
+-.alp-script-setup__section {
+-  flex: 1;
+-  min-width: 320px;
+-}
+-
+-.alp-script-setup__section-title {
+-  margin: 0 0 12px 0;
+-  font-size: 16px;
+-  color: #374151;
+-  font-weight: 600;
+-}
+-
+-.alp-script-setup__filter-input {
+-  width: 100%;
+-  padding: 10px 14px;
+-  margin-bottom: 16px;
+-  border: 1px solid #d1d5db;
+-  border-radius: 8px;
+-  font-size: 15px;
+-}
+-
+-.alp-script-setup__tile-grid {
+-  display: grid;
+-  grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+-  gap: 12px;
+-}
+-
+-.alp-script-setup__tile {
+-  padding: 18px 14px;
+-  border: 2px solid #e5e7eb;
+-  border-radius: 8px;
+-  background: white;
+-  cursor: pointer;
+-  transition: all 0.2s ease;
+-  text-align: center;
+-  min-height: 70px;
+-  display: flex;
+-  align-items: center;
+-  justify-content: center;
+-  position: relative;
+-}
+-
+-.alp-script-setup__tile:hover {
+-  border-color: #9ca3af;
+-  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+-}
+-
+-.alp-script-setup__tile--selected {
+-  border-color: #444F83;
+-  background: #f0f4ff;
+-  box-shadow: 0 0 0 3px rgba(68, 79, 131, 0.2);
+-}
+-
+-.alp-script-setup__tile-label {
+-  font-size: 16px;
+-  font-weight: 500;
+-  color: #374151;
+-}
+-
+-.alp-script-setup__tile-check {
+-  position: absolute;
+-  top: 8px;
+-  right: 8px;
+-  font-size: 18px;
+-  color: #444F83;
+-}
+-
+-.alp-script-setup__create-tile {
+-  margin-bottom: 16px;
+-  border-style: dashed;
+-  border-color: #444F83;
+-}
+-
+-.request-type-section {
+-  transition: all 0.2s ease;
+-}
+-
+-.request-type-hidden {
+-  visibility: hidden;
+-  opacity: 0;
+-  pointer-events: none;
+-  min-height: 180px;
+-}
+-
+-.alp-script-setup__existing {
+-  margin-top: 32px;
+-  padding-top: 24px;
+-  border-top: 1px solid #e5e7eb;
+-}
+-
+-.alp-script-setup__script-group {
+-  margin-bottom: 16px;
+-}
+-
+-.alp-script-setup__script-item {
+-  display: flex;
+-  justify-content: space-between;
+-  align-items: center;
+-  padding: 16px;
+-  background: #fff;
+-  border: 1px solid #e2e8f0;
+-  border-radius: 8px;
+-  flex-wrap: wrap;
+-  gap: 12px;
+-}
+-
+-.alp-script-setup__script-item--selected {
+-  border: 2px solid #444F83;
+-  background: #f0f4ff;
+-}
+-
+-.alp-script-setup__script-item--historic-selected {
+-  border: 2px solid #ca8a04;
+-  background: #fefce8;
+-}
+-
+-.alp-script-setup__script-info {
+-  flex: 1;
+-  min-width: 200px;
+-}
+-
+-.alp-script-setup__last-edited {
+-  display: block;
+-  color: #6b7280;
+-  font-size: 14px;
+-  margin-top: 4px;
+-}
+-
+-.alp-script-setup__active-badge {
+-  background: #075F42;
+-  color: white;
+-  font-size: 12px;
+-  padding: 4px 8px 2px 8px;
+-  border-radius: 9999px;
+-  margin-top: 8px;
+-  display: inline-block;
+-}
+-
+-.alp-script-setup__new-badge {
+-  background: #3b82f6;
+-  color: white;
+-  font-size: 12px;
+-  padding: 4px 8px 2px 8px;
+-  border-radius: 9999px;
+-  display: inline-block;
+-  font-weight: 600;
+-  margin-top: 8px;
+-}
+-
+-.alp-script-setup__script-actions {
+-  display: flex;
+-  gap: 8px;
+-  flex-wrap: wrap;
+-}
+-
+-.alp-script-setup__historic-container {
+-  margin-top: 8px;
+-  padding: 12px;
+-  border: 2px dashed #ca8a04;
+-  border-radius: 8px;
+-  background: #fefce8;
+-}
+-
+-.alp-script-setup__historic-card {
+-  display: flex;
+-  justify-content: space-between;
+-  align-items: flex-start;
+-  gap: 16px;
+-}
+-
+-.alp-script-setup__historic-info {
+-  flex: 1;
+-}
+-
+-.alp-script-setup__historic-header {
+-  display: flex;
+-  align-items: center;
+-  gap: 12px;
+-  margin-bottom: 6px;
+-}
+-
+-.alp-script-setup__historic-badge {
+-  background: #ca8a04;
+-  color: white;
+-  font-size: 12px;
+-  padding: 2px 10px;
+-  border-radius: 9999px;
+-  font-weight: 600;
+-}
+-
+-.alp-script-setup__historic-meta {
+-  color: #6b7280;
+-  font-size: 14px;
+-}
+-
+-.alp-btn {
+-  padding: 10px 24px;
+-  border-radius: 9999px;
+-  font-weight: 500;
+-  font-size: 13px;
+-  cursor: pointer;
+-  transition: all 0.2s ease;
+-  border: none;
+-}
+-
+-.alp-btn--primary {
+-  background-color: #444F83;
+-  color: white;
+-}
+-
+-.alp-btn--secondary {
+-  background-color: #E0E7FF;
+-  color: #444F83;
+-}
+-
+-.alp-script-setup__popover-overlay {
+-  position: fixed;
+-  inset: 0;
+-  background: rgba(0,0,0,0.5);
+-  display: flex;
+-  align-items: center;
+-  justify-content: center;
+-  z-index: 1000;
+-}
+-
+-.alp-script-setup__popover {
+-  background: white;
+-  width: 420px;
+-  border-radius: 12px;
+-  box-shadow: 0 10px 30px rgba(0,0,0,0.25);
+-  overflow: hidden;
+-  display: flex;
+-  flex-direction: column;
+-  max-height: 70vh;
+-}
+-
+-.alp-script-setup__popover-header {
+-  padding: 16px 20px;
+-  background: #f8fafc;
+-  border-bottom: 1px solid #e5e7eb;
+-  display: flex;
+-  justify-content: space-between;
+-  align-items: center;
+-  flex-shrink: 0;
+-}
+-
+-.alp-script-setup__popover-content {
+-  padding: 24px;
+-  flex: 1;
+-  overflow-y: auto;
+-}
+-
+-.alp-script-setup__form-group {
+-  margin-bottom: 20px;
+-}
+-
+-.alp-script-setup__form-group label {
+-  display: block;
+-  margin-bottom: 8px;
+-  font-weight: 500;
+-  color: #374151;
+-}
+-
+-.alp-script-setup__input {
+-  width: 100%;
+-  padding: 12px 14px;
+-  border: 1px solid #d1d5db;
+-  border-radius: 8px;
+-  font-size: 15px;
+-}
+-
+-.alp-script-setup__textarea {
+-  resize: vertical;
+-  min-height: 72px;
+-  font-family: inherit;
+-}
+-
+-.alp-script-setup__confirmation {
+-  background: #f8fafc;
+-  padding: 16px;
+-  border-radius: 8px;
+-  font-size: 15px;
+-  line-height: 1.5;
+-}
+-
+-.alp-script-setup__popover-footer {
+-  padding: 16px 20px;
+-  background: #f8fafc;
+-  border-top: 1px solid #e5e7eb;
+-  display: flex;
+-  justify-content: flex-end;
+-  gap: 12px;
+-}
+-
+-.alp-script-setup__version-item {
+-  display: flex;
+-  justify-content: space-between;
+-  align-items: center;
+-  padding: 14px;
+-  border-bottom: 1px solid #f1f5f9;
+-}
+-
+-.alp-script-setup__version-info {
+-  display: flex;
+-  flex-direction: column;
+-  gap: 2px;
+-}
+-
+-.alp-script-setup__close-btn {
+-  background: none;
+-  border: none;
+-  font-size: 28px;
+-  line-height: 1;
+-  cursor: pointer;
+-  color: #6b7280;
+-}
+\ No newline at end of file
+diff --git a/src/app/prototype-migration/call-center-demo/components/script-management/script-setup.component.ts b/src/app/prototype-migration/call-center-demo/components/script-management/script-setup.component.ts
+index 60380f3..096f2aa 100644
+--- a/src/app/prototype-migration/call-center-demo/components/script-management/script-setup.component.ts
++++ b/src/app/prototype-migration/call-center-demo/components/script-management/script-setup.component.ts
+@@ -1,323 +1,322 @@
+-import { Component, Output, EventEmitter, signal, computed } from '@angular/core';
+-import { CommonModule } from '@angular/common';
+-import { FormsModule } from '@angular/forms';
+-import { ScriptSetupSelection } from '../call-rep-scripts/script-builder/models/script-builder.models';
+-
+-interface ProductOption {
+-  id: string;
+-  label: string;
+-}
+-
+-interface RequestTypeOption {
+-  id: string;
+-  label: string;
+-  productId: string;
+-}
+-
+-interface VersionEntry {
+-  version: string;
+-  date: string;
+-  editedBy: string;
+-}
+-
+-interface ExistingScript {
+-  id: string;
+-  name: string;
+-  description: string;
+-  version: string;
+-  lastEdited: string;
+-  isActive: boolean;
+-  productId: string;
+-  requestTypeId: string;
+-  /** Shared journey JSON file id (no .json) */
+-  scriptFileId: string;
+-  versionHistory: VersionEntry[];
+-}
+-
+-interface CreatedScript {
+-  id: string;
+-  name: string;
+-  description: string;
+-  lastEdited: string;
+-  productId: string;
+-  requestTypeId: string;
+-}
+-
+-@Component({
+-  selector: 'alpha-script-setup',
+-  standalone: true,
+-  imports: [CommonModule, FormsModule],
+-  templateUrl: './script-setup.component.html',
+-  styleUrls: ['./script-setup.component.css']
+-})
+-export class ScriptSetupComponent {
+-
+-  @Output() continue = new EventEmitter<ScriptSetupSelection>();
+-
+-  readonly products: ProductOption[] = [
+-    { id: 'all', label: 'All' },
+-    { id: 'life', label: 'Life' },
+-    { id: 'pension', label: 'Pension' }
+-  ];
+-
+-  readonly requestTypes: RequestTypeOption[] = [
+-    { id: 'all', label: 'All', productId: 'all' },
+-    { id: 'surrender', label: 'Surrender', productId: 'all' },
+-    { id: 'fund-value', label: 'Fund Value', productId: 'all' },
+-    { id: 'full-policy-details', label: 'Full Policy Details', productId: 'all' },
+-    { id: 'third-parties', label: 'Third Parties', productId: 'all' },
+-    { id: 'letter-of-authority', label: 'Letter of Authority', productId: 'all' },
+-    { id: 'death-notification', label: 'Death Notification', productId: 'all' }
+-  ];
+-
+-  readonly existingScripts: ExistingScript[] = [
+-    {
+-      id: 's1',
+-      name: 'Surrender Script v1',
+-      description: 'Primary surrender journey',
+-      version: '1.2',
+-      lastEdited: '2026-07-10',
+-      isActive: true,
+-      productId: 'life',
+-      requestTypeId: 'surrender',
+-      scriptFileId: 'surrender-001',
+-      versionHistory: [
+-        { version: '1.2', date: '2026-07-10', editedBy: 'A. Smith' },
+-        { version: '1.1', date: '2026-06-02', editedBy: 'J. Patel' },
+-        { version: '1.0', date: '2026-05-01', editedBy: 'A. Smith' }
+-      ]
+-    },
+-    {
+-      id: 's2',
+-      name: 'Surrender Script v2',
+-      description: 'Updated branching for suspended funds',
+-      version: '2.0',
+-      lastEdited: '2026-07-14',
+-      isActive: false,
+-      productId: 'life',
+-      requestTypeId: 'surrender',
+-      scriptFileId: 'surrender-001',
+-      versionHistory: [
+-        { version: '2.0', date: '2026-07-14', editedBy: 'J. Patel' },
+-        { version: '1.0', date: '2026-04-20', editedBy: 'A. Smith' }
+-      ]
+-    }
+-  ];
+-
+-  readonly selectedProduct = signal<string | null>(null);
+-  readonly selectedRequestType = signal<string | null>(null);
+-
+-  readonly productSearch = signal('');
+-  readonly requestTypeSearch = signal('');
+-
+-  readonly selectedScriptId = signal<string | null>(null);
+-  readonly isCreateNewSelected = signal(false);
+-  readonly showCreateTile = signal(true);
+-
+-  readonly createdScripts = signal<CreatedScript[]>([]);
+-
+-  readonly showCreateScriptPopover = signal(false);
+-  readonly newScriptName = signal('');
+-  readonly newScriptDescription = signal('');
+-
+-  readonly showVersionHistory = signal(false);
+-  readonly selectedScriptForHistory = signal<ExistingScript | null>(null);
+-  readonly selectedHistoricVersion = signal<VersionEntry | null>(null);
+-
+-  readonly filteredProducts = computed(() => {
+-    const term = this.productSearch().toLowerCase().trim();
+-    if (!term) return this.products;
+-    return this.products.filter(p => p.label.toLowerCase().includes(term));
+-  });
+-
+-  readonly filteredRequestTypes = computed(() => {
+-    const term = this.requestTypeSearch().toLowerCase().trim();
+-    let list = [...this.requestTypes];
+-    if (term) {
+-      list = list.filter(rt => rt.label.toLowerCase().includes(term));
+-    }
+-    return list;
+-  });
+-
+-  selectedProductLabel(): string {
+-    const id = this.selectedProduct();
+-    return this.products.find(p => p.id === id)?.label || '';
+-  }
+-
+-  selectedRequestTypeLabel(): string {
+-    const id = this.selectedRequestType();
+-    return this.requestTypes.find(r => r.id === id)?.label || '';
+-  }
+-
+-  onProductSearchChange(event: Event) {
+-    const value = (event.target as HTMLInputElement).value;
+-    this.productSearch.set(value);
+-  }
+-
+-  onRequestTypeSearchChange(event: Event) {
+-    const value = (event.target as HTMLInputElement).value;
+-    this.requestTypeSearch.set(value);
+-  }
+-
+-  toggleProduct(id: string) {
+-    if (this.selectedProduct() === id) {
+-      this.selectedProduct.set(null);
+-      this.selectedRequestType.set(null);
+-    } else {
+-      this.selectedProduct.set(id);
+-      this.selectedRequestType.set(null);
+-      this.clearScriptSelection();
+-    }
+-  }
+-
+-  toggleRequestType(id: string) {
+-    if (this.selectedRequestType() === id) {
+-      this.selectedRequestType.set(null);
+-    } else {
+-      this.selectedRequestType.set(id);
+-      this.clearScriptSelection();
+-    }
+-  }
+-
+-  private clearScriptSelection() {
+-    this.selectedScriptId.set(null);
+-    this.isCreateNewSelected.set(false);
+-    this.selectedHistoricVersion.set(null);
+-    this.selectedScriptForHistory.set(null);
+-  }
+-
+-  toggleCreateNew() {
+-    this.isCreateNewSelected.set(!this.isCreateNewSelected());
+-    if (this.isCreateNewSelected()) {
+-      this.selectedScriptId.set(null);
+-      this.selectedHistoricVersion.set(null);
+-      this.openCreatePopover();
+-    }
+-  }
+-
+-  openCreatePopover() {
+-    this.newScriptName.set('');
+-    this.newScriptDescription.set('');
+-    this.showCreateScriptPopover.set(true);
+-  }
+-
+-  cancelNewScript() {
+-    this.showCreateScriptPopover.set(false);
+-    this.isCreateNewSelected.set(false);
+-    this.newScriptName.set('');
+-    this.newScriptDescription.set('');
+-  }
+-
+-  saveNewScript() {
+-    const name = this.newScriptName().trim();
+-    if (!name || !this.selectedProduct() || !this.selectedRequestType()) return;
+-
+-    const description = this.newScriptDescription().trim();
+-    const productId = this.selectedProduct()!;
+-    const requestTypeId = this.selectedRequestType()!;
+-
+-    const created: CreatedScript = {
+-      id: 'draft-' + Date.now(),
+-      name,
+-      description,
+-      lastEdited: new Date().toISOString().slice(0, 10),
+-      productId,
+-      requestTypeId
+-    };
+-
+-    this.createdScripts.update(list => [created, ...list]);
+-    this.showCreateTile.set(false);
+-    this.selectedScriptId.set(created.id);
+-    this.isCreateNewSelected.set(false);
+-    this.showCreateScriptPopover.set(false);
+-
+-    this.continue.emit({
+-      mode: 'new',
+-      scriptId: created.id,
+-      scriptFileId: undefined,
+-      scriptName: name,
+-      scriptDescription: description,
+-      productId,
+-      productLabel: this.selectedProductLabel(),
+-      requestTypeId,
+-      requestTypeLabel: this.selectedRequestTypeLabel()
+-    });
+-  }
+-
+-  cancelCreatedScript(id: string) {
+-    this.createdScripts.update(list => list.filter(s => s.id !== id));
+-    if (this.selectedScriptId() === id) {
+-      this.selectedScriptId.set(null);
+-    }
+-    this.showCreateTile.set(true);
+-  }
+-
+-  selectScript(id: string) {
+-    this.selectedScriptId.set(id);
+-    this.isCreateNewSelected.set(false);
+-    this.selectedHistoricVersion.set(null);
+-
+-    const existing = this.existingScripts.find(s => s.id === id);
+-    const draft = this.createdScripts().find(s => s.id === id);
+-
+-    if (existing) {
+-      this.continue.emit({
+-        mode: 'edit',
+-        scriptId: existing.id,
+-        scriptFileId: existing.scriptFileId,
+-        scriptName: existing.name,
+-        scriptDescription: existing.description,
+-        productId: this.selectedProduct()!,
+-        productLabel: this.selectedProductLabel(),
+-        requestTypeId: this.selectedRequestType()!,
+-        requestTypeLabel: this.selectedRequestTypeLabel()
+-      });
+-    } else if (draft) {
+-      this.continue.emit({
+-        mode: 'new',
+-        scriptId: draft.id,
+-        scriptFileId: undefined,
+-        scriptName: draft.name,
+-        scriptDescription: draft.description,
+-        productId: this.selectedProduct()!,
+-        productLabel: this.selectedProductLabel(),
+-        requestTypeId: this.selectedRequestType()!,
+-        requestTypeLabel: this.selectedRequestTypeLabel()
+-      });
+-    }
+-  }
+-
+-  openVersionHistory(script: ExistingScript) {
+-    this.selectedScriptForHistory.set(script);
+-    this.showVersionHistory.set(true);
+-  }
+-
+-  closeVersionHistory() {
+-    this.showVersionHistory.set(false);
+-  }
+-
+-  selectVersion(version: VersionEntry) {
+-    const script = this.selectedScriptForHistory();
+-    if (!script || !this.selectedProduct() || !this.selectedRequestType()) return;
+-
+-    this.selectedHistoricVersion.set(version);
+-    this.selectedScriptId.set(script.id);
+-    this.showVersionHistory.set(false);
+-
+-    this.continue.emit({
+-      mode: 'edit',
+-      scriptId: script.id,
+-      scriptFileId: script.scriptFileId,
+-      scriptName: `${script.name} (v${version.version})`,
+-      scriptDescription: script.description,
+-      productId: this.selectedProduct()!,
+-      productLabel: this.selectedProductLabel(),
+-      requestTypeId: this.selectedRequestType()!,
+-      requestTypeLabel: this.selectedRequestTypeLabel()
+-    });
+-  }
+-
+-  cancelHistoricSelection() {
+-    this.selectedHistoricVersion.set(null);
+-  }
++import { Component, Output, EventEmitter, signal, computed } from '@angular/core';
++import { CommonModule } from '@angular/common';
++import { FormsModule } from '@angular/forms';
++import { ScriptSetupSelection } from '../call-rep-scripts/script-builder/models/script-builder.models';
++
++interface ProductOption {
++  id: string;
++  label: string;
++}
++
++interface RequestTypeOption {
++  id: string;
++  label: string;
++  productId: string;
++}
++
++interface VersionEntry {
++  version: string;
++  date: string;
++  editedBy: string;
++}
++
++interface ExistingScript {
++  id: string;
++  name: string;
++  description: string;
++  version: string;
++  lastEdited: string;
++  isActive: boolean;
++  productId: string;
++  requestTypeId: string;
++  /** Shared journey JSON file id (no .json) */
++  scriptFileId: string;
++  versionHistory: VersionEntry[];
++}
++
++interface CreatedScript {
++  id: string;
++  name: string;
++  description: string;
++  lastEdited: string;
++  productId: string;
++  requestTypeId: string;
++}
++
++@Component({
++  selector: 'alpha-script-setup',
++  standalone: true,
++  imports: [CommonModule, FormsModule],
++  templateUrl: './script-setup.component.html'
++})
++export class ScriptSetupComponent {
++
++  @Output() continue = new EventEmitter<ScriptSetupSelection>();
++
++  readonly products: ProductOption[] = [
++    { id: 'all', label: 'All' },
++    { id: 'life', label: 'Life' },
++    { id: 'pension', label: 'Pension' }
++  ];
++
++  readonly requestTypes: RequestTypeOption[] = [
++    { id: 'all', label: 'All', productId: 'all' },
++    { id: 'surrender', label: 'Surrender', productId: 'all' },
++    { id: 'fund-value', label: 'Fund Value', productId: 'all' },
++    { id: 'full-policy-details', label: 'Full Policy Details', productId: 'all' },
++    { id: 'third-parties', label: 'Third Parties', productId: 'all' },
++    { id: 'letter-of-authority', label: 'Letter of Authority', productId: 'all' },
++    { id: 'death-notification', label: 'Death Notification', productId: 'all' }
++  ];
++
++  readonly existingScripts: ExistingScript[] = [
++    {
++      id: 's1',
++      name: 'Surrender Script v1',
++      description: 'Primary surrender journey',
++      version: '1.2',
++      lastEdited: '2026-07-10',
++      isActive: true,
++      productId: 'life',
++      requestTypeId: 'surrender',
++      scriptFileId: 'surrender-001',
++      versionHistory: [
++        { version: '1.2', date: '2026-07-10', editedBy: 'A. Smith' },
++        { version: '1.1', date: '2026-06-02', editedBy: 'J. Patel' },
++        { version: '1.0', date: '2026-05-01', editedBy: 'A. Smith' }
++      ]
++    },
++    {
++      id: 's2',
++      name: 'Surrender Script v2',
++      description: 'Updated branching for suspended funds',
++      version: '2.0',
++      lastEdited: '2026-07-14',
++      isActive: false,
++      productId: 'life',
++      requestTypeId: 'surrender',
++      scriptFileId: 'surrender-001',
++      versionHistory: [
++        { version: '2.0', date: '2026-07-14', editedBy: 'J. Patel' },
++        { version: '1.0', date: '2026-04-20', editedBy: 'A. Smith' }
++      ]
++    }
++  ];
++
++  readonly selectedProduct = signal<string | null>(null);
++  readonly selectedRequestType = signal<string | null>(null);
++
++  readonly productSearch = signal('');
++  readonly requestTypeSearch = signal('');
++
++  readonly selectedScriptId = signal<string | null>(null);
++  readonly isCreateNewSelected = signal(false);
++  readonly showCreateTile = signal(true);
++
++  readonly createdScripts = signal<CreatedScript[]>([]);
++
++  readonly showCreateScriptPopover = signal(false);
++  readonly newScriptName = signal('');
++  readonly newScriptDescription = signal('');
++
++  readonly showVersionHistory = signal(false);
++  readonly selectedScriptForHistory = signal<ExistingScript | null>(null);
++  readonly selectedHistoricVersion = signal<VersionEntry | null>(null);
++
++  readonly filteredProducts = computed(() => {
++    const term = this.productSearch().toLowerCase().trim();
++    if (!term) return this.products;
++    return this.products.filter(p => p.label.toLowerCase().includes(term));
++  });
++
++  readonly filteredRequestTypes = computed(() => {
++    const term = this.requestTypeSearch().toLowerCase().trim();
++    let list = [...this.requestTypes];
++    if (term) {
++      list = list.filter(rt => rt.label.toLowerCase().includes(term));
++    }
++    return list;
++  });
++
++  selectedProductLabel(): string {
++    const id = this.selectedProduct();
++    return this.products.find(p => p.id === id)?.label || '';
++  }
++
++  selectedRequestTypeLabel(): string {
++    const id = this.selectedRequestType();
++    return this.requestTypes.find(r => r.id === id)?.label || '';
++  }
++
++  onProductSearchChange(event: Event) {
++    const value = (event.target as HTMLInputElement).value;
++    this.productSearch.set(value);
++  }
++
++  onRequestTypeSearchChange(event: Event) {
++    const value = (event.target as HTMLInputElement).value;
++    this.requestTypeSearch.set(value);
++  }
++
++  toggleProduct(id: string) {
++    if (this.selectedProduct() === id) {
++      this.selectedProduct.set(null);
++      this.selectedRequestType.set(null);
++    } else {
++      this.selectedProduct.set(id);
++      this.selectedRequestType.set(null);
++      this.clearScriptSelection();
++    }
++  }
++
++  toggleRequestType(id: string) {
++    if (this.selectedRequestType() === id) {
++      this.selectedRequestType.set(null);
++    } else {
++      this.selectedRequestType.set(id);
++      this.clearScriptSelection();
++    }
++  }
++
++  private clearScriptSelection() {
++    this.selectedScriptId.set(null);
++    this.isCreateNewSelected.set(false);
++    this.selectedHistoricVersion.set(null);
++    this.selectedScriptForHistory.set(null);
++  }
++
++  toggleCreateNew() {
++    this.isCreateNewSelected.set(!this.isCreateNewSelected());
++    if (this.isCreateNewSelected()) {
++      this.selectedScriptId.set(null);
++      this.selectedHistoricVersion.set(null);
++      this.openCreatePopover();
++    }
++  }
++
++  openCreatePopover() {
++    this.newScriptName.set('');
++    this.newScriptDescription.set('');
++    this.showCreateScriptPopover.set(true);
++  }
++
++  cancelNewScript() {
++    this.showCreateScriptPopover.set(false);
++    this.isCreateNewSelected.set(false);
++    this.newScriptName.set('');
++    this.newScriptDescription.set('');
++  }
++
++  saveNewScript() {
++    const name = this.newScriptName().trim();
++    if (!name || !this.selectedProduct() || !this.selectedRequestType()) return;
++
++    const description = this.newScriptDescription().trim();
++    const productId = this.selectedProduct()!;
++    const requestTypeId = this.selectedRequestType()!;
++
++    const created: CreatedScript = {
++      id: 'draft-' + Date.now(),
++      name,
++      description,
++      lastEdited: new Date().toISOString().slice(0, 10),
++      productId,
++      requestTypeId
++    };
++
++    this.createdScripts.update(list => [created, ...list]);
++    this.showCreateTile.set(false);
++    this.selectedScriptId.set(created.id);
++    this.isCreateNewSelected.set(false);
++    this.showCreateScriptPopover.set(false);
++
++    this.continue.emit({
++      mode: 'new',
++      scriptId: created.id,
++      scriptFileId: undefined,
++      scriptName: name,
++      scriptDescription: description,
++      productId,
++      productLabel: this.selectedProductLabel(),
++      requestTypeId,
++      requestTypeLabel: this.selectedRequestTypeLabel()
++    });
++  }
++
++  cancelCreatedScript(id: string) {
++    this.createdScripts.update(list => list.filter(s => s.id !== id));
++    if (this.selectedScriptId() === id) {
++      this.selectedScriptId.set(null);
++    }
++    this.showCreateTile.set(true);
++  }
++
++  selectScript(id: string) {
++    this.selectedScriptId.set(id);
++    this.isCreateNewSelected.set(false);
++    this.selectedHistoricVersion.set(null);
++
++    const existing = this.existingScripts.find(s => s.id === id);
++    const draft = this.createdScripts().find(s => s.id === id);
++
++    if (existing) {
++      this.continue.emit({
++        mode: 'edit',
++        scriptId: existing.id,
++        scriptFileId: existing.scriptFileId,
++        scriptName: existing.name,
++        scriptDescription: existing.description,
++        productId: this.selectedProduct()!,
++        productLabel: this.selectedProductLabel(),
++        requestTypeId: this.selectedRequestType()!,
++        requestTypeLabel: this.selectedRequestTypeLabel()
++      });
++    } else if (draft) {
++      this.continue.emit({
++        mode: 'new',
++        scriptId: draft.id,
++        scriptFileId: undefined,
++        scriptName: draft.name,
++        scriptDescription: draft.description,
++        productId: this.selectedProduct()!,
++        productLabel: this.selectedProductLabel(),
++        requestTypeId: this.selectedRequestType()!,
++        requestTypeLabel: this.selectedRequestTypeLabel()
++      });
++    }
++  }
++
++  openVersionHistory(script: ExistingScript) {
++    this.selectedScriptForHistory.set(script);
++    this.showVersionHistory.set(true);
++  }
++
++  closeVersionHistory() {
++    this.showVersionHistory.set(false);
++  }
++
++  selectVersion(version: VersionEntry) {
++    const script = this.selectedScriptForHistory();
++    if (!script || !this.selectedProduct() || !this.selectedRequestType()) return;
++
++    this.selectedHistoricVersion.set(version);
++    this.selectedScriptId.set(script.id);
++    this.showVersionHistory.set(false);
++
++    this.continue.emit({
++      mode: 'edit',
++      scriptId: script.id,
++      scriptFileId: script.scriptFileId,
++      scriptName: `${script.name} (v${version.version})`,
++      scriptDescription: script.description,
++      productId: this.selectedProduct()!,
++      productLabel: this.selectedProductLabel(),
++      requestTypeId: this.selectedRequestType()!,
++      requestTypeLabel: this.selectedRequestTypeLabel()
++    });
++  }
++
++  cancelHistoricSelection() {
++    this.selectedHistoricVersion.set(null);
++  }
+ }
+\ No newline at end of file
+diff --git a/src/app/prototype-migration/call-center-demo/components/transfer-call-popover/transfer-call-popover.component.css b/src/app/prototype-migration/call-center-demo/components/transfer-call-popover/transfer-call-popover.component.css
+deleted file mode 100644
+index 6729668..0000000
+--- a/src/app/prototype-migration/call-center-demo/components/transfer-call-popover/transfer-call-popover.component.css
++++ /dev/null
+@@ -1,131 +0,0 @@
+-.alp-transfer-popover-overlay {
+-  position: fixed;
+-  inset: 0;
+-  background: rgba(0, 0, 0, 0.5);
+-  display: flex;
+-  align-items: center;
+-  justify-content: center;
+-  z-index: 2000;
+-}
+-
+-.alp-transfer-popover {
+-  background: white;
+-  width: 420px;
+-  max-width: 95%;
+-  border-radius: 12px;
+-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+-  overflow: hidden;
+-}
+-
+-.alp-transfer-popover__header {
+-  display: flex;
+-  justify-content: space-between;
+-  align-items: center;
+-  padding: 16px 20px;
+-  border-bottom: 1px solid #e5e7eb;
+-}
+-
+-.alp-transfer-popover__search {
+-  padding: 16px 20px 8px;
+-}
+-
+-.alp-transfer-popover__search input {
+-  width: 100%;
+-  padding: 10px 14px;
+-  border: 1px solid #d1d5db;
+-  border-radius: 8px;
+-  font-size: 14px;
+-}
+-
+-.alp-transfer-popover__reasons {
+-  display: grid;
+-  grid-template-columns: repeat(2, 1fr);
+-  gap: 10px;
+-  padding: 0 20px 16px;
+-}
+-
+-.alp-transfer-reason-tile {
+-  padding: 14px;
+-  border: 2px solid #e5e7eb;
+-  border-radius: 8px;
+-  background: white;
+-  text-align: center;
+-  font-weight: 500;
+-  cursor: pointer;
+-  transition: all 0.2s;
+-}
+-
+-.alp-transfer-reason-tile:hover {
+-  border-color: #7c3aed;
+-  background: #f8f5ff;
+-}
+-
+-.alp-transfer-reason-tile.selected {
+-  border-color: #7c3aed;
+-  background: #ede9fe;
+-  color: #5b21b6;
+-  font-weight: 600;
+-}
+-
+-.alp-transfer-popover__notes {
+-  padding: 0 20px 16px;
+-}
+-
+-.alp-transfer-popover__notes label {
+-  display: block;
+-  font-size: 13px;
+-  font-weight: 500;
+-  margin-bottom: 6px;
+-  color: #374151;
+-}
+-
+-.alp-transfer-popover__notes textarea {
+-  width: 100%;
+-  height: 90px;
+-  padding: 10px;
+-  border: 1px solid #d1d5db;
+-  border-radius: 8px;
+-  resize: vertical;
+-  font-size: 14px;
+-}
+-
+-.char-count {
+-  text-align: right;
+-  font-size: 12px;
+-  color: #6b7280;
+-  margin-top: 4px;
+-}
+-
+-.alp-transfer-popover__actions {
+-  display: flex;
+-  justify-content: flex-end;
+-  gap: 12px;
+-  padding: 16px 20px;
+-  background: #f9fafb;
+-  border-top: 1px solid #e5e7eb;
+-}
+-
+-.btn-primary, .btn-secondary {
+-  padding: 10px 20px;
+-  border-radius: 8px;
+-  font-weight: 500;
+-  cursor: pointer;
+-}
+-
+-.btn-primary {
+-  background: #7c3aed;
+-  color: white;
+-  border: none;
+-}
+-
+-.btn-primary:disabled {
+-  background: #c4b5fd;
+-  cursor: not-allowed;
+-}
+-
+-.btn-secondary {
+-  background: white;
+-  border: 1px solid #d1d5db;
+-}
+-
+-
+diff --git a/src/app/prototype-migration/call-center-demo/components/transfer-call-popover/transfer-call-popover.component.ts b/src/app/prototype-migration/call-center-demo/components/transfer-call-popover/transfer-call-popover.component.ts
+index 7976417..63a235d 100644
+--- a/src/app/prototype-migration/call-center-demo/components/transfer-call-popover/transfer-call-popover.component.ts
++++ b/src/app/prototype-migration/call-center-demo/components/transfer-call-popover/transfer-call-popover.component.ts
+@@ -1,79 +1,78 @@
+-import { Component, EventEmitter, Output, signal, computed } from '@angular/core';
+-import { CommonModule } from '@angular/common';
+-import { FormsModule } from '@angular/forms';
+-
+-interface TransferReason {
+-  id: number;
+-  label: string;
+-}
+-
+-@Component({
+-  selector: 'alpha-transfer-call-popover',
+-  standalone: true,
+-  imports: [CommonModule, FormsModule],
+-  templateUrl: './transfer-call-popover.component.html',
+-  styleUrls: ['./transfer-call-popover.component.css']
+-})
+-export class TransferCallPopoverComponent {
+-
+-  @Output() transfer = new EventEmitter<{ reason: string; notes: string }>();
+-  @Output() close = new EventEmitter<void>();
+-
+-  private allReasons: TransferReason[] = [
+-    { id: 1, label: 'Back Office' },
+-    { id: 2, label: 'Option 2' },
+-    { id: 3, label: 'Option 3' },
+-    { id: 4, label: 'Option 4' },
+-    { id: 5, label: 'Option 5' },
+-    { id: 6, label: 'Option 6' },
+-  ];
+-
+-  readonly searchTerm = signal('');
+-  readonly selectedReason = signal<TransferReason | null>(null);
+-  readonly notes = signal('');
+-  readonly maxNotesLength = 200;
+-
+-  readonly filteredReasons = computed(() => {
+-    const term = this.searchTerm().toLowerCase().trim();
+-    if (!term) return this.allReasons;
+-    return this.allReasons.filter(r => 
+-      r.label.toLowerCase().includes(term)
+-    );
+-  });
+-
+-  readonly notesLength = computed(() => this.notes().length);
+-
+-  selectReason(reason: TransferReason) {
+-    this.selectedReason.set(reason);
+-  }
+-
+-  updateNotes(value: string) {
+-    if (value.length <= this.maxNotesLength) {
+-      this.notes.set(value);
+-    }
+-  }
+-
+-  confirmTransfer() {
+-    const reason = this.selectedReason();
+-    if (!reason) return;
+-
+-    this.transfer.emit({
+-      reason: reason.label,
+-      notes: this.notes()
+-    });
+-
+-    this.close.emit();
+-    this.reset();
+-  }
+-
+-  cancel() {
+-    this.close.emit();
+-    this.reset();
+-  }
+-
+-  private reset() {
+-    this.searchTerm.set('');
+-    this.selectedReason.set(null);
+-    this.notes.set('');
+-  }
++import { Component, EventEmitter, Output, signal, computed } from '@angular/core';
++import { CommonModule } from '@angular/common';
++import { FormsModule } from '@angular/forms';
++
++interface TransferReason {
++  id: number;
++  label: string;
++}
++
++@Component({
++  selector: 'alpha-transfer-call-popover',
++  standalone: true,
++  imports: [CommonModule, FormsModule],
++  templateUrl: './transfer-call-popover.component.html'
++})
++export class TransferCallPopoverComponent {
++
++  @Output() transfer = new EventEmitter<{ reason: string; notes: string }>();
++  @Output() close = new EventEmitter<void>();
++
++  private allReasons: TransferReason[] = [
++    { id: 1, label: 'Back Office' },
++    { id: 2, label: 'Option 2' },
++    { id: 3, label: 'Option 3' },
++    { id: 4, label: 'Option 4' },
++    { id: 5, label: 'Option 5' },
++    { id: 6, label: 'Option 6' },
++  ];
++
++  readonly searchTerm = signal('');
++  readonly selectedReason = signal<TransferReason | null>(null);
++  readonly notes = signal('');
++  readonly maxNotesLength = 200;
++
++  readonly filteredReasons = computed(() => {
++    const term = this.searchTerm().toLowerCase().trim();
++    if (!term) return this.allReasons;
++    return this.allReasons.filter(r => 
++      r.label.toLowerCase().includes(term)
++    );
++  });
++
++  readonly notesLength = computed(() => this.notes().length);
++
++  selectReason(reason: TransferReason) {
++    this.selectedReason.set(reason);
++  }
++
++  updateNotes(value: string) {
++    if (value.length <= this.maxNotesLength) {
++      this.notes.set(value);
++    }
++  }
++
++  confirmTransfer() {
++    const reason = this.selectedReason();
++    if (!reason) return;
++
++    this.transfer.emit({
++      reason: reason.label,
++      notes: this.notes()
++    });
++
++    this.close.emit();
++    this.reset();
++  }
++
++  cancel() {
++    this.close.emit();
++    this.reset();
++  }
++
++  private reset() {
++    this.searchTerm.set('');
++    this.selectedReason.set(null);
++    this.notes.set('');
++  }
+ }
+\ No newline at end of file
+diff --git a/src/assets/styles/alp-css-refactor/_index.css b/src/assets/styles/alp-css-refactor/_index.css
+deleted file mode 100644
+index 4520a68..0000000
+--- a/src/assets/styles/alp-css-refactor/_index.css
++++ /dev/null
+@@ -1 +0,0 @@
+-@import "components/_index.css";
+diff --git a/src/assets/styles/alp-css-refactor/components/_index.css b/src/assets/styles/alp-css-refactor/components/_index.css
+deleted file mode 100644
+index 08b6e0b..0000000
+--- a/src/assets/styles/alp-css-refactor/components/_index.css
++++ /dev/null
+@@ -1,2 +0,0 @@
+-@import "buttons.css";
+-@import "filters.css";
+diff --git a/src/assets/styles/alp-css-refactor/components/buttons.css b/src/assets/styles/alp-css-refactor/components/buttons.css
+deleted file mode 100644
+index 51c4ecc..0000000
+--- a/src/assets/styles/alp-css-refactor/components/buttons.css
++++ /dev/null
+@@ -1,50 +0,0 @@
+-/**
+-|| ALP BUTTONS
+-*/
+-
+-.alp-button-group{
+-  display:flex;
+-  gap:0.5rem;
+-}
+-
+-.alp-button {
+-  background-color: #49a94f;
+-  color: #fff;
+-  display: inline-block;
+-  font-weight: normal;
+-  line-height: 1.25;
+-  text-align: center;
+-  white-space: nowrap;
+-  vertical-align: middle;
+-  cursor: pointer;
+-  user-select: none;
+-  border: 1px solid transparent;
+-  padding: 0.5rem 1rem;
+-  font-size: 1rem;
+-  border-radius: 3px;
+-  transition-property: border, background-color;
+-  transition-duration: 0.15s;
+-  transition-timing-function: ease-in-out;
+-
+-}
+-
+-.alp-button:hover:not(:disabled) {
+-  background-color: #449d44;
+-  border-color: #419641;
+-  transition-property: border, background-color;
+-  transition-duration: 0.15s;
+-  transition-timing-function: ease-in-out;
+-
+-}
+-
+-.alp-button:disabled{
+-  background-color: #49a94f;
+-  color: rgba(255, 255, 255, 1);
+-  border: 1px solid rgba(255, 255, 255, 0.3);
+-  pointer-events: none;
+-  opacity:0.65;
+-}
+-
+-.alp-button:focus-visible{
+-  outline: 6px solid #f6c754;
+-}
+diff --git a/src/assets/styles/alp-css-refactor/components/filters.css b/src/assets/styles/alp-css-refactor/components/filters.css
+deleted file mode 100644
+index dbba7de..0000000
+--- a/src/assets/styles/alp-css-refactor/components/filters.css
++++ /dev/null
+@@ -1,67 +0,0 @@
+-
+-/* SECTION LINKS AND FILTER LINKS */
+-
+-.alp-filters {
+-  margin-bottom: 1rem;
+-}
+-
+-.alp-filters__tabs {
+-  display: flex;
+-  margin-bottom: 0.5rem;
+-}
+-
+-.alp-filters__tab{
+-  margin-right: 0.2rem;
+-}
+-
+-.alp-filters__tab-button {
+-  padding: 0;
+-  border: 0;
+-  background-color: rgba(0, 0, 0, 0);
+-}
+-
+-.alp-filters__tab-button-text {
+-  color: rgb(24, 110, 204);
+-  font-size: 1rem;
+-  padding: 0.5rem 1rem;
+-  display: block;
+-  text-shadow: 1px 1px 2px rgba(255, 255, 255, 1);
+-  position: relative;
+-}
+-
+-.alp-filters__tab-button-text:hover {
+-  background-color: rgba(133, 178, 226, 0.1);
+-  border-bottom: 4px solid rgba(133, 178, 226, 0);
+-}
+-
+-.selected > .alp-filters__tab-button-text{
+-  border-color: rgba(60, 73, 129, 1);
+-  border-bottom: 4px solid rgba(133, 178, 226, 1);
+-  color: rgba(60, 73, 129, 1);
+-  font-weight: 700;
+-}
+-
+-.alp-filters__range-selection{
+-  display:flex;
+-  gap:0.5rem;
+-}
+-
+-.alp-filters__range-dropdown {
+-  padding: 0.2rem 0.4rem 0.4rem 0.4rem;
+-  color: rgb(24, 110, 204);
+-  border-radius: 0.25rem;
+-  font-weight: bold;
+-  min-width:150px;
+-}
+-
+-.consumerDataMatched {
+-  color: rgba(60, 73, 129, 1);
+-}
+-
+-.consumerDataNotMatched {
+-  color: darkgray;
+-}
+-
+-.count-flag {
+-  padding-left: 3px;
+-}
+diff --git a/src/assets/styles/prototype-migration/p-drive-collection/_index.css b/src/assets/styles/prototype-migration/p-drive-collection/_index.css
+index dff1fdc..f41f4e7 100644
+--- a/src/assets/styles/prototype-migration/p-drive-collection/_index.css
++++ b/src/assets/styles/prototype-migration/p-drive-collection/_index.css
+@@ -80,7 +80,6 @@
+ 
+ 
+ @import './demo.css';
+-@import './script-builder.styles.css';
+ 
+ 
+ 
+@@ -88,3 +87,5 @@
+ @import './css-stack/css-user-theme--dark.css';
+ @import './css-stack/css-user-theme--light.css';
+ 
++/* ALP Design System */
++@import '../../alp-design-system/_index.css';
+diff --git a/src/assets/styles/prototype-migration/p-drive-collection/script-builder.styles.css b/src/assets/styles/prototype-migration/p-drive-collection/script-builder.styles.css
+deleted file mode 100644
+index 5c0e1fd..0000000
+--- a/src/assets/styles/prototype-migration/p-drive-collection/script-builder.styles.css
++++ /dev/null
+@@ -1,1037 +0,0 @@
+-/* =========================================================
+-   DESIGN TOKENS
+-   ========================================================= */
+-   :root {
+-    --alp-color-brand-primary: #444F83;
+-    --alp-color-brand-primary-soft: #E0E7FF;
+-    --alp-color-brand-primary-hover: #363f6b;
+-  
+-    --alp-color-prompt: #1e40af;
+-    --alp-color-question: #5b21b6;
+-    --alp-color-check: #047857;
+-    --alp-color-log-task: #b45309;
+-    --alp-color-end-call: #b91c1c;
+-  
+-    --alp-color-bg: #f4f7fb;
+-    --alp-color-surface: #ffffff;
+-    --alp-color-border: #e2e8f0;
+-    --alp-color-border-strong: #cbd5e1;
+-    --alp-color-text: #0f172a;
+-    --alp-color-text-muted: #64748b;
+-    --alp-color-text-soft: #94a3b8;
+-  
+-    --alp-dot-color: #c5cdd8;
+-    --alp-dot-size: 1.2px;
+-    --alp-dot-spacing: 24px;
+-  
+-    --alp-space-1: 4px;
+-    --alp-space-2: 8px;
+-    --alp-space-3: 12px;
+-    --alp-space-4: 16px;
+-    --alp-space-5: 20px;
+-    --alp-space-6: 24px;
+-    --alp-space-8: 32px;
+-  
+-    --alp-radius-sm: 6px;
+-    --alp-radius-md: 8px;
+-    --alp-radius-lg: 12px;
+-    --alp-radius-full: 9999px;
+-  
+-    --alp-shadow-sm: 0 2px 8px rgba(15, 23, 42, 0.06);
+-    --alp-shadow-md: 0 4px 18px rgba(15, 23, 42, 0.08);
+-    --alp-shadow-lg: 0 8px 28px rgba(15, 23, 42, 0.12);
+-  
+-    --alp-font-size-xs: 11px;
+-    --alp-font-size-sm: 13px;
+-    --alp-font-size-md: 15px;
+-    --alp-font-size-lg: 18px;
+-    --alp-font-size-xl: 22px;
+-  }
+-  
+-  /* =========================================================
+-     BASE + CANVAS
+-     ========================================================= */
+-  .alp-script-builder {
+-    padding: var(--alp-space-6);
+-    background-color: var(--alp-color-bg);
+-    background-image: radial-gradient(var(--alp-dot-color) var(--alp-dot-size), transparent var(--alp-dot-size));
+-    background-size: var(--alp-dot-spacing) var(--alp-dot-spacing);
+-    border-radius: var(--alp-radius-lg);
+-    border: 1px solid var(--alp-color-border);
+-    min-height: 680px;
+-  }
+-  
+-  /* =========================================================
+-     HEADER
+-     ========================================================= */
+-  .alp-script-builder__header {
+-    margin-bottom: var(--alp-space-8);
+-    padding-bottom: var(--alp-space-5);
+-    border-bottom: 1px solid var(--alp-color-border);
+-  }
+-  
+-  .alp-script-builder__context {
+-    display: flex;
+-    align-items: center;
+-    gap: var(--alp-space-2);
+-    margin-bottom: var(--alp-space-2);
+-  }
+-  
+-  .alp-script-builder__product,
+-  .alp-script-builder__request-type {
+-    font-size: var(--alp-font-size-md);
+-    font-weight: 600;
+-    color: var(--alp-color-text);
+-  }
+-  
+-  .alp-script-builder__separator {
+-    color: var(--alp-color-text-soft);
+-  }
+-  
+-  .alp-script-builder__title {
+-    margin: 0;
+-    font-size: var(--alp-font-size-xl);
+-    font-weight: 600;
+-    color: var(--alp-color-text);
+-  }
+-  
+-  .alp-script-builder__description {
+-    margin: 4px 0 0;
+-    font-size: 14px;
+-    color: #475569;
+-  }
+-  
+-  .alp-script-builder__header-row {
+-    display: flex;
+-    justify-content: space-between;
+-    align-items: center;
+-    gap: var(--alp-space-4);
+-  }
+-  
+-  /* =========================================================
+-     FLOW + STEPS
+-     ========================================================= */
+-  .alp-script-builder__flow {
+-    display: flex;
+-    flex-direction: column;
+-    align-items: center;
+-    gap: 0;
+-    position: relative;
+-    padding: var(--alp-space-4) 0;
+-  }
+-  
+-  .alp-script-builder__step {
+-    position: relative;
+-    width: 100%;
+-    max-width: 560px;
+-    display: flex;
+-    flex-direction: column;
+-    align-items: center;
+-  }
+-  
+-  .alp-script-builder__step-shell {
+-    position: relative;
+-    width: 100%;
+-  }
+-  
+-  .alp-script-builder__step-move {
+-    position: absolute;
+-    left: -52px;
+-    top: 50%;
+-    transform: translateY(-50%);
+-    display: flex;
+-    flex-direction: column;
+-    gap: 4px;
+-    padding: 6px;
+-    background: #e2e8f0;
+-    border: 1px solid var(--alp-color-border-strong);
+-    border-radius: 12px;
+-    box-shadow: var(--alp-shadow-sm);
+-  }
+-  
+-  .alp-script-builder__step-card {
+-    position: relative;
+-    width: 100%;
+-    background: var(--alp-color-surface);
+-    border: 1px solid var(--alp-color-border);
+-    border-radius: var(--alp-radius-lg);
+-    padding: var(--alp-space-5) var(--alp-space-6);
+-    cursor: pointer;
+-    transition: transform 0.15s ease, box-shadow 0.15s ease, border-color 0.15s ease;
+-    box-shadow: var(--alp-shadow-sm);
+-  }
+-  
+-  .alp-script-builder__step-card:hover {
+-    transform: translateY(-2px);
+-    box-shadow: var(--alp-shadow-md);
+-    border-color: var(--alp-color-border-strong);
+-  }
+-  
+-  .alp-script-builder__step-header {
+-    display: flex;
+-    align-items: center;
+-    gap: 10px;
+-    margin-bottom: var(--alp-space-4);
+-    flex-wrap: wrap;
+-  }
+-  
+-  .alp-script-builder__step-number {
+-    background: var(--alp-color-brand-primary);
+-    color: white;
+-    font-size: var(--alp-font-size-xs);
+-    font-weight: 600;
+-    padding: 4px 10px;
+-    border-radius: var(--alp-radius-full);
+-    letter-spacing: 0.03em;
+-  }
+-  
+-  .alp-script-builder__step-badges {
+-    display: flex;
+-    align-items: center;
+-    gap: 6px;
+-    flex-wrap: wrap;
+-  }
+-  
+-  .alp-step-signpost {
+-    position: static;
+-    font-size: 11px;
+-    font-weight: 600;
+-    padding: 3px 10px;
+-    border-radius: 9999px;
+-    letter-spacing: 0;
+-    text-transform: none;
+-  }
+-  
+-  .alp-step-signpost--created {
+-    background: #dbeafe;
+-    color: #1e40af;
+-  }
+-  
+-  .alp-step-signpost--edited {
+-    background: #ede9fe;
+-    color: #5b21b6;
+-  }
+-
+-  .alp-step-signpost--order-edited {
+-    background: #fef3c7;
+-    color: #92400e;
+-  }
+-
+-  .alp-script-builder__step-blocks {
+-    display: flex;
+-    flex-direction: column;
+-    gap: var(--alp-space-3);
+-  }
+-  
+-  .alp-script-builder__block {
+-    background: #f8fafc;
+-    border: 1px solid var(--alp-color-border);
+-    border-radius: var(--alp-radius-md);
+-    padding: var(--alp-space-3) var(--alp-space-4);
+-    font-size: var(--alp-font-size-md);
+-  }
+-  
+-  .alp-script-builder__block-tags {
+-    display: flex;
+-    gap: 8px;
+-    align-items: center;
+-    margin-bottom: 6px;
+-  }
+-  
+-  .alp-script-builder__block-type {
+-    display: inline-block;
+-    font-size: var(--alp-font-size-xs);
+-    font-weight: 600;
+-    padding: 2px 8px;
+-    border-radius: 4px;
+-    text-transform: uppercase;
+-    letter-spacing: 0.04em;
+-    color: #ffffff;
+-  }
+-  
+-  .alp-script-builder__block[data-type="prompt"] .alp-script-builder__block-type {
+-    background: #1e40af;
+-  }
+-  .alp-script-builder__block[data-type="question"] .alp-script-builder__block-type {
+-    background: #5b21b6;
+-  }
+-  .alp-script-builder__block[data-type="required-check"] .alp-script-builder__block-type,
+-  .alp-script-builder__block[data-type="check"] .alp-script-builder__block-type {
+-    background: #047857;
+-  }
+-  .alp-script-builder__block[data-type="log-task"] .alp-script-builder__block-type {
+-    background: #b45309;
+-  }
+-  .alp-script-builder__block[data-type="end-call"] .alp-script-builder__block-type,
+-  .alp-script-builder__block[data-type="action"] .alp-script-builder__block-type {
+-    background: #b91c1c;
+-  }
+-  
+-  .alp-script-builder__block-content {
+-    color: var(--alp-color-text-muted);
+-    line-height: 1.45;
+-  }
+-  
+-  .alp-script-builder__paths {
+-    margin-top: 10px;
+-    display: flex;
+-    flex-direction: column;
+-    gap: 6px;
+-  }
+-  
+-  .alp-script-builder__path-item {
+-    display: flex;
+-    align-items: center;
+-    gap: 8px;
+-    font-size: 13px;
+-    padding: 6px 10px;
+-    background: #e0e7ff;
+-    border-radius: 6px;
+-    color: #334155;
+-  }
+-  
+-  .alp-script-builder__path-answer {
+-    font-weight: 600;
+-  }
+-  
+-  .alp-script-builder__path-icon {
+-    font-size: 11px;
+-    opacity: 0.8;
+-  }
+-  
+-  .alp-script-builder__path-target {
+-    font-family: ui-monospace, monospace;
+-    font-weight: 600;
+-  }
+-  
+-  .alp-script-builder__condition-badge {
+-    margin-top: 6px;
+-    font-size: 12px;
+-    color: #92400e;
+-    background: #fef3c7;
+-    padding: 2px 8px;
+-    border-radius: 4px;
+-    display: inline-flex;
+-    align-items: center;
+-    gap: 6px;
+-    font-weight: 500;
+-  }
+-  
+-  .alp-script-builder__connector {
+-    display: flex;
+-    flex-direction: column;
+-    align-items: center;
+-    width: 100%;
+-  }
+-  
+-  .alp-script-builder__connector-line {
+-    width: 3px;
+-    height: 18px;
+-    background: #64748b;
+-    border-radius: 2px;
+-  }
+-  
+-  .alp-script-builder__add-step-btn {
+-    width: 44px;
+-    height: 44px;
+-    margin: 0;
+-    background: var(--alp-color-brand-primary);
+-    color: white;
+-    border: none;
+-    border-radius: 50%;
+-    display: flex;
+-    align-items: center;
+-    justify-content: center;
+-    cursor: pointer;
+-    font-size: 18px;
+-    transition: background 0.15s ease;
+-    box-shadow: var(--alp-shadow-sm);
+-    flex-shrink: 0;
+-  }
+-  .alp-script-builder__add-step-btn:hover {
+-    background: var(--alp-color-brand-primary-hover);
+-  }
+-  
+-  /* =========================================================
+-     ADD CONTENT / FIRST STEP
+-     Matches Step 1 "Create New Script" dashed tile
+-     ========================================================= */
+-  .alp-add-content-tile {
+-    width: 100%;
+-    padding: 18px 14px;
+-    border: 2px dashed #444F83;
+-    border-radius: 8px;
+-    background: white;
+-    color: #374151;
+-    font-size: 16px;
+-    font-weight: 700;
+-    cursor: pointer;
+-    display: flex;
+-    align-items: center;
+-    justify-content: center;
+-    gap: 10px;
+-    min-height: 70px;
+-    transition: all 0.2s ease;
+-    text-align: center;
+-  }
+-  
+-  .alp-add-content-tile i {
+-    font-size: 18px;
+-    color: #444F83;
+-  }
+-  
+-  .alp-add-content-tile:hover {
+-    border-color: #444F83;
+-    background: #f0f4ff;
+-    box-shadow: 0 0 0 3px rgba(68, 79, 131, 0.2);
+-    color: #334155;
+-  }
+-  
+-  .alp-add-content-tile:hover i {
+-    color: #334155;
+-  }
+-  
+-  .alp-add-first-step {
+-    max-width: 560px;
+-    margin: 40px auto;
+-  }
+-  
+-  /* =========================================================
+-     BUTTONS
+-     ========================================================= */
+-  .alp-btn {
+-    padding: 10px 22px;
+-    border-radius: var(--alp-radius-full);
+-    font-weight: 500;
+-    font-size: var(--alp-font-size-sm);
+-    cursor: pointer;
+-    transition: all 0.15s ease;
+-    border: none;
+-  }
+-  
+-  .alp-btn--primary {
+-    background-color: var(--alp-color-brand-primary);
+-    color: white;
+-  }
+-  .alp-btn--primary:hover {
+-    background-color: var(--alp-color-brand-primary-hover);
+-  }
+-  .alp-btn--primary:disabled {
+-    background: #94a3b8;
+-    cursor: not-allowed;
+-    opacity: 0.7;
+-  }
+-  
+-  .alp-btn--outline,
+-  .alp-btn--secondary {
+-    background: #ffffff;
+-    border: 2px solid var(--alp-color-brand-primary);
+-    color: var(--alp-color-brand-primary);
+-  }
+-  .alp-btn--outline:hover,
+-  .alp-btn--secondary:hover {
+-    background: var(--alp-color-brand-primary-soft);
+-    color: #334155;
+-  }
+-  
+-  .alp-btn--danger {
+-    background: var(--alp-color-end-call);
+-    color: white;
+-  }
+-  .alp-btn--danger:hover {
+-    background: #991b1b;
+-  }
+-  
+-  .alp-btn--danger-outline {
+-    background: #ffffff;
+-    border: 2px solid var(--alp-color-end-call);
+-    color: var(--alp-color-end-call);
+-  }
+-  .alp-btn--danger-outline:hover {
+-    background: #fef2f2;
+-  }
+-  
+-  .alp-btn--icon {
+-    width: 34px;
+-    height: 34px;
+-    padding: 0;
+-    display: inline-flex;
+-    align-items: center;
+-    justify-content: center;
+-    flex-shrink: 0;
+-  }
+-
+-  .alp-btn--ghost {
+-    background: transparent;
+-    border: 2px solid transparent;
+-    color: var(--alp-color-brand-primary);
+-  }
+-  .alp-btn--ghost:hover {
+-    background: var(--alp-color-brand-primary-soft);
+-    border-color: var(--alp-color-brand-primary);
+-    color: #334155;
+-  }
+-  .alp-btn--ghost:disabled {
+-    background: transparent;
+-    border-color: transparent;
+-    color: #94a3b8;
+-    opacity: 0.5;
+-    cursor: not-allowed;
+-  }
+-
+-  .alp-btn--ghost-danger {
+-    color: var(--alp-color-end-call);
+-  }
+-  .alp-btn--ghost-danger:hover {
+-    background: #fef2f2;
+-    border-color: var(--alp-color-end-call);
+-  }
+-
+-  /* =========================================================
+-     FORM CONTROLS
+-     ========================================================= */
+-  .alp-input {
+-    width: 100%;
+-    padding: 10px 12px;
+-    border: 1px solid var(--alp-color-border-strong);
+-    border-radius: var(--alp-radius-sm);
+-    font-size: 14px;
+-    background: white;
+-  }
+-  
+-  .alp-input--inline {
+-    width: auto;
+-    min-width: 220px;
+-    max-width: 360px;
+-  }
+-  
+-  select.alp-input {
+-    width: auto;
+-    min-width: 160px;
+-    max-width: 240px;
+-  }
+-  
+-  .alp-textarea {
+-    resize: vertical;
+-    min-height: 80px;
+-  }
+-  
+-  .alp-label {
+-    display: block;
+-    font-size: 12px;
+-    font-weight: 600;
+-    color: var(--alp-color-text-muted);
+-    margin-bottom: 6px;
+-  }
+-  
+-  .alp-badge {
+-    font-size: 11px;
+-    padding: 2px 7px;
+-    border-radius: 4px;
+-    font-weight: 600;
+-    white-space: nowrap;
+-  }
+-  .alp-badge--auto {
+-    background: #047857;
+-    color: #ffffff;
+-  }
+-  .alp-badge--manual {
+-    background: #5b21b6;
+-    color: #ffffff;
+-  }
+-  
+-  /* =========================================================
+-     POPOVER SHELL
+-     ========================================================= */
+-  .alp-script-builder__popover-overlay {
+-    position: fixed;
+-    inset: 0;
+-    background: rgba(15, 23, 42, 0.45);
+-    display: flex;
+-    align-items: center;
+-    justify-content: center;
+-    z-index: 1000;
+-  }
+-  
+-  .alp-script-builder__popover {
+-    background: var(--alp-color-surface);
+-    max-height: 85vh;
+-    border-radius: var(--alp-radius-lg);
+-    box-shadow: var(--alp-shadow-lg);
+-    overflow: hidden;
+-    display: flex;
+-    flex-direction: column;
+-  }
+-  
+-  .alp-script-builder__popover--wide {
+-    width: 860px;
+-    max-width: 96vw;
+-  }
+-  .alp-script-builder__popover--medium {
+-    width: 640px;
+-  }
+-  .alp-script-builder__popover--small {
+-    width: 520px;
+-  }
+-  
+-  .alp-script-builder__popover-header {
+-    padding: var(--alp-space-4) var(--alp-space-5);
+-    background: #f8fafc;
+-    border-bottom: 1px solid var(--alp-color-border);
+-    display: flex;
+-    justify-content: space-between;
+-    align-items: center;
+-  }
+-  
+-  .alp-script-builder__popover-header h4 {
+-    margin: 0;
+-    font-size: 18px;
+-    font-weight: 700;
+-    color: #0f172a;
+-    letter-spacing: -0.01em;
+-    line-height: 1.3;
+-  }
+-  
+-  .alp-script-builder__close-btn {
+-    background: none;
+-    border: none;
+-    font-size: 18px;
+-    cursor: pointer;
+-    color: var(--alp-color-text-muted);
+-  }
+-  
+-  .alp-script-builder__popover-body {
+-    padding: 24px;
+-    overflow-y: auto;
+-    flex: 1;
+-  }
+-  
+-  .alp-script-builder__popover-footer {
+-    padding: var(--alp-space-4) var(--alp-space-5);
+-    background: #f8fafc;
+-    border-top: 1px solid var(--alp-color-border);
+-    display: flex;
+-    justify-content: space-between;
+-    gap: var(--alp-space-3);
+-  }
+-  
+-  .alp-footer-left,
+-  .alp-footer-right {
+-    display: flex;
+-    gap: 8px;
+-    flex-wrap: wrap;
+-  }
+-  
+-  .alp-empty-hint {
+-    text-align: center;
+-    color: var(--alp-color-text-muted);
+-    padding: 32px 16px;
+-    font-size: 14px;
+-  }
+-  
+-  /* =========================================================
+-     CONTENT CARD
+-     ========================================================= */
+-  .alp-content-card {
+-    background: #f8fafc;
+-    border: 1px solid var(--alp-color-border);
+-    border-radius: var(--alp-radius-md);
+-    padding: 16px 18px;
+-    margin-bottom: 16px;
+-  }
+-  
+-  .alp-content-card__header {
+-    display: flex;
+-    justify-content: space-between;
+-    align-items: flex-start;
+-    margin-bottom: 14px;
+-  }
+-  
+-  .alp-content-card__meta {
+-    display: flex;
+-    flex-direction: column;
+-    align-items: flex-start;
+-  }
+-  
+-  .alp-content-card__heading {
+-    font-size: 14px;
+-    font-weight: 600;
+-    color: var(--alp-color-text);
+-    margin-bottom: 6px;
+-  }
+-  
+-  .alp-content-card__tags {
+-    display: flex;
+-    gap: 8px;
+-    align-items: center;
+-  }
+-  
+-  .alp-content-card__type {
+-    font-size: 11px;
+-    font-weight: 700;
+-    text-transform: uppercase;
+-    letter-spacing: 0.03em;
+-    padding: 3px 9px;
+-    border-radius: 4px;
+-    color: #ffffff;
+-  }
+-  
+-  .alp-content-card__type[data-type="prompt"] {
+-    background: #1e40af;
+-  }
+-  .alp-content-card__type[data-type="question"] {
+-    background: #5b21b6;
+-  }
+-  .alp-content-card__type[data-type="required-check"] {
+-    background: #047857;
+-  }
+-  .alp-content-card__type[data-type="log-task"] {
+-    background: #b45309;
+-  }
+-  .alp-content-card__type[data-type="end-call"],
+-  .alp-content-card__type[data-type="action"] {
+-    background: #b91c1c;
+-  }
+-  
+-  .alp-content-card__id {
+-    font-size: 11px;
+-    font-family: ui-monospace, monospace;
+-    background: #334155;
+-    color: #f8fafc;
+-    font-weight: 500;
+-    padding: 2px 7px;
+-    border-radius: 4px;
+-  }
+-  
+-  .alp-content-card__actions {
+-    display: flex;
+-    gap: 4px;
+-  }
+-  
+-  .alp-content-section {
+-    margin-top: 16px;
+-    padding-top: 16px;
+-    border-top: 1px solid var(--alp-color-border);
+-  }
+-  
+-  .alp-option-row,
+-  .alp-check-row {
+-    display: flex;
+-    gap: 8px;
+-    margin-bottom: 10px;
+-    align-items: center;
+-    flex-wrap: nowrap;
+-  }
+-  
+-  .alp-option-row .alp-input,
+-  .alp-check-row .alp-input {
+-    width: auto;
+-    min-width: 180px;
+-    max-width: 280px;
+-    flex: 1 1 auto;
+-  }
+-  
+-  .alp-check-block {
+-    margin-bottom: 16px;
+-    padding: 12px;
+-    background: #fff;
+-    border: 1px solid var(--alp-color-border);
+-    border-radius: var(--alp-radius-md);
+-  }
+-  
+-  .alp-check-options {
+-    margin-top: 10px;
+-    padding-left: 4px;
+-  }
+-  
+-  .alp-btn-row {
+-    display: flex;
+-    gap: 8px;
+-    margin-top: 10px;
+-    flex-wrap: wrap;
+-  }
+-  
+-  .alp-dependency-tile {
+-    display: flex;
+-    justify-content: space-between;
+-    align-items: center;
+-    gap: 12px;
+-    padding: 12px 14px;
+-    background: #fef3c7;
+-    border: 1px solid #f59e0b;
+-    border-radius: var(--alp-radius-md);
+-    font-size: 13px;
+-  }
+-  
+-  .alp-dependency-answers {
+-    color: #92400e;
+-  }
+-  
+-  .alp-dependency-actions {
+-    display: flex;
+-    gap: 6px;
+-    flex-shrink: 0;
+-  }
+-  
+-  .alp-destination-tile {
+-    display: flex;
+-    align-items: center;
+-    gap: 6px;
+-    padding: 6px 10px;
+-    background: #e0e7ff;
+-    border-radius: var(--alp-radius-sm);
+-    font-size: 13px;
+-    color: #334155;
+-    font-family: ui-monospace, monospace;
+-  }
+-  
+-  /* =========================================================
+-     TYPE PICKER
+-     ========================================================= */
+-  .alp-type-grid {
+-    display: grid;
+-    grid-template-columns: 1fr 1fr;
+-    gap: 12px;
+-    padding: 4px;
+-  }
+-  
+-  .alp-type-tile {
+-    padding: 18px 16px;
+-    border: 1px solid var(--alp-color-border);
+-    border-radius: var(--alp-radius-md);
+-    background: white;
+-    text-align: left;
+-    cursor: pointer;
+-    transition: all 0.15s ease;
+-  }
+-  .alp-type-tile:hover {
+-    border-color: var(--alp-color-brand-primary);
+-    box-shadow: var(--alp-shadow-sm);
+-  }
+-  
+-  .alp-type-tile__label {
+-    display: inline-block;
+-    font-weight: 600;
+-    font-size: 14px;
+-    margin-bottom: 6px;
+-    padding: 2px 8px;
+-    border-radius: 4px;
+-    color: #ffffff;
+-  }
+-  
+-  .alp-type-tile[data-type="prompt"] .alp-type-tile__label {
+-    background: #1e40af;
+-  }
+-  .alp-type-tile[data-type="question"] .alp-type-tile__label {
+-    background: #5b21b6;
+-  }
+-  .alp-type-tile[data-type="required-check"] .alp-type-tile__label {
+-    background: #047857;
+-  }
+-  .alp-type-tile[data-type="log-task"] .alp-type-tile__label {
+-    background: #b45309;
+-  }
+-  .alp-type-tile[data-type="end-call"] .alp-type-tile__label,
+-  .alp-type-tile[data-type="action"] .alp-type-tile__label {
+-    background: #b91c1c;
+-  }
+-  
+-  .alp-type-tile__desc {
+-    display: block;
+-    font-size: 13px;
+-    color: var(--alp-color-text-muted);
+-    margin-top: 4px;
+-  }
+-  
+-  /* =========================================================
+-     STEP PICKER
+-     ========================================================= */
+-  .alp-step-pick-hint {
+-    font-size: 13px;
+-    color: var(--alp-color-text-muted);
+-    margin: 0 0 16px;
+-    display: flex;
+-    align-items: center;
+-    gap: 8px;
+-  }
+-  
+-  .alp-step-pick-grid {
+-    display: grid;
+-    grid-template-columns: 1fr 1fr;
+-    gap: 12px;
+-    padding: 4px;
+-  }
+-  
+-  .alp-step-pick-tile {
+-    display: flex;
+-    flex-direction: column;
+-    align-items: flex-start;
+-    gap: 4px;
+-    padding: 16px;
+-    border: 2px solid var(--alp-color-border);
+-    border-radius: var(--alp-radius-md);
+-    background: #ffffff;
+-    text-align: left;
+-    cursor: pointer;
+-    transition: all 0.15s ease;
+-    color: #0f172a;
+-  }
+-  .alp-step-pick-tile:hover {
+-    border-color: var(--alp-color-brand-primary);
+-    box-shadow: var(--alp-shadow-sm);
+-    background: var(--alp-color-brand-primary-soft);
+-  }
+-  
+-  .alp-step-pick-tile--selected {
+-    border-color: var(--alp-color-brand-primary);
+-    background: var(--alp-color-brand-primary-soft);
+-    box-shadow: 0 0 0 1px var(--alp-color-brand-primary);
+-  }
+-  
+-  .alp-step-pick-tile__label {
+-    display: flex;
+-    align-items: center;
+-    gap: 8px;
+-    font-weight: 600;
+-    font-size: 15px;
+-    color: #0f172a;
+-    margin: 0;
+-    padding: 0;
+-    background: transparent;
+-  }
+-  
+-  .alp-step-pick-tile__id {
+-    display: block;
+-    font-size: 12px;
+-    color: #64748b;
+-    font-family: ui-monospace, monospace;
+-    margin: 0;
+-    padding: 0;
+-    background: transparent;
+-  }
+-  
+-  /* =========================================================
+-     CONDITION POPOVER
+-     ========================================================= */
+-  .alp-condition-rail {
+-    display: flex;
+-    gap: 8px;
+-    padding: 12px 24px;
+-    background: #f8fafc;
+-    border-bottom: 1px solid var(--alp-color-border);
+-  }
+-  
+-  .alp-condition-rail__step {
+-    flex: 1;
+-    text-align: center;
+-    padding: 8px;
+-    font-size: 13px;
+-    font-weight: 500;
+-    color: var(--alp-color-text-muted);
+-    border-radius: var(--alp-radius-sm);
+-  }
+-  
+-  .alp-condition-rail__step.active {
+-    background: var(--alp-color-brand-primary);
+-    color: white;
+-  }
+-  
+-  .alp-condition-intro {
+-    margin: 0 0 14px;
+-    font-size: 14px;
+-    color: var(--alp-color-text-muted);
+-  }
+-  
+-  .alp-answer-tiles {
+-    display: flex;
+-    flex-direction: column;
+-    gap: 8px;
+-  }
+-  
+-  .alp-answer-tile {
+-    display: flex;
+-    justify-content: space-between;
+-    align-items: center;
+-    padding: 12px 16px;
+-    border: 1.5px solid var(--alp-color-border);
+-    border-radius: var(--alp-radius-md);
+-    background: white;
+-    font-size: 14px;
+-    cursor: pointer;
+-    transition: all 0.15s ease;
+-    text-align: left;
+-    color: var(--alp-color-text);
+-  }
+-  .alp-answer-tile:hover {
+-    border-color: var(--alp-color-brand-primary);
+-  }
+-  .alp-answer-tile.selected {
+-    border-color: var(--alp-color-brand-primary);
+-    background: var(--alp-color-brand-primary-soft);
+-    color: var(--alp-color-brand-primary);
+-    font-weight: 500;
+-  }
+-  
+-  .alp-condition-footer {
+-    display: flex;
+-    justify-content: space-between;
+-    margin-top: 24px;
+-    padding-top: 16px;
+-    border-top: 1px solid var(--alp-color-border);
+-  }
+-  
+-  .alp-checkbox-label {
+-    display: flex;
+-    align-items: center;
+-    gap: 8px;
+-    margin-top: 16px;
+-    font-size: 14px;
+-    color: var(--alp-color-text-muted);
+-    cursor: pointer;
+-  }
+-
+-  .alp-script-builder__step-title-text {
+-    font-size: 13px;
+-    font-weight: 600;
+-    color: #334155;
+-  }
+-  
+-  .alp-script-builder__path-id {
+-    font-weight: 400;
+-    opacity: 0.65;
+-    font-size: 11px;
+-    margin-left: 4px;
+-  }
+-
+-  .alp-script-builder__block-content--prompt {
+-    white-space: pre-line;
+-    line-height: 1.55;
+-  }
+-  
+-  .alp-script-builder__step-title-text {
+-    font-size: 13px;
+-    font-weight: 600;
+-    color: #334155;
+-  }
+-  
+-  .alp-script-builder__path-id {
+-    font-weight: 0.65;
+-    opacity: 0.65;
+-    font-size: 11px;
+-    margin-left: 4px;
+-  }
+-
+-  .auth-prompt-variable {
+-    display: inline;
+-    background: #dbeafe;
+-    color: #1e40af;
+-    font-weight: 700;
+-    padding: 0 4px;
+-    border-radius: 4px;
+-    white-space: nowrap;
+-  }
+-  
+-  .alp-script-builder__block-content--prompt {
+-    white-space: normal;
+-    line-height: 1.55;
+-  }
+diff --git a/src/index.css b/src/index.css
+index ca2c587..b9a5855 100644
+--- a/src/index.css
++++ b/src/index.css
+@@ -2,7 +2,6 @@
+ @import url('https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css');
+ @import 'assets/styles/boostrap-reboot.css';
+ @import "assets/styles/legacy-v2-global-repair.css";
+-@import "assets/styles/alp-css-refactor/_index.css";
+ 
+ :root {
+   --alpha-toolbar-brand-logo: url(/Images/Reassure-logo-77.png);

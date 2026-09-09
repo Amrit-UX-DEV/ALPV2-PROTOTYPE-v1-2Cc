@@ -1,0 +1,26 @@
+Files and directories to delete after applying the ALP CSS refactor:
+
+# Legacy shim CSS
+src/assets/styles/prototype-migration/p-drive-collection/script-builder.styles.css
+
+# Legacy CSS refactor folder (unused)
+src/assets/styles/alp-css-refactor/
+
+# ALP component CSS files now moved to the global design system
+src/app/prototype-migration/call-center-demo/call-center-demo.component.css
+
+src/app/prototype-migration/call-center-demo/components/call-rep-scripts/script-builder/script-builder.component.css
+src/app/prototype-migration/call-center-demo/components/call-rep-scripts/script-builder/preview/script-preview.component.css
+src/app/prototype-migration/call-center-demo/components/call-rep-scripts/script-builder/popovers/type-picker/type-picker.component.css
+src/app/prototype-migration/call-center-demo/components/call-rep-scripts/script-builder/popovers/step-picker/step-picker.component.css
+src/app/prototype-migration/call-center-demo/components/call-rep-scripts/script-builder/popovers/reorder-confirm/reorder-confirm.component.css
+src/app/prototype-migration/call-center-demo/components/call-rep-scripts/script-builder/popovers/order-steps-popover/order-steps-popover.component.css
+src/app/prototype-migration/call-center-demo/components/call-rep-scripts/script-builder/popovers/confirm-popover/confirm-popover.component.css
+src/app/prototype-migration/call-center-demo/components/call-rep-scripts/script-builder/popovers/condition-popover/condition-popover.component.css
+src/app/prototype-migration/call-center-demo/components/call-rep-scripts/script-builder/content-card/content-card.component.css
+src/app/prototype-migration/call-center-demo/components/call-rep-scripts/script-builder/toolkit/script-toolkit.component.css
+src/app/prototype-migration/call-center-demo/components/call-rep-scripts/journey/call-script-journey.component.css
+
+src/app/prototype-migration/call-center-demo/components/script-management/script-setup.component.css
+src/app/prototype-migration/call-center-demo/components/recent-callers/recent-callers.component.css
+src/app/prototype-migration/call-center-demo/components/transfer-call-popover/transfer-call-popover.component.css
