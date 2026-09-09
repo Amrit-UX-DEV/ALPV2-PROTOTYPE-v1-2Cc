@@ -304,9 +304,7 @@
 }
 
 .alp-auto-checks-dialog__tabs {
-  display: flex;
-  gap: var(--alp-space-1);
-  margin-bottom: var(--alp-space-3);
+  display: none;
 }
 
 .alp-auto-checks-dialog__tab {

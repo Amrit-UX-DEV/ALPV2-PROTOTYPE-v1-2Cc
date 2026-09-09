@@ -95,7 +95,7 @@ export class CallScriptJourneyComponent implements OnInit {
   // Running history of checks evaluated anywhere on this journey.
   readonly screenChecks = signal<RenderedCheck[]>([]);
   readonly currentScreenCheckRefs = signal<Set<string>>(new Set());
-  readonly activeCheckTab = signal<'current' | 'unconfirmed' | 'all'>('current');
+  readonly activeCheckTab = signal<'current' | 'unconfirmed' | 'all'>('all');
   readonly checkSearchQuery = signal('');
   readonly unconfirmedChecks = computed(() =>
     this.screenChecks().filter(check => check.unconfirmed)
@@ -380,7 +380,7 @@ export class CallScriptJourneyComponent implements OnInit {
   }
 
   openCheckPopover(): void {
-    this.activeCheckTab.set('current');
+    this.activeCheckTab.set('all');
     this.checkSearchQuery.set('');
     this.showCheckPopover.set(true);
   }
