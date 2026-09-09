@@ -28,6 +28,13 @@ For now, the existing Surrender-tile mount remains in
 `call-action-options.component.html` as a duplicate; it still opens from the
 Surrender tile.
 
+`STRUCTURE.example.jsonc` is a non-runtime shape guide showing steps,
+content/unit refs, routes, `onEnter`, `callFlow`, and
+`binding.aggregateFlag`.
+
 To change a local check outcome, edit the matching entry in
 `surrender.checks.json`, keep `"status": "ok"`, and change `"outcome"` (or the
 `"detail"` fields used by that check). Do not edit the reference JSON.
+If an entry is missing or has `"status": "error"`, the local runner uses its
+explicit No/false stub and reports that value in debug rather than treating
+undefined as a live result.

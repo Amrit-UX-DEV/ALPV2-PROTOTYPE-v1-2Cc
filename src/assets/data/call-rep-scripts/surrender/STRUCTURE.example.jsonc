@@ -1,0 +1,29 @@
+{
+  // Fake example only: this file is not loaded by the player.
+  "step": { // A step is one screen.
+    "stepId": "st-example",
+    "onEnter": [{ "kind": "check", "ref": "chk.example" }], // Runs before render.
+    "content": [ // Content items render in order.
+      { "id": "c-example", "ref": "prm.example" } // ref selects a unit.
+    ],
+    "buttons": [ // Buttons own navigation.
+      {
+        "key": "next",
+        "kind": "next",
+        "routes": [{ "to": "st-next" }] // Button route target.
+      }
+    ]
+  },
+  "unit": { // Reusable content/check unit.
+    "unitId": "chk.example",
+    "kind": "automated",
+    "binding": {
+      "aggregateFlag": { // Derives a check field from detail.
+        "outputKey": "anyWarning",
+        "trueWhenAny": ["hasPenalty"]
+      }
+    }
+  },
+  // callFlow invokes a linked callable flow; @exit:name returns to onExit.
+  "callFlow": { "ref": "example-flow" }
+}

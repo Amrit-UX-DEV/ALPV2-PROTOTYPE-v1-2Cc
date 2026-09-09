@@ -132,7 +132,7 @@ export class CallScriptJourneyComponent implements OnInit {
       .filter(([id]) => id.startsWith('chk.'))
       .map(([id, result]) => ({
         id,
-        value: this.formatCheckResult(id, result)
+        value: this.formatDebugCheckResult(id, result)
       }))
   );
   readonly nextBlockedReason = computed(() => {
@@ -505,8 +505,9 @@ export class CallScriptJourneyComponent implements OnInit {
     const outcome = unit?.outcomes?.includes('No')
       ? 'No'
       : unit?.outcomes?.[0] ?? 'No';
-    const detail = unit?.aggregateFlag
-      ? Object.fromEntries(unit.aggregateFlag.trueWhenAny.map(key => [key, false]))
+    const aggregateFlag = this.getAggregateFlag(unit);
+    const detail = aggregateFlag
+      ? Object.fromEntries(aggregateFlag.trueWhenAny.map(key => [key, false]))
       : undefined;
 
     return {
@@ -539,12 +540,15 @@ export class CallScriptJourneyComponent implements OnInit {
     }
 
     const unit = this.resolveUnit(ref);
-    if (unit?.aggregateFlag && result.detail) {
-      return unit.aggregateFlag.trueWhenAny.some(key => this.asBoolean(result.detail?.[key]))
-        ? 'Yes'
-        : 'No';
+    const aggregateValue = this.resolveAggregateFlag(unit, result);
+    if (aggregateValue !== undefined) {
+      return aggregateValue ? 'Yes' : 'No';
     }
-    if (unit?.subChecks && result.detail) {
+    const mappedOutcome = unit?.binding?.outcomeMap?.[String(result.raw)];
+    if (mappedOutcome !== undefined) {
+      return mappedOutcome;
+    }
+    if (this.getSubChecks(unit) && result.detail) {
       return this.deriveWaypoint(
         {
           kind: 'waypoint',
@@ -560,6 +564,36 @@ export class CallScriptJourneyComponent implements OnInit {
     return result.status ?? 'No result';
   }
 
+  private formatDebugCheckResult(ref: string, result: CheckResult | undefined): string {
+    const value = this.formatCheckResult(ref, result);
+    return result?.detail ? `${value}; detail=${JSON.stringify(result.detail)}` : value;
+  }
+
+  private getAggregateFlag(unit: ScriptUnit | undefined): ScriptUnit['aggregateFlag'] | undefined {
+    return unit?.aggregateFlag ?? unit?.binding?.aggregateFlag;
+  }
+
+  private getSubChecks(unit: ScriptUnit | undefined): ScriptUnit['subChecks'] | undefined {
+    return unit?.subChecks ?? unit?.binding?.subChecks;
+  }
+
+  private getSubOutcomeMap(unit: ScriptUnit | undefined): ScriptUnit['subOutcomeMap'] | undefined {
+    return unit?.subOutcomeMap ?? unit?.binding?.subOutcomeMap;
+  }
+
+  private resolveAggregateFlag(unit: ScriptUnit | undefined, result: CheckResult | undefined): boolean | undefined {
+    const aggregateFlag = this.getAggregateFlag(unit);
+    if (!aggregateFlag || !result?.detail) {
+      return undefined;
+    }
+
+    const values = aggregateFlag.trueWhenAny.map(key => result.detail?.[key]);
+    if (values.some(value => value === undefined)) {
+      return undefined;
+    }
+    return values.some(value => this.asBoolean(value));
+  }
+
   private deriveWaypoint(entry: ScriptOnEnter, source: string): string {
     const result = this.checkResults()[source];
     const unit = this.resolveUnit(source);
@@ -568,12 +602,23 @@ export class CallScriptJourneyComponent implements OnInit {
     }
 
     if (entry.aggregate === 'single-joint') {
-      return result.outcome === 'Joint' ? 'amber' : 'pass';
+      return result.outcome === undefined
+        ? 'unknown'
+        : result.outcome === 'Joint'
+          ? 'amber'
+          : 'pass';
     }
 
-    const styles = unit.subChecks?.map(check => {
+    let hasUnknown = false;
+    const subChecks = this.getSubChecks(unit);
+    const subOutcomeMap = this.getSubOutcomeMap(unit);
+    const styles = subChecks?.map(check => {
       const raw = result.detail?.[check.key];
-      const outcome = unit.subOutcomeMap?.[String(raw)] ?? String(raw ?? 'No');
+      if (raw === undefined) {
+        hasUnknown = true;
+        return 'unknown';
+      }
+      const outcome = subOutcomeMap?.[String(raw)] ?? String(raw ?? 'No');
       return unit.styling?.[outcome] ?? 'pass';
     }) ?? [];
 
@@ -582,6 +627,9 @@ export class CallScriptJourneyComponent implements OnInit {
     }
     if (styles.includes('amber') || unit.styling?.[result.outcome ?? ''] === 'amber') {
       return 'amber';
+    }
+    if (hasUnknown) {
+      return 'unknown';
     }
     return unit.styling?.[result.outcome ?? ''] ?? 'pass';
   }
@@ -664,8 +712,9 @@ export class CallScriptJourneyComponent implements OnInit {
         return result?.outcome;
       }
       const unit = this.resolveUnit(checkMatch[1]);
-      if (checkMatch[2] === unit?.aggregateFlag?.outputKey) {
-        return unit.aggregateFlag.trueWhenAny.some(key => this.asBoolean(result?.detail?.[key]));
+      const aggregateFlag = this.getAggregateFlag(unit);
+      if (checkMatch[2] === aggregateFlag?.outputKey) {
+        return this.resolveAggregateFlag(unit, result);
       }
       return this.getPathValue(result?.detail, checkMatch[2]);
     }

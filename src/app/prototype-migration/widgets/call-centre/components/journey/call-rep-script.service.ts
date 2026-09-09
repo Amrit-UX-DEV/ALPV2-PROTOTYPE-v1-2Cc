@@ -13,6 +13,19 @@ export interface ScriptUnit {
   prompt?: string;
   label?: string;
   actionType?: string;
+  binding?: {
+    aggregateFlag?: {
+      outputKey: string;
+      trueWhenAny: string[];
+    };
+    subChecks?: Array<{
+      key: string;
+      label: string;
+    }>;
+    subOutcomeMap?: Record<string, string>;
+    outcomeMap?: Record<string, string>;
+    [key: string]: unknown;
+  };
   options?: ScriptOption[];
   outcomes?: string[];
   optionLabels?: Record<string, string>;
