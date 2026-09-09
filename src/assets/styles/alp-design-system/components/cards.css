@@ -234,6 +234,45 @@
   flex-shrink: 0;
 }
 
+/* Automatic-check provenance tile used by the script journey. */
+.alp-auto-checks-tile {
+  display: flex;
+  align-items: center;
+  gap: var(--alp-space-3);
+  width: 100%;
+  margin: 0 0 var(--alp-space-6);
+  padding: var(--alp-space-4) var(--alp-space-5);
+  border: 2px solid var(--alp-color-green-200);
+  border-radius: var(--alp-radius-md);
+  background: var(--alp-color-green-50);
+  color: var(--alp-color-text);
+  cursor: pointer;
+  font: inherit;
+  text-align: left;
+}
+
+.alp-auto-checks-tile:hover,
+.alp-auto-checks-tile:focus-visible {
+  border-color: var(--alp-color-green-400);
+  box-shadow: var(--alp-shadow-xs);
+}
+
+.alp-auto-checks-tile__badge {
+  flex-shrink: 0;
+}
+
+.alp-auto-checks-tile__count {
+  font-weight: var(--alp-font-weight-bold);
+}
+
+.alp-auto-checks-tile__hint {
+  margin-left: auto;
+  color: var(--alp-color-brand);
+  font-size: var(--alp-font-size-sm);
+  font-weight: var(--alp-font-weight-semibold);
+  white-space: nowrap;
+}
+
 /* ---- Content section ---- */
 .alp-content-section {
   margin-top: var(--alp-space-4);

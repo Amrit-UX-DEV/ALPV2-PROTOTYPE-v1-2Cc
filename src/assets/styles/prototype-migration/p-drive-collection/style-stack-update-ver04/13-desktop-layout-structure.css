@@ -18,6 +18,7 @@ a {
     white-space: normal;
 }
 
+/* legacy global header — disabled.
 header {
     background-color: var(--branding-bg-color);
     transition: all 200ms ease-in-out;
@@ -25,6 +26,7 @@ header {
     display: flex;
     flex-direction: column;
 }
+*/
 
 .alpha-app-body {
     background-color: rgba(255, 255, 255, 1);
