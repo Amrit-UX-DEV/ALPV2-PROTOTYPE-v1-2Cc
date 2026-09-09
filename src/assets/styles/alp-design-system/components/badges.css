@@ -194,6 +194,7 @@
 .alp-script-journey__check-badge.manual {
   background-color: var(--alp-color-purple-600);
   color: var(--alp-color-white);
+  font-size: var(--alp-font-size-xs);
 }
 
 /* =========================================================

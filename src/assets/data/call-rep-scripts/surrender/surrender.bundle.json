@@ -80,11 +80,6 @@
           "id": "c-alt-q",
           "ref": "qst.interested-in-alternatives",
           "visibleWhen": "chk.allow-alternatives == 'Yes'"
-        },
-        {
-          "id": "c-alt-choice-confirm",
-          "ref": "prm.alt-choice-confirm",
-          "visibleWhen": "c-alt-q.answered"
         }
       ],
       "buttons": [
@@ -1029,19 +1024,6 @@
         "No": "pass",
         "Yes": "fail"
       }
-    },
-    "prm.alt-choice-confirm": {
-      "unitId": "prm.alt-choice-confirm",
-      "version": 1,
-      "kind": "prompt",
-      "body": "Thanks - you've chosen \"{{choice}}\". I'll take you through the next steps for that now.",
-      "placeholders": [
-        {
-          "key": "choice",
-          "source": "c-alt-q",
-          "path": "text"
-        }
-      ]
     },
     "prm.alternatives-intro": {
       "unitId": "prm.alternatives-intro",

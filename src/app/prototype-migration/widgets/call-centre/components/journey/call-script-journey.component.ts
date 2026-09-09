@@ -20,6 +20,7 @@ interface FlowFrame {
   stepId: string;
   args: Record<string, unknown>;
   onExit?: Record<string, string>;
+  flowStack?: FlowFrame[];
 }
 
 interface RenderedItem {
@@ -271,7 +272,7 @@ export class CallScriptJourneyComponent implements OnInit {
     return this.isExpressionMet(button.enabledWhen);
   }
 
-  async runButton(button: ScriptButton): Promise<void> {
+  async runButton(button: ScriptButton, fromAutoRoute = false): Promise<void> {
     if (!this.isButtonEnabled(button)) {
       return;
     }
@@ -306,11 +307,16 @@ export class CallScriptJourneyComponent implements OnInit {
     }
 
     if (route.to.startsWith('@exit:')) {
+      if (!fromAutoRoute) {
+        this.pushCurrentLocation();
+      }
       await this.returnFromFlow(route.to.slice('@exit:'.length), checksUsedForRoute);
       return;
     }
 
-    this.pushCurrentLocation();
+    if (!fromAutoRoute) {
+      this.pushCurrentLocation();
+    }
     await this.enterStep(route.to, checksUsedForRoute);
   }
 
@@ -323,6 +329,7 @@ export class CallScriptJourneyComponent implements OnInit {
     this.navigationHistory.update(history => history.slice(0, -1));
     this.activeFlow.set(previous.flow);
     this.flowArgs.set(previous.args);
+    this.flowStack.set(previous.flowStack ? [...previous.flowStack] : []);
     this.currentStepId.set(previous.stepId);
   }
 
@@ -385,7 +392,7 @@ export class CallScriptJourneyComponent implements OnInit {
       button.kind === 'auto' && this.isExpressionMet(button.visibleWhen) && this.isButtonEnabled(button)
     );
     if (autoButton) {
-      await this.runButton(autoButton);
+      await this.runButton(autoButton, true);
     }
   }
 
@@ -442,7 +449,8 @@ export class CallScriptJourneyComponent implements OnInit {
       {
         flow: this.activeFlow(),
         stepId,
-        args: this.flowArgs()
+        args: this.flowArgs(),
+        flowStack: [...this.flowStack()]
       }
     ]);
   }

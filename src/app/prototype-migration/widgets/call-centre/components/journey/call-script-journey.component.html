@@ -221,7 +221,7 @@
 
       <footer class="alp-script-journey__footer">
         <button type="button"
-                class="alp-script-journey__btn alp-script-journey__btn--secondary"
+                class="alp-btn alp-btn--secondary"
                 [disabled]="!hasPreviousStep()"
                 (click)="goBack()">
           Previous
@@ -230,9 +230,9 @@
         @for (button of visibleButtons(); track button.key) {
           @if (button.kind !== 'back') {
             <button type="button"
-                    class="alp-script-journey__btn"
-                    [class.alp-script-journey__btn--danger]="button.kind === 'end'"
-                    [class.alp-script-journey__btn--primary]="button.kind !== 'end'"
+                    class="alp-btn"
+                    [class.alp-btn--danger]="button.kind === 'end'"
+                    [class.alp-btn--primary]="button.kind !== 'end'"
                     [disabled]="!isButtonEnabled(button)"
                     (click)="runButton(button)">
               {{ button.label || (button.kind === 'end' ? 'End call' : 'Next') }}
@@ -295,7 +295,7 @@
         }
       </section>
 
-      <button type="button" class="alp-script-journey__btn alp-script-journey__btn--primary" (click)="restartJourney()">
+      <button type="button" class="alp-btn alp-btn--primary" (click)="restartJourney()">
         Restart journey
       </button>
     </div>

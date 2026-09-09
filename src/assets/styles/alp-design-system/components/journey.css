@@ -95,6 +95,10 @@
   background: var(--alp-color-faint-grey);
 }
 
+.alp-script-journey__read-block--prompt .alp-script-journey__read-block-label {
+  margin-bottom: var(--alp-space-2);
+}
+
 .alp-script-journey__read-block--prompt .alp-script-journey__read-block-text {
   margin-bottom: var(--alp-space-6);
 }
@@ -323,50 +327,6 @@ button.declaration-btn.declared::after {
   justify-content: space-between;
   padding-top: var(--alp-space-7);
   border-top: 1px solid var(--alp-color-border);
-}
-
-/* ---- Footer buttons ---- */
-.alp-script-journey__btn {
-  font-weight: var(--alp-font-weight-medium);
-  cursor: pointer;
-  transition: all 0.2s ease;
-  border-radius: 50px;
-  padding: 5px 16px;
-  /* Was #5da4e0, which put white text at 2.67:1. Same blue, darkened to clear AA
-     at 5.56:1. */
-  background-color: #0f6cae;
-  text-align: center;
-  border: 2px solid rgba(255, 255, 255, 0.3);
-  color: var(--alp-color-white);
-  min-width: 30px;
-  min-height: 30px;
-  line-height: 1.5;
-  margin: 3px;
-  font-size: 16px;
-  box-sizing: border-box;
-  letter-spacing: 1px;
-}
-
-.alp-script-journey__btn:disabled {
-  opacity: 0.45;
-  cursor: not-allowed;
-}
-
-.alp-script-journey__btn--primary {
-  background-color: var(--alp-color-legacy-blue);
-  color: var(--alp-color-white);
-  border: none;
-}
-
-.alp-script-journey__btn--secondary {
-  background-color: var(--alp-color-surface-raised);
-  color: var(--alp-color-slate-700);
-  border: 1px solid var(--alp-color-border-strong);
-}
-
-.alp-script-journey__btn--danger {
-  background-color: var(--alp-color-red-600);
-  color: var(--alp-color-white);
 }
 
 /* ---- Summary ---- */
