@@ -695,7 +695,7 @@ export class CallScriptJourneyComponent implements OnInit {
     return result.status ?? 'No result';
   }
 
-  private formatBulkCheckResult(ref: string, unit: ScriptUnit): string {
+  private formatBulkCheckResult(ref: string, unit: ScriptUnit | undefined): string {
     const outcomes = (this.getSubChecks(unit) ?? []).map(subCheck =>
       this.formatSubCheckOutcome(unit, this.resolveSubCheckValue(ref, subCheck.key))
     );
