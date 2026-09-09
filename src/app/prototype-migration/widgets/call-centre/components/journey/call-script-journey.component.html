@@ -61,19 +61,57 @@
         </details>
       }
 
-      <div class="alp-script-journey__content">
-
-        @for (check of currentChecks(); track check.ref) {
-          <div class="alp-script-journey__checks">
-            <h4 class="alp-script-journey__section-title">Required Check</h4>
-            <div class="alp-script-journey__check-list">
-              <div class="alp-script-journey__check-item alp-script-journey__check-item--auto">
-                <span>{{ check.label }} <strong>{{ check.outcome }}</strong></span>
-                <span class="alp-script-journey__check-badge">Auto</span>
-              </div>
+      @if (screenChecks().length === 1) {
+        @let check = screenChecks()[0];
+        <div class="alp-script-journey__checks">
+          <h4 class="alp-script-journey__section-title">Required Check</h4>
+          <div class="alp-script-journey__check-list">
+            <div class="alp-script-journey__check-item alp-script-journey__check-item--auto">
+              <span>{{ check.label }} <strong>{{ check.outcome }}</strong></span>
+              <span class="alp-script-journey__check-badge">Auto</span>
             </div>
           </div>
-        }
+        </div>
+      } @else if (screenChecks().length > 1) {
+        <div class="alp-content-card" role="status">
+          <div class="alp-content-card__header">
+            <div class="alp-content-card__meta">
+              <span class="alp-content-card__heading">Automatic checks</span>
+              <span>{{ screenChecks().length }} automatic checks were performed by Alpha</span>
+            </div>
+          </div>
+          <button type="button" class="alp-btn alp-btn--ghost alp-btn--sm" (click)="openCheckPopover()">
+            Click to view
+          </button>
+        </div>
+      }
+
+      @if (showCheckPopover()) {
+        <div class="alp-dialog-overlay" role="presentation">
+          <section class="alp-dialog alp-dialog--small" role="dialog" aria-modal="true" aria-labelledby="check-popover-title">
+            <header class="alp-dialog__header">
+              <h4 id="check-popover-title">Automatic checks</h4>
+              <button type="button" class="alp-dialog__close-btn" aria-label="Close automatic checks" (click)="closeCheckPopover()">
+                <i class="fas fa-times" aria-hidden="true"></i>
+              </button>
+            </header>
+            <div class="alp-dialog__content">
+              <ul class="alp-script-journey__check-list">
+                @for (check of screenChecks(); track check.ref) {
+                  <li class="alp-script-journey__check-item alp-script-journey__check-item--auto">
+                    <span>{{ check.ref }}: {{ check.label }} <strong>{{ check.outcome }}</strong></span>
+                  </li>
+                }
+              </ul>
+            </div>
+            <footer class="alp-dialog__footer">
+              <button type="button" class="alp-btn alp-btn--secondary" (click)="closeCheckPopover()">Close</button>
+            </footer>
+          </section>
+        </div>
+      }
+
+      <div class="alp-script-journey__content">
 
         @for (item of sortedContent(); track item.id) {
           @if (item.kind === 'prompt') {

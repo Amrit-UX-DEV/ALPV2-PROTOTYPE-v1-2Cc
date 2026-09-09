@@ -20,6 +20,7 @@ interface FlowFrame {
   stepId: string;
   args: Record<string, unknown>;
   onExit?: Record<string, string>;
+  checks?: RenderedCheck[];
 }
 
 interface RenderedItem {
@@ -72,6 +73,8 @@ export class CallScriptJourneyComponent implements OnInit {
   readonly completedChecks = signal<Set<string>>(new Set());
   readonly completedActions = signal<string[]>([]);
   readonly waypoints = signal<Map<string, string>>(new Map());
+  readonly screenChecks = signal<RenderedCheck[]>([]);
+  readonly showCheckPopover = signal(false);
   readonly playerOptions = signal<PlayerOptions>({
     debugMode: false,
     showScriptInFirstStep: true
@@ -95,12 +98,6 @@ export class CallScriptJourneyComponent implements OnInit {
     return (step?.content ?? [])
       .map(item => this.renderContentItem(item))
       .filter((item): item is RenderedItem => item !== null);
-  });
-  readonly currentChecks = computed(() => {
-    const step = this.currentStep();
-    return (step?.onEnter ?? [])
-      .filter((entry): entry is ScriptOnEnter & { ref: string } => entry.kind === 'check' && !!entry.ref)
-      .map(entry => this.renderCheck(entry.ref));
   });
   readonly visibleButtons = computed(() => {
     const step = this.currentStep();
@@ -164,6 +161,8 @@ export class CallScriptJourneyComponent implements OnInit {
     this.completedChecks.set(new Set());
     this.completedActions.set([]);
     this.waypoints.set(new Map());
+    this.screenChecks.set([]);
+    this.showCheckPopover.set(false);
     this.playerOptions.set(await this.scriptService.getPlayerOptions());
     this.lastCheck.set(null);
     this.missingRouteTargets.set([]);
@@ -240,18 +239,22 @@ export class CallScriptJourneyComponent implements OnInit {
     }
 
     this.fireActions(route.onEnter);
+    const checksUsedForRoute = this.uniqueChecks([
+      ...this.screenChecks(),
+      ...this.checksReferencedBy(route.when)
+    ]);
     if (route.to === '@end') {
       this.finishJourney();
       return;
     }
 
     if (route.to.startsWith('@exit:')) {
-      await this.returnFromFlow(route.to.slice('@exit:'.length));
+      await this.returnFromFlow(route.to.slice('@exit:'.length), checksUsedForRoute);
       return;
     }
 
     this.pushCurrentLocation();
-    await this.enterStep(route.to);
+    await this.enterStep(route.to, checksUsedForRoute);
   }
 
   goBack(): void {
@@ -264,6 +267,7 @@ export class CallScriptJourneyComponent implements OnInit {
     this.activeFlow.set(previous.flow);
     this.flowArgs.set(previous.args);
     this.currentStepId.set(previous.stepId);
+    this.screenChecks.set(previous.checks ?? []);
   }
 
   finishJourney(): void {
@@ -278,6 +282,14 @@ export class CallScriptJourneyComponent implements OnInit {
 
   restartJourney(): void {
     void this.loadScript();
+  }
+
+  openCheckPopover(): void {
+    this.showCheckPopover.set(true);
+  }
+
+  closeCheckPopover(): void {
+    this.showCheckPopover.set(false);
   }
 
   hasPreviousStep(): boolean {
@@ -296,7 +308,7 @@ export class CallScriptJourneyComponent implements OnInit {
       );
   }
 
-  private async enterStep(stepId: string): Promise<void> {
+  private async enterStep(stepId: string, incomingChecks: RenderedCheck[] = []): Promise<void> {
     const step = this.currentSteps().find(candidate => candidate.stepId === stepId);
     if (!step) {
       this.loadError.set(`Step not found: ${stepId}`);
@@ -304,10 +316,12 @@ export class CallScriptJourneyComponent implements OnInit {
     }
 
     this.currentStepId.set(stepId);
-    await this.runOnEnter(step);
+    const checksForStep = await this.runOnEnter(step);
+    this.screenChecks.set(this.uniqueChecks([...incomingChecks, ...checksForStep]));
+    this.showCheckPopover.set(false);
 
     if (step.callFlow) {
-      await this.enterFlow(step);
+      await this.enterFlow(step, this.screenChecks());
       return;
     }
 
@@ -319,7 +333,7 @@ export class CallScriptJourneyComponent implements OnInit {
     }
   }
 
-  private async enterFlow(callerStep: ScriptStep): Promise<void> {
+  private async enterFlow(callerStep: ScriptStep, incomingChecks: RenderedCheck[]): Promise<void> {
     const script = this.script();
     const callFlow = callerStep.callFlow;
     if (!script || !callFlow) {
@@ -334,15 +348,16 @@ export class CallScriptJourneyComponent implements OnInit {
         flow: this.activeFlow(),
         stepId: callerStep.stepId,
         args: this.flowArgs(),
-        onExit: callerStep.onExit
+        onExit: callerStep.onExit,
+        checks: this.screenChecks()
       }
     ]);
     this.activeFlow.set(flow);
     this.flowArgs.set(callFlow.args ?? {});
-    await this.enterStep(flow.startStepId);
+    await this.enterStep(flow.startStepId, incomingChecks);
   }
 
-  private async returnFromFlow(exitName: string): Promise<void> {
+  private async returnFromFlow(exitName: string, incomingChecks: RenderedCheck[]): Promise<void> {
     const frame = this.flowStack().at(-1);
     if (!frame) {
       this.finishJourney();
@@ -358,7 +373,7 @@ export class CallScriptJourneyComponent implements OnInit {
 
     this.activeFlow.set(frame.flow);
     this.flowArgs.set(frame.args);
-    await this.enterStep(targetStepId);
+    await this.enterStep(targetStepId, incomingChecks);
   }
 
   private pushCurrentLocation(): void {
@@ -372,7 +387,8 @@ export class CallScriptJourneyComponent implements OnInit {
       {
         flow: this.activeFlow(),
         stepId,
-        args: this.flowArgs()
+        args: this.flowArgs(),
+        checks: this.screenChecks()
       }
     ]);
   }
@@ -471,14 +487,20 @@ export class CallScriptJourneyComponent implements OnInit {
     }, value);
   }
 
-  private async runOnEnter(step: ScriptStep): Promise<void> {
+  private async runOnEnter(step: ScriptStep): Promise<RenderedCheck[]> {
+    const checks: RenderedCheck[] = [];
     for (const entry of step.onEnter ?? []) {
       if (entry.kind === 'check' && entry.ref) {
         this.ensureCheck(entry.ref);
+        checks.push(this.renderCheck(entry.ref));
       }
       const waypointId = entry.id;
       const source = entry.source;
       if (entry.kind === 'waypoint' && waypointId && source) {
+        if (!checks.some(check => check.ref === source)) {
+          this.ensureCheck(source);
+          checks.push(this.renderCheck(source));
+        }
         this.waypoints.update(points => {
           const next = new Map(points);
           next.set(waypointId, this.deriveWaypoint(entry, source));
@@ -486,6 +508,29 @@ export class CallScriptJourneyComponent implements OnInit {
         });
       }
     }
+    return checks;
+  }
+
+  private checksReferencedBy(expression: string | undefined): RenderedCheck[] {
+    if (!expression) {
+      return [];
+    }
+
+    const refs = new Set<string>();
+    for (const match of expression.matchAll(/(chk\.[\w-]+)/g)) {
+      refs.add(match[1]);
+    }
+    for (const match of expression.matchAll(/(wp-[\w-]+)/g)) {
+      const waypoint = this.currentStep()?.onEnter?.find(entry => entry.id === match[1]);
+      if (waypoint?.source) {
+        refs.add(waypoint.source);
+      }
+    }
+    return [...refs].map(ref => this.renderCheck(ref));
+  }
+
+  private uniqueChecks(checks: RenderedCheck[]): RenderedCheck[] {
+    return [...new Map(checks.map(check => [check.ref, check])).values()];
   }
 
   private ensureCheck(ref: string): void {

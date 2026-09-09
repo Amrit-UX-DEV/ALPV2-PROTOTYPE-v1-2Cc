@@ -11,6 +11,9 @@ The player keeps the existing journey UI and follows button routes from the
 bundle. It resolves `onEnter` checks from the local checks file, records action
 refs locally, and shows a single End call screen when a flow file is missing.
 It does not call ORDS.
+When a screen is reached through checks or waypoints, it carries those check
+results forward: one result is shown directly, while multiple results use an
+ALP card and dialog.
 
 Global player options live at
 `src/assets/data/call-rep-scripts/player-options.json` and apply to every
