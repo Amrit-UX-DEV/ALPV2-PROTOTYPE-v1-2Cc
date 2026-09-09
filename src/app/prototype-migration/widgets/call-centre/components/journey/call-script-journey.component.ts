@@ -420,7 +420,7 @@ export class CallScriptJourneyComponent implements OnInit {
     const resolvedRef = ref.replace(/\{\{([^}]+)}}/g, (_match, key: string) =>
       String(this.flowArgs()[key] ?? ref)
     );
-    return this.currentUnits()[resolvedRef];
+    return this.currentUnits()[resolvedRef] ?? this.script()?.units[resolvedRef];
   }
 
   private resolveUnitText(unit: ScriptUnit): string {
