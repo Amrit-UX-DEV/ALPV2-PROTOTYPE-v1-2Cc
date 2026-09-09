@@ -90,7 +90,7 @@
               <span class="alp-auto-checks-tile__badge alp-badge alp-badge--auto">AUTO</span>
               <strong>
                 <span class="alp-auto-checks-tile__count">{{ screenChecks().length }}</span>
-                automatic ALPHA checks performed
+                automatic ALPHA checks
               </strong>
             </span>
             <span class="alp-auto-checks-tile__hint">Click to view</span>
@@ -136,7 +136,7 @@
                 {{ dialogCheckCount() }}
                 {{ activeCheckTab() === 'unconfirmed'
                     ? 'unconfirmed check' + (dialogCheckCount() === 1 ? '' : 's')
-                    : 'automatic ALPHA check' + (dialogCheckCount() === 1 ? '' : 's') + ' performed'
+                    : 'automatic ALPHA check' + (dialogCheckCount() === 1 ? '' : 's')
                       + (activeCheckTab() === 'current' ? ' on the current screen' : '') }}
               </p>
 
