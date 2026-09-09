@@ -51,6 +51,17 @@ interface DefaultedCheck {
   label: string;
 }
 
+interface AnswerAudit {
+  id: string;
+  question: string;
+  answer: string;
+}
+
+interface ActionAudit {
+  ref: string;
+  label: string;
+}
+
 @Component({
   selector: 'alpha-call-script-journey',
   standalone: true,
@@ -73,9 +84,10 @@ export class CallScriptJourneyComponent implements OnInit {
   readonly showSummary = signal(false);
 
   readonly userAnswers = signal<Map<string, string>>(new Map());
+  readonly answeredQuestions = signal<AnswerAudit[]>([]);
   readonly checkResults = signal<CheckResults>({});
   readonly completedChecks = signal<Set<string>>(new Set());
-  readonly completedActions = signal<string[]>([]);
+  readonly completedActions = signal<ActionAudit[]>([]);
   readonly waypoints = signal<Map<string, string>>(new Map());
   // Running history of checks evaluated anywhere on this journey.
   readonly screenChecks = signal<RenderedCheck[]>([]);
@@ -177,6 +189,7 @@ export class CallScriptJourneyComponent implements OnInit {
     this.flowStack.set([]);
     this.navigationHistory.set([]);
     this.userAnswers.set(new Map());
+    this.answeredQuestions.set([]);
     this.checkResults.set({});
     this.completedChecks.set(new Set());
     this.completedActions.set([]);
@@ -217,6 +230,22 @@ export class CallScriptJourneyComponent implements OnInit {
     this.userAnswers.update(answers => {
       const next = new Map(answers);
       next.set(itemId, option.key);
+      return next;
+    });
+    const contentItem = this.currentStep()?.content?.find(item => item.id === itemId);
+    const renderedItem = contentItem ? this.renderContentItem(contentItem) : null;
+    const audit: AnswerAudit = {
+      id: itemId,
+      question: renderedItem?.content ?? itemId,
+      answer: option.text
+    };
+    this.answeredQuestions.update(questions => {
+      const existingIndex = questions.findIndex(question => question.id === itemId);
+      if (existingIndex === -1) {
+        return [...questions, audit];
+      }
+      const next = [...questions];
+      next[existingIndex] = audit;
       return next;
     });
   }
@@ -782,7 +811,11 @@ export class CallScriptJourneyComponent implements OnInit {
     if (!actions?.length) {
       return;
     }
-    this.completedActions.update(completed => [...completed, ...actions]);
+    const audits = actions.map(ref => ({
+      ref,
+      label: this.resolveUnit(ref)?.label ?? ref
+    }));
+    this.completedActions.update(completed => [...completed, ...audits]);
   }
 
   private findMissingRouteTargets(script: CallRepScript, flows: CallableFlow[]): string[] {

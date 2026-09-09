@@ -16,7 +16,7 @@
 
       <div class="alp-script-journey__header">
         <h2 class="alp-script-journey__title">
-          <i class="fas fa-scroll"></i> {{ currentStep()?.title || script()!.title }}
+          <i class="fas fa-scroll"></i> {{ script()!.title }} / {{ currentStep()?.title || script()!.title }}
         </h2>
       </div>
 
@@ -186,8 +186,55 @@
 
   @if (showSummary()) {
     <div class="alp-script-journey__summary">
-      <h2>Journey Complete</h2>
-      <button (click)="restartJourney()">Restart Journey</button>
+      <h2 class="alp-script-journey__summary-title">{{ script()?.title }}</h2>
+
+      <section class="alp-content-card">
+        <h3>Question audit</h3>
+        @if (answeredQuestions().length) {
+          <ol class="alp-script-journey__check-list">
+            @for (answer of answeredQuestions(); track answer.id) {
+              <li class="alp-script-journey__summary-item">
+                <strong>{{ answer.question }}</strong>
+                <span>{{ answer.answer }}</span>
+              </li>
+            }
+          </ol>
+        } @else {
+          <p>No questions answered</p>
+        }
+      </section>
+
+      <section class="alp-content-card">
+        <h3>Automatic check audit</h3>
+        @if (screenChecks().length) {
+          <ul class="alp-script-journey__check-list">
+            @for (check of screenChecks(); track $index) {
+              <li class="alp-script-journey__check-item alp-script-journey__check-item--auto">
+                <span>{{ check.label }} <strong>{{ check.outcome }}</strong></span>
+              </li>
+            }
+          </ul>
+        } @else {
+          <p>No automatic checks</p>
+        }
+      </section>
+
+      <section class="alp-content-card">
+        <h3>Completion action</h3>
+        @if (completedActions().length) {
+          <ul class="alp-script-journey__check-list">
+            @for (action of completedActions(); track $index) {
+              <li class="alp-script-journey__summary-item">{{ action.label }}</li>
+            }
+          </ul>
+        } @else {
+          <p>No completion action</p>
+        }
+      </section>
+
+      <button type="button" class="alp-script-journey__btn alp-script-journey__btn--primary" (click)="restartJourney()">
+        Restart journey
+      </button>
     </div>
   }
 
