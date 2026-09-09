@@ -76,17 +76,22 @@
           <div class="alp-script-journey__check-list">
             <div class="alp-script-journey__check-item alp-script-journey__check-item--auto">
               <span>{{ check.label }} <strong>{{ check.outcome }}</strong></span>
-              <span class="alp-script-journey__check-badge">Auto</span>
+              <span class="alp-script-journey__check-badge">AUTO</span>
             </div>
           </div>
         </div>
       } @else if (screenChecks().length > 1) {
         <button type="button" class="alp-auto-checks-tile" (click)="openCheckPopover()">
-          <span class="alp-auto-checks-tile__badge alp-badge alp-badge--auto">AUTO</span>
-          <strong>
-            <span class="alp-auto-checks-tile__count">{{ screenChecks().length }}</span>
-            automatic checks were performed by ALPHA
-          </strong>
+          <span class="alp-auto-checks-tile__rail" aria-hidden="true">
+            <i class="alp-auto-checks-tile__icon fas fa-cogs"></i>
+          </span>
+          <span class="alp-auto-checks-tile__body">
+            <span class="alp-auto-checks-tile__badge alp-badge alp-badge--auto">AUTO</span>
+            <strong>
+              <span class="alp-auto-checks-tile__count">{{ screenChecks().length }}</span>
+              automatic ALPHA checks performed
+            </strong>
+          </span>
           <span class="alp-auto-checks-tile__hint">Click to view</span>
         </button>
       }
@@ -126,7 +131,13 @@
               </div>
               <div class="alp-script-journey__read-block-body">
                 <span class="alp-script-journey__read-block-label">Read Prompt</span>
-                <p class="alp-script-journey__read-block-text" [innerHTML]="formatPrompt(item.content)"></p>
+                @if (item.promptParts; as promptParts) {
+                  @for (part of promptParts; track $index) {
+                    <p class="alp-script-journey__read-block-text" [innerHTML]="formatPrompt(part)"></p>
+                  }
+                } @else {
+                  <p class="alp-script-journey__read-block-text" [innerHTML]="formatPrompt(item.content)"></p>
+                }
               </div>
             </div>
           }
@@ -140,12 +151,11 @@
               </div>
               <div class="alp-script-journey__read-block-body">
                 <div class="alp-script-journey__read-block-label-row">
-                  <span class="alp-script-journey__read-block-label">
-                    {{ item.kind === 'question' ? 'Question for caller' : 'Manual check' }}
-                  </span>
-                  @if (item.kind === 'manual') {
+                  @if (item.kind === 'question') {
+                    <span class="alp-script-journey__read-block-label">Question for Caller</span>
+                  } @else {
                     <span class="alp-script-journey__check-badge alp-script-journey__check-badge--manual">
-                      Manual Check
+                      MANUAL CHECK
                     </span>
                   }
                 </div>

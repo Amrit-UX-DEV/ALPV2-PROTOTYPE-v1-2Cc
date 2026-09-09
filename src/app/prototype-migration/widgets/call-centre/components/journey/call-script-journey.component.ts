@@ -28,6 +28,7 @@ interface RenderedItem {
   content: string;
   options: ScriptOption[];
   optionLabels?: Record<string, string>;
+  promptParts?: string[];
 }
 
 interface RenderedCheck {
@@ -113,9 +114,10 @@ export class CallScriptJourneyComponent implements OnInit {
   });
   readonly sortedContent = computed(() => {
     const step = this.currentStep();
-    return (step?.content ?? [])
+    const rendered = (step?.content ?? [])
       .map(item => this.renderContentItem(item))
       .filter((item): item is RenderedItem => item !== null);
+    return this.mergeAdjacentPrompts(rendered);
   });
   readonly visibleButtons = computed(() => {
     const step = this.currentStep();
@@ -457,14 +459,38 @@ export class CallScriptJourneyComponent implements OnInit {
       key,
       text: unit.optionLabels?.[key] ?? key
     })) ?? [];
+    const content = this.resolveUnitText(unit);
 
     return {
       id: item.id,
       kind: unit.kind,
-      content: this.resolveUnitText(unit),
+      content,
       options,
-      optionLabels: unit.optionLabels
+      optionLabels: unit.optionLabels,
+      promptParts: unit.kind === 'prompt' ? [content] : undefined
     };
+  }
+
+  private mergeAdjacentPrompts(items: RenderedItem[]): RenderedItem[] {
+    const merged: RenderedItem[] = [];
+    for (const item of items) {
+      const previous = merged.at(-1);
+      if (item.kind === 'prompt' && previous?.kind === 'prompt') {
+        const promptParts = [
+          ...(previous.promptParts ?? [previous.content]),
+          ...(item.promptParts ?? [item.content])
+        ];
+        merged[merged.length - 1] = {
+          ...previous,
+          id: `${previous.id}__${item.id}`,
+          content: promptParts.join('\n\n'),
+          promptParts
+        };
+      } else {
+        merged.push(item);
+      }
+    }
+    return merged;
   }
 
   private renderCheck(ref: string): RenderedCheck[] {

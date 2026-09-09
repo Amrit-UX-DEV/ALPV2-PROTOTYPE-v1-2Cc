@@ -183,6 +183,7 @@
   background: var(--alp-color-green-800);
   color: var(--alp-color-white);
   font-size: var(--alp-font-size-sm);
+  font-weight: var(--alp-font-weight-semibold);
   padding: 2px var(--alp-space-2);
   border-radius: var(--alp-radius-full);
   margin-left: auto;
