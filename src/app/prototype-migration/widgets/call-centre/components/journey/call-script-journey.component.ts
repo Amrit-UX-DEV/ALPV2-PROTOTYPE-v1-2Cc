@@ -46,6 +46,11 @@ interface DebugCheck {
   value: string;
 }
 
+interface DefaultedCheck {
+  id: string;
+  label: string;
+}
+
 @Component({
   selector: 'alpha-call-script-journey',
   standalone: true,
@@ -74,6 +79,7 @@ export class CallScriptJourneyComponent implements OnInit {
   readonly waypoints = signal<Map<string, string>>(new Map());
   // Running history of checks evaluated anywhere on this journey.
   readonly screenChecks = signal<RenderedCheck[]>([]);
+  readonly defaultedChecks = signal<DefaultedCheck[]>([]);
   readonly showCheckPopover = signal(false);
   readonly playerOptions = signal<PlayerOptions>({
     debugMode: false,
@@ -127,10 +133,24 @@ export class CallScriptJourneyComponent implements OnInit {
   readonly debugChecks = computed<DebugCheck[]>(() =>
     Object.entries(this.checkResults())
       .filter(([id]) => id.startsWith('chk.'))
-      .map(([id, result]) => ({
-        id,
-        value: this.formatDebugCheckResult(id, result)
-      }))
+      .flatMap(([id, result]) => {
+        const unit = this.resolveUnit(id);
+        const subChecks = this.getSubChecks(unit);
+        if (!subChecks?.length) {
+          return [{
+            id,
+            value: this.formatDebugCheckResult(id, result)
+          }];
+        }
+        return subChecks.map(subCheck => {
+          const raw = this.resolveSubCheckValue(id, subCheck.key);
+          const defaulted = raw === undefined || raw === null;
+          return {
+            id: `${id}.${subCheck.key}`,
+            value: `${this.formatSubCheckOutcome(unit, raw)}${defaulted ? ' (defaulted)' : ''}`
+          };
+        });
+      })
   );
   readonly nextBlockedReason = computed(() => {
     const next = this.currentStep()?.buttons?.find(button =>
@@ -162,6 +182,7 @@ export class CallScriptJourneyComponent implements OnInit {
     this.completedActions.set([]);
     this.waypoints.set(new Map());
     this.screenChecks.set([]);
+    this.defaultedChecks.set([]);
     this.showCheckPopover.set(false);
     this.playerOptions.set(await this.scriptService.getPlayerOptions());
     this.lastCheck.set(null);
@@ -417,14 +438,76 @@ export class CallScriptJourneyComponent implements OnInit {
     };
   }
 
-  private renderCheck(ref: string): RenderedCheck {
+  private renderCheck(ref: string): RenderedCheck[] {
     const unit = this.resolveUnit(ref);
     const result = this.checkResults()[ref];
-    return {
+    const subChecks = this.getSubChecks(unit);
+    if (subChecks?.length) {
+      return subChecks.map(subCheck => this.renderSubCheck(ref, unit, subCheck));
+    }
+    return [{
       ref,
       label: unit?.label ?? ref,
       outcome: this.formatCheckResult(ref, result)
+    }];
+  }
+
+  private renderSubCheck(
+    parentRef: string,
+    unit: ScriptUnit | undefined,
+    subCheck: NonNullable<ScriptUnit['subChecks']>[number]
+  ): RenderedCheck {
+    const raw = this.resolveSubCheckValue(parentRef, subCheck.key);
+    if (raw === undefined || raw === null) {
+      // Missing bulk-child values default to false/No for display only.
+      this.recordDefaultedCheck(parentRef, subCheck.key, subCheck.label);
+      return {
+        ref: `${parentRef}.${subCheck.key}`,
+        label: subCheck.label,
+        outcome: 'No'
+      };
+    }
+
+    return {
+      ref: `${parentRef}.${subCheck.key}`,
+      label: subCheck.label,
+      outcome: this.formatSubCheckOutcome(unit, raw)
     };
+  }
+
+  private resolveSubCheckValue(parentRef: string, key: string): unknown {
+    const result = this.checkResults()[parentRef];
+    const detailValue = result?.detail?.[key];
+    if (detailValue !== undefined && detailValue !== null) {
+      return detailValue;
+    }
+    const childResult = this.checkResults()[`${parentRef}.${key}`] ?? this.checkResults()[key];
+    if (childResult?.outcome !== undefined) {
+      return childResult.outcome;
+    }
+    if (childResult?.raw !== undefined) {
+      return childResult.raw;
+    }
+    const directValue = result?.[key];
+    return directValue !== undefined && directValue !== null ? directValue : undefined;
+  }
+
+  private formatSubCheckOutcome(unit: ScriptUnit | undefined, raw: unknown): string {
+    if (raw === undefined || raw === null) {
+      return 'No';
+    }
+    const mappedOutcome = this.getSubOutcomeMap(unit)?.[String(raw)];
+    return mappedOutcome
+      ?? (typeof raw === 'boolean' ? (raw ? 'Yes' : 'No') : String(raw));
+  }
+
+  private recordDefaultedCheck(parentRef: string, key: string, label: string): void {
+    const id = `${parentRef}.${key}`;
+    this.defaultedChecks.update(checks =>
+      checks.some(check => check.id === id)
+        ? checks
+        : [...checks, { id, label }]
+    );
   }
 
   private resolveUnit(ref: string): ScriptUnit | undefined {
@@ -487,14 +570,14 @@ export class CallScriptJourneyComponent implements OnInit {
     for (const entry of step.onEnter ?? []) {
       if (entry.kind === 'check' && entry.ref) {
         this.ensureCheck(entry.ref);
-        checks.push(this.renderCheck(entry.ref));
+        checks.push(...this.renderCheck(entry.ref));
       }
       const waypointId = entry.id;
       const source = entry.source;
       if (entry.kind === 'waypoint' && waypointId && source) {
-        if (!checks.some(check => check.ref === source)) {
+        if (!checks.some(check => check.ref === source || check.ref.startsWith(`${source}.`))) {
           this.ensureCheck(source);
-          checks.push(this.renderCheck(source));
+          checks.push(...this.renderCheck(source));
         }
         this.waypoints.update(points => {
           const next = new Map(points);
@@ -521,7 +604,7 @@ export class CallScriptJourneyComponent implements OnInit {
         refs.add(waypoint.source);
       }
     }
-    return [...refs].map(ref => this.renderCheck(ref));
+    return [...refs].flatMap(ref => this.renderCheck(ref));
   }
 
   private appendCheckHistory(checks: RenderedCheck[]): void {
@@ -603,20 +686,26 @@ export class CallScriptJourneyComponent implements OnInit {
     if (mappedOutcome !== undefined) {
       return mappedOutcome;
     }
-    if (this.getSubChecks(unit) && result.detail) {
-      return this.deriveWaypoint(
-        {
-          kind: 'waypoint',
-          aggregate: 'all-pass',
-          source: ref
-        },
-        ref
-      );
+    if (this.getSubChecks(unit)?.length) {
+      return this.formatBulkCheckResult(ref, unit);
     }
     if (result.detail) {
       return JSON.stringify(result.detail);
     }
     return result.status ?? 'No result';
+  }
+
+  private formatBulkCheckResult(ref: string, unit: ScriptUnit): string {
+    const outcomes = (this.getSubChecks(unit) ?? []).map(subCheck =>
+      this.formatSubCheckOutcome(unit, this.resolveSubCheckValue(ref, subCheck.key))
+    );
+    if (outcomes.includes('Yes')) {
+      return 'Yes';
+    }
+    if (outcomes.every(outcome => outcome === 'No')) {
+      return 'No';
+    }
+    return outcomes.join(', ') || 'No';
   }
 
   private formatDebugCheckResult(ref: string, result: CheckResult | undefined): string {

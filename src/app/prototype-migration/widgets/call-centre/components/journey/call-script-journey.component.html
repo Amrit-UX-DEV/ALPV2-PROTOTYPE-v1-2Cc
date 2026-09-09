@@ -33,6 +33,14 @@
                 <li>{{ check.id }} → {{ check.value }}</li>
               }
             </ul>
+            @if (defaultedChecks().length) {
+              <p><strong>Defaulted checks:</strong></p>
+              <ul>
+                @for (check of defaultedChecks(); track check.id) {
+                  <li>{{ check.label }} → No (defaulted; missing from checks file)</li>
+                }
+              </ul>
+            }
             <p>
               <strong>Buttons:</strong>
               @if (debugButtons().length) {

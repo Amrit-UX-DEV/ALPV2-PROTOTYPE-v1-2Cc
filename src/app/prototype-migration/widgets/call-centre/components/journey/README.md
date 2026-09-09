@@ -14,6 +14,9 @@ It does not call ORDS.
 When a screen is reached through checks or waypoints, it carries those check
 results forward: one result is shown directly, while multiple results use an
 ALP card and dialog.
+Bulk checks with `binding.subChecks` are flattened into child label/result rows;
+the parent row is not shown. Missing child values default to `No` for display
+only and are listed as defaulted in the debug panel.
 
 Global player options live at
 `src/assets/data/call-rep-scripts/player-options.json` and apply to every
