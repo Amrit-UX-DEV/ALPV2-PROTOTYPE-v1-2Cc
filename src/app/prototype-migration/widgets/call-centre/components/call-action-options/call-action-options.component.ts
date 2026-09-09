@@ -7,11 +7,13 @@ import {
   ViewChild,
   ElementRef,
   CUSTOM_ELEMENTS_SCHEMA,
+  signal,
 } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 
 import { CallScriptJourneyComponent } from '../journey/call-script-journey.component';
+import { CallRepScriptService } from '../journey/call-rep-script.service';
 import { PrototypeContextService } from '../../../../context/prototype-context.service';
 
 /**
@@ -39,6 +41,7 @@ import { PrototypeContextService } from '../../../../context/prototype-context.s
 export class CallActionOptionsComponent {
   /** The policy the call is about, read in the template as ctx.policy(). */
   protected readonly ctx = inject(PrototypeContextService);
+  private readonly scriptService = inject(CallRepScriptService);
 
   @Input() showDetails = false;
   @Output() detailsToggled = new EventEmitter<void>();
@@ -74,8 +77,18 @@ export class CallActionOptionsComponent {
     this.showElement = !this.showElement;
   }
 
-  showScript = true;
+  showScript = signal(false);
+
+  constructor() {
+    void this.loadPlayerOptions();
+  }
+
+  private async loadPlayerOptions(): Promise<void> {
+    const options = await this.scriptService.getPlayerOptions();
+    this.showScript.set(options.showScriptInFirstStep);
+  }
+
   toggleScript() {
-    this.showScript = !this.showScript;
+    this.showScript.update(show => !show);
   }
 }

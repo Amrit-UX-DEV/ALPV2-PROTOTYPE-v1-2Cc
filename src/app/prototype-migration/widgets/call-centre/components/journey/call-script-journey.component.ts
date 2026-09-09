@@ -6,6 +6,7 @@ import {
   CallableFlow,
   CheckResult,
   CheckResults,
+  PlayerOptions,
   ScriptButton,
   ScriptContentItem,
   ScriptOnEnter,
@@ -35,6 +36,11 @@ interface RenderedCheck {
   outcome: string;
 }
 
+interface DebugButton {
+  label: string;
+  target: string;
+}
+
 @Component({
   selector: 'alpha-call-script-journey',
   standalone: true,
@@ -61,6 +67,12 @@ export class CallScriptJourneyComponent implements OnInit {
   readonly completedChecks = signal<Set<string>>(new Set());
   readonly completedActions = signal<string[]>([]);
   readonly waypoints = signal<Map<string, string>>(new Map());
+  readonly playerOptions = signal<PlayerOptions>({
+    debugMode: false,
+    showScriptInFirstStep: true
+  });
+  readonly lastCheck = signal<{ id: string; result: string } | null>(null);
+  readonly missingRouteTargets = signal<string[]>([]);
 
   readonly currentSteps = computed(() => this.activeFlow()?.steps ?? this.script()?.steps ?? []);
   readonly currentUnits = computed(() => this.activeFlow()?.units ?? this.script()?.units ?? {});
@@ -88,6 +100,38 @@ export class CallScriptJourneyComponent implements OnInit {
     const step = this.currentStep();
     return (step?.buttons ?? []).filter(button => button.kind !== 'auto' && this.isExpressionMet(button.visibleWhen));
   });
+  readonly debugUnitIds = computed(() =>
+    (this.currentStep()?.content ?? []).map(item => item.ref ?? item.inline?.unitId ?? item.id)
+  );
+  readonly debugButtons = computed<DebugButton[]>(() => {
+    const step = this.currentStep();
+    if (!step) {
+      return [];
+    }
+
+    const buttons = (step.buttons ?? []).map(button => ({
+      label: button.label ?? button.kind,
+      target: button.routes?.map(route => route.to).join(' | ') || 'no route'
+    }));
+    if (step.callFlow) {
+      buttons.push({
+        label: 'callFlow',
+        target: step.callFlow.ref
+      });
+    }
+    return buttons;
+  });
+  readonly nextBlockedReason = computed(() => {
+    const next = this.currentStep()?.buttons?.find(button =>
+      button.kind === 'next' || button.key === 'next'
+    );
+    if (!next || this.isButtonEnabled(next)) {
+      return '';
+    }
+    return next.enabledWhen
+      ? `enabledWhen "${next.enabledWhen}" is false`
+      : 'button is disabled';
+  });
 
   async ngOnInit(): Promise<void> {
     await this.loadScript();
@@ -106,6 +150,9 @@ export class CallScriptJourneyComponent implements OnInit {
     this.completedChecks.set(new Set());
     this.completedActions.set([]);
     this.waypoints.set(new Map());
+    this.playerOptions.set(await this.scriptService.getPlayerOptions());
+    this.lastCheck.set(null);
+    this.missingRouteTargets.set([]);
 
     try {
       const [loaded, checks] = await Promise.all([
@@ -119,6 +166,10 @@ export class CallScriptJourneyComponent implements OnInit {
 
       this.script.set(loaded);
       this.checkResults.set(checks);
+      const flows = await Promise.all(
+        Object.values(loaded.flows).map(link => this.scriptService.getFlow(link.ref, link.version))
+      );
+      this.missingRouteTargets.set(this.findMissingRouteTargets(loaded, flows));
       await this.enterStep(loaded.startStepId);
     } catch (err) {
       console.error(err);
@@ -454,6 +505,7 @@ export class CallScriptJourneyComponent implements OnInit {
 
   private recordCheck(ref: string, result: CheckResult): void {
     const outcome = result.outcome ?? 'Completed';
+    this.lastCheck.set({ id: ref, result: outcome });
     this.completedChecks.update(checks => {
       const next = new Set(checks);
       next.add(`${ref}: ${outcome}`);
@@ -492,6 +544,31 @@ export class CallScriptJourneyComponent implements OnInit {
       return;
     }
     this.completedActions.update(completed => [...completed, ...actions]);
+  }
+
+  private findMissingRouteTargets(script: CallRepScript, flows: CallableFlow[]): string[] {
+    const missing: string[] = [];
+    const checkScope = (scope: string, steps: ScriptStep[]): void => {
+      const stepIds = new Set(steps.map(step => step.stepId));
+      for (const step of steps) {
+        for (const button of step.buttons ?? []) {
+          for (const route of button.routes ?? []) {
+            if (!route.to.startsWith('@') && !stepIds.has(route.to)) {
+              missing.push(`${scope}:${step.stepId} ${button.label ?? button.key} -> ${route.to}`);
+            }
+          }
+        }
+      }
+    };
+
+    checkScope('bundle', script.steps);
+    flows.forEach(flow => {
+      if (flow.title.endsWith(' (stub)')) {
+        missing.push(`flow:${flow.scriptId} -> missing flow file`);
+      }
+      checkScope(`flow:${flow.scriptId}`, flow.steps);
+    });
+    return missing;
   }
 
   private isExpressionMet(expression: string | undefined): boolean {

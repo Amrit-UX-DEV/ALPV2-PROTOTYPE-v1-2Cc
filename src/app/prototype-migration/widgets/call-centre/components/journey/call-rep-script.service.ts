@@ -127,6 +127,11 @@ export interface CheckResult {
 
 export type CheckResults = Record<string, CheckResult>;
 
+export interface PlayerOptions {
+  debugMode: boolean;
+  showScriptInFirstStep: boolean;
+}
+
 @Injectable({
   providedIn: 'root'
 })
@@ -135,6 +140,34 @@ export class CallRepScriptService {
   private readonly scriptCache = new Map<string, CallRepScript>();
   private checksCache: CheckResults | null = null;
   private readonly flowCache = new Map<string, CallableFlow>();
+  private playerOptionsCache: PlayerOptions | null = null;
+
+  async getPlayerOptions(): Promise<PlayerOptions> {
+    if (this.playerOptionsCache) {
+      return this.playerOptionsCache;
+    }
+
+    try {
+      const response = await fetch('assets/data/call-rep-scripts/player-options.json');
+      if (!response.ok) {
+        throw new Error(`Failed to load player options: ${response.status}`);
+      }
+
+      const options = (await response.json()) as Partial<PlayerOptions>;
+      this.playerOptionsCache = {
+        debugMode: options.debugMode === true,
+        showScriptInFirstStep: options.showScriptInFirstStep !== false
+      };
+    } catch (err) {
+      console.error('Failed to load player options:', err);
+      this.playerOptionsCache = {
+        debugMode: false,
+        showScriptInFirstStep: true
+      };
+    }
+
+    return this.playerOptionsCache;
+  }
 
   async getScript(scriptId: string): Promise<CallRepScript | null> {
     if (scriptId !== 'surrender-001') {

@@ -20,6 +20,40 @@
         </h2>
       </div>
 
+      @if (playerOptions().debugMode) {
+        <details class="card" open>
+          <summary class="card-header">Player debug</summary>
+          <div class="card-body">
+            <p><strong>Step:</strong> {{ currentStep()?.stepId }}</p>
+            <p><strong>Units:</strong> {{ debugUnitIds().join(', ') || 'none' }}</p>
+            <p>
+              <strong>Buttons:</strong>
+              @if (debugButtons().length) {
+                @for (button of debugButtons(); track $index) {
+                  <span>{{ button.label }} → {{ button.target }}{{ $last ? '' : '; ' }}</span>
+                }
+              } @else {
+                <span>none</span>
+              }
+            </p>
+            @if (lastCheck(); as check) {
+              <p><strong>Last check:</strong> {{ check.id }} → {{ check.result }}</p>
+            }
+            @if (nextBlockedReason()) {
+              <p><strong>Next blocked:</strong> {{ nextBlockedReason() }}</p>
+            }
+            @if (missingRouteTargets().length) {
+              <p><strong>Missing route targets:</strong></p>
+              <ul>
+                @for (missing of missingRouteTargets(); track missing) {
+                  <li>{{ missing }}</li>
+                }
+              </ul>
+            }
+          </div>
+        </details>
+      }
+
       <div class="alp-script-journey__content">
 
         @for (check of currentChecks(); track check.ref) {

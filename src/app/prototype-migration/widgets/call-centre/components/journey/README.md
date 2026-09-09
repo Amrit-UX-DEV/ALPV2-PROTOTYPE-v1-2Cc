@@ -12,6 +12,17 @@ bundle. It resolves `onEnter` checks from the local checks file, records action
 refs locally, and shows a single End call screen when a flow file is missing.
 It does not call ORDS.
 
+Global player options live at
+`src/assets/data/call-rep-scripts/player-options.json` and apply to every
+script loaded by this player:
+
+- `debugMode`: shows the compact step, unit, button, check, blocked-Next, and
+  missing-route diagnostics.
+- `showScriptInFirstStep`: mounts the journey in the first call-centre step
+  when `true`; set it to `false` to hide it until the Surrender click is wired.
+
+Both flags are currently `true`.
+
 To change a local check outcome, edit the matching entry in
 `surrender.checks.json`, keep `"status": "ok"`, and change `"outcome"` (or the
 `"detail"` fields used by that check). Do not edit the reference JSON.
