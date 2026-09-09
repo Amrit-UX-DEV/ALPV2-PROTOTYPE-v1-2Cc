@@ -16,7 +16,7 @@
 
       <div class="alp-script-journey__header">
         <h2 class="alp-script-journey__title">
-          <i class="fas fa-scroll"></i> {{ script()!.title }} / {{ currentStep()?.title || script()!.title }}
+          <i class="fas fa-scroll"></i> {{ script()!.title }}
         </h2>
       </div>
 
@@ -139,22 +139,29 @@
                 <i class="fas fa-question"></i>
               </div>
               <div class="alp-script-journey__read-block-body">
-                <span class="alp-script-journey__read-block-label">
-                  {{ item.kind === 'question' ? 'Question for caller' : 'Manual check (do not read to caller)' }}
-                </span>
+                <div class="alp-script-journey__read-block-label-row">
+                  <span class="alp-script-journey__read-block-label">
+                    {{ item.kind === 'question' ? 'Question for caller' : 'Manual check' }}
+                  </span>
+                  @if (item.kind === 'manual') {
+                    <span class="alp-script-journey__check-badge alp-script-journey__check-badge--manual">
+                      Manual Check
+                    </span>
+                  }
+                </div>
                 <p class="alp-script-journey__read-block-text">{{ item.content }}</p>
+                <div class="alp-script-journey__options">
+                  @for (option of item.options; track option.key) {
+                    <label class="alp-script-journey__option-label">
+                      <input type="radio"
+                             [name]="'question-' + item.id"
+                             [checked]="isOptionSelected(option.key, item.id)"
+                             (change)="selectOption(option, item.id)">
+                      <span>{{ option.text }}</span>
+                    </label>
+                  }
+                </div>
               </div>
-            </div>
-            <div class="alp-script-journey__options">
-              @for (option of item.options; track option.key) {
-                <label class="alp-script-journey__option-label">
-                  <input type="radio"
-                         [name]="'question-' + item.id"
-                         [checked]="isOptionSelected(option.key, item.id)"
-                         (change)="selectOption(option, item.id)">
-                  <span>{{ option.text }}</span>
-                </label>
-              }
             </div>
           }
 

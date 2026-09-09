@@ -46,7 +46,7 @@
   display: flex;
   align-items: stretch;
   background: var(--alp-color-background);
-  border-left: 6px solid var(--alp-color-blue-500);
+  border: 1px solid var(--alp-color-blue-200);
   margin-bottom: var(--alp-space-8);
   border-radius: var(--alp-radius-md);
   overflow: hidden;
@@ -54,10 +54,12 @@
 
 .alp-script-journey__read-block-icon {
   display: flex;
-  flex: 0 0 50px;
+  flex: 0 0 35px;
+  width: 35px;
+  max-width: 35px;
   align-items: center;
   justify-content: center;
-  background: var(--alp-color-blue-500);
+  background: rgba(24, 110, 204, 1);
   color: var(--alp-color-white);
   font-size: var(--alp-font-size-lg);
 }
@@ -67,12 +69,18 @@
   padding: 22px 26px;
 }
 
+.alp-script-journey__read-block-label-row {
+  display: flex;
+  align-items: center;
+  gap: var(--alp-space-2);
+  margin-bottom: var(--alp-space-2);
+}
+
 .alp-script-journey__read-block-label {
   display: block;
   font-size: 14px;
   font-weight: var(--alp-font-weight-semibold);
   color: var(--alp-color-prompt);
-  margin-bottom: var(--alp-space-2);
 }
 
 .alp-script-journey__read-block-text {
@@ -84,7 +92,7 @@
 }
 
 .alp-script-journey__read-block--manual {
-  border-left-color: var(--alp-color-purple-600);
+  border-color: var(--alp-color-purple-300);
   background: var(--alp-color-purple-100);
 }
 
@@ -94,6 +102,23 @@
 
 .alp-script-journey__read-block--manual .alp-script-journey__read-block-label {
   color: var(--alp-color-purple-700);
+}
+
+.alp-script-journey__read-block--action {
+  border-color: var(--alp-color-orange-200);
+  background: var(--alp-color-orange-50);
+}
+
+.alp-script-journey__read-block--action .alp-script-journey__read-block-icon {
+  background: var(--alp-color-orange-600);
+}
+
+.alp-script-journey__read-block--action .alp-script-journey__read-block-label {
+  color: var(--alp-color-orange-700);
+}
+
+.alp-script-journey__read-block--action .alp-script-journey__option-label {
+  border-color: var(--alp-color-orange-200);
 }
 
 /* ---- Notification blocks (legacy) ---- */
@@ -177,7 +202,7 @@ button.declaration-btn.declared::after {
   display: flex;
   flex-direction: column;
   gap: 14px;
-  margin-bottom: 36px;
+  margin-top: var(--alp-space-6);
 }
 
 .alp-script-journey__option-label {
