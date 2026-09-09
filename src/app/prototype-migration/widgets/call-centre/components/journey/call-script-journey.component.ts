@@ -1,6 +1,39 @@
-import { Component, Input, OnInit, inject, signal, computed, effect } from '@angular/core';
+import { Component, Input, OnInit, computed, inject, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { CallRepScriptService, CallRepScript } from './call-rep-script.service';
+import {
+  CallRepScript,
+  CallRepScriptService,
+  CallableFlow,
+  CheckResult,
+  CheckResults,
+  ScriptButton,
+  ScriptContentItem,
+  ScriptOnEnter,
+  ScriptOption,
+  ScriptStep,
+  ScriptUnit
+} from './call-rep-script.service';
+
+interface FlowFrame {
+  flow: CallableFlow | null;
+  stepId: string;
+  args: Record<string, unknown>;
+  onExit?: Record<string, string>;
+}
+
+interface RenderedItem {
+  id: string;
+  kind: ScriptUnit['kind'];
+  content: string;
+  options: ScriptOption[];
+  optionLabels?: Record<string, string>;
+}
+
+interface RenderedCheck {
+  ref: string;
+  label: string;
+  outcome: string;
+}
 
 @Component({
   selector: 'alpha-call-script-journey',
@@ -9,169 +42,168 @@ import { CallRepScriptService, CallRepScript } from './call-rep-script.service';
   templateUrl: './call-script-journey.component.html'
 })
 export class CallScriptJourneyComponent implements OnInit {
-
   private readonly scriptService = inject(CallRepScriptService);
 
-  @Input() scriptId: string = "surrender-001";
+  @Input() scriptId = 'surrender-001';
 
   readonly script = signal<CallRepScript | null>(null);
-  readonly currentStepIndex = signal<number>(0);
-  readonly isLoading = signal<boolean>(true);
+  readonly currentStepId = signal<string | null>(null);
+  readonly activeFlow = signal<CallableFlow | null>(null);
+  readonly flowArgs = signal<Record<string, unknown>>({});
+  readonly flowStack = signal<FlowFrame[]>([]);
+  readonly navigationHistory = signal<FlowFrame[]>([]);
+  readonly isLoading = signal(true);
   readonly loadError = signal<string | null>(null);
-  readonly showSummary = signal<boolean>(false);
+  readonly showSummary = signal(false);
 
-  readonly userAnswers = signal<Map<string, string[]>>(new Map());
+  readonly userAnswers = signal<Map<string, string>>(new Map());
+  readonly checkResults = signal<CheckResults>({});
   readonly completedChecks = signal<Set<string>>(new Set());
   readonly completedActions = signal<string[]>([]);
+  readonly waypoints = signal<Map<string, string>>(new Map());
 
+  readonly currentSteps = computed(() => this.activeFlow()?.steps ?? this.script()?.steps ?? []);
+  readonly currentUnits = computed(() => this.activeFlow()?.units ?? this.script()?.units ?? {});
   readonly currentStep = computed(() => {
-    const s = this.script();
-    const idx = this.currentStepIndex();
-    return s && idx >= 0 && idx < s.steps.length ? s.steps[idx] : null;
+    const stepId = this.currentStepId();
+    return stepId ? this.currentSteps().find(step => step.stepId === stepId) ?? null : null;
   });
-
+  readonly currentStepIndex = computed(() => {
+    const stepId = this.currentStepId();
+    return stepId ? this.currentSteps().findIndex(step => step.stepId === stepId) : -1;
+  });
   readonly sortedContent = computed(() => {
     const step = this.currentStep();
-    if (!step?.content) return [];
-    return [...step.content].sort((a, b) => (a.order || 0) - (b.order || 0));
+    return (step?.content ?? [])
+      .map(item => this.renderContentItem(item))
+      .filter((item): item is RenderedItem => item !== null);
+  });
+  readonly currentChecks = computed(() => {
+    const step = this.currentStep();
+    return (step?.onEnter ?? [])
+      .filter((entry): entry is ScriptOnEnter & { ref: string } => entry.kind === 'check' && !!entry.ref)
+      .map(entry => this.renderCheck(entry.ref));
+  });
+  readonly visibleButtons = computed(() => {
+    const step = this.currentStep();
+    return (step?.buttons ?? []).filter(button => button.kind !== 'auto' && this.isExpressionMet(button.visibleWhen));
   });
 
-  constructor() {
-    effect(() => {
-      if (this.scriptService.scriptsIndex().length > 0 && this.scriptId && !this.script()) {
-        this.loadScript();
-      }
-    });
-
-    effect(() => {
-      const step = this.currentStep();
-      if (step) {
-        this.markAutoChecksAsCompleted(step);
-      }
-    });
+  async ngOnInit(): Promise<void> {
+    await this.loadScript();
   }
 
-  async ngOnInit() {
-    if (this.scriptId) {
-      setTimeout(() => this.loadScript(), 300);
-    }
-  }
-
-  async loadScript() {
+  async loadScript(): Promise<void> {
     this.isLoading.set(true);
     this.loadError.set(null);
+    this.showSummary.set(false);
+    this.currentStepId.set(null);
+    this.activeFlow.set(null);
+    this.flowStack.set([]);
+    this.navigationHistory.set([]);
+    this.userAnswers.set(new Map());
+    this.checkResults.set({});
+    this.completedChecks.set(new Set());
+    this.completedActions.set([]);
+    this.waypoints.set(new Map());
 
     try {
-      const loaded = await this.scriptService.getScript(this.scriptId);
-      if (loaded) {
-        this.script.set(loaded);
-        const firstStep = loaded.steps[0];
-        if (firstStep) this.markAutoChecksAsCompleted(firstStep);
-      } else {
-        this.loadError.set(`Failed to load script: ${this.scriptId}`);
+      const [loaded, checks] = await Promise.all([
+        this.scriptService.getScript(this.scriptId),
+        this.scriptService.getChecks()
+      ]);
+
+      if (!loaded || !checks) {
+        throw new Error(`Failed to load Surrender runtime data`);
       }
+
+      this.script.set(loaded);
+      this.checkResults.set(checks);
+      await this.enterStep(loaded.startStepId);
     } catch (err) {
       console.error(err);
-      this.loadError.set('Failed to load script');
+      this.loadError.set(`Failed to load script: ${this.scriptId}`);
     } finally {
       this.isLoading.set(false);
     }
   }
 
-  private markAutoChecksAsCompleted(step: any) {
-    if (!step?.content) return;
-
-    step.content.forEach((item: any) => {
-      if (item.type === 'required-check' && item.requiredChecks) {
-        item.requiredChecks.forEach((check: any) => {
-          if (check.auto) {
-            const checkText = check.question 
-              ? `${check.question}: ${check.answer}` 
-              : (typeof check === 'string' ? check : check.text || '');
-            
-            if (checkText) {
-              this.completedChecks.update(set => {
-                set.add(checkText);
-                return new Set(set);
-              });
-            }
-          }
-        });
-      }
+  selectOption(option: ScriptOption, itemId: string): void {
+    this.userAnswers.update(answers => {
+      const next = new Map(answers);
+      next.set(itemId, option.key);
+      return next;
     });
   }
 
-  selectOption(option: any, stepId: string) {
-    this.userAnswers.update(map => {
-      map.set(stepId, [option.text]);
-      return new Map(map);
-    });
+  selectManualCheck(option: ScriptOption, itemId: string): void {
+    this.selectOption(option, itemId);
   }
 
-  selectManualCheck(option: any, question: string) {
-    this.userAnswers.update(map => {
-      map.set(question, [option.text]);
-      return new Map(map);
-    });
-
-    this.completedChecks.update(set => {
-      const prefix = `${question}: `;
-      Array.from(set)
-        .filter(text => text.startsWith(prefix))
-        .forEach(text => set.delete(text));
-      set.add(`${question}: ${option.text}`);
-      return new Set(set);
-    });
+  isOptionSelected(optionKey: string, itemId: string): boolean {
+    return this.userAnswers().get(itemId) === optionKey;
   }
 
-  isOptionSelected(optionText: string, stepId: string): boolean {
-    return this.userAnswers().get(stepId)?.includes(optionText) ?? false;
+  isButtonEnabled(button: ScriptButton): boolean {
+    return this.isExpressionMet(button.enabledWhen);
   }
 
-  toggleCheck(checkText: string, checked: boolean) {
-    if (!checkText) return;
-    this.completedChecks.update(set => {
-      checked ? set.add(checkText) : set.delete(checkText);
-      return new Set(set);
-    });
-  }
-
-  addAction(action: string) {
-    this.completedActions.update(actions => [...actions, action]);
-  }
-
-  goToStep(index: number) {
-    const total = this.script()?.steps.length ?? 0;
-    if (index >= 0 && index < total) {
-      this.currentStepIndex.set(index);
-    }
-  }
-
-  getNextStepIndex(): number {
-    const step = this.currentStep();
-    if (!step) return this.currentStepIndex() + 1;
-
-    const selectedAnswer = this.userAnswers().get(step.id)?.[0];
-    if (!selectedAnswer) return this.currentStepIndex() + 1;
-
-    const questionItem = step.content.find((item: any) => 
-      item.type === 'question' && Array.isArray(item.options)
-    );
-
-    if (questionItem && Array.isArray(questionItem.options)) {
-      const selectedOption = questionItem.options.find((opt: any) => opt.text === selectedAnswer);
-      if (selectedOption?.nextStep) {
-        const nextStepIndex = this.script()!.steps.findIndex(s => s.id === selectedOption.nextStep);
-        if (nextStepIndex !== -1) return nextStepIndex;
-      }
+  async runButton(button: ScriptButton): Promise<void> {
+    if (!this.isButtonEnabled(button)) {
+      return;
     }
 
-    return this.currentStepIndex() + 1;
+    if (button.kind === 'back') {
+      this.goBack();
+      return;
+    }
+
+    this.fireActions(button.onClick);
+    if (button.kind === 'end' && !button.routes?.length) {
+      this.finishJourney();
+      return;
+    }
+
+    const route = button.routes?.find(candidate => this.isExpressionMet(candidate.when));
+    if (!route) {
+      if (button.kind === 'end') {
+        this.finishJourney();
+      } else {
+        this.loadError.set(`No matching route for button: ${button.key}`);
+      }
+      return;
+    }
+
+    this.fireActions(route.onEnter);
+    if (route.to === '@end') {
+      this.finishJourney();
+      return;
+    }
+
+    if (route.to.startsWith('@exit:')) {
+      await this.returnFromFlow(route.to.slice('@exit:'.length));
+      return;
+    }
+
+    this.pushCurrentLocation();
+    await this.enterStep(route.to);
   }
 
-  finishJourney() {
+  goBack(): void {
+    const previous = this.navigationHistory().at(-1);
+    if (!previous) {
+      return;
+    }
+
+    this.navigationHistory.update(history => history.slice(0, -1));
+    this.activeFlow.set(previous.flow);
+    this.flowArgs.set(previous.args);
+    this.currentStepId.set(previous.stepId);
+  }
+
+  finishJourney(): void {
     this.showSummary.set(true);
-    console.log('✅ Script Journey Completed', {
+    console.log('Script Journey Completed', {
       scriptId: this.script()?.scriptId,
       answers: Object.fromEntries(this.userAnswers()),
       completedChecks: Array.from(this.completedChecks()),
@@ -179,84 +211,359 @@ export class CallScriptJourneyComponent implements OnInit {
     });
   }
 
-  restartJourney() {
-    this.currentStepIndex.set(0);
-    this.userAnswers.set(new Map());
-    this.completedChecks.set(new Set());
-    this.completedActions.set([]);
-    this.showSummary.set(false);
+  restartJourney(): void {
+    void this.loadScript();
   }
 
-  isConditionMet(condition: any): boolean {
-    if (!condition || !condition.dependsOn) return true;
-
-    const dependsOn = condition.dependsOn;
-
-    if (condition.checkQuestion) {
-      const target = `${condition.checkQuestion}: ${condition.answer}`;
-      if (this.completedChecks().has(target)) return true;
-
-      const manualAnswer = this.userAnswers().get(condition.checkQuestion);
-      if (Array.isArray(manualAnswer) && manualAnswer.includes(condition.answer)) {
-        return true;
-      }
-
-      // Auto checks are considered completed even if completedChecks hasn't been updated yet
-      return this.script()?.steps.some((step: any) =>
-        step.content?.some((item: any) =>
-          item.type === 'required-check' &&
-          item.id === dependsOn &&
-          item.requiredChecks?.some((check: any) =>
-            check.auto &&
-            check.question === condition.checkQuestion &&
-            String(check.answer) === String(condition.answer)
-          )
-        )
-      ) ?? false;
-    }
-
-    const selectedAnswers = this.userAnswers().get(dependsOn) || [];
-    if (!Array.isArray(selectedAnswers) || selectedAnswers.length === 0) {
-      return false;
-    }
-
-    const requiredAnswers = (condition.answers || []).map((a: string) => String(a).trim());
-    if (requiredAnswers.length === 0) {
-      // No specific answers required → any answer satisfies the condition
-      return true;
-    }
-
-    return requiredAnswers.some((answer: string) => selectedAnswers.includes(answer));
-  }
-
-  hasEndCallAction(): boolean {
-    const step = this.currentStep();
-    if (!step) return false;
-    return step.content.some((item: any) => 
-      item.type === 'action' && item.actionType === 'end-call'
-    );
-  }
-
-  isAutoCheck(check: any): boolean {
-    return typeof check === 'object' && check?.auto === true;
-  }
-
-  isManualCheck(check: any): boolean {
-    return typeof check === 'object' && check?.manual === true;
+  hasPreviousStep(): boolean {
+    return this.navigationHistory().length > 0;
   }
 
   formatPrompt(text: string): string {
     if (!text) return '';
 
-    let formatted = text
+    return text
       .replace(/\. /g, '.<br><br>')
       .replace(/\? /g, '?<br><br>')
-      .replace(/! /g, '!<br><br>');
+      .replace(/! /g, '!<br><br>')
+      .replace(/£?\d{1,3}(?:,\d{3})*(?:\.\d+)?/g, match =>
+        `<span class="alp-prompt-variable">${match}</span>`
+      );
+  }
 
-    formatted = formatted.replace(/£?\d{1,3}(?:,\d{3})*(?:\.\d+)?/g, match => 
-      `<span class="alp-prompt-variable">${match}</span>`
+  private async enterStep(stepId: string): Promise<void> {
+    const step = this.currentSteps().find(candidate => candidate.stepId === stepId);
+    if (!step) {
+      this.loadError.set(`Step not found: ${stepId}`);
+      return;
+    }
+
+    this.currentStepId.set(stepId);
+    await this.runOnEnter(step);
+
+    if (step.callFlow) {
+      await this.enterFlow(step);
+      return;
+    }
+
+    const autoButton = step.buttons?.find(button =>
+      button.kind === 'auto' && this.isExpressionMet(button.visibleWhen) && this.isButtonEnabled(button)
     );
+    if (autoButton) {
+      await this.runButton(autoButton);
+    }
+  }
 
-    return formatted;
+  private async enterFlow(callerStep: ScriptStep): Promise<void> {
+    const script = this.script();
+    const callFlow = callerStep.callFlow;
+    if (!script || !callFlow) {
+      return;
+    }
+
+    const link = script.flows[callFlow.ref];
+    const flow = await this.scriptService.getFlow(callFlow.ref, callFlow.version ?? link?.version ?? 1);
+    this.flowStack.update(stack => [
+      ...stack,
+      {
+        flow: this.activeFlow(),
+        stepId: callerStep.stepId,
+        args: this.flowArgs(),
+        onExit: callerStep.onExit
+      }
+    ]);
+    this.activeFlow.set(flow);
+    this.flowArgs.set(callFlow.args ?? {});
+    await this.enterStep(flow.startStepId);
+  }
+
+  private async returnFromFlow(exitName: string): Promise<void> {
+    const frame = this.flowStack().at(-1);
+    if (!frame) {
+      this.finishJourney();
+      return;
+    }
+
+    this.flowStack.update(stack => stack.slice(0, -1));
+    const targetStepId = frame.onExit?.[exitName];
+    if (!targetStepId) {
+      this.finishJourney();
+      return;
+    }
+
+    this.activeFlow.set(frame.flow);
+    this.flowArgs.set(frame.args);
+    await this.enterStep(targetStepId);
+  }
+
+  private pushCurrentLocation(): void {
+    const stepId = this.currentStepId();
+    if (!stepId) {
+      return;
+    }
+
+    this.navigationHistory.update(history => [
+      ...history,
+      {
+        flow: this.activeFlow(),
+        stepId,
+        args: this.flowArgs()
+      }
+    ]);
+  }
+
+  private renderContentItem(item: ScriptContentItem): RenderedItem | null {
+    if (!this.isExpressionMet(item.visibleWhen)) {
+      return null;
+    }
+
+    const unit = item.inline ?? (item.ref ? this.resolveUnit(item.ref) : undefined);
+    if (!unit) {
+      return {
+        id: item.id,
+        kind: 'prompt',
+        content: `Missing unit: ${item.ref ?? item.id}`,
+        options: []
+      };
+    }
+
+    const options = unit.options ?? unit.outcomes?.map(key => ({
+      key,
+      text: unit.optionLabels?.[key] ?? key
+    })) ?? [];
+
+    return {
+      id: item.id,
+      kind: unit.kind,
+      content: this.resolveUnitText(unit),
+      options,
+      optionLabels: unit.optionLabels
+    };
+  }
+
+  private renderCheck(ref: string): RenderedCheck {
+    const unit = this.resolveUnit(ref);
+    const result = this.checkResults()[ref];
+    return {
+      ref,
+      label: unit?.label ?? ref,
+      outcome: result?.outcome ?? 'Stubbed'
+    };
+  }
+
+  private resolveUnit(ref: string): ScriptUnit | undefined {
+    const resolvedRef = ref.replace(/\{\{([^}]+)}}/g, (_match, key: string) =>
+      String(this.flowArgs()[key] ?? ref)
+    );
+    return this.currentUnits()[resolvedRef];
+  }
+
+  private resolveUnitText(unit: ScriptUnit): string {
+    let body = unit.body ?? unit.prompt ?? unit.label ?? '';
+    const resultByKey = new Map<string, unknown>();
+
+    for (const placeholder of unit.placeholders ?? []) {
+      resultByKey.set(placeholder.key, this.resolvePlaceholder(placeholder));
+    }
+
+    body = body.replace(/\{\{#([^}]+)}}([\s\S]*?)\{\{\/\1}}/g, (_match, key: string, content: string) =>
+      this.asBoolean(resultByKey.get(key)) ? content : ''
+    );
+    return body.replace(/\{\{([^}]+)}}/g, (_match, key: string) =>
+      String(resultByKey.get(key) ?? '')
+    );
+  }
+
+  private resolvePlaceholder(placeholder: NonNullable<ScriptUnit['placeholders']>[number]): unknown {
+    const result = this.checkResults()[placeholder.source];
+    if (!result) {
+      return '';
+    }
+
+    const detail = result.detail ?? {};
+    const path = placeholder.path.replace(/^items\[0\]\.?/, '');
+    const value = path ? this.getPathValue(detail, path) : undefined;
+    if (value !== undefined) {
+      return placeholder.format === 'currency-gbp' ? this.formatCurrency(value) : value;
+    }
+
+    return placeholder.format === 'currency-gbp' ? this.formatCurrency(result.outcome) : result.outcome ?? '';
+  }
+
+  private formatCurrency(value: unknown): string {
+    const amount = Number(value);
+    return Number.isFinite(amount)
+      ? amount.toLocaleString('en-GB', { style: 'currency', currency: 'GBP' })
+      : String(value ?? '');
+  }
+
+  private getPathValue(value: unknown, path: string): unknown {
+    return path.split('.').reduce<unknown>((current, key) => {
+      if (current && typeof current === 'object') {
+        return (current as Record<string, unknown>)[key];
+      }
+      return undefined;
+    }, value);
+  }
+
+  private async runOnEnter(step: ScriptStep): Promise<void> {
+    for (const entry of step.onEnter ?? []) {
+      if (entry.kind === 'check' && entry.ref) {
+        this.ensureCheck(entry.ref);
+      }
+      if (entry.kind === 'waypoint' && entry.id && entry.source) {
+        this.waypoints.update(points => {
+          const next = new Map(points);
+          next.set(entry.id!, this.deriveWaypoint(entry));
+          return next;
+        });
+      }
+    }
+  }
+
+  private ensureCheck(ref: string): void {
+    const existing = this.checkResults()[ref];
+    if (existing?.status === 'ok') {
+      this.recordCheck(ref, existing);
+      return;
+    }
+
+    const unit = this.resolveUnit(ref);
+    const result = this.createStubCheck(unit);
+    this.checkResults.update(results => ({ ...results, [ref]: result }));
+    this.recordCheck(ref, result);
+  }
+
+  private createStubCheck(unit: ScriptUnit | undefined): CheckResult {
+    const outcome = unit?.outcomes?.includes('No')
+      ? 'No'
+      : unit?.outcomes?.[0] ?? 'No';
+    const detail = unit?.aggregateFlag
+      ? Object.fromEntries(unit.aggregateFlag.trueWhenAny.map(key => [key, false]))
+      : undefined;
+
+    return {
+      outcome,
+      detail,
+      source: 'local-stub',
+      status: 'ok'
+    };
+  }
+
+  private recordCheck(ref: string, result: CheckResult): void {
+    const outcome = result.outcome ?? 'Completed';
+    this.completedChecks.update(checks => {
+      const next = new Set(checks);
+      next.add(`${ref}: ${outcome}`);
+      return next;
+    });
+  }
+
+  private deriveWaypoint(entry: ScriptOnEnter & { source: string }): string {
+    const result = this.checkResults()[entry.source];
+    const unit = this.resolveUnit(entry.source);
+    if (!result || !unit) {
+      return 'pass';
+    }
+
+    if (entry.aggregate === 'single-joint') {
+      return result.outcome === 'Joint' ? 'amber' : 'pass';
+    }
+
+    const styles = unit.subChecks?.map(check => {
+      const raw = result.detail?.[check.key];
+      const outcome = unit.subOutcomeMap?.[String(raw)] ?? String(raw ?? 'No');
+      return unit.styling?.[outcome] ?? 'pass';
+    }) ?? [];
+
+    if (styles.includes('fail')) {
+      return 'fail';
+    }
+    if (styles.includes('amber') || unit.styling?.[result.outcome ?? ''] === 'amber') {
+      return 'amber';
+    }
+    return unit.styling?.[result.outcome ?? ''] ?? 'pass';
+  }
+
+  private fireActions(actions: string[] | undefined): void {
+    if (!actions?.length) {
+      return;
+    }
+    this.completedActions.update(completed => [...completed, ...actions]);
+  }
+
+  private isExpressionMet(expression: string | undefined): boolean {
+    if (!expression) {
+      return true;
+    }
+
+    return expression
+      .split('||')
+      .some(orPart => orPart.split('&&').every(andPart => this.evaluateClause(andPart.trim())));
+  }
+
+  private evaluateClause(clause: string): boolean {
+    const match = clause.match(/^(.+?)\s*(==|!=)\s*(.+)$/);
+    if (!match) {
+      return this.asBoolean(this.resolveExpressionValue(clause));
+    }
+
+    const left = this.resolveExpressionValue(match[1].trim());
+    const right = this.resolveExpressionValue(match[3].trim());
+    const equal = this.normaliseValue(left) === this.normaliseValue(right);
+    return match[2] === '==' ? equal : !equal;
+  }
+
+  private resolveExpressionValue(expression: string): unknown {
+    const quoted = expression.match(/^['"](.*)['"]$/);
+    if (quoted) {
+      return quoted[1];
+    }
+    if (expression === 'true') return true;
+    if (expression === 'false') return false;
+    if (expression === 'null') return null;
+    if (!Number.isNaN(Number(expression))) return Number(expression);
+
+    if (expression.startsWith('arg.')) {
+      return this.flowArgs()[expression.slice(4)];
+    }
+    if (expression.startsWith('wp-')) {
+      return this.waypoints().get(expression);
+    }
+
+    const checkMatch = expression.match(/^(chk\.[^.]+)(?:\.(.+))?$/);
+    if (checkMatch) {
+      const result = this.checkResults()[checkMatch[1]];
+      if (!checkMatch[2]) {
+        return result?.outcome;
+      }
+      const unit = this.resolveUnit(checkMatch[1]);
+      if (checkMatch[2] === unit?.aggregateFlag?.outputKey) {
+        return unit.aggregateFlag.trueWhenAny.some(key => this.asBoolean(result?.detail?.[key]));
+      }
+      return this.getPathValue(result?.detail, checkMatch[2]);
+    }
+
+    const contentMatch = expression.match(/^(.+)\.(answered|value)$/);
+    if (contentMatch) {
+      const answer = this.userAnswers().get(contentMatch[1]);
+      return contentMatch[2] === 'answered' ? !!answer : answer;
+    }
+
+    return expression;
+  }
+
+  private normaliseValue(value: unknown): string {
+    return value === null || value === undefined ? '' : String(value);
+  }
+
+  private asBoolean(value: unknown): boolean {
+    if (value === true || value === 'true') {
+      return true;
+    }
+    if (value === false || value === 'false' || value === null || value === undefined) {
+      return false;
+    }
+    return typeof value === 'number' ? value !== 0 : value !== 'No' && value !== 'N' && value !== '';
   }
 }

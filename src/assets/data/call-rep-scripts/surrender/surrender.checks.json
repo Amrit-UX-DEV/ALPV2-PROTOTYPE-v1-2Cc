@@ -1,0 +1,91 @@
+{
+  "_comment": "EXAMPLE ONLY - the per-session prefetch results map returned by POST /scripts/session/{id}/prefetch (and GET /scripts/session/{id}/checks). This is NOT part of the bundle: it is per-policy runtime data that travels alongside surrender-001.steps.bundle.example.json. Keys are the same check 'ref' slugs the bundle's step onEnter[] entries use, which is what joins the two at runtime. Only automated checks appear here; manual checks (chk.trust-assigned-manual, chk.online-partial-eligible, chk.eid-warnings) are answered live by the agent and are never prefetched. TWO 'no answer sent back' cases are shown: (1) chk.known-bank-account is PRESENT with status='error' - prefetch was attempted but the upstream call failed; (2) chk.is-bond is intentionally OMITTED entirely - there is simply no key for it (e.g. prefetch skipped it, or it was added after prefetch ran). In BOTH cases the engine resolves the check LIVE when the flow reaches that step - for chk.is-bond that is a step onEnter check inside the callable flow payment-collection-and-eid - via ScriptCheckService.run(binding), then records the result back into the map with source='live'. Resolution rule: results[ref] with status='ok' is used; anything else (missing key OR status='error') triggers a live fetch.",
+  "chk.suspended-fund": {
+    "raw": "N",
+    "outcome": "No",
+    "version": 1,
+    "source": "prefetch",
+    "status": "ok",
+    "fetchedAt": "2026-09-02T09:15:03Z"
+  },
+  "chk.allow-alternatives": {
+    "raw": "Y",
+    "outcome": "Yes",
+    "version": 1,
+    "source": "prefetch",
+    "status": "ok",
+    "fetchedAt": "2026-09-02T09:15:03Z"
+  },
+  "chk.policy-value": {
+    "raw": "18450.72",
+    "outcome": "18450.72",
+    "version": 1,
+    "source": "prefetch",
+    "status": "ok",
+    "fetchedAt": "2026-09-02T09:15:03Z"
+  },
+  "chk.policy-features": {
+    "detail": {
+      "hasBenefits": false,
+      "hasPenalty": true,
+      "hasMvr": false,
+      "hasBonuses": false
+    },
+    "version": 1,
+    "source": "prefetch",
+    "status": "ok",
+    "fetchedAt": "2026-09-02T09:15:03Z",
+    "_comment": "Object result stored in 'detail'; the engine derives the 'anyWarning' aggregateFlag from the unit definition (trueWhenAny -> hasPenalty is true -> warning)."
+  },
+  "chk.pre-surrender-flags": {
+    "detail": {
+      "fctWarningFlag": "N",
+      "policyInArrears": "N",
+      "addressOuk": "N",
+      "manualCalculation": "N",
+      "policyInDebt": "N",
+      "policyOnHold": "N",
+      "faCalling": "N",
+      "poaCalling": "N",
+      "openBill": "N"
+    },
+    "version": 1,
+    "source": "prefetch",
+    "status": "ok",
+    "fetchedAt": "2026-09-02T09:15:03Z",
+    "_comment": "Bulk sub-flag object; the waypoint aggregates Green/Red engine-side from the unit's subChecks + subOutcomeMap."
+  },
+  "chk.trust-assigned-bankruptcy": {
+    "raw": "U",
+    "outcome": "Unconfirmed",
+    "version": 1,
+    "source": "prefetch",
+    "status": "ok",
+    "fetchedAt": "2026-09-02T09:15:03Z"
+  },
+  "chk.single-joint-ownership": {
+    "raw": "S",
+    "outcome": "Single",
+    "version": 1,
+    "source": "prefetch",
+    "status": "ok",
+    "fetchedAt": "2026-09-02T09:15:03Z"
+  },
+  "chk.non-qualifying": {
+    "raw": "N",
+    "outcome": "No",
+    "version": 1,
+    "source": "prefetch",
+    "status": "ok",
+    "fetchedAt": "2026-09-02T09:15:03Z"
+  },
+  "_absent_example_note": "chk.is-bond is deliberately NOT in this map (no key at all) to illustrate the 'answer never sent back' case. When the engine reaches n-is-bond it finds results['chk.is-bond'] === undefined, calls the data service live, and would then write an entry like: { \"raw\": \"N\", \"outcome\": \"No\", \"version\": 1, \"source\": \"live\", \"status\": \"ok\", \"fetchedAt\": \"...\" }.",
+  "chk.known-bank-account": {
+    "version": 1,
+    "source": "prefetch",
+    "status": "error",
+    "error": "ORA-29273: HTTP request failed - upstream 504 from policy/surrender/known_bank_account",
+    "fetchedAt": "2026-09-02T09:15:04Z",
+    "_comment": "Prefetch failed for this one; status='error' makes the engine call the data service live when the flow reaches it."
+  }
+}

@@ -1,0 +1,53 @@
+{
+  "_comment": "EXAMPLE - the response body ORDS returns for GET /scripts/flow/pup-ph-info?version=1. Each callable flow is fetched by its own REST call (the path segment is the flow id, the version query pins the frozen version). At session start the engine fires all of these flow calls in parallel, alongside the bundle (/lookup) and the checks prefetch (/prefetch), then caches each for the session - so entering a callFlow step into pup-ph-info never blocks. The payload is a self-contained CallableFlow: startStepId/terminal/params/exits/steps PLUS its own 'units' (every library unit its steps reference), so it renders without the main bundle. Nested flows it calls are fetched by their own parallel GET /scripts/flow/... calls the same way.",
+  "version": 1,
+  "scriptId": "pup-ph-info",
+  "title": "Paid-up / Premium Holiday information pack",
+  "terminal": true,
+  "params": [],
+  "exits": [],
+  "startStepId": "st-pup-info",
+  "steps": [
+    {
+      "stepId": "st-pup-info",
+      "version": 1,
+      "title": "Paid-up / premium holiday info",
+      "content": [
+        {
+          "id": "c-info",
+          "ref": "prm.pup-ph-info"
+        }
+      ],
+      "buttons": [
+        {
+          "key": "end",
+          "kind": "end",
+          "label": "End call",
+          "onClick": ["act.log-pup-ph-post"]
+        }
+      ]
+    }
+  ],
+  "units": {
+    "act.log-pup-ph-post": {
+      "unitId": "act.log-pup-ph-post",
+      "version": 1,
+      "kind": "action",
+      "actionType": "log-task",
+      "label": "Log task for PUP/Premium Holiday information to be posted.",
+      "binding": {
+        "method": "POST",
+        "url": "trans/surrender/log_task",
+        "data": {
+          "taskType": "PUP_PH_INFO_POST"
+        }
+      }
+    },
+    "prm.pup-ph-info": {
+      "unitId": "prm.pup-ph-info",
+      "version": 1,
+      "kind": "prompt",
+      "body": "We'll send you some more information about this in the post. Please don't cancel your direct debit until you've read all the information in our letter."
+    }
+  }
+}

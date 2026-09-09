@@ -1,0 +1,248 @@
+{
+  "_comment": "EXAMPLE - the response body ORDS returns for GET /scripts/flow/partial-surrender-form?version=1. Each callable flow is fetched by its own REST call (the path segment is the flow id, the version query pins the frozen version). At session start the engine fires all of these flow calls in parallel, alongside the bundle (/lookup) and the checks prefetch (/prefetch), then caches each for the session - so entering a callFlow step into partial-surrender-form never blocks. The payload is a self-contained CallableFlow: startStepId/terminal/params/exits/steps PLUS its own 'units' (every library unit its steps reference), so it renders without the main bundle. Nested flows it calls are fetched by their own parallel GET /scripts/flow/... calls the same way.",
+  "version": 1,
+  "scriptId": "partial-surrender-form",
+  "title": "Online partial surrender form eligibility & delivery",
+  "terminal": true,
+  "params": [],
+  "exits": [],
+  "startStepId": "st-pf-eligible",
+  "steps": [
+    {
+      "stepId": "st-pf-eligible",
+      "version": 1,
+      "title": "Online partial eligibility",
+      "content": [
+        {
+          "id": "c-eligible",
+          "ref": "chk.online-partial-eligible"
+        }
+      ],
+      "buttons": [
+        {
+          "key": "next",
+          "kind": "next",
+          "label": "Next",
+          "enabledWhen": "c-eligible.answered",
+          "routes": [
+            {
+              "when": "c-eligible.value == 'Yes'",
+              "to": "st-pf-do-online"
+            },
+            {
+              "to": "st-pf-post-email"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "stepId": "st-pf-do-online",
+      "version": 1,
+      "title": "Complete online?",
+      "content": [
+        {
+          "id": "c-do-online",
+          "ref": "qst.do-online"
+        }
+      ],
+      "buttons": [
+        {
+          "key": "next",
+          "kind": "next",
+          "label": "Next",
+          "enabledWhen": "c-do-online.answered",
+          "routes": [
+            {
+              "when": "c-do-online.value == 'yes'",
+              "to": "st-pf-online"
+            },
+            {
+              "to": "st-pf-post-email"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "stepId": "st-pf-online",
+      "version": 1,
+      "title": "Direct to Help Centre",
+      "content": [
+        {
+          "id": "c-online-act",
+          "ref": "act.direct-help-centre"
+        }
+      ],
+      "buttons": [
+        {
+          "key": "end",
+          "kind": "end",
+          "label": "End call"
+        }
+      ]
+    },
+    {
+      "stepId": "st-pf-post-email",
+      "version": 1,
+      "title": "Post or email the form?",
+      "content": [
+        {
+          "id": "c-pe",
+          "ref": "qst.post-or-email"
+        }
+      ],
+      "buttons": [
+        {
+          "key": "next",
+          "kind": "next",
+          "label": "Next",
+          "enabledWhen": "c-pe.answered",
+          "routes": [
+            {
+              "when": "c-pe.value == 'post'",
+              "to": "st-pf-post"
+            },
+            {
+              "when": "c-pe.value == 'email'",
+              "to": "st-pf-email"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "stepId": "st-pf-post",
+      "version": 1,
+      "title": "Form by post",
+      "content": [
+        {
+          "id": "c-post-prompt",
+          "ref": "prm.partial-form-post"
+        }
+      ],
+      "buttons": [
+        {
+          "key": "end",
+          "kind": "end",
+          "label": "End call",
+          "onClick": ["act.log-partial-forms-post"]
+        }
+      ]
+    },
+    {
+      "stepId": "st-pf-email",
+      "version": 1,
+      "title": "Form by email",
+      "content": [
+        {
+          "id": "c-email-prompt",
+          "ref": "prm.partial-form-email"
+        }
+      ],
+      "buttons": [
+        {
+          "key": "end",
+          "kind": "end",
+          "label": "End call",
+          "onClick": ["act.email-partial-form"]
+        }
+      ]
+    }
+  ],
+  "units": {
+    "act.direct-help-centre": {
+      "unitId": "act.direct-help-centre",
+      "version": 1,
+      "kind": "action",
+      "actionType": "signpost",
+      "label": "Direct to Help Centre help.reassure.co.uk",
+      "binding": null
+    },
+    "act.email-partial-form": {
+      "unitId": "act.email-partial-form",
+      "version": 1,
+      "kind": "action",
+      "actionType": "send-email",
+      "label": "Email PDF version of the online partial surrender form.",
+      "binding": {
+        "method": "POST",
+        "url": "trans/surrender/email_pack",
+        "data": {
+          "template": "PARTIAL_SURRENDER_FORM"
+        }
+      }
+    },
+    "act.log-partial-forms-post": {
+      "unitId": "act.log-partial-forms-post",
+      "version": 1,
+      "kind": "action",
+      "actionType": "log-task",
+      "label": "Log task for Partial Surrender forms to be posted.",
+      "binding": {
+        "method": "POST",
+        "url": "trans/surrender/log_task",
+        "data": {
+          "taskType": "PARTIAL_FORMS_POST"
+        }
+      }
+    },
+    "chk.online-partial-eligible": {
+      "unitId": "chk.online-partial-eligible",
+      "version": 1,
+      "kind": "manual",
+      "label": "Is the customer eligible for the online partial surrender form? (i.e. not in trust or assigned)",
+      "outcomes": ["Yes", "No"],
+      "styling": {
+        "Yes": "pass",
+        "No": "fail"
+      }
+    },
+    "prm.partial-form-email": {
+      "unitId": "prm.partial-form-email",
+      "version": 1,
+      "kind": "prompt",
+      "body": "No problem, I'll get that sent to you now."
+    },
+    "prm.partial-form-post": {
+      "unitId": "prm.partial-form-post",
+      "version": 1,
+      "kind": "prompt",
+      "body": "No problem, I'll get that requested now. Forms can take up to 10 working days, although in most cases they're issued sooner than this."
+    },
+    "qst.do-online": {
+      "unitId": "qst.do-online",
+      "version": 1,
+      "kind": "question",
+      "prompt": "Do you want to do this online?",
+      "selectionMode": "single",
+      "options": [
+        {
+          "key": "yes",
+          "text": "Yes"
+        },
+        {
+          "key": "no",
+          "text": "No"
+        }
+      ]
+    },
+    "qst.post-or-email": {
+      "unitId": "qst.post-or-email",
+      "version": 1,
+      "kind": "question",
+      "prompt": "Would you like it sent in the post or over email for you to print at home?",
+      "selectionMode": "single",
+      "options": [
+        {
+          "key": "post",
+          "text": "Post"
+        },
+        {
+          "key": "email",
+          "text": "Email"
+        }
+      ]
+    }
+  }
+}

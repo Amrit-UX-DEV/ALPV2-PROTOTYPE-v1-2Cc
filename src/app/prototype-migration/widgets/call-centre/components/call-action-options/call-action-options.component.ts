@@ -74,7 +74,7 @@ export class CallActionOptionsComponent {
     this.showElement = !this.showElement;
   }
 
-  showScript = false;
+  showScript = true;
   toggleScript() {
     this.showScript = !this.showScript;
   }
