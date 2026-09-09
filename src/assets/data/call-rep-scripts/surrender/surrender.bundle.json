@@ -1029,14 +1029,7 @@
       "unitId": "prm.alternatives-intro",
       "version": 1,
       "kind": "prompt",
-      "body": "It's important to remember that fully cashing in your policy may not be your only option. You also have the option to {{alternativesWording}}.",
-      "placeholders": [
-        {
-          "key": "alternativesWording",
-          "source": "chk.allow-alternatives",
-          "path": "items[0].alternativesWording"
-        }
-      ]
+      "body": "It's important to remember that fully cashing in your policy may not be your only option."
     },
     "prm.both-ph-needed": {
       "unitId": "prm.both-ph-needed",

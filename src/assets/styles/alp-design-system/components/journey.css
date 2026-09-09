@@ -137,6 +137,13 @@
   margin-left: 0;
 }
 
+.alp-script-journey__manual-warning {
+  margin: 0 0 var(--alp-space-3);
+  font-size: var(--alp-font-size-sm);
+  font-weight: var(--alp-font-weight-bold);
+  color: var(--alp-color-red-600);
+}
+
 .alp-script-journey__read-block--action {
   border-color: var(--alp-color-amber-200);
   background: var(--alp-color-amber-50);
@@ -257,7 +264,7 @@ button.declaration-btn.declared::after {
 
 .alp-script-journey__option-text {
   flex: 1;
-  font-size: 17px;
+  font-size: 16px;
 }
 
 .alp-script-journey__option-label:has(input:checked) {
@@ -339,9 +346,40 @@ button.declaration-btn.declared::after {
   text-align: left;
 }
 
-.alp-script-journey__summary-title {
-  font-size: var(--alp-font-size-2xl);
-  margin-bottom: var(--alp-space-8);
+.alp-script-journey__collapsible {
+  margin-bottom: var(--alp-space-6);
+}
+
+.alp-script-journey__collapsible > summary {
+  cursor: pointer;
+  list-style: none;
+}
+
+.alp-script-journey__collapsible > summary::-webkit-details-marker {
+  display: none;
+}
+
+.alp-script-journey__collapsible-summary {
+  display: flex;
+  align-items: center;
+  gap: var(--alp-space-2);
+}
+
+.alp-script-journey__collapsible-summary::before {
+  content: '\f0da';
+  font-family: 'Font Awesome 6 Free';
+  font-weight: 900;
+  font-size: var(--alp-font-size-sm);
+  color: var(--alp-color-text-muted);
+  transition: transform 0.15s ease;
+}
+
+.alp-script-journey__collapsible[open] .alp-script-journey__collapsible-summary::before {
+  transform: rotate(90deg);
+}
+
+.alp-script-journey__collapsible-summary h3 {
+  margin: 0;
 }
 
 .alp-script-journey__summary-item {

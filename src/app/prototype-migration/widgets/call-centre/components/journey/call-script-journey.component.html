@@ -95,13 +95,6 @@
             </span>
             <span class="alp-auto-checks-tile__hint">Click to view</span>
           </span>
-          @if (unconfirmedChecks().length) {
-            <span class="alp-auto-checks-tile__shelf">
-              {{ unconfirmedChecks().length }}
-              {{ unconfirmedChecks().length === 1 ? 'check' : 'checks' }}
-              unconfirmed
-            </span>
-          }
         </button>
       }
 
@@ -115,30 +108,49 @@
               </button>
             </header>
             <div class="alp-dialog__content">
-              <h5 class="alp-auto-checks-dialog__heading alp-auto-checks-dialog__heading--warning">Unconfirmed checks</h5>
-              @if (unconfirmedChecks().length) {
-                <ul class="alp-script-journey__check-list">
-                  @for (check of unconfirmedChecks(); track check.ref) {
-                    <li class="alp-script-journey__check-item alp-script-journey__check-item--auto alp-auto-checks-dialog__item--unconfirmed">
-                      <span>{{ check.label }} <strong>{{ check.outcome }}</strong></span>
-                    </li>
-                  }
-                </ul>
-              } @else {
-                <p class="alp-auto-checks-dialog__empty">No unconfirmed checks</p>
-              }
+              <div class="alp-auto-checks-dialog__tabs" role="tablist">
+                <button type="button"
+                        class="alp-auto-checks-dialog__tab"
+                        [class.alp-auto-checks-dialog__tab--active]="activeCheckTab() === 'current'"
+                        role="tab"
+                        (click)="setCheckTab('current')">Current</button>
+                <button type="button"
+                        class="alp-auto-checks-dialog__tab"
+                        [class.alp-auto-checks-dialog__tab--active]="activeCheckTab() === 'unconfirmed'"
+                        role="tab"
+                        (click)="setCheckTab('unconfirmed')">Unconfirmed</button>
+                <button type="button"
+                        class="alp-auto-checks-dialog__tab"
+                        [class.alp-auto-checks-dialog__tab--active]="activeCheckTab() === 'all'"
+                        role="tab"
+                        (click)="setCheckTab('all')">All</button>
+              </div>
 
-              <h5 class="alp-auto-checks-dialog__heading">Confirmed checks</h5>
-              @if (confirmedChecks().length) {
+              <input type="search"
+                     class="alp-auto-checks-dialog__search"
+                     placeholder="Search checks…"
+                     [value]="checkSearchQuery()"
+                     (input)="setCheckSearch($any($event.target).value)">
+
+              <p class="alp-auto-checks-dialog__count">
+                {{ dialogCheckCount() }}
+                {{ activeCheckTab() === 'unconfirmed'
+                    ? 'unconfirmed check' + (dialogCheckCount() === 1 ? '' : 's')
+                    : 'automatic ALPHA check' + (dialogCheckCount() === 1 ? '' : 's') + ' performed'
+                      + (activeCheckTab() === 'current' ? ' on the current screen' : '') }}
+              </p>
+
+              @if (dialogChecks().length) {
                 <ul class="alp-script-journey__check-list">
-                  @for (check of confirmedChecks(); track check.ref) {
-                    <li class="alp-script-journey__check-item alp-script-journey__check-item--auto">
+                  @for (check of dialogChecks(); track check.ref) {
+                    <li class="alp-script-journey__check-item alp-script-journey__check-item--auto"
+                        [class.alp-auto-checks-dialog__item--unconfirmed]="check.unconfirmed">
                       <span>{{ check.label }} <strong>{{ check.outcome }}</strong></span>
                     </li>
                   }
                 </ul>
               } @else {
-                <p class="alp-auto-checks-dialog__empty">No confirmed checks</p>
+                <p class="alp-auto-checks-dialog__empty">No checks found</p>
               }
             </div>
             <footer class="alp-dialog__footer">
@@ -186,6 +198,9 @@
                     </span>
                   }
                 </div>
+                @if (item.kind === 'manual') {
+                  <p class="alp-script-journey__manual-warning">Internal question. Do not read to caller.</p>
+                }
                 <p class="alp-script-journey__read-block-text" [innerHTML]="formatPrompt(item.content)"></p>
                 <div class="alp-script-journey__options">
                   @for (option of item.options; track option.key) {
@@ -194,7 +209,7 @@
                              [name]="'question-' + item.id"
                              [checked]="isOptionSelected(option.key, item.id)"
                              (change)="selectOption(option, item.id)">
-                      <span>{{ option.text }}</span>
+                      <span class="alp-script-journey__option-text">{{ option.text }}</span>
                     </label>
                   }
                 </div>
@@ -246,7 +261,11 @@
 
   @if (showSummary()) {
     <div class="alp-script-journey__summary">
-      <h2 class="alp-script-journey__summary-title">{{ script()?.title }}</h2>
+      <div class="alp-script-journey__header">
+        <h2 class="alp-script-journey__title">
+          <i class="fas fa-scroll"></i> {{ script()?.title }} summary
+        </h2>
+      </div>
 
       <section class="alp-content-card">
         <h3>Question audit</h3>
@@ -264,12 +283,15 @@
         }
       </section>
 
-      <section class="alp-content-card">
-        <h3>Automatic check audit</h3>
+      <details class="alp-script-journey__collapsible alp-content-card">
+        <summary class="alp-script-journey__collapsible-summary">
+          <h3>Automatic check audit</h3>
+        </summary>
         @if (screenChecks().length) {
           <ul class="alp-script-journey__check-list">
             @for (check of screenChecks(); track $index) {
-              <li class="alp-script-journey__check-item alp-script-journey__check-item--auto">
+              <li class="alp-script-journey__check-item alp-script-journey__check-item--auto"
+                  [class.alp-auto-checks-dialog__item--unconfirmed]="check.unconfirmed">
                 <span>{{ check.label }} <strong>{{ check.outcome }}</strong></span>
               </li>
             }
@@ -277,7 +299,7 @@
         } @else {
           <p>No automatic checks</p>
         }
-      </section>
+      </details>
 
       <section class="alp-completion-action-card">
         <div class="alp-completion-action-card__header">

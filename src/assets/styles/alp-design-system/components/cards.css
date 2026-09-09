@@ -303,27 +303,53 @@
   white-space: nowrap;
 }
 
-.alp-auto-checks-tile__shelf {
-  display: block;
-  margin-left: 35px;
-  padding: var(--alp-space-2) var(--alp-space-5);
-  border-top: 1px solid var(--alp-color-amber-300);
-  background: var(--alp-color-warning-soft);
-  color: var(--alp-color-black);
+.alp-auto-checks-dialog__tabs {
+  display: flex;
+  gap: var(--alp-space-1);
+  margin-bottom: var(--alp-space-3);
+}
+
+.alp-auto-checks-dialog__tab {
+  padding: var(--alp-space-2) var(--alp-space-4);
+  border: 1px solid var(--alp-color-border);
+  border-bottom: none;
+  border-radius: var(--alp-radius-sm) var(--alp-radius-sm) 0 0;
+  background: var(--alp-color-surface-raised);
+  color: var(--alp-color-text-soft);
   font-size: var(--alp-font-size-sm);
-  font-weight: var(--alp-font-weight-bold);
-  text-transform: capitalize;
-}
-
-.alp-auto-checks-dialog__heading {
-  margin: 0 0 var(--alp-space-3);
-  color: var(--alp-color-text);
-  font-size: var(--alp-font-size-md);
   font-weight: var(--alp-font-weight-semibold);
+  cursor: pointer;
 }
 
-.alp-auto-checks-dialog__heading:not(:first-child) {
-  margin-top: var(--alp-space-6);
+.alp-auto-checks-dialog__tab--active {
+  background: var(--alp-color-white);
+  color: var(--alp-color-text);
+  border-color: var(--alp-color-border-strong);
+  position: relative;
+  z-index: 1;
+}
+
+.alp-auto-checks-dialog__search {
+  width: 100%;
+  margin-bottom: var(--alp-space-3);
+  padding: var(--alp-space-2) var(--alp-space-3);
+  border: 1px solid var(--alp-color-border);
+  border-radius: var(--alp-radius-sm);
+  font-size: var(--alp-font-size-sm);
+  box-sizing: border-box;
+}
+
+.alp-auto-checks-dialog__search:focus {
+  outline: none;
+  border-color: var(--alp-color-brand);
+  box-shadow: 0 0 0 2px oklch(from var(--alp-color-brand) l c h / 0.15);
+}
+
+.alp-auto-checks-dialog__count {
+  margin: 0 0 var(--alp-space-3);
+  font-size: var(--alp-font-size-sm);
+  color: var(--alp-color-text-muted);
+  font-weight: var(--alp-font-weight-medium);
 }
 
 .alp-auto-checks-dialog__empty {
@@ -331,13 +357,10 @@
   color: var(--alp-color-text-muted);
 }
 
-.alp-auto-checks-dialog__heading--warning {
-  color: var(--alp-color-amber-800);
-}
-
 .alp-auto-checks-dialog__item--unconfirmed {
   background-color: var(--alp-color-warning-soft);
   border-color: var(--alp-color-amber-300);
+  color: var(--alp-color-black);
 }
 
 /* Completion action card used by the script journey summary. */

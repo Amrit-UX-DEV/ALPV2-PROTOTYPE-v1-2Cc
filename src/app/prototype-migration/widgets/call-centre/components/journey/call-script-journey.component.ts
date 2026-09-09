@@ -94,12 +94,44 @@ export class CallScriptJourneyComponent implements OnInit {
   readonly waypoints = signal<Map<string, string>>(new Map());
   // Running history of checks evaluated anywhere on this journey.
   readonly screenChecks = signal<RenderedCheck[]>([]);
+  readonly currentScreenCheckRefs = signal<Set<string>>(new Set());
+  readonly activeCheckTab = signal<'current' | 'unconfirmed' | 'all'>('current');
+  readonly checkSearchQuery = signal('');
   readonly unconfirmedChecks = computed(() =>
     this.screenChecks().filter(check => check.unconfirmed)
   );
   readonly confirmedChecks = computed(() =>
     this.screenChecks().filter(check => !check.unconfirmed)
   );
+  readonly currentScreenChecks = computed(() =>
+    this.screenChecks().filter(check => this.currentScreenCheckRefs().has(check.ref))
+  );
+  readonly dialogChecks = computed(() => {
+    const tab = this.activeCheckTab();
+    let checks: RenderedCheck[];
+    if (tab === 'current') {
+      checks = this.currentScreenChecks();
+    } else if (tab === 'unconfirmed') {
+      checks = this.unconfirmedChecks();
+    } else {
+      checks = this.screenChecks();
+    }
+    const query = this.checkSearchQuery().toLowerCase().trim();
+    if (query) {
+      checks = checks.filter(check =>
+        check.label.toLowerCase().includes(query) ||
+        check.ref.toLowerCase().includes(query) ||
+        check.outcome.toLowerCase().includes(query)
+      );
+    }
+    return [...checks].reverse();
+  });
+  readonly dialogCheckCount = computed(() => {
+    const tab = this.activeCheckTab();
+    if (tab === 'current') return this.currentScreenChecks().length;
+    if (tab === 'unconfirmed') return this.unconfirmedChecks().length;
+    return this.screenChecks().length;
+  });
   readonly defaultedChecks = signal<DefaultedCheck[]>([]);
   readonly showCheckPopover = signal(false);
   readonly playerOptions = signal<PlayerOptions>({
@@ -348,11 +380,22 @@ export class CallScriptJourneyComponent implements OnInit {
   }
 
   openCheckPopover(): void {
+    this.activeCheckTab.set('current');
+    this.checkSearchQuery.set('');
     this.showCheckPopover.set(true);
   }
 
   closeCheckPopover(): void {
     this.showCheckPopover.set(false);
+  }
+
+  setCheckTab(tab: 'current' | 'unconfirmed' | 'all'): void {
+    this.activeCheckTab.set(tab);
+    this.checkSearchQuery.set('');
+  }
+
+  setCheckSearch(query: string): void {
+    this.checkSearchQuery.set(query);
   }
 
   hasPreviousStep(): boolean {
@@ -380,7 +423,9 @@ export class CallScriptJourneyComponent implements OnInit {
 
     this.currentStepId.set(stepId);
     const checksForStep = await this.runOnEnter(step);
-    this.appendCheckHistory([...incomingChecks, ...checksForStep]);
+    const allChecksForScreen = [...incomingChecks, ...checksForStep];
+    this.currentScreenCheckRefs.set(new Set(allChecksForScreen.map(c => c.ref)));
+    this.appendCheckHistory(allChecksForScreen);
     this.showCheckPopover.set(false);
 
     if (step.callFlow) {
