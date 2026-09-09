@@ -199,7 +199,7 @@
                   }
                 </div>
                 @if (item.kind === 'manual') {
-                  <p class="alp-script-journey__manual-warning">Internal question. Do not read to caller.</p>
+                  <span class="alp-badge alp-badge--danger">Internal question. Do not read to caller.</span>
                 }
                 <p class="alp-script-journey__read-block-text" [innerHTML]="formatPrompt(item.content)"></p>
                 <div class="alp-script-journey__options">
@@ -283,10 +283,8 @@
         }
       </section>
 
-      <details class="alp-script-journey__collapsible alp-content-card">
-        <summary class="alp-script-journey__collapsible-summary">
-          <h3>Automatic check audit</h3>
-        </summary>
+      <section class="alp-content-card">
+        <h3>Automatic check audit</h3>
         @if (screenChecks().length) {
           <ul class="alp-script-journey__check-list">
             @for (check of screenChecks(); track $index) {
@@ -299,7 +297,7 @@
         } @else {
           <p>No automatic checks</p>
         }
-      </details>
+      </section>
 
       <section class="alp-completion-action-card">
         <div class="alp-completion-action-card__header">

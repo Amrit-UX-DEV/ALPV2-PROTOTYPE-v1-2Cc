@@ -406,7 +406,7 @@ export class CallScriptJourneyComponent implements OnInit {
     if (!text) return '';
 
     return text
-      .replace(/\. /g, '.<br><br>')
+      .replace(/(?<!i\.e)\. /g, '.<br><br>')
       .replace(/\? /g, '?<br><br>')
       .replace(/! /g, '!<br><br>')
       .replace(/£?\d{1,3}(?:,\d{3})*(?:\.\d+)?/g, match =>

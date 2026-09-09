@@ -20,6 +20,13 @@
   background: var(--alp-color-question);
   color: var(--alp-color-white);
 }
+.alp-badge--danger {
+  background: var(--alp-color-red-600);
+  color: var(--alp-color-white);
+  text-transform: uppercase;
+  white-space: normal;
+  display: inline-block;
+}
 
 /* ---- Type tags (content-card pill labels) ---- */
 .alp-type-tag {
