@@ -1277,7 +1277,7 @@
       "unitId": "qst.which-method",
       "version": 1,
       "kind": "question",
-      "prompt": "Which would you prefer? Make a note.",
+      "prompt": "Which would you prefer?",
       "selectionMode": "single",
       "options": [
         {

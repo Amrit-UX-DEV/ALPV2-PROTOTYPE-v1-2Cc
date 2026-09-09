@@ -136,7 +136,7 @@ export class CallScriptJourneyComponent implements OnInit {
   readonly showCheckPopover = signal(false);
   readonly playerOptions = signal<PlayerOptions>({
     debugMode: false,
-    showScriptInFirstStep: true
+    showScriptInFirstStep: false
   });
   readonly checksPath = 'assets/data/call-rep-scripts/surrender/surrender.checks.json';
   readonly lastCheck = signal<{ id: string; result: string } | null>(null);

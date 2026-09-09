@@ -137,6 +137,10 @@
   margin-left: 0;
 }
 
+.alp-script-journey__read-block--manual .alp-badge--danger {
+  margin-bottom: var(--alp-space-2);
+}
+
 .alp-script-journey__read-block--action {
   border-color: var(--alp-color-amber-200);
   background: var(--alp-color-amber-50);

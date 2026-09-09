@@ -175,7 +175,7 @@ export class CallRepScriptService {
       console.error('Failed to load player options:', err);
       this.playerOptionsCache = {
         debugMode: false,
-        showScriptInFirstStep: true
+        showScriptInFirstStep: false
       };
     }
 
