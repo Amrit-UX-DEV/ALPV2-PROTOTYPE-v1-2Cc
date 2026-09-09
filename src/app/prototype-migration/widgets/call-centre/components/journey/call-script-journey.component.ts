@@ -411,10 +411,12 @@ export class CallScriptJourneyComponent implements OnInit {
       if (entry.kind === 'check' && entry.ref) {
         this.ensureCheck(entry.ref);
       }
-      if (entry.kind === 'waypoint' && entry.id && entry.source) {
+      const waypointId = entry.id;
+      const source = entry.source;
+      if (entry.kind === 'waypoint' && waypointId && source) {
         this.waypoints.update(points => {
           const next = new Map(points);
-          next.set(entry.id!, this.deriveWaypoint(entry));
+          next.set(waypointId, this.deriveWaypoint(entry, source));
           return next;
         });
       }
@@ -459,9 +461,9 @@ export class CallScriptJourneyComponent implements OnInit {
     });
   }
 
-  private deriveWaypoint(entry: ScriptOnEnter & { source: string }): string {
-    const result = this.checkResults()[entry.source];
-    const unit = this.resolveUnit(entry.source);
+  private deriveWaypoint(entry: ScriptOnEnter, source: string): string {
+    const result = this.checkResults()[source];
+    const unit = this.resolveUnit(source);
     if (!result || !unit) {
       return 'pass';
     }
