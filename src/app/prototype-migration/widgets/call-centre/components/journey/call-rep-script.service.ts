@@ -256,7 +256,7 @@ export class CallRepScriptService {
                 unitId: `stub.${ref}`,
                 version: 1,
                 kind: 'prompt',
-                body: 'This callable flow is stubbed for the local Surrender walkthrough.'
+                body: 'This callable flow is not available for the local Surrender walkthrough.'
               }
             }
           ],

@@ -41,6 +41,11 @@ interface DebugButton {
   target: string;
 }
 
+interface DebugCheck {
+  id: string;
+  value: string;
+}
+
 @Component({
   selector: 'alpha-call-script-journey',
   standalone: true,
@@ -71,6 +76,7 @@ export class CallScriptJourneyComponent implements OnInit {
     debugMode: false,
     showScriptInFirstStep: true
   });
+  readonly checksPath = 'assets/data/call-rep-scripts/surrender/surrender.checks.json';
   readonly lastCheck = signal<{ id: string; result: string } | null>(null);
   readonly missingRouteTargets = signal<string[]>([]);
 
@@ -121,6 +127,14 @@ export class CallScriptJourneyComponent implements OnInit {
     }
     return buttons;
   });
+  readonly debugChecks = computed<DebugCheck[]>(() =>
+    Object.entries(this.checkResults())
+      .filter(([id]) => id.startsWith('chk.'))
+      .map(([id, result]) => ({
+        id,
+        value: this.formatCheckResult(id, result)
+      }))
+  );
   readonly nextBlockedReason = computed(() => {
     const next = this.currentStep()?.buttons?.find(button =>
       button.kind === 'next' || button.key === 'next'
@@ -398,7 +412,7 @@ export class CallScriptJourneyComponent implements OnInit {
     return {
       ref,
       label: unit?.label ?? ref,
-      outcome: result?.outcome ?? 'Stubbed'
+      outcome: this.formatCheckResult(ref, result)
     };
   }
 
@@ -504,13 +518,46 @@ export class CallScriptJourneyComponent implements OnInit {
   }
 
   private recordCheck(ref: string, result: CheckResult): void {
-    const outcome = result.outcome ?? 'Completed';
+    const outcome = this.formatCheckResult(ref, result);
     this.lastCheck.set({ id: ref, result: outcome });
     this.completedChecks.update(checks => {
       const next = new Set(checks);
       next.add(`${ref}: ${outcome}`);
       return next;
     });
+  }
+
+  private formatCheckResult(ref: string, result: CheckResult | undefined): string {
+    if (!result) {
+      return 'No result';
+    }
+    if (result.status === 'error') {
+      return `Error: ${String(result.error ?? 'check failed')}`;
+    }
+    if (result.outcome !== undefined) {
+      return String(result.outcome);
+    }
+
+    const unit = this.resolveUnit(ref);
+    if (unit?.aggregateFlag && result.detail) {
+      return unit.aggregateFlag.trueWhenAny.some(key => this.asBoolean(result.detail?.[key]))
+        ? 'Yes'
+        : 'No';
+    }
+    if (unit?.subChecks && result.detail) {
+      return this.deriveWaypoint(
+        {
+          kind: 'waypoint',
+          aggregate: 'all-pass',
+          source: ref
+        },
+        ref
+      );
+    }
+    if (result.detail) {
+      return JSON.stringify(result.detail);
+    }
+    return result.status ?? 'No result';
   }
 
   private deriveWaypoint(entry: ScriptOnEnter, source: string): string {

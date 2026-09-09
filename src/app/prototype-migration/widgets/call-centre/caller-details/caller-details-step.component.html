@@ -239,7 +239,9 @@
 
             <!-- CALL-REP-SCRIPTS -->
 
-            
+            @if (playerOptions().showScriptInFirstStep) {
+            <alpha-call-script-journey scriptId="surrender-001"></alpha-call-script-journey>
+            }
 
             <section hidden>
             <div class="card caller-details-card">

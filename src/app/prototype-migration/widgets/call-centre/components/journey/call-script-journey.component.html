@@ -26,6 +26,13 @@
           <div class="card-body">
             <p><strong>Step:</strong> {{ currentStep()?.stepId }}</p>
             <p><strong>Units:</strong> {{ debugUnitIds().join(', ') || 'none' }}</p>
+            <p><strong>Checks file:</strong> {{ checksPath }}</p>
+            <p><strong>Checks:</strong></p>
+            <ul>
+              @for (check of debugChecks(); track check.id) {
+                <li>{{ check.id }} → {{ check.value }}</li>
+              }
+            </ul>
             <p>
               <strong>Buttons:</strong>
               @if (debugButtons().length) {

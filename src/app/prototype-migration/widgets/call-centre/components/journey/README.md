@@ -22,6 +22,11 @@ script loaded by this player:
   when `true`; set it to `false` to hide it until the Surrender click is wired.
 
 Both flags are currently `true`.
+The first-step mount is in
+`src/app/prototype-migration/widgets/call-centre/caller-details/caller-details-step.component.html`.
+For now, the existing Surrender-tile mount remains in
+`call-action-options.component.html` as a duplicate; it still opens from the
+Surrender tile.
 
 To change a local check outcome, edit the matching entry in
 `surrender.checks.json`, keep `"status": "ok"`, and change `"outcome"` (or the

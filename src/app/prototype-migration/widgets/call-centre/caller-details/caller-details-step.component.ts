@@ -2,6 +2,8 @@ import { Component, ViewChild, CUSTOM_ELEMENTS_SCHEMA, inject, signal } from '@a
 
 import { CallerSelectorComponent } from '../components/caller-selector/caller-selector.component';
 import { RecentCallersComponent, RecentCaller } from '../components/recent-callers/recent-callers.component';
+import { CallScriptJourneyComponent } from '../components/journey/call-script-journey.component';
+import { CallRepScriptService } from '../components/journey/call-rep-script.service';
 import { PrototypeContextService } from '../../../context/prototype-context.service';
 import { ContextSearchService } from '../../../context/context-search.service';
 
@@ -21,13 +23,15 @@ import { ContextSearchService } from '../../../context/context-search.service';
 @Component({
   selector: 'li[alpha-caller-details-step]',
   standalone: true,
-  imports: [CallerSelectorComponent, RecentCallersComponent],
+  imports: [CallerSelectorComponent, RecentCallersComponent, CallScriptJourneyComponent],
   templateUrl: './caller-details-step.component.html',
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
 })
 export class CallerDetailsStepComponent {
   /** Read in the template as ctx.policy() and ctx.hasPolicy(). */
   protected readonly ctx = inject(PrototypeContextService);
+  private readonly scriptService = inject(CallRepScriptService);
+  protected readonly playerOptions = signal({ showScriptInFirstStep: false });
 
   /**
    * The search this form drives, shared with the left menu search.
@@ -42,6 +46,15 @@ export class CallerDetailsStepComponent {
 
   /** Whoever the rep picked, for the collapsed step summary. */
   protected readonly selectedCaller = signal<{ name: string; role: string } | null>(null);
+
+  constructor() {
+    void this.loadPlayerOptions();
+  }
+
+  private async loadPlayerOptions(): Promise<void> {
+    const options = await this.scriptService.getPlayerOptions();
+    this.playerOptions.set({ showScriptInFirstStep: options.showScriptInFirstStep });
+  }
 
   protected onCriteriaChange(event: Event): void {
     this.search.setCriteria((event.target as HTMLSelectElement).value);
