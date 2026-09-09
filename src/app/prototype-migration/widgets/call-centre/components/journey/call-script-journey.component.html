@@ -115,11 +115,11 @@
               </button>
             </header>
             <div class="alp-dialog__content">
-              <h5 class="alp-auto-checks-dialog__heading">Unconfirmed checks</h5>
+              <h5 class="alp-auto-checks-dialog__heading alp-auto-checks-dialog__heading--warning">Unconfirmed checks</h5>
               @if (unconfirmedChecks().length) {
                 <ul class="alp-script-journey__check-list">
                   @for (check of unconfirmedChecks(); track check.ref) {
-                    <li class="alp-script-journey__check-item alp-script-journey__check-item--auto">
+                    <li class="alp-script-journey__check-item alp-script-journey__check-item--auto alp-auto-checks-dialog__item--unconfirmed">
                       <span>{{ check.label }} <strong>{{ check.outcome }}</strong></span>
                     </li>
                   }
@@ -186,7 +186,7 @@
                     </span>
                   }
                 </div>
-                <p class="alp-script-journey__read-block-text">{{ item.content }}</p>
+                <p class="alp-script-journey__read-block-text" [innerHTML]="formatPrompt(item.content)"></p>
                 <div class="alp-script-journey__options">
                   @for (option of item.options; track option.key) {
                     <label class="alp-script-journey__option-label">

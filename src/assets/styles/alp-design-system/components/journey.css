@@ -66,6 +66,7 @@
 
 .alp-script-journey__read-block-body {
   flex: 1;
+  min-width: 0;
   padding: 22px 26px;
 }
 
@@ -89,6 +90,7 @@
   color: var(--alp-color-slate-800);
   font-size: 16px;
   font-weight: var(--alp-font-weight-normal);
+  overflow-wrap: break-word;
 }
 
 .alp-script-journey__read-block--prompt {
@@ -99,7 +101,9 @@
   margin-bottom: var(--alp-space-2);
 }
 
-.alp-script-journey__read-block--prompt .alp-script-journey__read-block-text {
+.alp-script-journey__read-block--prompt .alp-script-journey__read-block-text,
+.alp-script-journey__read-block--question .alp-script-journey__read-block-text,
+.alp-script-journey__read-block--manual .alp-script-journey__read-block-text {
   margin-bottom: var(--alp-space-6);
 }
 

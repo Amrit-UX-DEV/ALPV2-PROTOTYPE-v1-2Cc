@@ -305,13 +305,14 @@
 
 .alp-auto-checks-tile__shelf {
   display: block;
-  width: 100%;
+  margin-left: 35px;
   padding: var(--alp-space-2) var(--alp-space-5);
-  border-top: 1px solid var(--alp-color-purple-300);
-  background: var(--alp-color-purple-100);
-  color: var(--alp-color-purple-700);
+  border-top: 1px solid var(--alp-color-amber-300);
+  background: var(--alp-color-warning-soft);
+  color: var(--alp-color-black);
   font-size: var(--alp-font-size-sm);
-  font-weight: var(--alp-font-weight-semibold);
+  font-weight: var(--alp-font-weight-bold);
+  text-transform: capitalize;
 }
 
 .alp-auto-checks-dialog__heading {
@@ -328,6 +329,15 @@
 .alp-auto-checks-dialog__empty {
   margin: 0;
   color: var(--alp-color-text-muted);
+}
+
+.alp-auto-checks-dialog__heading--warning {
+  color: var(--alp-color-amber-800);
+}
+
+.alp-auto-checks-dialog__item--unconfirmed {
+  background-color: var(--alp-color-warning-soft);
+  border-color: var(--alp-color-amber-300);
 }
 
 /* Completion action card used by the script journey summary. */
