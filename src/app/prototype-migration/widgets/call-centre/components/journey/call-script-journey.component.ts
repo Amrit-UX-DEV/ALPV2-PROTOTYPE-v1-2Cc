@@ -20,7 +20,6 @@ interface FlowFrame {
   stepId: string;
   args: Record<string, unknown>;
   onExit?: Record<string, string>;
-  checks?: RenderedCheck[];
 }
 
 interface RenderedItem {
@@ -73,6 +72,7 @@ export class CallScriptJourneyComponent implements OnInit {
   readonly completedChecks = signal<Set<string>>(new Set());
   readonly completedActions = signal<string[]>([]);
   readonly waypoints = signal<Map<string, string>>(new Map());
+  // Running history of checks evaluated anywhere on this journey.
   readonly screenChecks = signal<RenderedCheck[]>([]);
   readonly showCheckPopover = signal(false);
   readonly playerOptions = signal<PlayerOptions>({
@@ -239,10 +239,8 @@ export class CallScriptJourneyComponent implements OnInit {
     }
 
     this.fireActions(route.onEnter);
-    const checksUsedForRoute = this.uniqueChecks([
-      ...this.screenChecks(),
-      ...this.checksReferencedBy(route.when)
-    ]);
+    this.appendCheckHistory(this.checksReferencedBy(route.when));
+    const checksUsedForRoute = this.screenChecks();
     if (route.to === '@end') {
       this.finishJourney();
       return;
@@ -267,7 +265,6 @@ export class CallScriptJourneyComponent implements OnInit {
     this.activeFlow.set(previous.flow);
     this.flowArgs.set(previous.args);
     this.currentStepId.set(previous.stepId);
-    this.screenChecks.set(previous.checks ?? []);
   }
 
   finishJourney(): void {
@@ -317,7 +314,7 @@ export class CallScriptJourneyComponent implements OnInit {
 
     this.currentStepId.set(stepId);
     const checksForStep = await this.runOnEnter(step);
-    this.screenChecks.set(this.uniqueChecks([...incomingChecks, ...checksForStep]));
+    this.appendCheckHistory([...incomingChecks, ...checksForStep]);
     this.showCheckPopover.set(false);
 
     if (step.callFlow) {
@@ -348,8 +345,7 @@ export class CallScriptJourneyComponent implements OnInit {
         flow: this.activeFlow(),
         stepId: callerStep.stepId,
         args: this.flowArgs(),
-        onExit: callerStep.onExit,
-        checks: this.screenChecks()
+        onExit: callerStep.onExit
       }
     ]);
     this.activeFlow.set(flow);
@@ -387,8 +383,7 @@ export class CallScriptJourneyComponent implements OnInit {
       {
         flow: this.activeFlow(),
         stepId,
-        args: this.flowArgs(),
-        checks: this.screenChecks()
+        args: this.flowArgs()
       }
     ]);
   }
@@ -529,8 +524,23 @@ export class CallScriptJourneyComponent implements OnInit {
     return [...refs].map(ref => this.renderCheck(ref));
   }
 
-  private uniqueChecks(checks: RenderedCheck[]): RenderedCheck[] {
-    return [...new Map(checks.map(check => [check.ref, check])).values()];
+  private appendCheckHistory(checks: RenderedCheck[]): void {
+    if (!checks.length) {
+      return;
+    }
+
+    this.screenChecks.update(history => {
+      const next = [...history];
+      for (const check of checks) {
+        const existingIndex = next.findIndex(existing => existing.ref === check.ref);
+        if (existingIndex === -1) {
+          next.push(check);
+        } else {
+          next[existingIndex] = check;
+        }
+      }
+      return next;
+    });
   }
 
   private ensureCheck(ref: string): void {
