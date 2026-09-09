@@ -532,7 +532,7 @@ export class CallScriptJourneyComponent implements OnInit {
       return 'No result';
     }
     if (result.status === 'error') {
-      return `Error: ${String(result.error ?? 'check failed')}`;
+      return `Error: ${String(result['error'] ?? 'check failed')}`;
     }
     if (result.outcome !== undefined) {
       return String(result.outcome);
