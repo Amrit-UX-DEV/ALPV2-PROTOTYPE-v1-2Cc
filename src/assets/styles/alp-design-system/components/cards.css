@@ -273,6 +273,51 @@
   white-space: nowrap;
 }
 
+/* Completion action card used by the script journey summary. */
+.alp-completion-action-card {
+  width: 100%;
+  margin-bottom: var(--alp-space-6);
+  padding: var(--alp-space-4) var(--alp-space-5);
+  border: 2px solid var(--alp-color-orange-200);
+  border-radius: var(--alp-radius-md);
+  background: var(--alp-color-orange-50);
+  color: var(--alp-color-text);
+}
+
+.alp-completion-action-card__header {
+  display: flex;
+  align-items: center;
+  gap: var(--alp-space-3);
+  margin-bottom: var(--alp-space-3);
+}
+
+.alp-completion-action-card__icon {
+  color: var(--alp-color-orange-700);
+  font-size: var(--alp-font-size-lg);
+}
+
+.alp-completion-action-card__title {
+  margin: 0;
+  font-size: var(--alp-font-size-md);
+  font-weight: var(--alp-font-weight-semibold);
+}
+
+.alp-completion-action-card__list {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.alp-completion-action-card__item {
+  padding: var(--alp-space-3) 0 0;
+  border-top: 1px solid var(--alp-color-orange-200);
+}
+
+.alp-completion-action-card__empty {
+  margin: 0;
+  color: var(--alp-color-text-muted);
+}
+
 /* ---- Content section ---- */
 .alp-content-section {
   margin-top: var(--alp-space-4);

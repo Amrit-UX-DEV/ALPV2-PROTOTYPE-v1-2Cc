@@ -41,16 +41,33 @@
   border-radius: var(--alp-radius-full);
 }
 
-/* ---- Read prompt ---- */
-.alp-script-journey__read-prompt {
+/* ---- Readable caller/internal blocks ---- */
+.alp-script-journey__read-block {
+  display: flex;
+  align-items: stretch;
   background: var(--alp-color-background);
   border-left: 6px solid var(--alp-color-blue-500);
-  padding: 22px 26px;
   margin-bottom: var(--alp-space-8);
   border-radius: var(--alp-radius-md);
+  overflow: hidden;
 }
 
-.alp-script-journey__read-prompt-label {
+.alp-script-journey__read-block-icon {
+  display: flex;
+  flex: 0 0 50px;
+  align-items: center;
+  justify-content: center;
+  background: var(--alp-color-blue-500);
+  color: var(--alp-color-white);
+  font-size: var(--alp-font-size-lg);
+}
+
+.alp-script-journey__read-block-body {
+  flex: 1;
+  padding: 22px 26px;
+}
+
+.alp-script-journey__read-block-label {
   display: block;
   font-size: 14px;
   font-weight: var(--alp-font-weight-semibold);
@@ -58,19 +75,25 @@
   margin-bottom: var(--alp-space-2);
 }
 
-.alp-script-journey__read-prompt-text {
+.alp-script-journey__read-block-text {
   margin: 0;
   line-height: var(--alp-line-height-normal);
   color: var(--alp-color-slate-800);
   font-size: 16px;
+  font-weight: var(--alp-font-weight-normal);
 }
 
-/* ---- Question ---- */
-.alp-script-journey__question-text {
-  font-size: 16px;
-  font-weight: var(--alp-font-weight-semibold);
-  color: var(--alp-color-slate-900);
-  margin-bottom: var(--alp-space-7);
+.alp-script-journey__read-block--manual {
+  border-left-color: var(--alp-color-purple-600);
+  background: var(--alp-color-purple-100);
+}
+
+.alp-script-journey__read-block--manual .alp-script-journey__read-block-icon {
+  background: var(--alp-color-purple-600);
+}
+
+.alp-script-journey__read-block--manual .alp-script-journey__read-block-label {
+  color: var(--alp-color-purple-700);
 }
 
 /* ---- Notification blocks (legacy) ---- */
@@ -299,7 +322,7 @@ button.declaration-btn.declared::after {
 /* ---- Summary ---- */
 .alp-script-journey__summary {
   padding: 40px var(--alp-space-5);
-  text-align: center;
+  text-align: left;
 }
 
 .alp-script-journey__summary-title {

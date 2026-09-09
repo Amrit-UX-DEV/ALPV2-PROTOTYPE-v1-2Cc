@@ -120,17 +120,30 @@
 
         @for (item of sortedContent(); track item.id) {
           @if (item.kind === 'prompt') {
-            <div class="notification-block status-prompt">
-              <div class="notification-message">
-                <span class="alp-script-journey__read-prompt-label">Read Prompt</span>
-                <p class="alp-script-journey__read-prompt-text" [innerHTML]="formatPrompt(item.content)"></p>
+            <div class="alp-script-journey__read-block alp-script-journey__read-block--prompt">
+              <div class="alp-script-journey__read-block-icon" aria-hidden="true">
+                <i class="fas fa-comment-alt"></i>
+              </div>
+              <div class="alp-script-journey__read-block-body">
+                <span class="alp-script-journey__read-block-label">Read Prompt</span>
+                <p class="alp-script-journey__read-block-text" [innerHTML]="formatPrompt(item.content)"></p>
               </div>
             </div>
           }
 
           @if (item.kind === 'question' || item.kind === 'manual') {
-            <div class="alp-script-journey__question">
-              <h3 class="alp-script-journey__question-text">{{ item.content }}</h3>
+            <div class="alp-script-journey__read-block"
+                 [class.alp-script-journey__read-block--question]="item.kind === 'question'"
+                 [class.alp-script-journey__read-block--manual]="item.kind === 'manual'">
+              <div class="alp-script-journey__read-block-icon" aria-hidden="true">
+                <i class="fas fa-question"></i>
+              </div>
+              <div class="alp-script-journey__read-block-body">
+                <span class="alp-script-journey__read-block-label">
+                  {{ item.kind === 'question' ? 'Question for caller' : 'Manual check (do not read to caller)' }}
+                </span>
+                <p class="alp-script-journey__read-block-text">{{ item.content }}</p>
+              </div>
             </div>
             <div class="alp-script-journey__options">
               @for (option of item.options; track option.key) {
@@ -146,12 +159,15 @@
           }
 
           @if (item.kind === 'action' || item.kind === 'automated') {
-            <div class="notification-block status-prompt">
-              <div class="notification-message">
-                <span class="alp-script-journey__read-prompt-label">
+            <div class="alp-script-journey__read-block alp-script-journey__read-block--action">
+              <div class="alp-script-journey__read-block-icon" aria-hidden="true">
+                <i class="fas fa-bolt"></i>
+              </div>
+              <div class="alp-script-journey__read-block-body">
+                <span class="alp-script-journey__read-block-label">
                   {{ item.kind === 'action' ? 'Action' : 'Check' }}
                 </span>
-                <p class="alp-script-journey__read-prompt-text">{{ item.content }}</p>
+                <p class="alp-script-journey__read-block-text">{{ item.content }}</p>
               </div>
             </div>
           }
@@ -194,8 +210,8 @@
           <ol class="alp-script-journey__check-list">
             @for (answer of answeredQuestions(); track answer.id) {
               <li class="alp-script-journey__summary-item">
-                <strong>{{ answer.question }}</strong>
-                <span>{{ answer.answer }}</span>
+                <span>{{ answer.question }}</span>
+                <strong>{{ answer.answer }}</strong>
               </li>
             }
           </ol>
@@ -219,16 +235,19 @@
         }
       </section>
 
-      <section class="alp-content-card">
-        <h3>Completion action</h3>
+      <section class="alp-completion-action-card">
+        <div class="alp-completion-action-card__header">
+          <i class="alp-completion-action-card__icon fas fa-check-circle" aria-hidden="true"></i>
+          <h3 class="alp-completion-action-card__title">Completion action</h3>
+        </div>
         @if (completedActions().length) {
-          <ul class="alp-script-journey__check-list">
+          <ul class="alp-completion-action-card__list">
             @for (action of completedActions(); track $index) {
-              <li class="alp-script-journey__summary-item">{{ action.label }}</li>
+              <li class="alp-completion-action-card__item">{{ action.label }}</li>
             }
           </ul>
         } @else {
-          <p>No completion action</p>
+          <p class="alp-completion-action-card__empty">No completion action</p>
         }
       </section>
 
