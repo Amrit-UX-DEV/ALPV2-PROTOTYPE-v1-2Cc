@@ -92,7 +92,7 @@
 }
 
 .alp-script-journey__read-block--prompt {
-  background: var(--alp-color-slate-50);
+  background: var(--alp-color-faint-grey);
 }
 
 .alp-script-journey__read-block--prompt .alp-script-journey__read-block-text {
@@ -101,6 +101,7 @@
 
 .alp-script-journey__read-block--question {
   border-color: var(--alp-color-orange-200);
+  background: var(--alp-color-faint-grey);
 }
 
 .alp-script-journey__read-block--question .alp-script-journey__read-block-icon {
@@ -122,6 +123,10 @@
 
 .alp-script-journey__read-block--manual .alp-script-journey__read-block-label {
   color: var(--alp-color-purple-700);
+}
+
+.alp-script-journey__read-block--manual .alp-script-journey__check-badge--manual {
+  margin-left: 0;
 }
 
 .alp-script-journey__read-block--action {

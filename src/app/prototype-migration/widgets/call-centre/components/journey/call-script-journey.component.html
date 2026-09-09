@@ -82,17 +82,26 @@
         </div>
       } @else if (screenChecks().length > 1) {
         <button type="button" class="alp-auto-checks-tile" (click)="openCheckPopover()">
-          <span class="alp-auto-checks-tile__rail" aria-hidden="true">
-            <i class="alp-auto-checks-tile__icon fas fa-cogs"></i>
+          <span class="alp-auto-checks-tile__main">
+            <span class="alp-auto-checks-tile__rail" aria-hidden="true">
+              <i class="alp-auto-checks-tile__icon fas fa-cog"></i>
+            </span>
+            <span class="alp-auto-checks-tile__body">
+              <span class="alp-auto-checks-tile__badge alp-badge alp-badge--auto">AUTO</span>
+              <strong>
+                <span class="alp-auto-checks-tile__count">{{ screenChecks().length }}</span>
+                automatic ALPHA checks performed
+              </strong>
+            </span>
+            <span class="alp-auto-checks-tile__hint">Click to view</span>
           </span>
-          <span class="alp-auto-checks-tile__body">
-            <span class="alp-auto-checks-tile__badge alp-badge alp-badge--auto">AUTO</span>
-            <strong>
-              <span class="alp-auto-checks-tile__count">{{ screenChecks().length }}</span>
-              automatic ALPHA checks performed
-            </strong>
-          </span>
-          <span class="alp-auto-checks-tile__hint">Click to view</span>
+          @if (unconfirmedChecks().length) {
+            <span class="alp-auto-checks-tile__shelf">
+              {{ unconfirmedChecks().length }}
+              {{ unconfirmedChecks().length === 1 ? 'check' : 'checks' }}
+              unconfirmed
+            </span>
+          }
         </button>
       }
 
@@ -106,13 +115,31 @@
               </button>
             </header>
             <div class="alp-dialog__content">
-              <ul class="alp-script-journey__check-list">
-                @for (check of screenChecks(); track $index) {
-                  <li class="alp-script-journey__check-item alp-script-journey__check-item--auto">
-                    <span>{{ check.label }} <strong>{{ check.outcome }}</strong></span>
-                  </li>
-                }
-              </ul>
+              <h5 class="alp-auto-checks-dialog__heading">Unconfirmed checks</h5>
+              @if (unconfirmedChecks().length) {
+                <ul class="alp-script-journey__check-list">
+                  @for (check of unconfirmedChecks(); track check.ref) {
+                    <li class="alp-script-journey__check-item alp-script-journey__check-item--auto">
+                      <span>{{ check.label }} <strong>{{ check.outcome }}</strong></span>
+                    </li>
+                  }
+                </ul>
+              } @else {
+                <p class="alp-auto-checks-dialog__empty">No unconfirmed checks</p>
+              }
+
+              <h5 class="alp-auto-checks-dialog__heading">Confirmed checks</h5>
+              @if (confirmedChecks().length) {
+                <ul class="alp-script-journey__check-list">
+                  @for (check of confirmedChecks(); track check.ref) {
+                    <li class="alp-script-journey__check-item alp-script-journey__check-item--auto">
+                      <span>{{ check.label }} <strong>{{ check.outcome }}</strong></span>
+                    </li>
+                  }
+                </ul>
+              } @else {
+                <p class="alp-auto-checks-dialog__empty">No confirmed checks</p>
+              }
             </div>
             <footer class="alp-dialog__footer">
               <button type="button" class="alp-btn alp-btn--secondary" (click)="closeCheckPopover()">Close</button>

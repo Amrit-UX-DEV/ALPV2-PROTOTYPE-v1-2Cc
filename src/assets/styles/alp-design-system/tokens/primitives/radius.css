@@ -3,6 +3,7 @@
    ========================================================= */
 
 :root {
+  --alp-radius-xs: 4px;
   --alp-radius-none: 0px;
   /* The gentlest corner that still reads as one. Small was the smallest step
      there was, and on a wide block that has to sit tight against a form it is

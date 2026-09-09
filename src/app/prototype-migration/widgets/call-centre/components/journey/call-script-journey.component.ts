@@ -35,6 +35,7 @@ interface RenderedCheck {
   ref: string;
   label: string;
   outcome: string;
+  unconfirmed: boolean;
 }
 
 interface DebugButton {
@@ -92,6 +93,12 @@ export class CallScriptJourneyComponent implements OnInit {
   readonly waypoints = signal<Map<string, string>>(new Map());
   // Running history of checks evaluated anywhere on this journey.
   readonly screenChecks = signal<RenderedCheck[]>([]);
+  readonly unconfirmedChecks = computed(() =>
+    this.screenChecks().filter(check => check.unconfirmed)
+  );
+  readonly confirmedChecks = computed(() =>
+    this.screenChecks().filter(check => !check.unconfirmed)
+  );
   readonly defaultedChecks = signal<DefaultedCheck[]>([]);
   readonly showCheckPopover = signal(false);
   readonly playerOptions = signal<PlayerOptions>({
@@ -500,10 +507,12 @@ export class CallScriptJourneyComponent implements OnInit {
     if (subChecks?.length) {
       return subChecks.map(subCheck => this.renderSubCheck(ref, unit, subCheck));
     }
+    const outcome = this.formatCheckResult(ref, result);
     return [{
       ref,
       label: unit?.label ?? ref,
-      outcome: this.formatCheckResult(ref, result)
+      outcome,
+      unconfirmed: this.isUnconfirmedResult(outcome)
     }];
   }
 
@@ -519,14 +528,17 @@ export class CallScriptJourneyComponent implements OnInit {
       return {
         ref: `${parentRef}.${subCheck.key}`,
         label: subCheck.label,
-        outcome: 'No'
+        outcome: 'No',
+        unconfirmed: false
       };
     }
 
+    const outcome = this.formatSubCheckOutcome(unit, raw);
     return {
       ref: `${parentRef}.${subCheck.key}`,
       label: subCheck.label,
-      outcome: this.formatSubCheckOutcome(unit, raw)
+      outcome,
+      unconfirmed: this.isUnconfirmedResult(outcome)
     };
   }
 
@@ -553,7 +565,12 @@ export class CallScriptJourneyComponent implements OnInit {
     }
     const mappedOutcome = this.getSubOutcomeMap(unit)?.[String(raw)];
     return mappedOutcome
+      ?? (String(raw).toUpperCase() === 'U' ? 'Unconfirmed' : undefined)
       ?? (typeof raw === 'boolean' ? (raw ? 'Yes' : 'No') : String(raw));
+  }
+
+  private isUnconfirmedResult(outcome: string): boolean {
+    return outcome.trim().toLowerCase() === 'unconfirmed';
   }
 
   private recordDefaultedCheck(parentRef: string, key: string, label: string): void {

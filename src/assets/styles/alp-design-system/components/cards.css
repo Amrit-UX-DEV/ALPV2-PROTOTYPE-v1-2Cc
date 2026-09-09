@@ -236,8 +236,7 @@
 
 /* Automatic-check provenance tile used by the script journey. */
 .alp-auto-checks-tile {
-  display: flex;
-  align-items: center;
+  display: block;
   width: 100%;
   margin: 0 0 var(--alp-space-6);
   padding: 0;
@@ -255,7 +254,13 @@
 .alp-auto-checks-tile:hover,
 .alp-auto-checks-tile:focus-visible {
   border-color: var(--alp-color-green-400);
+  border-left-color: var(--alp-color-green-700);
   box-shadow: var(--alp-shadow-xs);
+}
+
+.alp-auto-checks-tile__main {
+  display: flex;
+  align-items: center;
 }
 
 .alp-auto-checks-tile__badge {
@@ -296,6 +301,33 @@
   font-size: var(--alp-font-size-sm);
   font-weight: var(--alp-font-weight-semibold);
   white-space: nowrap;
+}
+
+.alp-auto-checks-tile__shelf {
+  display: block;
+  width: 100%;
+  padding: var(--alp-space-2) var(--alp-space-5);
+  border-top: 1px solid var(--alp-color-purple-300);
+  background: var(--alp-color-purple-100);
+  color: var(--alp-color-purple-700);
+  font-size: var(--alp-font-size-sm);
+  font-weight: var(--alp-font-weight-semibold);
+}
+
+.alp-auto-checks-dialog__heading {
+  margin: 0 0 var(--alp-space-3);
+  color: var(--alp-color-text);
+  font-size: var(--alp-font-size-md);
+  font-weight: var(--alp-font-weight-semibold);
+}
+
+.alp-auto-checks-dialog__heading:not(:first-child) {
+  margin-top: var(--alp-space-6);
+}
+
+.alp-auto-checks-dialog__empty {
+  margin: 0;
+  color: var(--alp-color-text-muted);
 }
 
 /* Completion action card used by the script journey summary. */
